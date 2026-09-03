@@ -1,110 +1,25 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JAMB CBT Examination</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="exam.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>JAMB CBT - Student Login</title>
+
+```
+<meta http-equiv="refresh" content="0; url=student.html">
+```
+
 </head>
-<body class="exam-body">
+<body>
 
-<header class="exam-header">
-    <div class="exam-brand">
-        <div class="jamb-mark">J</div>
-        <div>
-            <strong>JAMB CBT</strong>
-            <span id="testTypeTitle">Practice Test</span>
-        </div>
-    </div>
+```
+<p>Redirecting to student login...</p>
 
-    <div class="exam-header-meta">
-        <div class="subject-summary">
-            <span class="meta-label">SUBJECTS</span>
-            <strong id="selectedSubject">Loading...</strong>
-        </div>
-        <div class="timer-box" id="timer" aria-live="polite">
-            <span class="timer-dot"></span>30:00
-        </div>
-        <button class="submit-top" type="button" onclick="submitExam()">Submit Test</button>
-    </div>
-</header>
+<script>
+    window.location.replace("student.html");
+</script>
+```
 
-<main class="exam-shell">
-    <div class="exam-main">
-        <div class="exam-toolbar">
-            <div>
-                <span class="eyebrow">CURRENT QUESTION</span>
-                <div class="question-index">
-                    <strong id="questionNumber">Question 1</strong>
-                    <span id="questionCount">of 0</span>
-                </div>
-            </div>
-            <div class="current-subject-pill" id="currentSubject">JAMB CBT</div>
-        </div>
-
-        <div class="progress-track" aria-label="Exam progress">
-            <div id="examProgress" class="progress-fill"></div>
-        </div>
-
-        <div class="progress-copy">
-            <span>Answer progress</span>
-            <strong id="progressText">0% answered</strong>
-        </div>
-
-        <section id="questionCard" class="question-card">
-            <div class="question-label">QUESTION</div>
-            <div id="questionText" class="question-prompt" role="heading" aria-level="1">Loading question...</div>
-
-            <div class="answer-list" aria-label="Answer options">
-                <div id="optionA"></div>
-                <div id="optionB"></div>
-                <div id="optionC"></div>
-                <div id="optionD"></div>
-            </div>
-        </section>
-
-        <div class="exam-actions">
-            <button id="previousButton" class="nav-button secondary-action" type="button" onclick="previousQuestion()">
-                <span>←</span> Previous
-            </button>
-            <button id="nextButton" class="nav-button primary-action" type="button" onclick="nextQuestion()">
-                Next Question <span>→</span>
-            </button>
-        </div>
-
-        <div class="mobile-submit">
-            <button class="secondary-action" onclick="submitExam()">Submit Test</button>
-        </div>
-    </div>
-
-    <aside class="exam-sidebar">
-        <div class="sidebar-card">
-            <div class="sidebar-heading">
-                <div>
-                    <span class="eyebrow">QUESTION MAP</span>
-                    <h2>Navigate</h2>
-                </div>
-                <span class="map-count" id="mapTotal">CBT</span>
-            </div>
-
-            <div class="legend">
-                <span><i class="legend-dot answered-dot"></i> Answered <b id="answeredCount">0</b></span>
-                <span><i class="legend-dot"></i> Unanswered <b id="unansweredCount">0</b></span>
-            </div>
-
-            <div id="questionStatus" class="question-palette"></div>
-
-            <div class="sidebar-tip">
-                <strong>Exam tip</strong>
-                <p>You can move between questions at any time. Your selected answer is saved automatically.</p>
-            </div>
-        </div>
-    </aside>
-</main>
-
-<script src="questions.js"></script>
-<script src="exam.js"></script>
 </body>
 </html>
