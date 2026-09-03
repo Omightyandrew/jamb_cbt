@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings - JAMB CBT</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--green:#008751;--dark:#123b2d;--bg:#f5faf7;--line:#dfe9e4;--muted:#687a72}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#17382d}
+.page{max-width:900px;margin:0 auto;padding:24px 18px 50px}.top{display:flex;align-items:center;gap:14px;margin-bottom:22px}.back{border:0;background:#fff;border:1px solid var(--line);width:44px;height:44px;border-radius:14px;font-size:22px;cursor:pointer}.top h1{margin:0;color:var(--dark);font-size:28px}.top p{margin:5px 0 0;color:var(--muted)}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;margin-bottom:16px;box-shadow:0 8px 24px rgba(18,59,45,.05)}.card h2{margin:0 0 5px;color:var(--dark);font-size:20px}.card .sub{margin:0 0 18px;color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.field input{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:12px;font-size:15px;outline:none}.field input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,135,81,.08)}.readonly{background:#f4f7f5}.actions{margin-top:17px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.btn{border:0;border-radius:12px;padding:12px 17px;font-weight:700;cursor:pointer}.primary{background:var(--green);color:#fff}.secondary{background:#edf7f2;color:var(--dark);border:1px solid var(--line)}.danger{background:#fff0f0;color:#b42318;border:1px solid #f0c8c8}.message{font-size:13px;color:var(--muted)}.message.success{color:var(--green)}.message.error{color:#b42318}.status{padding:12px 14px;background:#f4faf6;border-radius:12px;color:#3e5d50;font-size:14px}.hidden{display:none !important}.page-section{display:block}.support-quick-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}.support-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}.support-block{padding:16px;border:1px solid var(--line);border-radius:16px;background:#f9fbfa}.support-block h3{margin:0 0 8px;font-size:16px;color:var(--dark)}.support-block p,.support-block li{color:var(--muted);font-size:13px;line-height:1.6}.support-block ul{padding-left:18px;margin:0}.support-buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.support-button{display:inline-flex;align-items:center;justify-content:center;padding:12px 15px;border:0;border-radius:12px;background:var(--green);color:#fff;text-decoration:none;font-weight:700;cursor:pointer}.support-button.secondary{background:#edf7f2;color:var(--dark)}.faq-list{display:grid;gap:10px}.faq-item{border:1px solid var(--line);border-radius:12px;background:#f9fbfa}.faq-item summary{cursor:pointer;padding:12px 14px;font-weight:700;color:var(--dark);list-style:none}.faq-item[open] summary{border-bottom:1px solid var(--line)}.faq-item p{margin:0;padding:12px 14px;color:var(--muted);line-height:1.6;font-size:13px}.report-form{margin-top:16px;display:grid;gap:12px}.report-form textarea{width:100%;min-height:120px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;resize:vertical}.report-form .meta{font-size:12px;color:var(--muted)}
+@media(max-width:650px){.grid,.support-grid{grid-template-columns:1fr}.page{padding:18px 14px 35px}.top h1{font-size:24px}.support-buttons,.actions{flex-direction:column;align-items:stretch}.support-button,.btn{width:100%}}
+</style>
+</head>
+<body>
+<main class="page">
+  <div class="top"><button class="back" onclick="location.href='dashboard.html'" aria-label="Back to Dashboard">←</button><div><h1 id="settingsPageTitle">Settings</h1><p id="settingsPageSubtitle">Manage your student account.</p></div></div>
+
+  <section class="card page-section" data-page-section="support" id="supportHelpSection">
+    <h2>Support &amp; Help</h2>
+    <p class="sub">Get help with your account, subscription, practice, and platform issues.</p>
+    <div class="support-grid">
+      <div class="support-block">
+        <h3>Frequently Asked Questions (FAQ)</h3>
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary>How do I sign in and access my account?</summary>
+            <p>Use your registered email and password on the student login page. If you are already signed in, the dashboard will load your active session. If your session is expired, you can sign back in from the Student login page.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How does JAMB CBT practice work?</summary>
+            <p>Open JAMB CBT from the dashboard to begin the practice flow. Free users get a daily limit of 20 practice questions. Premium users have unlimited practice access.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How do I submit answers and view results?</summary>
+            <p>Answer each question in the CBT flow and submit the exam or practice set. Results are shown in the results area after the attempt is completed.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Where do I find Past Questions?</summary>
+            <p>Past Questions is available in the student dashboard and is premium-locked for free users. Premium users can open it to review past-year question sets with the available filters.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How do Answers &amp; Explanations work?</summary>
+            <p>Answers &amp; Explanations is a premium feature that shows the correct option and explanation for each question when the record includes explanation data. If an explanation is not available, the page shows a clear “Explanation not available” message.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What is the Daily Challenge and how is it limited?</summary>
+            <p>Daily Challenge is part of the student dashboard. Free users can complete up to 5 questions per day, while premium users get up to 15. Streak and Leaderboard are part of the same daily challenge experience.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What is the subscription process?</summary>
+            <p>Use the subscription option in the dashboard to open the plan modal. Payment is processed through the project’s existing Paystack flow. Premium access unlocks the premium cards and premium features on the student dashboard.</p>
+          </details>
+        </div>
+      </div>
+
+      <div class="support-block">
+        <h3>Email Support</h3>
+        <p>Send a message and we will help with account, subscription, or exam access issues.</p>
+        <div class="support-buttons">
+          <a class="support-button" href="mailto:igbawuaandrew3@gmail.com?subject=JAMB%20CBT%20Support%20Request&body=Hello%2C%20I%20need%20help%20with%20the%20JAMB%20CBT%20platform.%20My%20issue%20is%3A%20">📧 Email Support</a>
+        </div>
+      </div>
+
+      <div class="support-block">
+        <h3>WhatsApp Support</h3>
+        <p>Reach support directly on WhatsApp: +234 915 537 1499</p>
+        <div class="support-buttons">
+          <a class="support-button secondary" href="https://wa.me/2349155371499?text=Hello%2C%20I%20need%20help%20with%20the%20JAMB%20CBT%20platform.%20My%20issue%20is%3A%20" target="_blank" rel="noopener noreferrer">💬 WhatsApp Support</a>
+        </div>
+      </div>
+
+      <div class="support-block">
+        <h3>Payment &amp; Subscription Help</h3>
+        <ul>
+          <li>Free users can access the free plan features and the 5-question Daily Challenge.</li>
+          <li>Premium users unlock full access to premium cards and premium content.</li>
+          <li>Open the subscription modal from the dashboard to view the current plans and payment flow.</li>
+          <li>Subscription status is checked through the project’s existing Supabase subscription data and payment flow.</li>
+        </ul>
+      </div>
+
+      <div class="support-block">
+        <h3>CBT Help</h3>
+        <ul>
+          <li>Use the JAMB CBT card on the dashboard to begin your practice session.</li>
+          <li>Free users have a 20-question daily limit for practice sessions.</li>
+          <li>Premium users can continue without the daily practice cap.</li>
+          <li>Answer every question carefully before submitting the set.</li>
+        </ul>
+      </div>
+
+      <div class="support-block">
+        <h3>Account Help</h3>
+        <ul>
+          <li>Update your profile from the Settings page.</li>
+          <li>Reset and confirm your password in the password section.</li>
+          <li>If you are logged out unexpectedly, sign in again from the student login page.</li>
+          <li>If a subscription issue persists, contact support using email or WhatsApp.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="support-block" style="margin-top:18px;">
+      <h3>Report a Problem</h3>
+      <p class="sub">No dedicated student support table is currently used in the app. To keep the process safe and simple, report issues by email with your details and screenshots if needed.</p>
+      <form id="supportProblemForm" class="report-form">
+        <textarea id="supportProblemText" placeholder="Describe the problem you are experiencing..." aria-label="Describe the problem"></textarea>
+        <div class="support-buttons">
+          <button class="support-button" type="button" onclick="reportProblemByEmail()">📩 Send Problem Report</button>
+        </div>
+        <div class="meta">This uses the project’s existing email support flow rather than creating a new database table or bypassing student privacy rules.</div>
+      </form>
+    </div>
+  </section>
+
+  <section class="card page-section" data-page-section="settings">
+    <h2>Profile</h2><p class="sub">Update the information shown on your account.</p>
+    <form id="profileForm">
+      <div class="grid">
+        <div class="field"><label for="fullName">Full Name</label><input id="fullName" required></div>
+        <div class="field"><label for="username">Username</label><input id="username" required></div>
+        <div class="field"><label for="email">Email</label><input id="email" class="readonly" readonly></div>
+      </div>
+      <div class="actions"><button class="btn primary" type="submit">Save Profile</button><span id="profileMessage" class="message"></span></div>
+    </form>
+  </section>
+
+  <section class="card page-section" data-page-section="settings">
+    <h2>Change Password</h2><p class="sub">Set a new password for your account.</p>
+    <form id="passwordForm">
+      <div class="grid"><div class="field"><label for="newPassword">New Password</label><input id="newPassword" type="password" minlength="6" required></div><div class="field"><label for="confirmPassword">Confirm Password</label><input id="confirmPassword" type="password" minlength="6" required></div></div>
+      <div class="actions"><button class="btn primary" type="submit">Update Password</button><span id="passwordMessage" class="message"></span></div>
+    </form>
+  </section>
+
+  <section class="card page-section" data-page-section="settings">
+    <h2>Account</h2><p class="sub">Your current login session.</p>
+    <div class="status" id="accountStatus">Checking account...</div>
+    <div class="actions"><button class="btn primary" type="button" onclick="location.href='dashboard.html'">Back to Dashboard</button><button class="btn danger" id="logoutBtn" type="button">Log Out</button></div>
+  </section>
+</main>
+<script>
+function openSupportMail(){
+  const subject = encodeURIComponent('JAMB CBT Support Request');
+  const body = encodeURIComponent('Hello, I need help with the JAMB CBT platform. My issue is:');
+  window.location.href = 'mailto:igbawuaandrew3@gmail.com?subject=' + subject + '&body=' + body;
+}
+
+function openWhatsAppSupport(){
+  const message = encodeURIComponent('Hello, I need help with the JAMB CBT platform. My issue is:');
+  window.open('https://wa.me/2349155371499?text=' + message, '_blank', 'noopener,noreferrer');
+}
+
+function reportProblemByEmail(){
+  const text = document.getElementById('supportProblemText');
+  const issue = (text ? text.value.trim() : '').replace(/\r?\n/g, '\n');
+  const detail = issue ? issue : 'I would like to report a problem with the platform.';
+  const subject = encodeURIComponent('JAMB CBT Support Request');
+  const body = encodeURIComponent('Hello, I need help with the JAMB CBT platform. My issue is:\n\n' + detail);
+  window.location.href = 'mailto:igbawuaandrew3@gmail.com?subject=' + subject + '&body=' + body;
+}
+
+
+const SUPABASE_URL='https://afdnfqmsjmpwlvhloopy.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_LQlMraaULDTdAKeYysPWkA_a8CKvA1V';
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+let currentUser=null;
+function msg(id,text,ok=false){const el=document.getElementById(id);el.textContent=text;el.className='message '+(ok?'success':'error');}
+async function loadSettings(){
+  const {data,error}=await supabaseClient.auth.getSession();
+  if(error||!data.session){location.href='student.html';return;}
+  currentUser=data.session.user;
+  document.getElementById('email').value=currentUser.email||'';
+  const {data:profile,error:profileError}=await supabaseClient.from('Student_profiles').select('Full_name, Username').eq('id',currentUser.id).maybeSingle();
+  if(profileError){console.warn('Settings profile error:',profileError);}
+  document.getElementById('fullName').value=profile?.Full_name||currentUser.user_metadata?.full_name||'';
+  document.getElementById('username').value=profile?.Username||'';
+  document.getElementById('accountStatus').textContent='Signed in as '+(currentUser.email||'Student');
+}
+document.getElementById('profileForm').addEventListener('submit',async e=>{
+  e.preventDefault(); if(!currentUser)return;
+  const fullName=document.getElementById('fullName').value.trim(); const username=document.getElementById('username').value.trim();
+  if(!fullName||!username){msg('profileMessage','Please complete all profile fields.');return;}
+  msg('profileMessage','Saving...',true);
+  const {error}=await supabaseClient.from('Student_profiles').update({Full_name:fullName,Username:username}).eq('id',currentUser.id);
+  if(error){msg('profileMessage',error.message);return;}
+  await supabaseClient.auth.updateUser({data:{full_name:fullName}});
+  localStorage.setItem('studentName',fullName);localStorage.setItem('studentUsername',username);
+  msg('profileMessage','Profile updated successfully.',true);
+});
+document.getElementById('passwordForm').addEventListener('submit',async e=>{
+  e.preventDefault(); const p=document.getElementById('newPassword').value; const c=document.getElementById('confirmPassword').value;
+  if(p.length<6){msg('passwordMessage','Password must be at least 6 characters.');return;} if(p!==c){msg('passwordMessage','Passwords do not match.');return;}
+  msg('passwordMessage','Updating...',true); const {error}=await supabaseClient.auth.updateUser({password:p});
+  if(error){msg('passwordMessage',error.message);return;} document.getElementById('passwordForm').reset(); msg('passwordMessage','Password updated successfully.',true);
+});
+document.getElementById('logoutBtn').addEventListener('click',async()=>{if(!confirm('Are you sure you want to logout?'))return;await supabaseClient.auth.signOut();localStorage.removeItem('studentName');localStorage.removeItem('studentUsername');localStorage.removeItem('studentSubscribed');location.href='student.html';});
+function applySettingsView(){
+  const params = new URLSearchParams(window.location.search);
+  const target = params.get('view') === 'support' ? 'support' : 'settings';
+  const pageSections = document.querySelectorAll('[data-page-section]');
+  pageSections.forEach((section) => {
+    const isVisible = section.dataset.pageSection === target;
+    section.classList.toggle('hidden', !isVisible);
+  });
+
+  const title = document.getElementById('settingsPageTitle');
+  const subtitle = document.getElementById('settingsPageSubtitle');
+  if (title) {
+    title.textContent = target === 'support' ? 'Help & Support' : 'Settings';
+  }
+  if (subtitle) {
+    subtitle.textContent = target === 'support'
+      ? 'Get help with your account, subscription, practice, and platform issues.'
+      : 'Manage your student account.';
+  }
+  document.title = target === 'support' ? 'Help & Support - JAMB CBT' : 'Settings - JAMB CBT';
+}
+
+applySettingsView();
+loadSettings();
+</script>
+</body></html>

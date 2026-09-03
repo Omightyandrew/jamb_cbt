@@ -1,0 +1,13 @@
+NOVEL / LIBRARY PHASE 2
+
+1. Run novel_library_setup.sql once in Supabase SQL Editor.
+2. The Novel page will read active records from public.Novels.
+3. Each row stores chapters as JSONB. Example shape:
+[
+  {"title":"Chapter 1","paragraphs":["Original study note paragraph 1","Original study note paragraph 2"]},
+  {"title":"Chapter 2","paragraphs":["More original study notes"]}
+]
+4. Only active rows are shown publicly. Admins with app_metadata.role = admin or super_admin can manage rows.
+5. If the table is empty or unavailable, the existing built-in study materials remain available.
+
+Copyright: only upload content you own or are licensed to distribute. Do not upload the full text of copyrighted novels without permission.

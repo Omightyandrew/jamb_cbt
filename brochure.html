@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAMB Brochure | JAMB CBT</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="brochure.css">
+</head>
+<body>
+<main class="brochure-page">
+<header class="brochure-header">
+  <a href="dashboard.html" class="back-link">← Dashboard</a>
+  <div class="eyebrow">ADMISSION GUIDE</div>
+  <h1>JAMB Brochure</h1>
+  <p>Explore courses, UTME subject combinations and admission guidance before making your choices.</p>
+</header>
+
+<section class="official-note">
+  <div><strong>Use the official IBASS checker for final verification.</strong><span>Course requirements and subject combinations can vary by institution and admission session.</span></div>
+  <a href="https://eligibility.jamb.gov.ng/" target="_blank" rel="noopener">Open JAMB IBASS ↗</a>
+</section>
+
+<section class="stats" aria-label="Brochure statistics">
+  <div><strong id="courseCount">0</strong><span>Courses in guide</span></div>
+  <div><strong id="subjectCount">0</strong><span>UTME subjects</span></div>
+  <div><strong id="categoryCount">0</strong><span>Study areas</span></div>
+</section>
+
+<section class="requirements-card">
+  <div class="section-title"><span>✓</span><div><h2>Quick admission guide</h2><p>Useful general guidance from current JAMB information.</p></div></div>
+  <div class="requirements-grid">
+    <article><b>100 Level Degree</b><p>Generally requires at least five relevant O’level credits, including English Language; Mathematics is required for many science, technology and social science programmes.</p></article>
+    <article><b>Direct Entry</b><p>Requirements depend on the programme and qualification. Candidates should verify the exact accepted qualifications in IBASS before applying.</p></article>
+    <article><b>Institution matters</b><p>The same programme can have different requirements or subject details across institutions. Always check the institution-specific IBASS result.</p></article>
+  </div>
+</section>
+
+<section class="explorer">
+  <div class="section-heading"><div><h2>Course explorer</h2><p>Search and filter the guide, then open a course for its details.</p></div></div>
+  <div class="filters">
+    <label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search course, subject or category..."></label>
+    <select id="categoryFilter" aria-label="Filter by category"><option value="all">All categories</option></select>
+    <select id="subjectFilter" aria-label="Filter by UTME subject"><option value="all">All UTME subjects</option></select>
+  </div>
+  <div id="activeFilters" class="active-filters"></div>
+  <div id="brochureGrid" class="brochure-grid"></div>
+</section>
+
+<section class="score-guide">
+  <div class="section-heading"><div><h2>2026 minimum tolerable scores</h2><p>These are JAMB's policy-level minimums, not individual university/course cut-off marks.</p></div></div>
+  <div class="score-grid">
+    <div><strong>150</strong><span>Universities</span></div>
+    <div><strong>150</strong><span>Colleges of Nursing</span></div>
+    <div><strong>100</strong><span>Polytechnics / Monotechnics</span></div>
+    <div><strong>100</strong><span>Colleges of Education / Agriculture / IEIs</span></div>
+  </div>
+</section>
+
+<section class="disclaimer"><strong>Important:</strong> This in-app guide is for study and planning. It is not a replacement for JAMB's official IBASS e-Brochure. Verify your exact institution, programme, O'level requirements and UTME combination in IBASS before registration or change of course.</section>
+
+<div id="courseModal" class="modal" aria-hidden="true">
+  <div class="modal-backdrop" data-close="true"></div>
+  <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+    <div id="modalCategory" class="modal-category"></div>
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription" class="modal-description"></p>
+    <div class="detail-block"><h3>UTME subjects</h3><div id="modalSubjects" class="subject-pills"></div></div>
+    <div class="detail-block"><h3>Typical O’level focus</h3><p id="modalOlevel"></p></div>
+    <div class="detail-block"><h3>Admission note</h3><p id="modalNote"></p></div>
+    <a class="ibass-button" href="https://eligibility.jamb.gov.ng/" target="_blank" rel="noopener">Verify this programme in JAMB IBASS ↗</a>
+  </article>
+</div>
+</main>
+<script src="supabase.js"></script>
+<script src="premium-access.js"></script>
+<script src="brochure.js"></script>
+</body>
+</html>

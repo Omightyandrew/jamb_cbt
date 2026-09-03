@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Library | JAMB CBT</title>
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="novels.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script><script src="premium-access.js"></script>
+</head>
+<body>
+<header class="library-header"><a class="back-link" href="dashboard.html">← Dashboard</a><div><span class="eyebrow">JAMB CBT</span><h1>Novel & Library</h1><p>Read, bookmark and continue your study materials.</p></div><div class="subscription-badge" id="accessBadge">Checking access…</div></header>
+<main class="library-shell">
+<section class="library-hero"><div><span class="hero-kicker">STUDY LIBRARY</span><h2>Learn at your own pace.</h2><p>Keep your reading materials, study guides and progress in one place.</p></div><div class="hero-stat"><strong id="libraryCount">0</strong><span>materials</span></div></section>
+<section class="library-tools"><label class="search-box">⌕<input id="searchInput" type="search" placeholder="Search books, subjects or authors…"></label><div class="filter-row" id="categoryFilters"></div><button id="bookmarkFilter" class="filter-chip">★ Bookmarked</button></section>
+<section class="section-heading"><div><span class="eyebrow">YOUR LIBRARY</span><h2>Available materials</h2></div><button id="clearSearch" class="text-button">Clear filters</button></section>
+<div id="libraryStatus" class="library-status" aria-live="polite"></div><section id="bookGrid" class="book-grid"></section>
+<section id="emptyState" class="empty-state" hidden><div class="empty-icon">📚</div><h3>No materials found</h3><p>Try another search or category.</p></section>
+<section class="section-heading recent-heading"><div><span class="eyebrow">KEEP GOING</span><h2>Continue reading</h2></div></section>
+<section id="recentGrid" class="recent-grid"></section>
+</main>
+<div id="readerOverlay" class="reader-overlay" hidden>
+  <div class="reader" role="dialog" aria-modal="true" aria-labelledby="readerTitle">
+    <header class="reader-top"><button id="closeReader" class="icon-button" aria-label="Close reader">×</button><div><span id="readerCategory" class="reader-category"></span><h2 id="readerTitle"></h2><p id="readerMeta"></p></div><button id="bookmarkButton" class="reader-bookmark">☆ Bookmark</button></header>
+    <div class="reader-controls"><button id="fontDown">A−</button><button id="fontReset">A</button><button id="fontUp">A+</button><span class="reader-spacer"></span><span id="readerProgress">0%</span></div>
+    <article id="readerContent" class="reader-content"></article>
+    <footer class="reader-bottom"><button id="prevChapter">← Previous</button><span id="chapterLabel"></span><button id="nextChapter">Next →</button></footer>
+  </div>
+</div>
+<div id="accessModal" class="access-modal" hidden><div class="access-card"><button id="closeAccess" class="icon-button">×</button><div class="lock-icon">🔒</div><h2>Premium Library</h2><p>Your library reading access is connected to the existing subscription status. Subscribe to unlock full reading materials.</p><button id="goSubscribe" class="primary-button">Go to Subscription</button><a href="dashboard.html">Back to Dashboard</a></div></div>
+<script src="novels.js"></script>
+</body></html>

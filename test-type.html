@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>JAMB CBT - Test Type</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<link rel="stylesheet" href="redesign.css">
+</head>
+
+
+<body>
+
+    <div id="pageContent">
+
+        <h1>
+            JAMB CBT Practice
+        </h1>
+
+        <h2>
+            Choose Test Type
+        </h2>
+
+        <p id="subjectTitle"></p>
+
+        <p id="accessMessage"></p>
+
+        <p>
+            Select what you want to practice:
+        </p>
+
+
+        <button onclick="startPractice()">
+            Practice Test
+        </button>
+
+
+        <button onclick="startPastQuestions()">
+            Past Questions
+        </button>
+
+
+        <br><br>
+
+        <button onclick="goBack()">
+            Back to Subjects
+        </button>
+
+    </div>
+
+
+    <script>
+
+
+        // ========================================
+        // SUPABASE CONNECTION
+        // ========================================
+
+        const SUPABASE_URL =
+            "https://afdnfqmsjmpwlvhloopy.supabase.co";
+
+
+        const SUPABASE_KEY =
+            "sb_publishable_LQlMraaULDTdAKeYysPWkA_a8CKvA1V";
+
+
+        const supabaseClient =
+            supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+
+        // ========================================
+        // VARIABLES
+        // ========================================
+
+        let studentSubscribed = false;
+
+
+        // ========================================
+        // CHECK LOGIN AND SUBSCRIPTION
+        // ========================================
+
+        async function checkAccess() {
+
+            try {
+
+                const {
+                    data: sessionData,
+                    error: sessionError
+                } =
+                    await supabaseClient.auth.getSession();
+
+
+                // ==================================
+                // CHECK LOGIN
+                // ==================================
+
+                if (
+                    sessionError ||
+                    !sessionData.session
+                ) {
+
+                    alert(
+                        "Please login before accessing JAMB CBT practice."
+                    );
+
+
+                    window.location.href =
+                        "student.html";
+
+
+                    return false;
+
+                }
+
+
+                const user =
+                    sessionData.session.user;
+
+
+                // ==================================
+                // CHECK SUBSCRIPTION
+                //
+                // IMPORTANT:
+                //
+                // Subscription is NOT required
+                // on this page.
+                //
+                // Free students are allowed
+                // to continue.
+                // ==================================
+
+                const {
+                    data: subscription,
+                    error
+                } =
+                    await supabaseClient
+                        .from("subscriptions")
+                        .select(
+                            "status, expires_at"
+                        )
+                        .eq(
+                            "user_id",
+                            user.id
+                        )
+                        .order(
+                            "id",
+                            {
+                                ascending: false
+                            }
+                        )
+                        .limit(1)
+                        .maybeSingle();
+
+
+                if (
+                    !error &&
+                    subscription
+                ) {
+
+                    const status =
+                        String(
+                            subscription.status || ""
+                        )
+                        .trim()
+                        .toLowerCase();
+
+
+                    let notExpired = true;
+
+
+                    if (
+                        subscription.expires_at
+                    ) {
+
+                        const expiry =
+                            new Date(
+                                subscription.expires_at
+                            );
+
+
+                        if (
+                            Number.isNaN(
+                                expiry.getTime()
+                            )
+                        ) {
+
+                            notExpired = false;
+
+                        }
+
+                        else {
+
+                            notExpired =
+                                expiry > new Date();
+
+                        }
+
+                    }
+
+
+                    studentSubscribed =
+                        (
+                            status === "subscribed" &&
+                            notExpired
+                        );
+
+                }
+
+                else {
+
+                    studentSubscribed =
+                        false;
+
+                }
+
+
+                // ==================================
+                // SHOW ACCESS MESSAGE
+                // ==================================
+
+                const accessMessage =
+                    document.getElementById(
+                        "accessMessage"
+                    );
+
+
+                if (studentSubscribed) {
+
+                    accessMessage.innerHTML =
+                        "✅ You have an active subscription. Full practice access is available.";
+
+                }
+
+                else {
+
+                    accessMessage.innerHTML =
+                        "🆓 Free access: You can answer your 10 free questions.";
+
+                }
+
+
+                console.log(
+                    "Student subscribed:",
+                    studentSubscribed
+                );
+
+
+                return true;
+
+            }
+
+            catch (error) {
+
+                console.log(
+                    "Access check error:",
+                    error
+                );
+
+
+                /*
+                 * IMPORTANT:
+                 *
+                 * Even if subscription checking
+                 * fails, a logged-in student can
+                 * still use the free questions.
+                 */
+
+                studentSubscribed =
+                    false;
+
+
+                const accessMessage =
+                    document.getElementById(
+                        "accessMessage"
+                    );
+
+
+                if (accessMessage) {
+
+                    accessMessage.innerHTML =
+                        "🆓 Free access: You can answer your 10 free questions.";
+
+                }
+
+
+                return true;
+
+            }
+
+        }
+
+
+        // ========================================
+        // GET SELECTED SUBJECTS
+        // ========================================
+
+        let selectedSubjects =
+            JSON.parse(
+                localStorage.getItem(
+                    "selectedSubjects"
+                )
+            ) || [];
+
+
+        // ========================================
+        // CHECK SUBJECT SELECTION
+        // ========================================
+
+        if (
+            selectedSubjects.length > 0
+        ) {
+
+            document.getElementById(
+                "subjectTitle"
+            ).innerText =
+                "Subjects: " +
+                selectedSubjects.join(", ");
+
+        }
+
+        else {
+
+            document.getElementById(
+                "subjectTitle"
+            ).innerText =
+                "No subjects selected.";
+
+        }
+
+
+        // ========================================
+        // PRACTICE TEST
+        // ========================================
+
+        async function startPractice() {
+
+            const allowed =
+                await checkAccess();
+
+
+            if (!allowed) {
+
+                return;
+
+            }
+
+
+            if (
+                selectedSubjects.length !== 4
+            ) {
+
+                alert(
+                    "Please go back and select exactly 4 subjects."
+                );
+
+
+                window.location.href =
+                    "subject.html";
+
+
+                return;
+
+            }
+
+
+            // ==================================
+            // SAVE TEST TYPE
+            // ==================================
+
+            localStorage.setItem(
+                "testType",
+                "practice"
+            );
+
+
+            // ==================================
+            // SAVE ACCESS TYPE
+            // ==================================
+
+            if (studentSubscribed) {
+
+                localStorage.setItem(
+                    "studentPractice",
+                    "true"
+                );
+
+
+                localStorage.removeItem(
+                    "freePractice"
+                );
+
+            }
+
+            else {
+
+                localStorage.setItem(
+                    "freePractice",
+                    "true"
+                );
+
+
+                localStorage.removeItem(
+                    "studentPractice"
+                );
+
+            }
+
+
+            // ==================================
+            // OPEN CBT
+            // ==================================
+
+            window.location.href =
+                "index.html";
+
+        }
+
+
+        // ========================================
+        // PAST QUESTIONS
+        // ========================================
+
+        async function startPastQuestions() {
+
+            const allowed =
+                await checkAccess();
+
+
+            if (!allowed) {
+
+                return;
+
+            }
+
+
+            if (
+                selectedSubjects.length !== 4
+            ) {
+
+                alert(
+                    "Please go back and select exactly 4 subjects."
+                );
+
+
+                window.location.href =
+                    "subject.html";
+
+
+                return;
+
+            }
+
+
+            // ==================================
+            // SAVE TEST TYPE
+            // ==================================
+
+            localStorage.setItem(
+                "testType",
+                "past"
+            );
+
+
+            // ==================================
+            // SAVE ACCESS TYPE
+            // ==================================
+
+            if (studentSubscribed) {
+
+                localStorage.setItem(
+                    "studentPractice",
+                    "true"
+                );
+
+
+                localStorage.removeItem(
+                    "freePractice"
+                );
+
+            }
+
+            else {
+
+                localStorage.setItem(
+                    "freePractice",
+                    "true"
+                );
+
+
+                localStorage.removeItem(
+                    "studentPractice"
+                );
+
+            }
+
+
+            // ==================================
+            // OPEN CBT
+            // ==================================
+
+            window.location.href =
+                "index.html";
+
+        }
+
+
+        // ========================================
+        // BACK TO SUBJECTS
+        // ========================================
+
+        function goBack() {
+
+            window.location.href =
+                "subject.html";
+
+        }
+
+
+        // ========================================
+        // CHECK PAGE ACCESS
+        // ========================================
+
+        checkAccess();
+
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAMB CBT — Results</title>
+<link rel="stylesheet" href="redesign.css">
+<link rel="stylesheet" href="results.css">
+</head>
+<body>
+<main class="results-page">
+<div class="topbar"><h1>Results & Progress</h1><button class="back" onclick="location.href='dashboard.html'">Dashboard</button></div>
+<div class="summary">
+<div class="stat"><span class="muted">Tests Taken</span><strong id="testsTaken">0</strong></div>
+<div class="stat"><span class="muted">Average Score</span><strong id="averageScore">0%</strong></div>
+<div class="stat"><span class="muted">Best Score</span><strong id="bestScore">0%</strong></div>
+</div>
+<section id="resultsList"></section>
+</main>
+<nav class="bottom-nav">
+<a href="dashboard.html">⌂<br>Home</a>
+<a href="subject.html">✎<br>CBT</a>
+<a href="novels.html">▣<br>Novels</a>
+<a href="results.html" class="active">▥<br>Results</a>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="results.js"></script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f2f4f7;
+}
+
+h1 {
+    background: #006400;
+    color: white;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+#selectedSubject {
+    text-align: center;
+    margin: 15px;
+}
+
+#timer {
+    text-align: center;
+    background: white;
+    padding: 12px;
+    margin: 10px;
+    border-radius: 6px;
+}
+
+#questionNumber {
+    margin: 20px;
+}
+
+#questionText {
+    background: white;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 6px;
+    font-size: 18px;
+}
+
+#optionA,
+#optionB,
+#optionC,
+#optionD {
+    background: white;
+    padding: 15px;
+    margin: 10px 20px;
+    border-radius: 6px;
+}
+
+button {
+    padding: 10px 16px;
+    margin: 5px;
+    cursor: pointer;
+}#questionStatus {
+    background: white;
+    padding: 15px;
+    margin: 20px;
+    border-radius: 6px;
+}
+
+#questionStatus button {
+    min-width: 45px;
+    margin: 4px;
+}/* Question navigation buttons */
+
+#questionStatus button {
+    border: none;
+    background: #e0e0e0;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+#questionStatus button:hover {
+    background: #cfcfcf;
+}
+
+#questionStatus button.currentQuestion {
+    background: #006400;
+    color: white;
+}
+
+#questionStatus button:active {
+    transform: scale(0.95);
+}#optionA,
+#optionB,
+#optionC,
+#optionD {
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#optionA:hover,
+#optionB:hover,
+#optionC:hover,
+#optionD:hover {
+    background: #e8f5e9;
+}#optionA:has(input:checked),
+#optionB:has(input:checked),
+#optionC:has(input:checked),
+#optionD:has(input:checked) {
+    background: #c8e6c9;
+    border: 2px solid #006400;
+}/* QUESTION NAVIGATION */
+
+#questionStatus {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+#questionStatus button {
+    min-width: 45px;
+    height: 40px;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 5px;
+}
+
+/* CURRENT QUESTION */
+
+#questionStatus button.currentQuestion {
+    background: #006400;
+    color: white;
+    font-weight: bold;
+}
+
+/* BUTTONS */
+
+button {
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    opacity: 0.85;
+}#optionA,
+#optionB,
+#optionC,
+#optionD {
+    cursor: pointer;
+    font-size: 17px;
+}
+
+#optionA:hover,
+#optionB:hover,
+#optionC:hover,
+#optionD:hover {
+    background: #e8f5e9;
+}/* HIGHLIGHT SELECTED ANSWER */
+
+#optionA:has(input:checked),
+#optionB:has(input:checked),
+#optionC:has(input:checked),
+#optionD:has(input:checked) {
+    background: #006400;
+    color: white;
+    font-weight: bold;
+}

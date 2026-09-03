@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Result Analysis | JAMB CBT</title>
+<link rel="stylesheet" href="results.css">
+<link rel="stylesheet" href="result-details.css">
+</head>
+<body>
+<main class="details-page">
+<header class="details-header"><div><p class="eyebrow">RESULT ANALYSIS</p><h1 id="pageTitle">Test Result</h1><p id="pageMeta" class="muted"></p></div><button class="secondary-action" onclick="location.href='results.html'">Back to Results</button></header>
+<section id="overview"></section>
+<section class="result-section-card"><div class="section-heading"><div><p class="eyebrow">SUBJECT PERFORMANCE</p><h2>Subject Breakdown</h2></div></div><div id="subjectBreakdown" class="subject-result-grid"></div></section>
+<section class="result-section-card"><div class="section-heading"><div><p class="eyebrow">QUESTION ANALYSIS</p><h2>Question-by-Question Review</h2></div><div class="review-filters"><button class="filter-btn active" data-filter="all">All</button><button class="filter-btn" data-filter="correct">Correct</button><button class="filter-btn" data-filter="wrong">Wrong</button><button class="filter-btn" data-filter="unanswered">Unanswered</button></div></div><div id="questionReview"></div></section>
+</main>
+<nav class="bottom-nav"><a href="dashboard.html">⌂<br>Home</a><a href="subject.html">✎<br>CBT</a><a href="novels.html">▣<br>Novels</a><a href="results.html" class="active">▥<br>Results</a></nav>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="result-details.js"></script>
+</body></html>

@@ -1,0 +1,5 @@
+Physics question bank update
+
+500 Physics practice questions are now included in jamb_cbt/questions.js under questionBanks.Physics.practice.
+
+These are original practice questions, not claimed official JAMB past questions.

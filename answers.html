@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAMB CBT — Answers & Explanations</title>
+<link rel="stylesheet" href="redesign.css">
+<link rel="stylesheet" href="answers.css">
+</head>
+<body>
+<main class="answers-page">
+  <header class="answers-header">
+    <div>
+      <p class="eyebrow">JAMB CBT • STUDY CENTRE</p>
+      <h1>💡 Answers &amp; Explanations</h1>
+      <p class="subtitle">Review questions, confirm the correct option, and study the explanation when one is available.</p>
+    </div>
+    <a class="back" href="dashboard.html">← Dashboard</a>
+  </header>
+
+  <section class="stats" aria-label="Question bank summary">
+    <div class="stat-card"><span id="totalCount">0</span><small>Questions available</small></div>
+    <div class="stat-card"><span id="subjectCount">0</span><small>Subjects</small></div>
+    <div class="stat-card"><span id="explanationCount">0</span><small>With explanations</small></div>
+    <div class="stat-card"><span id="visibleCount">0</span><small>Showing</small></div>
+  </section>
+
+  <section class="controls" aria-label="Answer filters">
+    <label>Subject<select id="subjectFilter"></select></label>
+    <label>Question type<select id="typeFilter">
+      <option value="all">All Questions</option>
+      <option value="practice">Practice Questions</option>
+      <option value="past">Past Questions</option>
+    </select></label>
+    <label>Topic<select id="topicFilter"><option value="all">All Topics</option></select></label>
+    <label>Explanation<select id="explanationFilter">
+      <option value="all">All</option>
+      <option value="available">Explanation available</option>
+      <option value="missing">Explanation not added</option>
+    </select></label>
+    <label class="search-label">Search<input id="searchInput" type="search" placeholder="Search question, option or explanation..." aria-label="Search questions"></label>
+  </section>
+
+  <div class="toolbar">
+    <p id="resultSummary" class="muted"></p>
+    <div class="toolbar-actions">
+      <button id="clearFilters" type="button">Clear filters</button>
+      <button id="expandAll" type="button">Expand all</button>
+    </div>
+  </div>
+  <section id="questionList" class="question-list" aria-live="polite"></section>
+</main>
+<nav class="bottom-nav" aria-label="Main navigation">
+  <a href="dashboard.html">⌂<br>Home</a>
+  <a href="challenge.html">🏆<br>Challenge</a>
+  <a href="novels.html">▣<br>Novels</a>
+  <a href="results.html">▥<br>Results</a>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="premium-access.js"></script>
+<script src="answers.js"></script>
+</body>
+</html>

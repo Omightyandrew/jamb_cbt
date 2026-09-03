@@ -1,0 +1,40 @@
+
+/* JAMB CBT Professional UI - shared visual layer */
+:root{--jamb:#006b3c;--jamb-dark:#00552f;--ink:#173126;--muted:#68766e;--bg:#f3f7f4;--line:#dfe9e3;--card:#fff;--soft:#edf8f1}
+*{box-sizing:border-box}
+body{font-family:Inter,Arial,Helvetica,sans-serif!important;background:var(--bg)!important;color:var(--ink)!important}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+#pageContent,.student-page,.container{max-width:980px!important;width:calc(100% - 28px)!important;margin:28px auto!important}
+#pageContent{background:var(--card)!important;border:1px solid var(--line)!important;border-radius:20px!important;padding:30px!important;box-shadow:0 10px 32px rgba(20,60,35,.07)!important}
+#pageContent h1{color:var(--jamb)!important;font-size:30px!important;margin:0 0 8px!important}
+#pageContent h2{color:var(--ink)!important}
+#pageContent h3{color:var(--ink)!important}
+#pageContent p{color:var(--muted)!important;line-height:1.55}
+#pageContent button,.container button{border:0!important;border-radius:10px!important;padding:12px 17px!important;background:var(--jamb)!important;color:#fff!important;font-weight:800!important;box-shadow:0 4px 12px rgba(0,107,60,.15)}
+#pageContent button:hover,.container button:hover{background:var(--jamb-dark)!important}
+#pageContent label{display:flex!important;align-items:center!important;gap:10px!important;background:#fff!important;border:1.5px solid var(--line)!important;border-radius:12px!important;padding:14px 15px!important;margin:9px 0!important;cursor:pointer!important;font-weight:700!important}
+#pageContent label:hover{border-color:#79aa90!important;background:#f8fbf9!important}
+#pageContent input[type=checkbox]{accent-color:var(--jamb);width:18px;height:18px}
+#count,#accessMessage,#subjectTitle{background:var(--soft)!important;border:1px solid #d7ebdf!important;border-radius:10px!important;padding:11px 13px!important;color:#256044!important}
+#subjectTitle{font-weight:800!important}
+.student-page{min-height:calc(100vh - 56px);display:grid;place-items:center}
+.student-box{background:var(--card)!important;border:1px solid var(--line)!important;border-radius:20px!important;padding:32px!important;width:min(460px,100%)!important;box-shadow:0 12px 36px rgba(20,60,35,.08)!important}
+.student-box h1{color:var(--jamb)!important;margin-top:0!important}
+.student-form{display:grid;gap:14px}
+.form-group{display:grid!important;gap:7px!important}
+.form-group label{font-weight:700!important;color:var(--ink)!important}
+.form-group input{width:100%!important;border:1.5px solid #d6e2da!important;border-radius:10px!important;padding:13px!important;outline:none!important;background:#fff!important}
+.form-group input:focus{border-color:var(--jamb)!important;box-shadow:0 0 0 3px rgba(0,107,60,.09)!important}
+.primary-button{width:100%!important;background:var(--jamb)!important;color:#fff!important;border:0!important;border-radius:10px!important;padding:13px!important;font-weight:800!important}
+.secondary-button{width:100%!important;background:#edf2ef!important;color:#294235!important;border:0!important;border-radius:10px!important;padding:13px!important;font-weight:800!important;margin-top:10px!important}
+.message.show{display:block!important;padding:11px 13px!important;border-radius:9px!important;margin-top:10px!important}
+.message.success{background:#edf8f1!important;color:#17603a!important}
+.message.error{background:#fff1ef!important;color:#a32a21!important}
+.hidden{display:none!important}
+#questionText{color:var(--ink)!important;line-height:1.55!important}
+#selectedSubject,#testTypeTitle{color:var(--jamb)!important}
+#timer{color:var(--jamb)!important;background:var(--soft)!important;border-radius:12px!important;padding:12px!important}
+#optionA,#optionB,#optionC,#optionD{background:#fff!important;border:1.5px solid var(--line)!important;border-radius:12px!important;padding:15px!important;margin:10px 0!important;cursor:pointer!important}
+#optionA:hover,#optionB:hover,#optionC:hover,#optionD:hover{border-color:#70a487!important;background:#f8fbf9!important}
+@media(max-width:650px){#pageContent,.student-page,.container{width:calc(100% - 18px)!important;margin:15px auto!important}#pageContent{padding:20px!important}.student-box{padding:22px!important}}

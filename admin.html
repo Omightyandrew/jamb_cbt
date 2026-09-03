@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>JAMB CBT Admin Dashboard</title><style>
+:root{--green:#087f3e;--green-dark:#056532;--green-soft:#eaf7f0;--text:#17231d;--muted:#718078;--line:#e4ebe7;--bg:#f4f7f5;--white:#fff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{min-height:100vh;display:flex}.sidebar{position:fixed;inset:0 auto 0 0;width:245px;background:#fff;border-right:1px solid var(--line);padding:22px 15px;display:flex;flex-direction:column;z-index:20}.brand{display:flex;gap:11px;align-items:center;padding:5px 10px 25px}.brand-mark{width:42px;height:42px;border-radius:12px;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:900;font-size:21px}.brand b{display:block;font-size:15px}.brand small{display:block;color:var(--muted);margin-top:3px}.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;color:#637169;text-align:left;padding:12px;border-radius:10px;font-weight:650}.nav button:hover,.nav button.active{background:var(--green-soft);color:var(--green)}.nav button.active{font-weight:800}.admin-user{margin-top:auto;border:1px solid var(--line);border-radius:13px;padding:11px;display:flex;gap:10px;align-items:center}.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--green-soft);color:var(--green);font-weight:800}.admin-user b{display:block;font-size:13px}.admin-user small{color:var(--muted)}
+main{margin-left:245px;width:calc(100% - 245px)}.topbar{height:78px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:10}.topbar h1{font-size:22px;margin:0}.eyebrow{text-transform:uppercase;letter-spacing:1.1px;color:var(--green);font-size:10px;font-weight:800;margin:0 0 4px}.actions{display:flex;gap:9px}.icon,.profile{border:1px solid var(--line);background:#f8faf9;color:#405047;border-radius:9px;height:39px;padding:0 12px}.menu{display:none}
+.content{max-width:1500px;margin:auto;padding:27px 30px 45px}.welcome{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:22px}.welcome h2{margin:0 0 5px;font-size:22px}.welcome p{margin:0;color:var(--muted);font-size:13px}.primary{background:var(--green)!important;color:#fff!important;border:0;border-radius:10px;padding:11px 15px;font-weight:800}.primary:hover{background:var(--green-dark)!important}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}.stat-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px;display:flex;gap:12px;align-items:flex-start}.stat-icon{width:40px;height:40px;border-radius:11px;background:var(--green-soft);display:grid;place-items:center;color:var(--green)}.stat-label{color:var(--muted);font-size:11px}.stat-value{font-size:24px;font-weight:850;margin:3px 0}.stat-note{color:var(--green);font-size:10px}.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-bottom:16px}.panel{background:#fff;border:1px solid var(--line);border-radius:15px;padding:18px}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:15px}.panel h3{margin:0;font-size:15px}.panel-head p{margin:4px 0 0;color:var(--muted);font-size:11px}.linkbtn{border:0;background:transparent;color:var(--green);font-size:11px;font-weight:800}.subject-stat{margin:9px 0}.subject-stat-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}.subject-bar{height:7px;background:#edf1ef;border-radius:20px;overflow:hidden}.subject-bar span{display:block;height:100%;background:var(--green);border-radius:20px}.summary{display:grid;gap:10px}.summary div{padding:12px;border-radius:10px;background:#f8faf9;display:flex;justify-content:space-between;font-size:12px}.summary strong{color:var(--green)}
+.manage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.manage-grid button{border:1px solid var(--line);background:#f8faf9;border-radius:10px;padding:13px;text-align:left;color:#314139;font-weight:700;font-size:11px}.manage-grid button:hover{background:var(--green-soft);border-color:#b7d9c5;color:var(--green)}
+.work{margin-top:16px}.section{background:#fff;border:1px solid var(--line);border-radius:15px;padding:20px}.section h2{font-size:17px;margin:0 0 15px}.section label{display:block;margin:13px 0 6px;font-weight:750;font-size:12px}.section input,.section select,.section textarea{width:100%;padding:11px;border:1px solid #d6e1db;border-radius:9px;background:#fff;outline:0}.section input:focus,.section select:focus,.section textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(8,127,62,.08)}.section textarea{min-height:110px;resize:vertical}.section button{border:0;border-radius:9px;padding:10px 14px;background:var(--green);color:#fff;font-weight:750}.section button.gray{background:#69756f}.section button.red{background:#d63f36}.top-buttons{display:none}.status{padding:11px;border-radius:9px;margin:10px 0;display:none}.success-message{display:block;background:#e9f7ef;color:#12643b}.error-message{display:block;background:#fff0ee;color:#9b2d25}.info-message{display:block;background:#eaf6fb;color:#15566a}.hidden{display:none!important}.question-tools{display:grid;grid-template-columns:2fr 1fr 1fr;gap:9px;margin-bottom:14px}.question-card{border:1px solid var(--line);border-radius:11px;padding:15px;margin:10px 0;background:#fafcfb}.question-card h3{margin:0 0 8px;color:var(--green);font-size:14px}.question-card p{font-size:12px;line-height:1.5}.question-actions{display:flex;gap:7px;flex-wrap:wrap}.loading{color:var(--muted)}.activity{margin-top:16px}.activity-row{padding:11px 0;border-bottom:1px solid #eef2ef;font-size:12px}.activity-row:last-child{border:0}.activity-row span{color:var(--muted);font-size:10px;float:right}
+@media(max-width:1050px){.stats-grid{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.manage-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.22s;box-shadow:8px 0 25px rgba(0,0,0,.08)}.sidebar.open{transform:none}main{margin-left:0;width:100%}.menu{display:block;border:1px solid var(--line);background:#f8faf9;border-radius:9px;width:39px;height:39px;margin-right:10px}.topbar{justify-content:flex-start;padding:0 16px}.topbar>div:first-of-type{display:flex;align-items:center}.actions{margin-left:auto}.profile{display:none}.content{padding:20px 15px 35px}.welcome{display:block}.primary{margin-top:13px}.manage-grid{grid-template-columns:1fr 1fr}.question-tools{grid-template-columns:1fr}.section{padding:15px}}
+@media(max-width:480px){.stats-grid{gap:8px}.stat-card{padding:12px}.stat-icon{width:34px;height:34px}.stat-value{font-size:20px}.manage-grid{grid-template-columns:1fr 1fr}.welcome h2{font-size:19px}}
+
+.student-toolbar{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:14px}.student-toolbar input,.student-toolbar select{padding:11px;border:1px solid #d6e1db;border-radius:9px;outline:0;background:#fff}.student-toolbar input:focus,.student-toolbar select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(8,127,62,.08)}.student-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}.student-summary div{background:#f8faf9;border-radius:10px;padding:12px}.student-summary span{display:block;color:var(--muted);font-size:11px}.student-summary strong{display:block;font-size:19px;margin-top:4px;color:var(--green)}.student-table-wrap{overflow:auto;border:1px solid var(--line);border-radius:11px}.student-table{width:100%;border-collapse:collapse;min-width:720px}.student-table th,.student-table td{padding:12px;border-bottom:1px solid #eef2ef;text-align:left;font-size:12px}.student-table th{background:#f8faf9;color:#637169;font-size:11px}.student-table tr:last-child td{border-bottom:0}.student-name{font-weight:800}.student-muted{color:var(--muted);font-size:10px;margin-top:3px}.student-badge{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:10px;font-weight:800;background:#edf2ef;color:#59675f}.student-badge.premium{background:var(--green-soft);color:var(--green)}.student-actions{display:flex;gap:6px;flex-wrap:wrap}.student-actions button{padding:7px 9px;font-size:10px}.student-detail{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:15px}.student-detail div{background:#f8faf9;border-radius:10px;padding:11px}.student-detail span{display:block;color:var(--muted);font-size:10px}.student-detail strong{display:block;font-size:12px;margin-top:4px;word-break:break-word}.empty-students{padding:25px;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:760px){.student-toolbar{grid-template-columns:1fr}.student-summary{grid-template-columns:1fr 1fr}.student-detail{grid-template-columns:1fr}}
+.subscription-toolbar{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;margin-bottom:14px}.subscription-toolbar input,.subscription-toolbar select{padding:11px;border:1px solid #d6e1db;border-radius:9px;outline:0;background:#fff}.subscription-toolbar input:focus,.subscription-toolbar select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(8,127,62,.08)}.subscription-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px}.subscription-summary div{background:#f8faf9;border-radius:10px;padding:13px}.subscription-summary span{display:block;color:var(--muted);font-size:10px}.subscription-summary strong{display:block;font-size:19px;margin-top:4px;color:var(--green)}.payment-table-wrap{overflow:auto;border:1px solid var(--line);border-radius:11px}.payment-table{width:100%;border-collapse:collapse;min-width:900px}.payment-table th,.payment-table td{padding:12px;border-bottom:1px solid #eef2ef;text-align:left;font-size:11px}.payment-table th{background:#f8faf9;color:#637169;font-size:10px}.payment-table tr:last-child td{border-bottom:0}.payment-badge{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:800;background:#edf2ef;color:#59675f}.payment-badge.active,.payment-badge.paid,.payment-badge.success{background:var(--green-soft);color:var(--green)}.payment-badge.pending{background:#fff7df;color:#8a6500}.payment-badge.failed,.payment-badge.cancelled,.payment-badge.inactive{background:#fff0ee;color:#a0342c}.payment-action{padding:7px 9px!important;font-size:10px!important;background:#69756f!important}.payment-detail{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}.payment-detail div{background:#f8faf9;border-radius:10px;padding:11px}.payment-detail span{display:block;color:var(--muted);font-size:9px}.payment-detail strong{display:block;font-size:11px;margin-top:4px;word-break:break-word}.empty-payments{padding:25px;text-align:center;color:var(--muted);font-size:12px}@media(max-width:1050px){.subscription-summary{grid-template-columns:repeat(2,1fr)}}@media(max-width:760px){.subscription-toolbar{grid-template-columns:1fr}.payment-detail{grid-template-columns:1fr}}
+.academic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}.academic-card{border:1px solid var(--line);background:#f8faf9;border-radius:12px;padding:15px;text-align:left}.academic-card:hover{background:var(--green-soft);border-color:#b7d9c5}.academic-card .ac-icon{font-size:20px}.academic-card h4{margin:9px 0 4px;font-size:13px}.academic-card p{margin:0;color:var(--muted);font-size:10px;line-height:1.4}.academic-card .ac-count{display:block;color:var(--green);font-weight:850;font-size:19px;margin-top:10px}.content-tools{display:grid;grid-template-columns:2fr 1fr auto;gap:10px;margin-bottom:14px}.content-tools input,.content-tools select{padding:11px;border:1px solid #d6e1db;border-radius:9px;outline:0;background:#fff}.content-tools input:focus,.content-tools select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(8,127,62,.08)}.content-table-wrap{overflow:auto;border:1px solid var(--line);border-radius:11px}.content-table{width:100%;border-collapse:collapse;min-width:720px}.content-table th,.content-table td{padding:12px;border-bottom:1px solid #eef2ef;text-align:left;font-size:11px}.content-table th{background:#f8faf9;color:#637169;font-size:10px}.content-table tr:last-child td{border-bottom:0}.content-badge{display:inline-flex;padding:5px 8px;border-radius:20px;background:var(--green-soft);color:var(--green);font-size:9px;font-weight:800}.content-actions{display:flex;gap:6px;flex-wrap:wrap}.content-actions button{padding:7px 9px;font-size:10px}.content-detail{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.content-detail div{background:#f8faf9;border-radius:10px;padding:11px}.content-detail span{display:block;color:var(--muted);font-size:9px}.content-detail strong{display:block;font-size:11px;margin-top:4px;word-break:break-word}.content-notice{padding:12px;border-radius:10px;background:#eaf6fb;color:#15566a;font-size:11px;margin-bottom:14px;line-height:1.5}.content-module-links{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}.content-module-links a{display:block;text-decoration:none;border:1px solid var(--line);background:#fff;border-radius:10px;padding:12px;color:var(--green);font-weight:750;font-size:11px}.content-module-links a:hover{background:var(--green-soft)}@media(max-width:1050px){.academic-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:760px){.academic-grid{grid-template-columns:1fr 1fr}.content-tools{grid-template-columns:1fr}.content-detail{grid-template-columns:1fr}.content-module-links{grid-template-columns:1fr}}
+
+.notification-toolbar{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:14px}.notification-toolbar input,.notification-toolbar select,.notification-composer input,.notification-composer select,.notification-composer textarea{padding:11px;border:1px solid #d6e1db;border-radius:9px;outline:0;background:#fff;width:100%}.notification-toolbar input:focus,.notification-toolbar select:focus,.notification-composer input:focus,.notification-composer select:focus,.notification-composer textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(8,127,62,.08)}.notification-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}.notification-composer{border:1px solid var(--line);border-radius:12px;background:#fbfdfc;padding:15px}.notification-composer label{display:block;font-size:11px;font-weight:800;margin:12px 0 6px}.notification-composer label:first-child{margin-top:0}.notification-composer textarea{min-height:135px;resize:vertical}.notification-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.notification-actions button{border:0;border-radius:9px;padding:10px 14px;background:var(--green);color:#fff;font-weight:800}.notification-actions button.gray{background:#69756f}.notification-preview{border:1px solid #dce8e1;background:#fff;border-radius:11px;padding:14px;margin-top:13px}.notification-preview small{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}.notification-preview strong{display:block;font-size:14px;margin-bottom:6px}.notification-preview p{font-size:12px;line-height:1.55;color:#435149;white-space:pre-wrap}.notification-list{border:1px solid var(--line);border-radius:11px;overflow:auto;max-height:520px}.notification-item{padding:13px;border-bottom:1px solid #eef2ef}.notification-item:last-child{border-bottom:0}.notification-item-head{display:flex;justify-content:space-between;gap:10px}.notification-item strong{font-size:12px}.notification-item small{color:var(--muted);font-size:10px}.notification-item p{font-size:11px;line-height:1.45;margin:6px 0;color:#4d5b54;white-space:pre-wrap}.notification-badge{display:inline-flex;padding:4px 7px;border-radius:20px;background:var(--green-soft);color:var(--green);font-size:9px;font-weight:800}.notification-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}.notification-summary div{background:#f8faf9;border-radius:10px;padding:12px}.notification-summary span{display:block;color:var(--muted);font-size:10px}.notification-summary strong{display:block;font-size:19px;margin-top:4px;color:var(--green)}.empty-notifications{padding:25px;text-align:center;color:var(--muted);font-size:12px}.notification-note{padding:10px;border-radius:9px;background:#eef7f2;color:#315543;font-size:10px;line-height:1.45;margin-bottom:12px}
+@media(max-width:760px){.notification-toolbar,.notification-layout{grid-template-columns:1fr}.notification-summary{grid-template-columns:1fr 1fr}}
+
+.reports-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px}.reports-summary div{background:#f8faf9;border-radius:10px;padding:13px}.reports-summary span{display:block;color:var(--muted);font-size:10px}.reports-summary strong{display:block;font-size:19px;margin-top:4px;color:var(--green)}.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}.report-card{border:1px solid var(--line);border-radius:12px;padding:15px;background:#fff}.report-card h4{margin:0 0 4px;font-size:13px}.report-card p{margin:0 0 13px;color:var(--muted);font-size:10px}.report-row{margin:10px 0}.report-row-head{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px}.report-row-head strong{color:var(--green)}.report-bar{height:7px;background:#edf1ef;border-radius:20px;overflow:hidden}.report-bar span{display:block;height:100%;background:var(--green);border-radius:20px}.report-table-wrap{overflow:auto;border:1px solid var(--line);border-radius:11px}.report-table{width:100%;border-collapse:collapse;min-width:650px}.report-table th,.report-table td{padding:11px;border-bottom:1px solid #eef2ef;text-align:left;font-size:11px}.report-table th{background:#f8faf9;color:#637169;font-size:10px}.report-table tr:last-child td{border-bottom:0}.report-status{display:inline-flex;padding:4px 7px;border-radius:20px;background:var(--green-soft);color:var(--green);font-weight:800;font-size:9px}.report-empty{padding:22px;text-align:center;color:var(--muted);font-size:11px}.report-actions{display:flex;gap:8px;flex-wrap:wrap}.report-actions button{padding:9px 12px}.report-note{padding:10px;border-radius:9px;background:#eef7f2;color:#315543;font-size:10px;line-height:1.45;margin-bottom:13px}
+@media(max-width:1050px){.reports-summary{grid-template-columns:repeat(2,1fr)}.report-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.reports-summary{grid-template-columns:1fr 1fr}}
+
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.settings-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}.settings-card-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:16px}.settings-card h4{margin:0;font-size:14px}.settings-card-head p{margin:4px 0 0;color:var(--muted);font-size:11px;line-height:1.45}.settings-badge{font-size:9px;font-weight:850;color:var(--green);background:var(--green-soft);padding:5px 7px;border-radius:7px}.settings-profile{display:flex;align-items:center;gap:11px;margin-bottom:14px;padding:12px;background:#f8faf9;border-radius:11px}.settings-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--green-soft);color:var(--green);font-weight:900;font-size:17px}.settings-profile strong{display:block;font-size:13px}.settings-profile span{display:block;color:var(--muted);font-size:11px;margin-top:3px}.settings-card label{display:block;margin:12px 0 6px;font-size:11px;font-weight:750}.settings-card input,.settings-card select{width:100%;padding:11px;border:1px solid #d6e1db;border-radius:9px;background:#fff;outline:0}.settings-card input:focus,.settings-card select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(8,127,62,.08)}.settings-btn{margin-top:12px!important}.setting-toggle{display:flex!important;align-items:flex-start;gap:10px;padding:11px;background:#f8faf9;border-radius:10px;margin-bottom:12px!important}.setting-toggle input{width:auto!important;margin-top:2px}.setting-toggle b,.setting-toggle small{display:block}.setting-toggle small{font-weight:400;color:var(--muted);margin-top:3px;line-height:1.4}.security-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eef2ef}.security-row:last-child{border-bottom:0}.security-row b{display:block;font-size:12px}.security-row small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.security-row button{white-space:nowrap}.danger-card{border-color:#ead8d5}.settings-card .gray{background:#69756f}.settings-card .red{background:#d63f36}
+@media(max-width:760px){.settings-grid{grid-template-columns:1fr}.security-row{align-items:flex-start;flex-direction:column}.security-row button{width:100%}}
+</style><style>
+#adminAuthGate{position:fixed;inset:0;background:#f5f8f6;display:none;align-items:center;justify-content:center;padding:20px;z-index:9999}
+.auth-card{width:min(430px,100%);background:#fff;border:1px solid #e6ece8;border-radius:18px;padding:28px;box-shadow:0 18px 50px rgba(0,0,0,.08);text-align:center}.auth-logo{width:52px;height:52px;margin:0 auto 14px;border-radius:14px;background:#087f3e;color:#fff;display:grid;place-items:center;font-weight:900;font-size:25px}.auth-card h2{margin-bottom:8px}.auth-card p{color:#718078;font-size:13px;line-height:1.6}.auth-card .auth-status{margin-top:14px;padding:11px;border-radius:10px;background:#fff5f5;color:#a32929;font-size:12px;display:none}.auth-card button{margin-top:16px;border:0;border-radius:10px;background:#087f3e;color:#fff;padding:11px 16px;font-weight:700;cursor:pointer}.security-banner{margin:0 0 18px;padding:12px 14px;border-radius:12px;background:#eaf7f0;color:#056532;font-size:12px;border:1px solid #cfe9d9}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head><body>
+<div id="adminAuthGate"><div class="auth-card"><div class="auth-logo">J</div><h2>Admin access required</h2><p id="authGateText">Checking your administrator session…</p><div id="authGateStatus" class="auth-status"></div><button id="authGateButton" onclick="adminGateAction()" style="display:none">Go to Login</button></div></div><div class="app">
+<aside class="sidebar" id="adminSidebar">
+  <div class="brand"><div class="brand-mark">J</div><div><b>JAMB CBT</b><small>Admin Panel</small></div></div>
+  <nav class="nav">
+    <button class="active" onclick="goAdminSection('overview',this)">▦ &nbsp; Dashboard</button>
+    <button onclick="goAdminSection('students',this)">♙ &nbsp; Students</button>
+    <button onclick="showQuestionBank();goAdminSection('questions',this)">▤ &nbsp; Questions</button>
+    <button onclick="goAdminSection('content',this)">▱ &nbsp; Academic Content</button>
+    <button onclick="goAdminSection('subscriptions',this)">₦ &nbsp; Subscriptions</button>
+    <button onclick="goAdminSection('notifications',this)">♢ &nbsp; Notifications</button>
+    <button onclick="goAdminSection('reports',this)">⌁ &nbsp; Reports</button>
+    <button onclick="goAdminSection('settings',this)">⚙ &nbsp; Settings</button>
+  </nav>
+  <div class="admin-user"><div class="avatar">A</div><div><b>Administrator</b><small>Super Admin</small></div></div>
+</aside>
+<main>
+<header class="topbar"><div><button class="menu" id="adminMenu">☰</button></div><div><p class="eyebrow">Administration</p><h1>Dashboard</h1></div><div class="actions"><button class="icon">♢</button><button class="profile">Administrator⌄</button></div></header>
+<section class="content">
+  <div class="welcome"><div><h2>Welcome back, Admin 👋</h2><p>Monitor students, CBT activity, subscriptions and platform content.</p></div><button class="primary" onclick="showAddQuestion()">+ Add Question</button></div>
+  <section class="stats-grid">
+    <div class="stat-card"><div class="stat-icon">♙</div><div><div class="stat-label">Total Students</div><div id="statStudents" class="stat-value">—</div><div class="stat-note">Student profiles</div></div></div>
+    <div class="stat-card"><div class="stat-icon">⭐</div><div><div class="stat-label">Premium Students</div><div id="statPremium" class="stat-value">—</div><div class="stat-note">Active subscriptions</div></div></div>
+    <div class="stat-card"><div class="stat-icon">📝</div><div><div class="stat-label">Total Questions</div><div id="statQuestions" class="stat-value">—</div><div class="stat-note">Question Bank</div></div></div>
+    <div class="stat-card"><div class="stat-icon">💰</div><div><div class="stat-label">Recorded Revenue</div><div id="statRevenue" class="stat-value">—</div><div class="stat-note">Subscription records</div></div></div>
+  </section>
+  <section class="grid2">
+    <div class="panel"><div class="panel-head"><div><h3>Question Statistics</h3><p>Question bank distribution by subject</p></div><button class="linkbtn" onclick="showQuestionBank()">Manage →</button></div><div id="subjectStats"><p class="stat-status">Loading statistics...</p></div></div>
+    <div class="panel"><div class="panel-head"><div><h3>Subscription Summary</h3><p>Premium account activity</p></div><button class="linkbtn" onclick="goAdminSection('subscriptions')">View →</button></div><div class="summary"><div><span>Premium students</span><strong id="summaryPremium">—</strong></div><div><span>Free/Other profiles</span><strong id="summaryFree">—</strong></div><div><span>Subscription records</span><strong id="summarySubscriptions">—</strong></div></div></div>
+  </section>
+  <section class="panel"><div class="panel-head"><div><h3>Quick Management</h3><p>Common administrator actions</p></div></div><div class="manage-grid"><button onclick="showAddQuestion()">＋ Add Question</button><button onclick="goAdminSection('students')">♙ Manage Students</button><button onclick="goAdminSection('content')">▱ Academic Content</button><button onclick="goAdminSection('notifications')">♢ Send Notification</button></div></section>
+  <section class="panel activity"><div class="panel-head"><div><h3>Admin Management Sections</h3><p>These areas are ready for the next implementation stage.</p></div></div><div class="manage-grid"><button onclick="goAdminSection('students')">Students</button><button onclick="goAdminSection('questions')">Questions</button><button onclick="goAdminSection('subscriptions')">Subscriptions & Payments</button><button onclick="goAdminSection('notifications')">Notifications</button><button onclick="goAdminSection('reports')">Reports & Statistics</button><button onclick="goAdminSection('settings')">⚙️ Admin Settings</button></div></section>
+  <div class="work" id="adminWorkArea">
+    <div id="studentsSection" class="section hidden">
+      <div class="panel-head"><div><h3>Students Management</h3><p>View, search and monitor registered JAMB CBT students.</p></div><button class="linkbtn" onclick="loadStudents()">↻ Refresh</button></div>
+      <div class="student-summary"><div><span>Total students</span><strong id="studentTotal">—</strong></div><div><span>Premium</span><strong id="studentPremium">—</strong></div><div><span>Free / other</span><strong id="studentFree">—</strong></div></div>
+      <div class="student-toolbar"><input id="studentSearch" type="search" placeholder="Search by name, username or email..." oninput="renderStudents()"><select id="studentPlanFilter" onchange="renderStudents()"><option value="">All plans</option><option value="premium">Premium</option><option value="free">Free / Other</option></select><select id="studentSort" onchange="renderStudents()"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="name">Name A–Z</option></select></div>
+      <div class="student-table-wrap"><table class="student-table"><thead><tr><th>Student</th><th>Username</th><th>Email</th><th>Plan</th><th>Registered</th><th>Action</th></tr></thead><tbody id="studentsTableBody"><tr><td colspan="6" class="empty-students">Click Students in the sidebar to load student accounts.</td></tr></tbody></table></div>
+      <div id="studentDetails" class="student-detail hidden"></div>
+    </div>
+
+    <div id="subscriptionsSection" class="section hidden">
+      <div class="panel-head"><div><h3>Subscriptions & Payments</h3><p>Monitor premium subscriptions and recorded payment transactions.</p></div><button class="linkbtn" onclick="loadSubscriptions()">↻ Refresh</button></div>
+      <div class="subscription-summary">
+        <div><span>Total records</span><strong id="subscriptionTotal">—</strong></div>
+        <div><span>Active / Paid</span><strong id="subscriptionActive">—</strong></div>
+        <div><span>Pending</span><strong id="subscriptionPending">—</strong></div>
+        <div><span>Total recorded revenue</span><strong id="subscriptionRevenue">₦0</strong></div>
+      </div>
+      <div class="subscription-toolbar">
+        <input id="subscriptionSearch" type="search" placeholder="Search by student, email or payment reference..." oninput="renderSubscriptions()">
+        <select id="subscriptionStatusFilter" onchange="renderSubscriptions()"><option value="">All statuses</option><option value="active">Active / Paid</option><option value="pending">Pending</option><option value="failed">Failed / Cancelled</option><option value="other">Other</option></select>
+        <select id="subscriptionSort" onchange="renderSubscriptions()"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="amount">Highest amount</option></select>
+        <button onclick="loadSubscriptions()">Refresh</button>
+      </div>
+      <div class="payment-table-wrap"><table class="payment-table"><thead><tr><th>Student / Account</th><th>Reference</th><th>Amount</th><th>Status</th><th>Plan</th><th>Date</th><th>Action</th></tr></thead><tbody id="subscriptionTableBody"><tr><td colspan="7" class="empty-payments">Click Subscriptions in the sidebar to load payment records.</td></tr></tbody></table></div>
+      <div id="subscriptionDetails" class="payment-detail hidden"></div>
+    </div>
+
+    <div id="contentSection" class="section hidden">
+      <div class="panel-head"><div><h3>Academic Content Management</h3><p>Manage the learning content areas used across the JAMB CBT platform.</p></div><button class="linkbtn" onclick="loadAcademicContent()">↻ Refresh</button></div>
+      <div class="content-notice">This section reads the existing academic tables where available. It does not overwrite your existing content. Use the module links below to open the current student-facing pages while we connect each content manager to its database table.</div>
+      <div class="academic-grid">
+        <button class="academic-card" onclick="selectAcademicModule('Subjects')"><span class="ac-icon">📚</span><h4>Subjects</h4><p>Manage JAMB subjects available to students.</p><span class="ac-count" id="contentCountSubjects">—</span></button>
+        <button class="academic-card" onclick="selectAcademicModule('Topics')"><span class="ac-icon">🗂️</span><h4>Topics</h4><p>Organize topics under each subject.</p><span class="ac-count" id="contentCountTopics">—</span></button>
+        <button class="academic-card" onclick="selectAcademicModule('Syllabus')"><span class="ac-icon">📋</span><h4>JAMB Syllabus</h4><p>Manage syllabus learning content.</p><span class="ac-count" id="contentCountSyllabus">—</span></button>
+        <button class="academic-card" onclick="selectAcademicModule('Brochure')"><span class="ac-icon">🎓</span><h4>JAMB Brochure</h4><p>Manage course and institution information.</p><span class="ac-count" id="contentCountBrochure">—</span></button>
+        <button class="academic-card" onclick="selectAcademicModule('Answers & Explanations')"><span class="ac-icon">💡</span><h4>Answers & Explanations</h4><p>Review explanation content linked to questions.</p><span class="ac-count" id="contentCountAnswers">—</span></button>
+        <button class="academic-card" onclick="selectAcademicModule('Novels / Library')"><span class="ac-icon">📖</span><h4>Novels / Library</h4><p>Manage reading materials separately from CBT.</p><span class="ac-count" id="contentCountNovels">—</span></button>
+      </div>
+      <div class="panel-head"><div><h3 id="academicModuleTitle">Content Overview</h3><p id="academicModuleSubtitle">Select a content area above to inspect its records.</p></div></div>
+      <div class="content-tools"><input id="academicSearch" type="search" placeholder="Search content..." oninput="renderAcademicContent()"><select id="academicTypeFilter" onchange="renderAcademicContent()"><option value="">All content types</option><option value="subject">Subjects</option><option value="topic">Topics</option><option value="syllabus">Syllabus</option><option value="brochure">Brochure</option><option value="answer">Answers</option><option value="novel">Novels / Library</option></select><button onclick="loadAcademicContent()">Refresh</button></div>
+      <div class="content-table-wrap"><table class="content-table"><thead><tr><th>Content</th><th>Type</th><th>Subject / Group</th><th>Status</th><th>Action</th></tr></thead><tbody id="academicTableBody"><tr><td colspan="5" class="empty-payments">Select Academic Content to load available records.</td></tr></tbody></table></div>
+      <div id="academicDetails" class="content-detail hidden"></div>
+      <div class="content-module-links">
+        <a href="subjects.html">Open Subjects page →</a><a href="topics.html">Open Topics page →</a><a href="syllabus.html">Open Syllabus page →</a><a href="brochure.html">Open Brochure page →</a><a href="answers.html">Open Answers & Explanations →</a><a href="novels.html">Open Novels / Library →</a>
+      </div>
+
+      <div id="novelManager" class="section hidden" style="margin-top:16px">
+        <div class="panel-head"><div><h3>📖 Novel / Library Manager</h3><p>Add and manage legitimate novels, study guides, and reading materials.</p></div><button class="linkbtn" onclick="resetNovelForm()">＋ New Novel</button></div>
+        <div id="novelManagerStatus" class="status"></div>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+          <div><label for="novelTitle">Title</label><input id="novelTitle" placeholder="Novel or study material title"></div>
+          <div><label for="novelAuthor">Author</label><input id="novelAuthor" placeholder="Author / creator"></div>
+          <div><label for="novelCategory">Category</label><input id="novelCategory" value="JAMB Novel" placeholder="JAMB Novel / Study Guide"></div>
+          <div><label for="novelIcon">Icon</label><input id="novelIcon" value="📖" maxlength="8"></div>
+          <div style="grid-column:1/-1"><label for="novelDescription">Description</label><textarea id="novelDescription" placeholder="Short description shown in the library"></textarea></div>
+          <div><label for="novelPremium">Access</label><select id="novelPremium"><option value="true">Premium</option><option value="false">Free</option></select></div>
+          <div><label for="novelActive">Status</label><select id="novelActive"><option value="true">Active / visible</option><option value="false">Inactive / hidden</option></select></div>
+          <div style="grid-column:1/-1"><label for="novelChapters">Chapters JSON</label><textarea id="novelChapters" style="min-height:180px" placeholder='[{"title":"Chapter 1","paragraphs":["Original or licensed content here."]}]'></textarea><small style="display:block;color:#69756f;margin-top:6px">Use valid JSON. Only add content you own or have permission to publish.</small></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button onclick="saveNovel()" id="novelSaveButton">Save Novel</button><button class="gray" onclick="resetNovelForm()">Clear</button></div><p style="margin:10px 0 0;color:#69756f;font-size:13px">You can change Free/Premium or Active/Hidden at any time by editing the novel. Changes are saved directly to Supabase.</p>
+      </div>
+    </div>
+
+
+    <div id="notificationsSection" class="section hidden">
+      <div class="panel-head"><div><h3>Notifications Management</h3><p>Create, preview and manage messages for JAMB CBT students.</p></div><button class="linkbtn" onclick="loadNotifications()">↻ Refresh</button></div>
+      <div class="notification-summary">
+        <div><span>Total notifications</span><strong id="notificationTotal">—</strong></div>
+        <div><span>Sent / published</span><strong id="notificationSent">—</strong></div>
+        <div><span>Drafts</span><strong id="notificationDrafts">—</strong></div>
+      </div>
+      <div class="notification-note">Notifications are stored in the existing Supabase <b>notifications</b> table when that table is available and your RLS policy permits admin inserts. If the table is not available, the composer will show the exact database error instead of pretending a message was sent.</div>
+      <div class="notification-layout">
+        <div class="notification-composer">
+          <label for="notificationTitle">Notification title</label>
+          <input id="notificationTitle" maxlength="120" placeholder="e.g. New JAMB CBT practice questions available">
+          <label for="notificationAudience">Audience</label>
+          <select id="notificationAudience" onchange="toggleNotificationTarget()"><option value="all">All students</option><option value="premium">Premium students</option><option value="free">Free / other students</option><option value="specific">Specific student</option></select>
+          <div id="notificationTargetWrap" class="hidden"><label for="notificationTarget">Student user ID</label><input id="notificationTarget" placeholder="Enter the student user ID"></div>
+          <label for="notificationMessage">Message</label>
+          <textarea id="notificationMessage" maxlength="1000" placeholder="Write the notification message..."></textarea>
+          <div class="notification-actions"><button onclick="sendNotification()">Send Notification</button><button class="gray" onclick="saveNotificationDraft()">Save Draft</button><button class="gray" onclick="clearNotificationForm()">Clear</button></div>
+          <div class="notification-preview"><small>Preview</small><strong id="notificationPreviewTitle">Your notification title</strong><p id="notificationPreviewMessage">Your message will appear here.</p></div>
+        </div>
+        <div>
+          <div class="panel-head"><div><h3>Recent Notifications</h3><p>Latest notification records.</p></div></div>
+          <div class="notification-toolbar"><input id="notificationSearch" type="search" placeholder="Search notifications..." oninput="renderNotifications()"><select id="notificationStatusFilter" onchange="renderNotifications()"><option value="">All statuses</option><option value="sent">Sent / Published</option><option value="draft">Draft</option></select><select id="notificationSort" onchange="renderNotifications()"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></div>
+          <div id="notificationList" class="notification-list"><div class="empty-notifications">Click Notifications in the sidebar to load records.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="addQuestionSection" class="section"><h2>Add Question</h2><div id="statusMessage" class="status"></div>
+      <label for="subject">Subject</label><select id="subject"><option>English Language</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Government</option><option>Economics</option><option>Literature</option><option>Christian Religious Studies (CRS)</option><option>Geography</option><option>Commerce</option><option>Accounting</option></select>
+      <label for="test_type">Test Type</label><select id="test_type"><option value="practice">Practice</option><option value="mock">Mock Test</option><option value="past">Past Questions</option></select>
+      <label for="question">Question</label><textarea id="question" placeholder="Enter the question here"></textarea>
+      <label for="option_a">Option A</label><input id="option_a" placeholder="Enter option A"><label for="option_b">Option B</label><input id="option_b" placeholder="Enter option B"><label for="option_c">Option C</label><input id="option_c" placeholder="Enter option C"><label for="option_d">Option D</label><input id="option_d" placeholder="Enter option D">
+      <label for="correct_answer">Correct Answer</label><select id="correct_answer"><option value="">Select correct answer</option><option>A</option><option>B</option><option>C</option><option>D</option></select><br><button id="saveButton" onclick="saveQuestion()">Save Question</button> <button class="gray" onclick="clearForm()">Clear</button>
+    </div>
+    <div id="questionBankSection" class="section hidden"><h2>Question Bank</h2><div class="question-tools"><input id="questionSearch" type="search" placeholder="Search questions..." oninput="renderQuestionBank()"><select id="subjectFilter" onchange="renderQuestionBank()"><option value="">All Subjects</option><option>English Language</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Government</option><option>Economics</option><option>Literature</option><option>Christian Religious Studies (CRS)</option><option>Geography</option><option>Commerce</option><option>Accounting</option></select><select id="testTypeFilter" onchange="renderQuestionBank()"><option value="">All Test Types</option><option value="practice">Practice</option><option value="mock">Mock Test</option><option value="past">Past Questions</option></select></div><div id="questionBank"><p>Click Question Bank to load questions.</p></div></div>
+  </div>
+</section>
+    
+    <div id="settingsSection" class="section hidden">
+      <div class="panel-head"><div><h3>Admin Settings</h3><p>Manage your administrator account and safe dashboard preferences.</p></div><button class="linkbtn" onclick="loadAdminSettings()">↻ Refresh</button></div>
+      <div class="settings-grid">
+        <div class="settings-card">
+          <div class="settings-card-head"><div><h4>Administrator Profile</h4><p>Your currently signed-in Supabase administrator account.</p></div><span class="settings-badge">SECURE</span></div>
+          <div class="settings-profile">
+            <div class="settings-avatar" id="settingsAvatar">A</div>
+            <div><strong id="settingsName">Administrator</strong><span id="settingsEmail">—</span></div>
+          </div>
+          <label for="adminDisplayName">Display name</label>
+          <input id="adminDisplayName" type="text" placeholder="Administrator">
+          <button class="primary settings-btn" onclick="saveAdminProfile()">Save profile</button>
+          <div id="settingsProfileStatus" class="status"></div>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-card-head"><div><h4>Change Password</h4><p>Update the password for the current administrator account.</p></div></div>
+          <label for="adminNewPassword">New password</label>
+          <input id="adminNewPassword" type="password" minlength="8" placeholder="At least 8 characters">
+          <label for="adminConfirmPassword">Confirm new password</label>
+          <input id="adminConfirmPassword" type="password" minlength="8" placeholder="Repeat new password">
+          <button class="primary settings-btn" onclick="changeAdminPassword()">Update password</button>
+          <div id="settingsPasswordStatus" class="status"></div>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-card-head"><div><h4>Dashboard Preferences</h4><p>These preferences are stored on this browser only.</p></div></div>
+          <label class="setting-toggle"><input id="settingsAutoRefresh" type="checkbox"><span><b>Auto-refresh dashboard</b><small>Refresh live admin data every 5 minutes while this page is open.</small></span></label>
+          <label for="settingsRows">Rows per table</label>
+          <select id="settingsRows"><option value="10">10 rows</option><option value="15">15 rows</option><option value="25">25 rows</option><option value="50">50 rows</option></select>
+          <button class="primary settings-btn" onclick="saveDashboardPreferences()">Save preferences</button>
+          <div id="settingsPreferenceStatus" class="status"></div>
+        </div>
+
+        <div class="settings-card danger-card">
+          <div class="settings-card-head"><div><h4>Security</h4><p>Account actions that affect the current admin session.</p></div></div>
+          <div class="security-row"><span><b>Signed-in account</b><small id="settingsSecurityEmail">—</small></span><button class="gray" onclick="refreshAdminSession()">Refresh session</button></div>
+          <div class="security-row"><span><b>Sign out</b><small>End the current administrator session.</small></span><button class="red" onclick="adminLogout()">Log out</button></div>
+        </div>
+      </div>
+    </div>
+
+<div id="reportsSection" class="section hidden">
+      <div class="panel-head"><div><h3>Reports &amp; Statistics</h3><p>Live administrative overview of students, questions, subscriptions and exam activity.</p></div><div class="report-actions"><button class="gray" onclick="loadReports()">↻ Refresh</button></div></div>
+      <div class="report-note">Reports are calculated from your existing Supabase tables. If a table is unavailable or protected by RLS, that metric will show <b>—</b> instead of using fake data.</div>
+      <div class="reports-summary">
+        <div><span>Total Students</span><strong id="reportStudents">—</strong></div>
+        <div><span>Total Questions</span><strong id="reportQuestions">—</strong></div>
+        <div><span>Premium Students</span><strong id="reportPremium">—</strong></div>
+        <div><span>Recorded Revenue</span><strong id="reportRevenue">—</strong></div>
+      </div>
+      <div class="report-grid">
+        <div class="report-card"><h4>Question Bank by Subject</h4><p>Distribution of questions across the available subjects.</p><div id="reportSubjectStats"><div class="report-empty">Loading...</div></div></div>
+        <div class="report-card"><h4>Student &amp; Subscription Overview</h4><p>Free versus premium account distribution.</p><div id="reportStudentStats"><div class="report-empty">Loading...</div></div></div>
+      </div>
+      <div class="report-grid">
+        <div class="report-card"><h4>Subscription Status</h4><p>Current subscription record status.</p><div id="reportSubscriptionStats"><div class="report-empty">Loading...</div></div></div>
+        <div class="report-card"><h4>Exam / Result Activity</h4><p>Recent result records when the results table is available.</p><div id="reportResultStats"><div class="report-empty">Loading...</div></div></div>
+      </div>
+      <div class="report-card">
+        <div class="panel-head"><div><h4>Recent Results</h4><p>Latest available exam/result records.</p></div></div>
+        <div class="report-table-wrap"><table class="report-table"><thead><tr><th>Student</th><th>Score</th><th>Percentage</th><th>Date</th><th>Status</th></tr></thead><tbody id="reportResultsBody"><tr><td colspan="5" class="report-empty">Loading...</td></tr></tbody></table></div>
+      </div>
+    </div>
+</main></div><script>
+
+let editingQuestionId = null;
+let allQuestions = [];
+/* SUPABASE SETTINGS */
+
+const SUPABASE_URL =
+    "https://afdnfqmsjmpwlvhloopy.supabase.co";
+
+
+const SUPABASE_KEY =
+    "sb_publishable_LQlMraaULDTdAKeYysPWkA_a8CKvA1V";
+
+const SUPABASE_QUESTION_TABLE = "Questions";
+const SUPABASE_QUESTION_COMPAT_VIEW = "questions";
+const SUPABASE_QUESTION_COLUMNS = [
+    "id",
+    "Subject",
+    "Question",
+    "Option_a",
+    "Option_b",
+    "Option_c",
+    "Option_d",
+    "Correct_Answer",
+    "test_type",
+    "Topic",
+    "Explanation",
+    "exam",
+    "year",
+    "source",
+    "is_active",
+    "updated_at",
+    "import_key"
+];
+
+function buildQuestionTableUrl(pathSuffix = "") {
+    return SUPABASE_URL + "/rest/v1/" + SUPABASE_QUESTION_TABLE + pathSuffix;
+}
+
+function buildCanonicalQuestionPayload(data = {}) {
+    return {
+        Subject: String(data.Subject ?? data.subject ?? "").trim(),
+        Question: String(data.Question ?? data.question ?? "").trim(),
+        Option_a: String(data.Option_a ?? data.option_a ?? "").trim(),
+        Option_b: String(data.Option_b ?? data.option_b ?? "").trim(),
+        Option_c: String(data.Option_c ?? data.option_c ?? "").trim(),
+        Option_d: String(data.Option_d ?? data.option_d ?? "").trim(),
+        Correct_Answer: String(data.Correct_Answer ?? data.correct_answer ?? "").trim().toUpperCase(),
+        test_type: String(data.test_type ?? data.testType ?? "practice").trim().toLowerCase(),
+        Topic: String(data.Topic ?? data.topic ?? "").trim(),
+        Explanation: String(data.Explanation ?? data.explanation ?? "").trim(),
+        exam: String(data.exam ?? "").trim(),
+        year: data.year ?? null,
+        source: String(data.source ?? "").trim(),
+        is_active: data.is_active ?? true,
+        updated_at: data.updated_at ?? new Date().toISOString(),
+        import_key: String(data.import_key ?? "").trim()
+    };
+}
+
+/* =========================================
+   ADMIN SECURITY
+   Access requires a signed-in Supabase user.
+   For production authorization, give the admin user
+   app_metadata.role = "admin" or "super_admin".
+   This value must be set server-side in Supabase.
+========================================= */
+const ADMIN_ALLOW_EMAILS = [];
+let adminSupabaseClient = null;
+let adminAccessToken = null;
+let adminSecurityReady = false;
+
+function initAdminSupabase(){
+  if(adminSupabaseClient) return adminSupabaseClient;
+  if(window.supabase?.createClient){
+    adminSupabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  }
+  return adminSupabaseClient;
+}
+
+async function getAdminSession(){
+  const client=initAdminSupabase();
+  if(!client) throw new Error('Supabase authentication library could not be loaded.');
+  const {data,error}=await client.auth.getSession();
+  if(error) throw error;
+  return data?.session||null;
+}
+
+function adminHasRole(user){
+  const appRole=user?.app_metadata?.role || user?.app_metadata?.admin_role || '';
+  const email=(user?.email||'').toLowerCase();
+  return ['admin','super_admin'].includes(String(appRole).toLowerCase()) ||
+         ADMIN_ALLOW_EMAILS.map(e=>e.toLowerCase()).includes(email);
+}
+
+function showAdminGate(message,showButton=false){
+  const gate=document.getElementById('adminAuthGate'); if(!gate)return;
+  document.getElementById('authGateText').textContent=message;
+  document.getElementById('authGateStatus').style.display='none';
+  document.getElementById('authGateButton').style.display=showButton?'inline-block':'none';
+  gate.style.display='flex';
+}
+function showAdminGateError(message){
+  const status=document.getElementById('authGateStatus');
+  status.textContent=message;status.style.display='block';
+}
+async function adminGateAction(){ window.location.href='index.html'; }
+
+async function enforceAdminAccess(){
+  try{
+    const session=await getAdminSession();
+    if(!session?.user){ showAdminGate('You must sign in before opening the Admin Panel.',true); return false; }
+    adminAccessToken=session.access_token;
+    if(!adminHasRole(session.user)){
+      showAdminGate('Your account is signed in, but it is not authorized as an administrator. Ask the project owner to assign the admin role in Supabase.',false);
+      showAdminGateError('Required: app_metadata.role = admin or super_admin.');
+      return false;
+    }
+    adminSecurityReady=true;
+    document.getElementById('adminAuthGate').style.display='none';
+    return true;
+  }catch(error){
+    console.error('Admin security check failed:',error);
+    showAdminGate('Unable to verify your administrator session.',true);
+    showAdminGateError(error.message||'Authentication check failed.');
+    return false;
+  }
+}
+
+async function getAdminAccessToken(){
+  if(adminAccessToken) return adminAccessToken;
+  const session=await getAdminSession();
+  if(!session?.access_token) throw new Error('Administrator session expired. Please sign in again.');
+  adminAccessToken=session.access_token;
+  return adminAccessToken;
+}
+
+async function secureHeaders(json=false){
+  const token=await getAdminAccessToken();
+  const h={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+token};
+  if(json) h['Content-Type']='application/json';
+  return h;
+}
+
+
+
+/* SHOW MESSAGE */
+
+function showMessage(message, type) {
+
+    const box =
+        document.getElementById("statusMessage");
+
+    box.textContent = message;
+
+    box.className = "status";
+
+    if (type === "success") {
+
+        box.classList.add("success-message");
+
+    }
+
+    else if (type === "error") {
+
+        box.classList.add("error-message");
+
+    }
+
+    else {
+
+        box.classList.add("info-message");
+
+    }
+
+}
+
+
+/* SHOW ADD QUESTION */
+
+function showAddQuestion() {
+
+    document.getElementById("adminWorkArea")?.scrollIntoView({behavior:"smooth",block:"start"});
+
+    document
+        .getElementById("addQuestionSection")
+        .classList.remove("hidden");
+
+
+    document
+        .getElementById("questionBankSection")
+        .classList.add("hidden");
+
+}
+
+
+/* SHOW QUESTION BANK */
+
+function showQuestionBank() {
+
+    document.getElementById("adminWorkArea")?.scrollIntoView({behavior:"smooth",block:"start"});
+
+    document
+        .getElementById("addQuestionSection")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("questionBankSection")
+        .classList.remove("hidden");
+
+
+    loadQuestions();
+
+}
+
+
+/* CLEAR FORM */
+
+function clearForm() {
+
+    document.getElementById("question").value = "";
+
+    document.getElementById("option_a").value = "";
+
+    document.getElementById("option_b").value = "";
+
+    document.getElementById("option_c").value = "";
+
+    document.getElementById("option_d").value = "";
+
+    document.getElementById("correct_answer").value = "";
+
+    editingQuestionId = null;
+
+    const saveButton =
+        document.getElementById("saveButton");
+
+    saveButton.textContent =
+        "Save Question";
+
+}
+
+
+/* SAVE QUESTION - START */
+
+async function saveQuestion() {
+    const subject = document.getElementById("subject").value.trim();
+    const testType = document.getElementById("test_type").value.trim();
+    const question = document.getElementById("question").value.trim();
+    const optionA = document.getElementById("option_a").value.trim();
+    const optionB = document.getElementById("option_b").value.trim();
+    const optionC = document.getElementById("option_c").value.trim();
+    const optionD = document.getElementById("option_d").value.trim();
+    const correctAnswer = document.getElementById("correct_answer").value;
+
+    if (!question) return showMessage("Please enter the question.", "error");
+    if (!optionA || !optionB || !optionC || !optionD) return showMessage("Please fill in all four options.", "error");
+    if (!correctAnswer) return showMessage("Please select the correct answer.", "error");
+
+    const saveButton = document.getElementById("saveButton");
+    saveButton.disabled = true;
+    saveButton.textContent = editingQuestionId !== null ? "Updating..." : "Saving...";
+
+    const questionData = buildCanonicalQuestionPayload({
+        Subject: subject,
+        test_type: testType,
+        Question: question,
+        Option_a: optionA,
+        Option_b: optionB,
+        Option_c: optionC,
+        Option_d: optionD,
+        Correct_Answer: correctAnswer
+    });
+
+    try {
+        const isEdit = editingQuestionId !== null;
+        const url = isEdit
+            ? buildQuestionTableUrl("?id=eq." + encodeURIComponent(editingQuestionId))
+            : buildQuestionTableUrl("");
+
+        const response = await fetch(url, {
+            method: isEdit ? "PATCH" : "POST",
+            headers: {
+                ...(await secureHeaders(true)),
+                "Prefer": "return=representation"
+            },
+            body: JSON.stringify(questionData)
+        });
+
+        const text = await response.text();
+        let rows = [];
+        try { rows = text ? JSON.parse(text) : []; } catch (_) {}
+
+        if (!response.ok) {
+            throw new Error(text || `Supabase returned HTTP ${response.status}.`);
+        }
+
+        if (!Array.isArray(rows) || rows.length === 0) {
+            throw new Error(
+                isEdit
+                    ? "Supabase accepted the request but updated 0 questions. Check the Questions UPDATE policy."
+                    : "Supabase accepted the request but returned no inserted question. Check the Questions INSERT policy."
+            );
+        }
+
+        if (isEdit) {
+            allQuestions = allQuestions.map(item =>
+                String(item.id) === String(editingQuestionId) ? rows[0] : item
+            );
+            showMessage("Question updated successfully in Supabase!", "success");
+        } else {
+            allQuestions.unshift(rows[0]);
+            showMessage("Question added successfully to Supabase!", "success");
+        }
+
+        renderQuestionBank();
+        clearForm();
+    } catch (error) {
+        console.error("Question save/update error:", error);
+        showMessage("Question bank error: " + (error.message || error), "error");
+    } finally {
+        saveButton.disabled = false;
+        saveButton.textContent = "Save Question";
+    }
+}
+
+/* =========================================
+   LOAD QUESTIONS
+========================================= */
+
+async function loadQuestions() {
+
+    const questionBank =
+        document.getElementById("questionBank");
+
+    questionBank.innerHTML =
+        '<p class="loading">Loading all questions from Supabase...</p>';
+
+    try {
+        // Supabase/PostgREST commonly caps each response at 1,000 rows.
+        // Fetch the complete Question Bank in pages so Admin can see all 6,780+ rows.
+        const pageSize = 1000;
+        const loaded = [];
+        let offset = 0;
+
+        while (true) {
+            const response = await fetch(
+                buildQuestionTableUrl("?select=*&order=id.asc&offset=" + offset + "&limit=" + pageSize),
+                {
+                    method: "GET",
+                    headers: await secureHeaders(true)
+                }
+            );
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || "Could not load questions.");
+            }
+
+            const page = await response.json();
+            const rows = Array.isArray(page) ? page : [];
+            loaded.push(...rows);
+
+            console.log(`Admin Question Bank: loaded ${rows.length} rows (offset ${offset}).`);
+
+            if (rows.length < pageSize) break;
+            offset += pageSize;
+        }
+
+        allQuestions = loaded;
+
+        console.log("Admin Question Bank total loaded:", allQuestions.length);
+        renderQuestionBank();
+
+    } catch (error) {
+
+        console.error(
+            "Question bank error:",
+            error
+        );
+
+
+        questionBank.innerHTML = `
+
+            <div class="status error-message">
+
+                Error loading questions:
+
+                ${escapeHTML(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   FILTER AND RENDER QUESTION BANK
+========================================= */
+function renderQuestionBank() {
+    const questionBank = document.getElementById("questionBank");
+    const search = (document.getElementById("questionSearch")?.value || "").trim().toLowerCase();
+    const subject = document.getElementById("subjectFilter")?.value || "";
+    const testType = document.getElementById("testTypeFilter")?.value || "";
+
+    const filtered = allQuestions.filter(item => {
+        const haystack = [item.Question, item.Subject, item.test_type, item.Option_a, item.Option_b, item.Option_c, item.Option_d]
+            .map(v => String(v ?? "").toLowerCase()).join(" ");
+        return (!search || haystack.includes(search)) &&
+               (!subject || String(item.Subject ?? "") === subject) &&
+               (!testType || String(item.test_type ?? "") === testType);
+    });
+
+    if (!filtered.length) {
+        questionBank.innerHTML = `<p>No questions match your search/filter.</p>`;
+        return;
+    }
+
+    questionBank.innerHTML = filtered.map((item, index) => `
+        <div class="question-card">
+            <h3>Question ${index + 1}</h3>
+            <p><strong>ID:</strong> ${escapeHTML(item.id ?? "")}</p>
+            <p><strong>Subject:</strong> ${escapeHTML(item.Subject ?? "")}</p>
+            <p><strong>Test Type:</strong> ${escapeHTML(item.test_type ?? "")}</p>
+            <p><strong>Question:</strong> ${escapeHTML(item.Question ?? "")}</p>
+            <p><strong>A:</strong> ${escapeHTML(item.Option_a ?? "")}</p>
+            <p><strong>B:</strong> ${escapeHTML(item.Option_b ?? "")}</p>
+            <p><strong>C:</strong> ${escapeHTML(item.Option_c ?? "")}</p>
+            <p><strong>D:</strong> ${escapeHTML(item.Option_d ?? "")}</p>
+            <p class="answer">Correct Answer: ${escapeHTML(item.Correct_Answer ?? "")}</p>
+            <div class="question-actions">
+                <button class="gray" onclick="editQuestion(${Number(item.id)})">Edit</button>
+                <button class="red" onclick="deleteQuestion(${Number(item.id)})">Delete</button>
+            </div>
+        </div>
+    `).join("");
+}
+
+/* =========================================
+   DELETE QUESTION
+========================================= */
+async function deleteQuestion(id) {
+    const question = allQuestions.find(item => String(item.id) === String(id));
+    const label = question?.Question ? `\n\nQuestion: ${question.Question}` : "";
+    if (!confirm(`Are you sure you want to permanently delete this question?${label}`)) return;
+
+    try {
+        showMessage("Deleting question...", "info");
+        const response = await fetch(
+            buildQuestionTableUrl("?id=eq." + encodeURIComponent(id)),
+            {
+                method: "DELETE",
+                headers: {
+                    ...(await secureHeaders(false)),
+                    "Prefer": "return=representation"
+                }
+            }
+        );
+        const text = await response.text();
+        let rows=[]; try { rows=text?JSON.parse(text):[]; } catch(_) {}
+        if (!response.ok) throw new Error(text || `Supabase returned HTTP ${response.status}.`);
+        if (!Array.isArray(rows) || rows.length === 0) {
+            throw new Error("Supabase deleted 0 questions. Check the Questions DELETE policy.");
+        }
+        allQuestions = allQuestions.filter(item => String(item.id) !== String(id));
+        renderQuestionBank();
+        showMessage("Question deleted successfully from Supabase!", "success");
+    } catch (error) {
+        console.error("Delete question error:", error);
+        showMessage("Delete failed: " + (error.message || error), "error");
+    }
+}
+
+/* =========================================
+   EDIT QUESTION
+========================================= */
+
+async function editQuestion(id) {
+
+    try {
+
+        showMessage(
+            "Loading question...",
+            "info"
+        );
+
+        const response = await fetch(
+ 
+            buildQuestionTableUrl("?id=eq." +
+            id +
+            "&select=*"),
+ 
+            {
+ 
+                method: "GET",
+ 
+                headers: await secureHeaders(true)
+ 
+            }
+ 
+        );
+
+
+        if (!response.ok) {
+
+            const errorText =
+                await response.text();
+
+            throw new Error(
+                errorText ||
+                "Could not load question."
+            );
+
+        }
+
+
+        const questions =
+            await response.json();
+
+
+        if (
+            !questions ||
+            questions.length === 0
+        ) {
+
+            throw new Error(
+                "Question not found."
+            );
+
+        }
+
+
+        const item =
+            questions[0];
+
+
+        editingQuestionId =
+            item.id;
+
+
+        document.getElementById("subject").value =
+            item.Subject ?? "";
+
+
+        document.getElementById("test_type").value =
+            item.test_type ?? "";
+
+
+        document.getElementById("question").value =
+            item.Question ?? "";
+
+
+        document.getElementById("option_a").value =
+            item.Option_a ?? "";
+
+
+        document.getElementById("option_b").value =
+            item.Option_b ?? "";
+
+
+        document.getElementById("option_c").value =
+            item.Option_c ?? "";
+
+
+        document.getElementById("option_d").value =
+            item.Option_d ?? "";
+
+
+        document.getElementById("correct_answer").value =
+            item.Correct_Answer ?? "";
+
+
+        document
+            .getElementById("questionBankSection")
+            .classList.add("hidden");
+
+
+        document
+            .getElementById("addQuestionSection")
+            .classList.remove("hidden");
+
+
+        document.getElementById("saveButton").textContent =
+            "Update Question";
+
+
+        showMessage(
+            "Question loaded. You can now edit it.",
+            "info"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Edit question error:",
+            error
+        );
+
+
+        showMessage(
+            "Error loading question: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+/* =========================================
+   PROTECT DISPLAYED TEXT
+========================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+
+/* =========================================
+   TEST SUPABASE CONNECTION
+========================================= */
+
+async function testSupabaseConnection() {
+
+    try {
+
+        const response = await fetch(
+
+            SUPABASE_URL +
+            "/rest/v1/Questions?select=id&limit=1",
+
+            {
+
+                method: "GET",
+
+                headers: {
+
+                    "apikey":
+                        SUPABASE_KEY,
+
+                    "Authorization":
+                        "Bearer " +
+                        SUPABASE_KEY
+
+                }
+
+            }
+
+        );
+
+
+        if (!response.ok) {
+
+            console.error(
+                "Supabase connection failed:",
+                await response.text()
+            );
+
+            return false;
+
+        }
+
+
+        console.log(
+            "Supabase REST connection successful."
+        );
+
+
+        return true;
+
+
+    } catch (error) {
+
+        console.error(
+            "Supabase connection error:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+
+/* =========================================
+   PAGE LOADED
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function() {
+
+        console.log("JAMB CBT Admin security check starting...");
+        const allowed=await enforceAdminAccess();
+        if(!allowed) return;
+        console.log("JAMB CBT Admin loaded successfully.");
+        testSupabaseConnection();
+        await loadAdminOverview();
+    }
+);
+
+
+/* =========================================
+   CLOSE SCRIPT AND HTML
+========================================= */
+
+
+
+/* =========================================
+   ADMIN OVERVIEW / STATISTICS
+   Uses the existing Supabase tables only.
+   It does not modify the Question Bank data.
+========================================= */
+function formatNumber(value) {
+    return Number(value || 0).toLocaleString();
+}
+
+function setStat(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+}
+
+async function fetchTableRows(table, select = "*") {
+    // Fetch all rows in pages. This prevents Supabase's 1,000-row response
+    // limit from making admin statistics incomplete.
+    const pageSize = 1000;
+    const allRows = [];
+    let offset = 0;
+
+    while (true) {
+        let response;
+        try {
+            response = await fetch(
+                SUPABASE_URL +
+                "/rest/v1/" + table + "?select=" + encodeURIComponent(select) +
+                "&offset=" + offset + "&limit=" + pageSize,
+                {
+                    headers: {
+                        "apikey": SUPABASE_KEY,
+                        "Authorization": "Bearer " + await getAdminAccessToken(),
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+        } catch (error) {
+            console.error("Supabase table request error:", { table, offset, error });
+            throw error;
+        }
+
+        if (!response.ok) {
+            const text = await response.text();
+            console.error("Supabase table request failed:", { table, status: response.status, response: text });
+            throw new Error(text || ("Could not load " + table + "."));
+        }
+
+        const data = await response.json();
+        const rows = Array.isArray(data) ? data : [];
+        allRows.push(...rows);
+
+        if (rows.length < pageSize) break;
+        offset += pageSize;
+    }
+
+    return allRows;
+}
+
+let adminStatisticsPromise = null;
+function loadAdminStatistics(force = false) {
+    if (force || !adminStatisticsPromise) {
+        adminStatisticsPromise = Promise.all([
+            fetchTableRows("Student_profiles"),
+            fetchTableRows("subscriptions")
+        ]).then(([profiles, subscriptions]) => ({
+            profiles: Array.isArray(profiles) ? profiles : [],
+            subscriptions: Array.isArray(subscriptions) ? subscriptions : []
+        })).catch(error => {
+            console.error("Admin statistics data load failed:", error);
+            adminStatisticsPromise = null;
+            throw error;
+        });
+    }
+    return adminStatisticsPromise;
+}
+
+function renderSubjectStats(questions) {
+    const box = document.getElementById("subjectStats");
+    if (!box) return;
+    const counts = {};
+    questions.forEach(q => {
+        const subject = String(q.Subject || "Unknown").trim() || "Unknown";
+        counts[subject] = (counts[subject] || 0) + 1;
+    });
+    const entries = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+    if (!entries.length) {
+        box.innerHTML = '<p class="stat-status">No question data available.</p>';
+        return;
+    }
+    const max = entries[0][1] || 1;
+    box.innerHTML = entries.slice(0, 8).map(([subject, count]) => `
+        <div class="subject-stat">
+            <div class="subject-stat-row"><span>${escapeHTML(subject)}</span><strong>${formatNumber(count)}</strong></div>
+            <div class="subject-bar"><span style="width:${Math.max(2, Math.round((count / max) * 100))}%"></span></div>
+        </div>
+    `).join("");
+}
+
+function paidSubscriptionStatus(row) {
+    return String(row?.status ?? row?.subscription_status ?? row?.plan_status ?? row?.payment_status ?? "").trim().toLowerCase();
+}
+
+function isPaidSubscription(row) {
+    return ["active", "subscribed", "paid", "success", "successful", "succeeded", "completed", "premium"].includes(paidSubscriptionStatus(row));
+}
+
+function isCurrentPaidSubscription(row) {
+    if (!isPaidSubscription(row)) return false;
+    const expiresAt = row?.expires_at;
+    if (!expiresAt) return true;
+    const expiry = new Date(expiresAt);
+    return !Number.isNaN(expiry.getTime()) && expiry > new Date();
+}
+
+function getPremiumFlag(row) {
+    return isCurrentPaidSubscription(row);
+}
+
+function premiumUserIds(subscriptions, profiles = []) {
+    const registeredIds = new Set(
+        profiles
+            .map(row => row?.id ?? row?.user_id ?? row?.User_id ?? row?.userId)
+            .filter(Boolean)
+            .map(String)
+    );
+    return new Set(
+        subscriptions
+            .filter(isCurrentPaidSubscription)
+            .map(row => row?.user_id)
+            .filter(Boolean)
+            .map(String)
+            .filter(id => registeredIds.has(id))
+    );
+}
+
+async function loadAdminOverview() {
+    setStat("statStudents", "Loading…");
+    setStat("statPremium", "…");
+    setStat("statQuestions", "…");
+    setStat("statRevenue", "…");
+    setStat("summaryPremium", "…");
+    setStat("summaryFree", "…");
+    setStat("summarySubscriptions", "…");
+
+    try {
+        // Reuse the question data if already loaded; otherwise load it once for stats.
+        let questions = allQuestions;
+        if (!Array.isArray(questions) || !questions.length) {
+            questions = await fetchTableRows("Questions");
+            allQuestions = questions;
+        }
+        setStat("statQuestions", formatNumber(questions.length));
+        renderSubjectStats(questions);
+    } catch (error) {
+        console.error("Question statistics error:", error);
+        setStat("statQuestions", "—");
+        const box = document.getElementById("subjectStats");
+        if (box) box.innerHTML = '<p class="stat-status">Question statistics unavailable.</p>';
+    }
+
+    try {
+        const { profiles, subscriptions } = await loadAdminStatistics();
+        adminStudents = profiles;
+        studentSubscriptions = subscriptions;
+        setStat("statStudents", formatNumber(adminStudents.length));
+        setStat("studentTotal", formatNumber(adminStudents.length));
+        setStat("summaryFree", formatNumber(adminStudents.length));
+        const studentSection = document.getElementById("studentsSection");
+        if (studentSection && !studentSection.classList.contains("hidden")) renderStudents();
+    } catch (error) {
+        console.warn("Student statistics unavailable:", error);
+        setStat("statStudents", "—");
+        setStat("summaryFree", "—");
+    }
+
+    try {
+        const { profiles, subscriptions } = await loadAdminStatistics();
+        adminStudents = profiles;
+        studentSubscriptions = subscriptions;
+        adminSubscriptions = subscriptions;
+        const premium = premiumUserIds(subscriptions, adminStudents).size;
+        const revenue = subscriptionRevenueTotal(subscriptions);
+        const active = subscriptions.filter(row => subscriptionStatus(row) === "active").length;
+        setStat("statPremium", formatNumber(premium));
+        setStat("summaryPremium", formatNumber(premium));
+        setStat("summarySubscriptions", formatNumber(subscriptions.length));
+        setStat("statRevenue", formatKoboAsNaira(revenue));
+        setStat("subscriptionTotal", formatNumber(subscriptions.length));
+        setStat("subscriptionActive", formatNumber(active));
+        setStat("subscriptionPending", formatNumber(subscriptions.filter(row => subscriptionStatus(row) === "pending").length));
+        setStat("subscriptionRevenue", formatKoboAsNaira(revenue));
+        const free = Number(document.getElementById("statStudents")?.textContent?.replace(/,/g, "")) || 0;
+        if (free) setStat("summaryFree", formatNumber(Math.max(0, free - premium)));
+    } catch (error) {
+        console.warn("Subscription statistics unavailable:", error);
+        setStat("statPremium", "—");
+        setStat("statRevenue", "—");
+        setStat("summaryPremium", "—");
+        setStat("summarySubscriptions", "—");
+    }
+}
+
+</script>
+<script>
+
+let adminNotifications=[];
+function notificationValue(row,names){for(const n of names){if(row&&row[n]!==undefined&&row[n]!==null&&String(row[n]).trim()!=='')return row[n];}return '';}
+function notificationStatus(row){return String(row?.status||'sent').toLowerCase()==='draft'?'draft':'sent';}
+function notificationDate(row){return notificationValue(row,['created_at','createdAt','sent_at','published_at','date','updated_at']);}
+function notificationTitle(row){return notificationValue(row,['title','subject','heading','name'])||'Untitled notification';}
+function notificationMessage(row){return notificationValue(row,['message','body','content','text'])||'';}
+function notificationAudience(row){const t=String(notificationValue(row,['target_type','audience','target','recipient_type','recipient'])||'all').toLowerCase();return t==='specific'?'specific':t==='premium'?'premium':t==='free'?'free':'all';}
+function toggleNotificationTarget(){document.getElementById('notificationTargetWrap')?.classList.toggle('hidden',document.getElementById('notificationAudience')?.value!=='specific');}
+function updateNotificationPreview(){const t=document.getElementById('notificationTitle')?.value.trim();const m=document.getElementById('notificationMessage')?.value.trim();const pt=document.getElementById('notificationPreviewTitle');const pm=document.getElementById('notificationPreviewMessage');if(pt)pt.textContent=t||'Your notification title';if(pm)pm.textContent=m||'Your message will appear here.';}
+['notificationTitle','notificationMessage'].forEach(id=>document.getElementById(id)?.addEventListener('input',updateNotificationPreview));
+function clearNotificationForm(){['notificationTitle','notificationMessage','notificationTarget'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});const a=document.getElementById('notificationAudience');if(a)a.value='all';toggleNotificationTarget();updateNotificationPreview();}
+async function loadNotifications(){
+ const list=document.getElementById('notificationList'); if(list)list.innerHTML='<div class="empty-notifications">Loading notifications...</div>';
+ try{adminNotifications=await fetchTableRows('notifications'); setStat('notificationTotal',formatNumber(adminNotifications.length)); setStat('notificationSent',formatNumber(adminNotifications.filter(r=>notificationStatus(r)==='sent').length)); setStat('notificationDrafts',formatNumber(adminNotifications.filter(r=>notificationStatus(r)==='draft').length)); renderNotifications();}
+ catch(error){console.warn('Notifications table unavailable:',error);adminNotifications=[];setStat('notificationTotal','—');setStat('notificationSent','—');setStat('notificationDrafts','—');if(list)list.innerHTML='<div class="empty-notifications">No readable notifications table was found. You can still compose a message; sending will report the database/RLS error if the table is not configured.</div>'; }
+}
+function renderNotifications(){
+ const list=document.getElementById('notificationList');if(!list)return;const q=(document.getElementById('notificationSearch')?.value||'').toLowerCase().trim(),filter=document.getElementById('notificationStatusFilter')?.value||'',sort=document.getElementById('notificationSort')?.value||'newest';
+ let rows=adminNotifications.filter(r=>{const searchable=[notificationTitle(r),notificationMessage(r),notificationAudience(r)].join(' ').toLowerCase();const st=notificationStatus(r);return(!q||searchable.includes(q))&&(!filter||st===filter);});
+ rows.sort((a,b)=>{const da=new Date(notificationDate(a)).getTime()||0,db=new Date(notificationDate(b)).getTime()||0;return sort==='oldest'?da-db:db-da;});
+ if(!rows.length){list.innerHTML='<div class="empty-notifications">No notifications match the current filters.</div>';return;}
+ list.innerHTML=rows.map(r=>{const st=notificationStatus(r),d=notificationDate(r),date=d?new Date(d).toLocaleString():'—';const rowId=String(r.id ?? r.ID ?? '');return `<div class="notification-item"><div class="notification-item-head"><strong>${escapeHtml(notificationTitle(r))}</strong><span class="notification-badge">${st==='draft'?'Draft':'Sent'}</span></div><small>Audience: ${escapeHtml(String(notificationAudience(r)))} · ${escapeHtml(date)}</small><p>${escapeHtml(notificationMessage(r))}</p><div class="notification-item-actions"><button class="dark" type="button" onclick="deleteNotification('${rowId}')">Delete</button></div></div>`;}).join('');
+}
+function notificationPayload(title,message,audience,target){
+ const base={title,message,target_type:audience};
+ if(target)base.target_user_id=target;
+ return base;
+}
+async function deleteNotification(notificationId){
+ const id = String(notificationId || '').trim();
+ if(!id){showMessage('No notification was selected for deletion.','error');return;}
+ const match = adminNotifications.find(r => String(r.id ?? r.ID ?? '') === id);
+ const label = match ? notificationTitle(match) : 'this notification';
+ if(!confirm(`Delete "${label}"? This action cannot be undone.`)){return;}
+ try{
+   const token = await getAdminAccessToken();
+   const response = await fetch(SUPABASE_URL + '/rest/v1/notifications?id=eq.' + encodeURIComponent(id), {
+     method: 'DELETE',
+     headers: {
+       'apikey': SUPABASE_KEY,
+       'Authorization': 'Bearer ' + token,
+       'Content-Type': 'application/json',
+       'Prefer': 'return=representation'
+     }
+   });
+   if(!response.ok){
+     const text = await response.text();
+     throw new Error(text || 'Could not delete the notification.');
+   }
+   adminNotifications = adminNotifications.filter(r => String(r.id ?? r.ID ?? '') !== id);
+   showMessage('Notification deleted successfully.','success');
+   await loadNotifications();
+ }catch(error){
+   console.error('Delete notification error:', error);
+   showMessage('Notification was not deleted: ' + (error.message || 'Unknown error'), 'error');
+ }
+}
+async function insertNotification(payload){
+ const token=await getAdminAccessToken();
+ const session=await getAdminSession();
+ const finalPayload={...payload,created_by:session?.user?.id};
+ if(!finalPayload.created_by) throw new Error('Administrator session is missing a user ID. Please sign in again.');
+ const response=await fetch(SUPABASE_URL+'/rest/v1/notifications',{method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+token,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(finalPayload)});
+ if(!response.ok){const text=await response.text();throw new Error(text||'Could not save notification.');}
+ return response.json();
+}
+async function sendNotification(){
+ const title=document.getElementById('notificationTitle')?.value.trim(),message=document.getElementById('notificationMessage')?.value.trim(),audience=document.getElementById('notificationAudience')?.value||'all',target=document.getElementById('notificationTarget')?.value.trim();
+ if(!title||!message){showMessage('Enter a notification title and message first.','error');return;}
+ if(audience==='specific'&&!target){showMessage('Enter the target student email or user ID.','error');return;}
+ try{await insertNotification(notificationPayload(title,message,audience,target));showMessage('Notification sent successfully.','success');clearNotificationForm();await loadNotifications();}
+ catch(error){console.error('Send notification error:',error);showMessage('Notification was not sent: '+error.message,'error');}
+}
+async function saveNotificationDraft(){
+ const title=document.getElementById('notificationTitle')?.value.trim(),message=document.getElementById('notificationMessage')?.value.trim(),audience=document.getElementById('notificationAudience')?.value||'all',target=document.getElementById('notificationTarget')?.value.trim();
+ if(!title&&!message){showMessage('Enter some notification content before saving a draft.','error');return;}
+ try{
+   localStorage.setItem('adminNotificationDraft',JSON.stringify({title,message,audience,target,savedAt:new Date().toISOString()}));
+   showMessage('Draft saved on this device.','success');
+ }catch(error){console.error('Save draft error:',error);showMessage('Draft was not saved: '+error.message,'error');}
+}
+
+function goAdminSection(section, button){
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  if(button) button.classList.add('active');
+  const sections={students:document.getElementById('studentsSection'),subscriptions:document.getElementById('subscriptionsSection'),content:document.getElementById('contentSection'),notifications:document.getElementById('notificationsSection'),reports:document.getElementById('reportsSection'),settings:document.getElementById('settingsSection'),add:document.getElementById('addQuestionSection'),bank:document.getElementById('questionBankSection')};
+  Object.values(sections).forEach(el=>el?.classList.add('hidden'));
+  if(section==='students'){sections.students?.classList.remove('hidden');loadStudents();return;}
+  if(section==='questions'){showQuestionBank();return;}
+  if(section==='subscriptions'){sections.subscriptions?.classList.remove('hidden');loadSubscriptions();return;}
+  if(section==='content'){sections.content?.classList.remove('hidden');loadAcademicContent();return;}
+  if(section==='notifications'){sections.notifications?.classList.remove('hidden');loadNotifications();return;}
+  if(section==='reports'){sections.reports?.classList.remove('hidden');loadReports();return;}
+  if(section==='settings'){sections.settings?.classList.remove('hidden');loadAdminSettings();return;}
+  if(section==='overview'){sections.add?.classList.remove('hidden');return;}
+  const messages={content:'Academic Content Management is available above.',notifications:'Notifications Management is available above.',reports:'Reports & Statistics is available above.'};
+  alert(messages[section]||'Admin section selected.');
+}
+
+let adminStudents=[];
+let studentSubscriptions=[];
+function studentValue(row, names){ for(const n of names){ if(row && row[n]!==undefined && row[n]!==null && String(row[n]).trim()!=='') return row[n]; } return ''; }
+function studentIsPremium(row){ const id=studentValue(row,['id','user_id','User_id','userId']); return studentSubscriptions.some(s=>{ const sid=studentValue(s,['user_id']); return sid && id && String(sid)===String(id) && isCurrentPaidSubscription(s); }); }
+function escapeHtml(v){ return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c])); }
+async function loadStudents(){
+  const body=document.getElementById('studentsTableBody'); if(body) body.innerHTML='<tr><td colspan="6" class="empty-students">Loading student accounts...</td></tr>';
+  try{
+    const {profiles, subscriptions: subs}=await loadAdminStatistics(true);
+    adminStudents=profiles; studentSubscriptions=subs;
+    setStat('studentTotal',formatNumber(adminStudents.length));
+    setStat('statStudents',formatNumber(adminStudents.length));
+    const premium=profiles.filter(studentIsPremium).length;
+    setStat('studentPremium',formatNumber(premium)); setStat('studentFree',formatNumber(Math.max(0,profiles.length-premium)));
+    renderStudents();
+  }catch(error){ console.error('Student management error:',error); if(body) body.innerHTML='<tr><td colspan="6" class="empty-students">Unable to load students. Check Supabase access policies.</td></tr>'; }
+}
+function renderStudents(){
+  const body=document.getElementById('studentsTableBody'); if(!body) return;
+  const q=(document.getElementById('studentSearch')?.value||'').toLowerCase().trim(); const plan=document.getElementById('studentPlanFilter')?.value||''; const sort=document.getElementById('studentSort')?.value||'newest';
+  let rows=adminStudents.filter(r=>{ const name=studentValue(r,['Full_name','full_name','name','Name']); const user=studentValue(r,['Username','username']); const email=studentValue(r,['email','Email']); const premium=studentIsPremium(r); const matches=!q || [name,user,email].some(v=>String(v).toLowerCase().includes(q)); const planOk=!plan || (plan==='premium'?premium:!premium); return matches&&planOk; });
+  rows.sort((a,b)=>{ if(sort==='name') return String(studentValue(a,['Full_name','full_name','name','Name'])).localeCompare(String(studentValue(b,['Full_name','full_name','name','Name']))); const da=new Date(studentValue(a,['created_at','createdAt','Created_at'])).getTime()||0, db=new Date(studentValue(b,['created_at','createdAt','Created_at'])).getTime()||0; return sort==='oldest'?da-db:db-da; });
+  if(!rows.length){body.innerHTML='<tr><td colspan="6" class="empty-students">No students match your search.</td></tr>';return;}
+  body.innerHTML=rows.map((r,i)=>{ const name=studentValue(r,['Full_name','full_name','name','Name'])||'Unnamed Student'; const user=studentValue(r,['Username','username'])||'—'; const email=studentValue(r,['email','Email'])||'—'; const premium=studentIsPremium(r); const created=studentValue(r,['created_at','createdAt','Created_at']); const date=created?new Date(created).toLocaleDateString():'—'; return `<tr><td><div class="student-name">${escapeHtml(name)}</div><div class="student-muted">Student account</div></td><td>${escapeHtml(user)}</td><td>${escapeHtml(email)}</td><td><span class="student-badge ${premium?'premium':''}">${premium?'Premium':'Free / Other'}</span></td><td>${escapeHtml(date)}</td><td><div class="student-actions"><button onclick="viewStudent(${i},this)">View</button></div></td></tr>`; }).join('');
+  window._visibleStudents=rows;
+}
+function viewStudent(index){ const r=window._visibleStudents?.[index]; const box=document.getElementById('studentDetails'); if(!r||!box)return; const premium=studentIsPremium(r); const fields=[['Full name',studentValue(r,['Full_name','full_name','name','Name'])||'—'],['Username',studentValue(r,['Username','username'])||'—'],['Email',studentValue(r,['email','Email'])||'—'],['User ID',studentValue(r,['id','user_id','User_id','userId'])||'—'],['Plan',premium?'Premium':'Free / Other'],['Registered',studentValue(r,['created_at','createdAt','Created_at'])?new Date(studentValue(r,['created_at','createdAt','Created_at'])).toLocaleString():'—']]; box.innerHTML=fields.map(([k,v])=>`<div><span>${escapeHtml(k)}</span><strong>${escapeHtml(v)}</strong></div>`).join(''); box.classList.remove('hidden'); box.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+let adminSubscriptions=[];
+function subscriptionValue(row,names){for(const n of names){if(row&&row[n]!==undefined&&row[n]!==null&&String(row[n]).trim()!=='')return row[n];}return '';}
+function subscriptionStatus(row){const raw=paidSubscriptionStatus(row);if(isPaidSubscription(row))return'active';if(['pending','processing','incomplete'].includes(raw))return'pending';if(['failed','cancelled','canceled','inactive','expired'].includes(raw))return'failed';return raw||'other';}
+function normalizeCurrencyNumber(value){if(typeof value==='number' && Number.isFinite(value)) return value; if(typeof value==='string'){const cleaned=value.replace(/[₦$,\s,]/g,'').replace(/^[A-Za-z]+/,'').trim(); const parsed=Number(cleaned); return Number.isFinite(parsed)?parsed:0;} return 0;}
+function subscriptionAmount(row){return normalizeCurrencyNumber(row?.amount);}
+function subscriptionRevenueTotal(rows){return rows.filter(row => isPaidSubscription(row) && subscriptionAmount(row) > 0).reduce((sum,row)=>sum + subscriptionAmount(row),0);}
+function formatKoboAsNaira(totalKobo){return '₦'+(totalKobo/100).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2});}
+function subscriptionDate(row){return subscriptionValue(row,['created_at','createdAt','date','paid_at','payment_date','start_date','updated_at']);}
+function subscriptionReference(row){return subscriptionValue(row,['reference','payment_reference','transaction_reference','transaction_id','trxref','paystack_reference'])||'—';}
+function subscriptionStudent(row){return subscriptionValue(row,['email','Email','student_email','user_email','username','Username','student_id','user_id','profile_id'])||'—';}
+function subscriptionPlan(row){return subscriptionValue(row,['plan','plan_name','subscription_plan','package','tier'])||'Premium';}
+function statusLabel(status){if(status==='active')return'Active / Paid';if(status==='pending')return'Pending';if(status==='failed')return'Failed / Cancelled';return'Other';}
+async function loadSubscriptions(){
+  const body=document.getElementById('subscriptionTableBody');if(body)body.innerHTML='<tr><td colspan="7" class="empty-payments">Loading subscription records...</td></tr>';
+  try{
+    const { profiles, subscriptions } = await loadAdminStatistics(true);
+    adminStudents = profiles;
+    studentSubscriptions = subscriptions;
+    adminSubscriptions = subscriptions;
+    const active=adminSubscriptions.filter(r=>subscriptionStatus(r)==='active').length;
+    const pending=adminSubscriptions.filter(r=>subscriptionStatus(r)==='pending').length;
+    const revenue=subscriptionRevenueTotal(adminSubscriptions);
+    setStat('subscriptionTotal',formatNumber(adminSubscriptions.length));setStat('subscriptionActive',formatNumber(active));setStat('subscriptionPending',formatNumber(pending));setStat('subscriptionRevenue',formatKoboAsNaira(revenue));renderSubscriptions();
+  }catch(error){console.error('Subscription management error:',error);if(body)body.innerHTML='<tr><td colspan="7" class="empty-payments">Unable to load subscriptions. Check the subscriptions table and Supabase access policies.</td></tr>';}
+}
+function renderSubscriptions(){
+  const body=document.getElementById('subscriptionTableBody');if(!body)return;
+  const q=(document.getElementById('subscriptionSearch')?.value||'').toLowerCase().trim(),filter=document.getElementById('subscriptionStatusFilter')?.value||'',sort=document.getElementById('subscriptionSort')?.value||'newest';
+  let rows=adminSubscriptions.filter(r=>{const searchable=[subscriptionStudent(r),subscriptionReference(r),subscriptionPlan(r),subscriptionStatus(r)].join(' ').toLowerCase();const status=subscriptionStatus(r);const ok=!filter||(filter==='active'&&status==='active')||(filter==='pending'&&status==='pending')||(filter==='failed'&&status==='failed')||(filter==='other'&&status==='other');return(!q||searchable.includes(q))&&ok;});
+  rows.sort((a,b)=>{if(sort==='amount')return subscriptionAmount(b)-subscriptionAmount(a);const da=new Date(subscriptionDate(a)).getTime()||0,db=new Date(subscriptionDate(b)).getTime()||0;return sort==='oldest'?da-db:db-da;});
+  window._visibleSubscriptions=rows;
+  if(!rows.length){body.innerHTML='<tr><td colspan="7" class="empty-payments">No payment records match your search.</td></tr>';return;}
+  body.innerHTML=rows.map((r,i)=>{const status=subscriptionStatus(r),date=subscriptionDate(r),formatted=date?new Date(date).toLocaleDateString():'—';return `<tr><td><strong>${escapeHtml(subscriptionStudent(r))}</strong></td><td>${escapeHtml(subscriptionReference(r))}</td><td>${formatKoboAsNaira(subscriptionAmount(r))}</td><td><span class="payment-badge ${status}">${escapeHtml(statusLabel(status))}</span></td><td>${escapeHtml(subscriptionPlan(r))}</td><td>${escapeHtml(formatted)}</td><td><button class="payment-action" onclick="viewSubscription(${i})">View</button></td></tr>`;}).join('');
+}
+function viewSubscription(index){
+  const row=window._visibleSubscriptions?.[index],box=document.getElementById('subscriptionDetails');if(!row||!box)return;
+  const fields=[['Student / Account',subscriptionStudent(row)||'—'],['Reference',subscriptionReference(row)],['Amount',formatKoboAsNaira(subscriptionAmount(row))],['Status',statusLabel(subscriptionStatus(row))],['Plan',subscriptionPlan(row)],['Date',subscriptionDate(row)?new Date(subscriptionDate(row)).toLocaleString():'—']];
+  box.innerHTML=fields.map(([k,v])=>`<div><span>${escapeHtml(k)}</span><strong>${escapeHtml(v)}</strong></div>`).join('');box.classList.remove('hidden');box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+let academicRecords=[];
+let selectedAcademicModule='';
+const academicTableCandidates={Subjects:['Subjects','subjects'],Topics:['Topics','topics'],Syllabus:['Syllabus','syllabus'],Brochure:['Brochure','brochure'],Answers:['Answers','answers','Questions'],Novels:['Novels','novels','Library','library']};
+const academicTypeMap={Subjects:'subject',Topics:'topic',Syllabus:'syllabus',Brochure:'brochure',Answers:'answer',Novels:'novel'};
+async function fetchAcademicFirst(names){ for(const table of names){ try{const rows=await fetchTableRows(table); return {table,rows:Array.isArray(rows)?rows:[]};}catch(e){} } return {table:'',rows:[]}; }
+async function loadAcademicContent(){
+  const body=document.getElementById('academicTableBody'); if(body) body.innerHTML='<tr><td colspan="5" class="empty-payments">Loading academic content...</td></tr>';
+  const modules=[['Subjects','contentCountSubjects'],['Topics','contentCountTopics'],['Syllabus','contentCountSyllabus'],['Brochure','contentCountBrochure'],['Answers','contentCountAnswers'],['Novels','contentCountNovels']];
+  const results=await Promise.all(modules.map(async ([key,id])=>{const r=await fetchAcademicFirst(academicTableCandidates[key]); setStat(id,formatNumber(r.rows.length)); return {key,...r};}));
+  academicRecords=[]; results.forEach(r=>r.rows.forEach(row=>academicRecords.push({...row,__module:r.key,__table:r.table})));
+  if(!selectedAcademicModule) selectedAcademicModule=''; renderAcademicContent();
+}
+function academicValue(row,names){for(const n of names){if(row&&row[n]!==undefined&&row[n]!==null&&String(row[n]).trim()!=='')return row[n];}return '';}
+function academicTitle(row){return academicValue(row,['title','Title','name','Name','subject','Subject','topic','Topic','question','Question','course_name','course'])||'Untitled content';}
+function academicGroup(row){return academicValue(row,['subject','Subject','subject_name','subjectName','category','Category','topic','Topic','course','course_name'])||'—';}
+function academicStatus(row){return academicValue(row,['status','Status','active','is_active','published','is_published'])||'Available';}
+function selectAcademicModule(module){selectedAcademicModule=module; const map={Subjects:'subject',Topics:'topic',Syllabus:'syllabus',Brochure:'brochure','Answers & Explanations':'answer','Novels / Library':'novel'}; const f=document.getElementById('academicTypeFilter'); if(f)f.value=map[module]||''; document.getElementById('academicModuleTitle').textContent=module; document.getElementById('academicModuleSubtitle').textContent=`Showing available ${module.toLowerCase()} records.`; renderAcademicContent();}
+function renderAcademicContent(){
+ const body=document.getElementById('academicTableBody'); if(!body)return; const q=(document.getElementById('academicSearch')?.value||'').toLowerCase().trim(); const type=document.getElementById('academicTypeFilter')?.value||'';
+ const rows=academicRecords.filter(r=>{const rtype=academicTypeMap[r.__module]||''; const hay=[academicTitle(r),academicGroup(r),academicStatus(r),r.__module].join(' ').toLowerCase(); return (!q||hay.includes(q))&&(!type||rtype===type);});
+ if(!rows.length){body.innerHTML='<tr><td colspan="5" class="empty-payments">No academic records found. If your project uses a different table name, we can connect that table next.</td></tr>';return;}
+ window._visibleAcademic=rows.slice(0,100); body.innerHTML=window._visibleAcademic.map((r,i)=>{const status=academicStatus(r);const novel=r.__module==='Novels';const active=r.is_active!==false;const id=String(r.id||'');const premium=!!r.premium;const actions=novel?`<button onclick="viewAcademicRecord(${i})">View</button><button onclick="editNovel('${id}')">Edit</button><button onclick="toggleNovelPremium('${id}',${!premium})">${premium?'Make Free':'Make Premium'}</button><button onclick="toggleNovelActive('${id}',${!active})">${active?'Hide':'Activate'}</button><button class="red" onclick="deleteNovel('${id}')">Delete</button>`:`<button onclick="viewAcademicRecord(${i})">View</button>`;return `<tr><td><strong>${escapeHtml(academicTitle(r))}</strong></td><td><span class="content-badge">${escapeHtml(r.__module)}</span></td><td>${escapeHtml(academicGroup(r))}</td><td>${escapeHtml(String(status))}</td><td><div class="content-actions">${actions}</div></td></tr>`;}).join(''); if(selectedAcademicModule==='Novels / Library'){adminNovels=window._visibleAcademic.map(r=>normalizeAdminNovel(r));showNovelManager();}else{document.getElementById('novelManager')?.classList.add('hidden');}
+}
+function viewAcademicRecord(index){const row=window._visibleAcademic?.[index],box=document.getElementById('academicDetails');if(!row||!box)return; const fields=[['Content',academicTitle(row)],['Module',row.__module],['Database table',row.__table||'—'],['Subject / Group',academicGroup(row)],['Status',academicStatus(row)],['ID',academicValue(row,['id','ID','uuid'])||'—']]; box.innerHTML=fields.map(([k,v])=>`<div><span>${escapeHtml(k)}</span><strong>${escapeHtml(v)}</strong></div>`).join('');box.classList.remove('hidden');box.scrollIntoView({behavior:'smooth',block:'nearest'});}
+
+
+/* ===== NOVEL / LIBRARY ADMIN MANAGER ===== */
+let adminNovels=[];
+let editingNovelId=null;
+function novelManagerStatus(message,type='info'){const el=document.getElementById('novelManagerStatus');if(!el)return;el.className='status '+(type==='success'?'success-message':type==='error'?'error-message':'info-message');el.textContent=message;el.style.display='block';}
+function resetNovelForm(){
+  editingNovelId=null;
+  ['novelTitle','novelAuthor','novelDescription'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  const cat=document.getElementById('novelCategory');if(cat)cat.value='JAMB Novel';
+  const icon=document.getElementById('novelIcon');if(icon)icon.value='📖';
+  const prem=document.getElementById('novelPremium');if(prem)prem.value='true';
+  const active=document.getElementById('novelActive');if(active)active.value='true';
+  const ch=document.getElementById('novelChapters');if(ch)ch.value='[{"title":"Chapter 1","paragraphs":["Add original or licensed content here."]}]';
+  const b=document.getElementById('novelSaveButton');if(b)b.textContent='Save Novel';
+  novelManagerStatus('Ready for a new novel.','info');
+}
+function showNovelManager(){const el=document.getElementById('novelManager');if(el){el.classList.remove('hidden');el.scrollIntoView({behavior:'smooth',block:'start'});}}
+function normalizeAdminNovel(row){let chapters=row?.chapters;if(typeof chapters==='string'){try{chapters=JSON.parse(chapters)}catch{chapters=[]}}return {...row,chapters:Array.isArray(chapters)?chapters:[]};}
+function editNovel(id){
+  const row=adminNovels.find(x=>String(x.id)===String(id));if(!row)return;
+  editingNovelId=row.id;showNovelManager();
+  document.getElementById('novelTitle').value=row.title||'';document.getElementById('novelAuthor').value=row.author||'';document.getElementById('novelCategory').value=row.category||'JAMB Novel';document.getElementById('novelIcon').value=row.icon||'📖';document.getElementById('novelDescription').value=row.description||'';document.getElementById('novelPremium').value=String(!!row.premium);document.getElementById('novelActive').value=String(row.is_active!==false);document.getElementById('novelChapters').value=JSON.stringify(row.chapters||[],null,2);document.getElementById('novelSaveButton').textContent='Update Novel';novelManagerStatus('Editing '+(row.title||'novel')+'.','info');
+}
+async function novelRequest(path, options={}){
+  const token=await getAdminAccessToken();
+  const response=await fetch(SUPABASE_URL+'/rest/v1/Novels'+path,{...options,headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+token,'Content-Type':'application/json',...(options.headers||{})}});
+  const text=await response.text();
+  if(!response.ok){
+    let detail=text; try{const j=JSON.parse(text); detail=j.message||j.hint||j.details||j.error||text;}catch{}
+    throw new Error(detail||('Supabase request failed ('+response.status+').'));
+  }
+  return text?JSON.parse(text):null;
+}
+async function refreshNovelManager(){await loadAcademicContent();selectAcademicModule('Novels / Library');}
+async function saveNovel(){
+  try{
+    const title=document.getElementById('novelTitle').value.trim();if(!title)throw new Error('Title is required.');
+    let chapters=[];try{chapters=JSON.parse(document.getElementById('novelChapters').value||'[]')}catch(e){throw new Error('Chapters must be valid JSON.');}
+    if(!Array.isArray(chapters))throw new Error('Chapters must be a JSON array.');
+    const payload={title,author:document.getElementById('novelAuthor').value.trim(),category:document.getElementById('novelCategory').value.trim()||'JAMB Novel',icon:document.getElementById('novelIcon').value.trim()||'📖',description:document.getElementById('novelDescription').value.trim(),premium:document.getElementById('novelPremium').value==='true',is_active:document.getElementById('novelActive').value==='true',chapters};
+    const editing=!!editingNovelId;
+    await novelRequest(editing?'?id=eq.'+encodeURIComponent(editingNovelId):'',{method:editing?'PATCH':'POST',headers:{Prefer:'return=representation'},body:JSON.stringify(payload)});
+    novelManagerStatus(editing?'Novel updated successfully.':'Novel added successfully.','success');editingNovelId=null;document.getElementById('novelSaveButton').textContent='Save Novel';await refreshNovelManager();
+  }catch(e){console.error('Novel save error:',e);novelManagerStatus('Could not save novel: '+(e.message||e),'error');}
+}
+async function toggleNovelActive(id,active){
+  try{await novelRequest('?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({is_active:!!active})});novelManagerStatus(active?'Novel is now visible to students.':'Novel is now hidden from students.','success');await refreshNovelManager();}
+  catch(e){novelManagerStatus('Could not update novel status: '+(e.message||e),'error');}
+}
+async function toggleNovelPremium(id,premium){
+  try{await novelRequest('?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({premium:!!premium})});novelManagerStatus(premium?'Novel is now Premium.':'Novel is now Free.','success');await refreshNovelManager();}
+  catch(e){novelManagerStatus('Could not update access: '+(e.message||e),'error');}
+}
+async function deleteNovel(id){
+  const row=adminNovels.find(x=>String(x.id)===String(id));
+  if(!confirm('Delete '+(row?.title||'this novel/library record')+'? This cannot be undone.'))return;
+  try{await novelRequest('?id=eq.'+encodeURIComponent(id),{method:'DELETE'});novelManagerStatus('Novel deleted successfully.','success');await refreshNovelManager();}
+  catch(e){novelManagerStatus('Could not delete novel: '+(e.message||e),'error');}
+}
+
+document.getElementById('adminMenu')?.addEventListener('click',()=>document.getElementById('adminSidebar').classList.toggle('open'));
+
+
+let adminReports={students:[],questions:[],subscriptions:[],results:[]};
+function reportVal(row,names){for(const n of names){if(row&&row[n]!==undefined&&row[n]!==null&&String(row[n]).trim()!=='')return row[n];}return '';}
+function reportDate(row){return reportVal(row,['created_at','createdAt','submitted_at','date','updated_at','started_at']);}
+function reportNumber(v){const n=Number(v);return Number.isFinite(n)?n:0;}
+function reportPercent(row){let v=reportVal(row,['percentage','percent','score_percent','percentage_score']);if(v!=='')return reportNumber(v);const score=reportNumber(reportVal(row,['score','total_score','marks'])),total=reportNumber(reportVal(row,['total','total_questions','max_score']));return total?Math.round(score/total*100):null;}
+function reportSubject(row){return String(reportVal(row,['subject','subject_name','subjectName','course'])||'Unknown');}
+function renderReportBars(containerId,items,total){const el=document.getElementById(containerId);if(!el)return;if(!items.length){el.innerHTML='<div class="report-empty">No data available.</div>';return;}const max=Math.max(...items.map(x=>x.value),1);el.innerHTML=items.map(x=>{const pct=Math.max(3,Math.round(x.value/max*100));return `<div class="report-row"><div class="report-row-head"><span>${escapeHtml(x.label)}</span><strong>${formatNumber(x.value)}</strong></div><div class="report-bar"><span style="width:${pct}%"></span></div></div>`;}).join('');}
+function renderReportsSummary(){const students=adminReports.students.length,questions=adminReports.questions.length,subs=adminReports.subscriptions.length,premium=premiumUserIds(adminReports.subscriptions,adminReports.students).size,revenue=subscriptionRevenueTotal(adminReports.subscriptions);setStat('reportStudents',students?formatNumber(students):'0');setStat('reportQuestions',questions?formatNumber(questions):'0');setStat('reportPremium',subs?formatNumber(premium):'—');setStat('reportRevenue',formatKoboAsNaira(revenue));}
+function renderReportDetails(){
+ const subjectCounts={};adminReports.questions.forEach(q=>{const s=reportSubject(q);subjectCounts[s]=(subjectCounts[s]||0)+1;});renderReportBars('reportSubjectStats',Object.entries(subjectCounts).map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value));
+ const total=adminReports.students.length,premium=premiumUserIds(adminReports.subscriptions,adminReports.students).size,free=Math.max(0,total-premium);renderReportBars('reportStudentStats',[{label:'Premium students',value:premium},{label:'Free / other students',value:free}]);
+ const statusCounts={};adminReports.subscriptions.forEach(r=>{const raw=String(reportVal(r,['status','subscription_status','payment_status','state'])||'unknown').toLowerCase();statusCounts[raw]= (statusCounts[raw]||0)+1;});renderReportBars('reportSubscriptionStats',Object.entries(statusCounts).map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value));
+ const resultBox=document.getElementById('reportResultStats');if(resultBox){if(!adminReports.results.length){resultBox.innerHTML='<div class="report-empty">No readable results table was found.</div>';}else{const scores=adminReports.results.map(reportPercent).filter(v=>v!==null);const avg=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length):null;const passed=scores.filter(v=>v>=50).length;resultBox.innerHTML=`<div class="summary"><div><span>Total result records</span><strong>${formatNumber(adminReports.results.length)}</strong></div><div><span>Average percentage</span><strong>${avg===null?'—':avg+'%'}</strong></div><div><span>50%+ records</span><strong>${formatNumber(passed)}</strong></div></div>`;}}
+ const body=document.getElementById('reportResultsBody');if(!body)return;if(!adminReports.results.length){body.innerHTML='<tr><td colspan="5" class="report-empty">No result records available.</td></tr>';return;}const rows=[...adminReports.results].sort((a,b)=>(new Date(reportDate(b)).getTime()||0)-(new Date(reportDate(a)).getTime()||0)).slice(0,15);body.innerHTML=rows.map(r=>{const score=reportVal(r,['score','total_score','marks']);const pct=reportPercent(r);const date=reportDate(r);const name=reportVal(r,['student_name','studentName','name','email','user_email','student_email'])||reportVal(r,['user_id','student_id'])||'Student';const status=pct===null?'Recorded':pct>=50?'Passed':'Below 50%';return `<tr><td>${escapeHtml(name)}</td><td>${escapeHtml(score===''?'—':score)}</td><td>${pct===null?'—':pct+'%'}</td><td>${date?escapeHtml(new Date(date).toLocaleString()):'—'}</td><td><span class="report-status">${status}</span></td></tr>`;}).join('');
+}
+async function loadReports(){
+ setStat('reportStudents','...');setStat('reportQuestions','...');setStat('reportPremium','...');setStat('reportRevenue','...');
+ try{adminReports.students=await fetchTableRows('Student_profiles');}catch(e){adminReports.students=[];console.warn('Reports: Student_profiles unavailable',e);}
+ try{adminReports.questions=await fetchTableRows('questions');}catch(e){adminReports.questions=[];console.warn('Reports: questions unavailable',e);}
+ try{adminReports.subscriptions=await fetchTableRows('subscriptions');}catch(e){adminReports.subscriptions=[];console.warn('Reports: subscriptions unavailable',e);}
+ try{adminReports.results=await fetchTableRows('results');}catch(e){try{adminReports.results=await fetchTableRows('exam_results');}catch(e2){adminReports.results=[];console.warn('Reports: results table unavailable',e2);}}
+ renderReportsSummary();renderReportDetails();
+}
+
+
+/* ===== ADMIN SETTINGS ===== */
+let adminPreferenceTimer=null;
+function settingsStatus(id,message,type='info'){const el=document.getElementById(id);if(!el)return;el.className='status '+(type==='success'?'success-message':type==='error'?'error-message':'info-message');el.textContent=message;setTimeout(()=>{if(el.textContent===message)el.className='status';},4000);}
+function getSupabaseClient(){
+  if(typeof supabaseClient!=='undefined') return supabaseClient;
+  if(adminSupabaseClient) return adminSupabaseClient;
+  if(typeof supabase!=='undefined' && supabase.auth) return supabase;
+  return null;
+}
+async function getCurrentAdmin(){
+  const client=getSupabaseClient();
+  if(!client?.auth) return null;
+  const result=await client.auth.getUser();
+  return result?.data?.user||null;
+}
+async function loadAdminSettings(){
+  try{
+    const user=await getCurrentAdmin();
+    const email=user?.email||'Not available';
+    const metadata=user?.user_metadata||{};
+    const name=metadata.full_name||metadata.name||metadata.display_name||'Administrator';
+    const display=document.getElementById('adminDisplayName'); if(display && !display.value) display.value=name;
+    const nameEl=document.getElementById('settingsName'); if(nameEl) nameEl.textContent=name;
+    const emailEl=document.getElementById('settingsEmail'); if(emailEl) emailEl.textContent=email;
+    const securityEmail=document.getElementById('settingsSecurityEmail'); if(securityEmail) securityEmail.textContent=email;
+    const avatar=document.getElementById('settingsAvatar'); if(avatar) avatar.textContent=(name||'A').trim().charAt(0).toUpperCase();
+    loadDashboardPreferences();
+  }catch(error){console.warn('Admin settings load error:',error);settingsStatus('settingsProfileStatus','Could not read the current admin session.','error');}
+}
+async function saveAdminProfile(){
+  const client=getSupabaseClient(); if(!client?.auth){settingsStatus('settingsProfileStatus','Supabase authentication is not available.','error');return;}
+  const name=document.getElementById('adminDisplayName')?.value.trim(); if(!name){settingsStatus('settingsProfileStatus','Enter a display name.','error');return;}
+  try{
+    const {error}=await client.auth.updateUser({data:{full_name:name,display_name:name,name:name}});
+    if(error) throw error;
+    document.getElementById('settingsName').textContent=name;document.getElementById('settingsAvatar').textContent=name.charAt(0).toUpperCase();
+    settingsStatus('settingsProfileStatus','Administrator profile updated successfully.','success');
+  }catch(error){console.error(error);settingsStatus('settingsProfileStatus','Profile update failed: '+(error.message||'Unknown error'),'error');}
+}
+async function changeAdminPassword(){
+  const client=getSupabaseClient();if(!client?.auth){settingsStatus('settingsPasswordStatus','Supabase authentication is not available.','error');return;}
+  const password=document.getElementById('adminNewPassword')?.value||'';const confirm=document.getElementById('adminConfirmPassword')?.value||'';
+  if(password.length<8){settingsStatus('settingsPasswordStatus','Password must contain at least 8 characters.','error');return;}
+  if(password!==confirm){settingsStatus('settingsPasswordStatus','The passwords do not match.','error');return;}
+  try{const {error}=await client.auth.updateUser({password});if(error)throw error;document.getElementById('adminNewPassword').value='';document.getElementById('adminConfirmPassword').value='';settingsStatus('settingsPasswordStatus','Password updated successfully.','success');}
+  catch(error){console.error(error);settingsStatus('settingsPasswordStatus','Password update failed: '+(error.message||'Unknown error'),'error');}
+}
+function loadDashboardPreferences(){
+  try{const saved=JSON.parse(localStorage.getItem('jamb_admin_preferences')||'{}');document.getElementById('settingsAutoRefresh').checked=!!saved.autoRefresh;document.getElementById('settingsRows').value=String(saved.rows||15);setAdminAutoRefresh(!!saved.autoRefresh);}catch(e){console.warn(e);}
+}
+function saveDashboardPreferences(){
+  const prefs={autoRefresh:!!document.getElementById('settingsAutoRefresh')?.checked,rows:Number(document.getElementById('settingsRows')?.value||15)};
+  localStorage.setItem('jamb_admin_preferences',JSON.stringify(prefs));setAdminAutoRefresh(prefs.autoRefresh);settingsStatus('settingsPreferenceStatus','Dashboard preferences saved on this browser.','success');
+}
+function setAdminAutoRefresh(enabled){
+  if(adminPreferenceTimer)clearInterval(adminPreferenceTimer);adminPreferenceTimer=null;
+  if(!enabled)return;
+  adminPreferenceTimer=setInterval(()=>{
+    const active=document.querySelector('.nav button.active')?.textContent?.toLowerCase()||'';
+    if(active.includes('student'))loadStudents();else if(active.includes('subscription'))loadSubscriptions();else if(active.includes('report'))loadReports();else if(active.includes('notification'))loadNotifications();
+  },300000);
+}
+async function refreshAdminSession(){await loadAdminSettings();settingsStatus('settingsProfileStatus','Current admin session refreshed.','success');}
+async function adminLogout(){
+  if(!confirm('Log out of the administrator account?'))return;
+  const client=getSupabaseClient();
+  try{if(client?.auth){const {error}=await client.auth.signOut();if(error)throw error;}window.location.href='index.html';}
+  catch(error){console.error(error);alert('Logout failed: '+(error.message||'Unknown error'));}
+}
+
+</script></body></html>

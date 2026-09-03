@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Past Questions | JAMB CBT</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="past-questions.css">
+</head>
+<body class="pq-page">
+<header class="pq-header">
+  <a href="dashboard.html" class="back-btn" aria-label="Back to dashboard">←</a>
+  <div class="pq-heading">
+    <div class="eyebrow">JAMB PREPARATION</div>
+    <h1>Past Questions</h1>
+    <p>Build a four-subject CBT using only the verified past-question bank.</p>
+  </div>
+  <div class="pq-badge">PAST QUESTIONS</div>
+</header>
+
+<main class="pq-main">
+  <section class="pq-hero">
+    <div>
+      <span class="hero-kicker">YOUR CBT SET</span>
+      <h2>Choose your 4 subjects</h2>
+      <p>Questions are loaded only from each subject's <strong>verified past</strong> bank. Subjects without verified past questions remain visible but cannot be selected.</p>
+    </div>
+    <div class="selection-count"><strong id="selectedCount">0</strong><span>/ 4</span></div>
+  </section>
+
+  <section class="toolbar-card" aria-label="Past question controls">
+    <label class="search-box">
+      <span>⌕</span>
+      <div class="past-filters">
+  <label for="yearFilter">JAMB Year</label>
+  <select id="yearFilter"><option value="all">All years</option></select>
+  <label for="sessionFilter">Session</label>
+  <select id="sessionFilter"><option value="all">All sessions</option></select>
+  <p id="yearSessionNotice" class="filter-notice">Year/session information is shown only when it is present in the verified source data.</p>
+</div>
+<input id="subjectSearch" type="search" placeholder="Search a subject..." autocomplete="off">
+    </label>
+    <button id="clearBtn" class="text-btn" type="button">Clear selection</button>
+  </section>
+
+  <section class="selection-card">
+    <div class="section-title">
+      <div>
+        <h2>Available Subjects</h2>
+        <p id="bankSummary">Loading question bank...</p>
+      </div>
+    </div>
+    <div id="subjectGrid" class="subject-grid"></div>
+    <div id="emptyState" class="empty-state" hidden>No subject matches your search.</div>
+  </section>
+
+  <section class="review-card">
+    <div class="section-title">
+      <div>
+        <h2>Selected Set</h2>
+        <p>Review your subjects and available question counts before starting.</p>
+      </div>
+    </div>
+    <div id="selectedList" class="selected-list"></div>
+    <div id="selectionMessage" class="selection-message" role="status" aria-live="polite"></div>
+    <button id="startPastBtn" class="start-btn" type="button" disabled>Start Past Questions <span>→</span></button>
+  </section>
+
+  <section class="info-card">
+    <div class="info-icon">ℹ️</div>
+    <div>
+      <h3>Verified past questions only</h3>
+      <p>Past questions are currently organized by subject. Year/session metadata is not yet stored, so the system does not invent years or sessions. When verified year/session data is added, it can be displayed here without changing the CBT engine.</p>
+    </div>
+  </section>
+</main>
+
+<script src="supabase.js"></script>
+<script src="premium-access.js"></script>
+<script src="questions.js"></script>
+<script src="past-questions.js"></script>
+</body>
+</html>

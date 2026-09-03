@@ -1,0 +1,7 @@
+QUESTION BANK FIX
+
+The Admin page now sends the signed-in admin access token for Questions INSERT/UPDATE/DELETE and reports the real Supabase error.
+
+IMPORTANT: Supabase RLS must allow authenticated admins to insert/update/delete Questions. Run Questions_admin_RLS_policies.sql in Supabase SQL Editor, then sign out and sign back in to refresh the admin JWT.
+
+Do NOT put a service_role key in admin.html.

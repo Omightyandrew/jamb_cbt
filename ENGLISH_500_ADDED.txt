@@ -1,0 +1,3 @@
+English practice question bank updated to 500 questions.
+No Supabase import performed yet.
+Existing subjects preserved; English practice array replaced with the 500-question batch.

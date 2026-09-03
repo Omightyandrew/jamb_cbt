@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAMB Syllabus | JAMB CBT</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="syllabus.css">
+</head>
+<body>
+<header class="syllabus-header">
+  <a href="dashboard.html" class="back" aria-label="Back to dashboard">←</a>
+  <div class="header-copy"><span>STUDY CENTRE</span><h1>JAMB Syllabus</h1><p>Plan your revision by subject and topic.</p></div>
+  <button id="quickGuide" class="header-help" type="button">Guide</button>
+</header>
+<main class="syllabus-main">
+  <section class="syllabus-overview">
+    <div><span class="eyebrow">YOUR REVISION</span><h2>Stay on top of your syllabus</h2><p>Open a subject, study each area and tick topics as you complete them.</p></div>
+    <div class="progress-summary"><strong id="syllabusProgressPct">0%</strong><span id="syllabusProgress">0 of 0 topics completed</span></div>
+    <div class="progress-track"><span id="syllabusProgressBar"></span></div>
+  </section>
+  <section class="syllabus-tools">
+    <div class="search-wrap"><span>⌕</span><input id="syllabusSearch" type="search" placeholder="Search a subject or topic..." autocomplete="off"></div>
+    <div class="tool-row"><span id="syllabusCount">13 subjects</span><button id="resetAllProgress" type="button">Reset all progress</button></div>
+  </section>
+  <div id="syllabusSubjects" class="syllabus-grid"></div>
+  <section id="syllabusDetail" class="syllabus-detail hidden"></section>
+</main>
+<div id="syllabusModal" class="syllabus-modal hidden" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+  <div class="modal-card"><button id="syllabusModalClose" class="modal-close" type="button" aria-label="Close">×</button><div id="syllabusModalBody"></div></div>
+</div>
+<script src="supabase.js"></script>
+<script src="premium-access.js"></script>
+<script src="syllabus.js"></script>
+</body>
+</html>

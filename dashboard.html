@@ -1,0 +1,2065 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JAMB CBT — Student Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://js.paystack.co/v2/inline.js"></script>
+<script>document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        closeSubscription();
+    }
+});
+
+</script>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --jamb-green: #008751;
+    --jamb-dark: #006b40;
+    --jamb-deep: #004f31;
+    --jamb-light: #edf8f2;
+    --background: #f6faf8;
+    --surface: #ffffff;
+    --text: #123025;
+    --muted: #64736d;
+    --border: #e2ebe6;
+    --shadow: 0 8px 28px rgba(0, 73, 45, .08);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    padding-bottom: 112px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 20% 10%, rgba(0,135,81,.045), transparent 25%),
+        linear-gradient(180deg, #f9fcfa 0%, var(--background) 100%);
+    -webkit-font-smoothing: antialiased;
+}
+
+a, button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    font: inherit;
+}
+
+.top-header {
+    position: fixed;
+    top: 10px;
+    z-index: 1000;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 1240px;
+    min-height: 104px;
+    margin: 10px auto 0;
+    padding: 16px 22px;
+    background: rgba(255,255,255,.96);
+    border: 1px solid rgba(223,233,227,.9);
+    border-radius: 28px;
+    box-shadow: 0 12px 34px rgba(0,64,40,.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.header-inner {
+    min-height: 70px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Header uses the student greeting as the primary identity area. */
+.top-header .header-inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.top-header .welcome {
+    min-width: 0;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.brand-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    flex: 0 0 60px;
+}
+
+.brand-copy {
+    min-width: 0;
+}
+
+.brand-title {
+    color: var(--jamb-deep);
+    font-size: 19px;
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -.8px;
+}
+
+.brand-subtitle {
+    margin-top: 5px;
+    color: #63736d;
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.welcome {
+    min-width: 0;
+}
+
+.welcome h1 {
+    color: #16262d;
+    font-size: 21px;
+    line-height: 1.15;
+    font-weight: 750;
+    letter-spacing: -.5px;
+}
+
+.welcome p {
+    margin-top: 5px;
+    color: #61717a;
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-button {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #edf1ef;
+    border-radius: 13px;
+    background: #fff;
+    color: #1c343d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 21px;
+    line-height: 1;
+    padding: 0;
+    box-shadow: 0 7px 20px rgba(22,48,42,.08);
+    transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.header-button:hover {
+    transform: translateY(-2px);
+    background: var(--jamb-light);
+    box-shadow: 0 10px 24px rgba(0,87,52,.12);
+}
+
+/* Subscription header action */
+.subscription-header-button {
+    color: var(--jamb-green);
+}
+
+.subscription-header-button:hover {
+    color: var(--jamb-deep);
+}
+
+.subscription-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(7, 31, 22, .42);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.subscription-modal-backdrop.show {
+    display: flex;
+}
+
+.subscription-modal {
+    width: min(100%, 390px);
+    padding: 22px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: 0 22px 60px rgba(15,45,34,.22);
+}
+
+.subscription-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.subscription-modal h2 {
+    font-size: 20px;
+    color: var(--jamb-deep);
+}
+
+.subscription-modal-close {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--jamb-light);
+    color: var(--jamb-deep);
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.subscription-modal-status {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 16px;
+    background: var(--jamb-light);
+}
+
+.subscription-modal-status strong {
+    display: block;
+    color: var(--jamb-deep);
+    font-size: 16px;
+}
+
+.subscription-modal-status span {
+    display: block;
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.subscription-modal-action {
+    width: 100%;
+    margin-top: 16px;
+    min-height: 46px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--jamb-green);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.subscription-modal-action:hover {
+    background: var(--jamb-dark);
+}
+
+.notification-dot {
+    position: absolute;
+    top: 9px;
+    right: 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--jamb-green);
+    border: 2px solid #fff;
+}
+
+.menu-lines {
+    width: 22px;
+    display: grid;
+    gap: 5px;
+}
+
+.menu-lines span {
+    display: block;
+    height: 2.5px;
+    border-radius: 4px;
+    background: #1d353d;
+}
+
+.profile-menu {
+    position: fixed;
+    top: 112px;
+    right: 28px;
+    width: 220px;
+    padding: 8px;
+    display: none;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 16px 40px rgba(15,45,34,.16);
+    z-index: 2000;
+}
+
+.profile-menu.show {
+    display: block;
+    animation: menuAppear .16s ease;
+}
+
+@keyframes menuAppear {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.profile-menu-item {
+    width: 100%;
+    min-height: 45px;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.profile-menu-item:hover {
+    background: var(--jamb-light);
+}
+
+.profile-student {
+    padding: 12px 12px 10px;
+}
+.profile-student-name {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+.profile-student-username {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 12px;
+}
+.profile-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 6px 4px;
+}
+
+.page {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 58px 28px 32px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 38px;
+}
+
+.quick-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.quick-title-line {
+    width: 72px;
+    height: 2.5px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, transparent, #c9e6d7);
+    position: relative;
+}
+
+.quick-title-line.right {
+    transform: scaleX(-1);
+}
+
+.quick-title-line::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -1px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #b8dfca;
+    transform: translateY(-50%);
+}
+
+.quick-title-line.right::after {
+    right: auto;
+    left: -1px;
+}
+
+.section-header h2 {
+    color: var(--jamb-deep);
+    font-size: 29px;
+    font-weight: 800;
+    letter-spacing: .6px;
+}
+
+.section-header p {
+    margin-top: 10px;
+    color: #65756f;
+    font-size: 13px;
+}
+
+.quick-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.quick-link {
+    position: relative;
+    min-height: 150px;
+    padding: 15px;
+    border: 1px solid rgba(225,234,229,.95);
+    border-radius: 18px;
+    background: #fff;
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.quick-link.locked {
+    border-style: dashed;
+    border-color: rgba(0, 73, 45, 0.18);
+    background: linear-gradient(180deg, #fafcfb 0%, #f4f7f5 100%);
+}
+
+.quick-link.locked:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.quick-link:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 35px rgba(0,76,47,.12);
+    border-color: #cfe2d7;
+}
+
+.quick-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    background: var(--jamb-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: inset 0 0 0 1px rgba(0,135,81,.025);
+}
+
+.quick-link-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.quick-link-title {
+    color: var(--jamb-deep);
+    font-size: 16px;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: -.4px;
+}
+
+.quick-link-description {
+    margin-top: 5px;
+    max-width: 260px;
+    color: #667780;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+.quick-arrow {
+    align-self: center;
+    width: 34px;
+    height: 34px;
+    margin-top: auto;
+    border-radius: 50%;
+    background: var(--jamb-light);
+    color: var(--jamb-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    line-height: 1;
+    box-shadow: 0 4px 12px rgba(0,74,45,.08);
+}
+
+.quick-card-lock-badge {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    margin-top: 10px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: rgba(0, 73, 45, 0.08);
+    color: var(--jamb-deep);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.quick-link.locked .quick-card-lock-badge {
+    display: inline-flex;
+}
+
+.quick-link.locked .quick-arrow {
+    background: rgba(0, 73, 45, 0.08);
+    color: var(--jamb-deep);
+}
+
+.jamb-cbt-card {
+    min-height: 165px;
+    border-color: var(--jamb-green);
+    background: linear-gradient(145deg, #008f52 0%, #006f40 100%);
+    color: #fff;
+    box-shadow: 0 14px 30px rgba(0,135,81,.22);
+}
+
+.jamb-cbt-card::before {
+    content: "";
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    right: -55px;
+    top: -60px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.08);
+    box-shadow: 0 0 0 18px rgba(255,255,255,.025), 0 0 0 36px rgba(255,255,255,.018);
+}
+
+.jamb-cbt-card .quick-icon {
+    margin-left: 0;
+    margin-right: auto;
+    width: 48px;
+    height: 48px;
+    background: rgba(255,255,255,.12);
+    color: #fff;
+    border: 2px solid rgba(255,255,255,.36);
+}
+
+.jamb-cbt-card .quick-link-title,
+.jamb-cbt-card .quick-link-description {
+    color: #fff;
+}
+
+.jamb-cbt-card .quick-link-description {
+    max-width: 360px;
+}
+
+.cbt-action {
+    height: 42px;
+    margin-top: 14px;
+    padding: 0 10px 0 22px;
+    border-radius: 30px;
+    background: #fff;
+    color: var(--jamb-dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 750;
+    box-shadow: 0 8px 18px rgba(0,0,0,.1);
+}
+
+.cbt-action span:last-child {
+    width: 37px;
+    height: 37px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1500;
+    height: 100px;
+    background: rgba(255,255,255,.97);
+    border-top: 1px solid var(--border);
+    border-radius: 30px 30px 0 0;
+    box-shadow: 0 -8px 28px rgba(15,48,38,.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.nav-inner {
+    width: 100%;
+    max-width: 900px;
+    height: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.nav-item {
+    position: relative;
+    height: 100%;
+    color: #6b7a83;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: color .18s ease;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    color: var(--jamb-green);
+}
+
+.nav-item.active::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 90px;
+    height: 4px;
+    border-radius: 0 0 8px 8px;
+    background: var(--jamb-green);
+}
+
+.nav-icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+
+@media (max-width: 380px) {
+    .top-header {
+        width: calc(100% - 16px);
+        padding: 8px 10px;
+    }
+
+    .header-actions {
+        gap: 6px;
+    }
+
+    .header-button,
+    .subscription-header-button {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        min-height: 38px;
+        flex-basis: 38px;
+        border-radius: 11px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .header-inner {
+        grid-template-columns: 1fr auto;
+    }
+    .welcome {
+        display: none;
+    }
+    .quick-grid {
+        gap: 12px;
+    }
+}
+
+@media (max-width: 760px) {
+    body {
+        padding-bottom: 84px;
+    }
+
+    .top-header {
+        top: 8px;
+        width: calc(100% - 20px);
+        margin-top: 0;
+        min-height: 76px;
+        padding: 10px 12px;
+        border-radius: 21px;
+    }
+
+    .header-inner {
+        min-height: 54px;
+        gap: 10px;
+    }
+
+    .brand {
+        gap: 9px;
+    }
+
+    .brand-logo {
+        width: 44px;
+        height: 44px;
+        flex-basis: 44px;
+    }
+
+    .brand-title {
+        font-size: 17px;
+        letter-spacing: -.3px;
+    }
+
+    .brand-subtitle {
+        margin-top: 3px;
+        font-size: 9px;
+    }
+
+    .welcome {
+        display: block;
+    }
+
+    .welcome h1 {
+        font-size: 15px;
+    }
+
+    .welcome p {
+        display: none;
+    }
+
+    .header-inner {
+        grid-template-columns: 1fr auto;
+    }
+
+    .header-actions {
+        gap: 8px;
+    }
+
+    .header-button,
+    .subscription-header-button {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        flex: 0 0 40px;
+        border-radius: 12px;
+        font-size: 19px;
+        line-height: 1;
+        padding: 0;
+    }
+
+    /* Subscription header action */
+.subscription-header-button {
+    color: var(--jamb-green);
+}
+
+.subscription-header-button:hover {
+    color: var(--jamb-deep);
+}
+
+.subscription-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(7, 31, 22, .42);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.subscription-modal-backdrop.show {
+    display: flex;
+}
+
+.subscription-modal {
+    width: min(100%, 390px);
+    padding: 22px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: 0 22px 60px rgba(15,45,34,.22);
+}
+
+.subscription-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.subscription-modal h2 {
+    font-size: 20px;
+    color: var(--jamb-deep);
+}
+
+.subscription-modal-close {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--jamb-light);
+    color: var(--jamb-deep);
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.subscription-modal-status {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 16px;
+    background: var(--jamb-light);
+}
+
+.subscription-modal-status strong {
+    display: block;
+    color: var(--jamb-deep);
+    font-size: 16px;
+}
+
+.subscription-modal-status span {
+    display: block;
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.subscription-modal-action {
+    width: 100%;
+    margin-top: 16px;
+    min-height: 46px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--jamb-green);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.subscription-modal-action:hover {
+    background: var(--jamb-dark);
+}
+
+.notification-dot {
+        top: 5px;
+        right: 5px;
+        width: 8px;
+        height: 8px;
+    }
+
+    .menu-lines {
+        width: 20px;
+        gap: 4px;
+    }
+
+    .menu-lines span {
+        height: 2.5px;
+    }
+
+    .page {
+        padding: 102px 14px 24px;
+    }
+
+    .section-header {
+        margin-bottom: 24px;
+    }
+
+    .quick-title-row {
+        gap: 9px;
+    }
+
+    .quick-title-line {
+        width: 42px;
+    }
+
+    .section-header h2 {
+        font-size: 19px;
+    }
+
+    .section-header p {
+        margin-top: 9px;
+        font-size: 14px;
+    }
+
+    .quick-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .quick-link,
+    .jamb-cbt-card {
+        min-height: 125px;
+        padding: 12px;
+        border-radius: 18px;
+    }
+
+    .quick-icon,
+    .jamb-cbt-card .quick-icon {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        margin: 0 0 8px;
+        font-size: 20px;
+    }
+
+    .quick-link-title {
+        font-size: 18px;
+    }
+
+    .quick-link-description {
+        margin-top: 5px;
+        font-size: 12px;
+    }
+
+    .quick-arrow {
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+    }
+
+    .jamb-cbt-card {
+        min-height: 145px;
+    }
+
+    .jamb-cbt-card .quick-icon {
+        margin: 0 0 12px;
+    }
+
+    .cbt-action {
+        height: 42px;
+        margin-top: 12px;
+        padding-left: 17px;
+        font-size: 14px;
+    }
+
+    .cbt-action span:last-child {
+        width: 34px;
+        height: 34px;
+        font-size: 19px;
+    }
+
+    .bottom-nav {
+        height: 76px;
+        border-radius: 22px 22px 0 0;
+    }
+
+    .nav-item {
+        gap: 3px;
+        font-size: 10px;
+    }
+
+    .nav-icon {
+        width: 22px;
+        height: 27px;
+        font-size: 21px;
+    }
+
+    .nav-item.active::before {
+        width: 52px;
+        height: 2.5px;
+    }
+
+    .profile-menu {
+        top: 64px;
+        right: 12px;
+        width: min(195px, calc(100vw - 24px));
+    }
+
+    .brand-copy {
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .brand-title,
+    .brand-subtitle {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+@media (min-width: 761px) and (max-width: 1100px) {
+    .quick-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .top-header {
+        width: calc(100% - 14px);
+    }
+
+    .brand {
+        max-width: calc(100% - 120px);
+        min-width: 0;
+    }
+
+    .brand-copy {
+        min-width: 0;
+    }
+
+    .welcome {
+        display: none;
+    }
+
+    .header-actions {
+        flex-shrink: 0;
+    }
+
+    .quick-link-description {
+        max-width: none;
+    }
+}
+
+@media (max-width: 360px) {
+    body {
+        padding-bottom: calc(86px + env(safe-area-inset-bottom));
+    }
+
+    .top-header {
+        min-height: 68px;
+        padding: 8px 9px;
+    }
+
+    .brand {
+        max-width: calc(100% - 100px);
+    }
+
+    .brand-title {
+        font-size: 12px;
+    }
+
+    .brand-subtitle {
+        font-size: 8px;
+    }
+
+    .header-button,
+    .subscription-header-button {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        min-height: 34px;
+        font-size: 16px;
+    }
+
+    .nav-inner {
+        padding: 0 6px;
+    }
+
+    .nav-item {
+        font-size: 9px;
+    }
+
+    .nav-icon {
+        font-size: 18px;
+        width: 20px;
+    }
+}
+
+@media (max-width: 360px) {
+    .top-header {
+        top: 6px;
+        width: calc(100% - 14px);
+        min-height: 68px;
+        padding: 8px 9px;
+        border-radius: 18px;
+    }
+
+    .header-inner {
+        min-height: 50px;
+        gap: 7px;
+    }
+
+    .brand {
+        gap: 7px;
+    }
+
+    .brand-logo {
+        width: 38px;
+        height: 38px;
+        flex-basis: 38px;
+    }
+
+    .brand-title {
+        font-size: 12px;
+    }
+
+    .brand-subtitle {
+        font-size: 8px;
+        margin-top: 2px;
+    }
+
+    .welcome h1 {
+        font-size: 12px;
+    }
+
+    .header-actions {
+        gap: 5px;
+    }
+
+    .header-button {
+        width: 36px;
+        height: 36px;
+        border-radius: 11px;
+        font-size: 18px;
+    }
+
+    /* Subscription header action */
+.subscription-header-button {
+    color: var(--jamb-green);
+}
+
+.subscription-header-button:hover {
+    color: var(--jamb-deep);
+}
+
+.subscription-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(7, 31, 22, .42);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.subscription-modal-backdrop.show {
+    display: flex;
+}
+
+.subscription-modal {
+    width: min(100%, 390px);
+    padding: 22px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: 0 22px 60px rgba(15,45,34,.22);
+}
+
+.subscription-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.subscription-modal h2 {
+    font-size: 20px;
+    color: var(--jamb-deep);
+}
+
+.subscription-modal-close {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--jamb-light);
+    color: var(--jamb-deep);
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.subscription-modal-status {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 16px;
+    background: var(--jamb-light);
+}
+
+.subscription-modal-status strong {
+    display: block;
+    color: var(--jamb-deep);
+    font-size: 16px;
+}
+
+.subscription-modal-status span {
+    display: block;
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.subscription-modal-action {
+    width: 100%;
+    margin-top: 16px;
+    min-height: 46px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--jamb-green);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.subscription-modal-action:hover {
+    background: var(--jamb-dark);
+}
+
+.notification-dot {
+        top: 4px;
+        right: 4px;
+        width: 7px;
+        height: 7px;
+    }
+
+    .menu-lines {
+        width: 18px;
+        gap: 4px;
+    }
+
+    .page {
+        padding-top: 92px;
+    }
+}
+
+@media (max-width: 390px) {
+    .brand-title {
+        font-size: 13px;
+    }
+
+    .brand-subtitle {
+        font-size: 9px;
+    }
+
+    .welcome h1 {
+        font-size: 13px;
+    }
+
+    .header-actions {
+        gap: 5px;
+    }
+
+    .header-button {
+        width: 39px;
+        height: 39px;
+    }
+
+    .quick-link-title {
+        font-size: 19px;
+    }
+
+    .quick-link-description {
+        font-size: 13px;
+    }
+
+    .nav-item {
+        font-size: 9px;
+    }
+}
+
+/* Responsive subscription panel */
+.subscription-plans {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.subscription-plan-card {
+    position: relative;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: #fff;
+}
+
+.subscription-plan-card.featured {
+    border-color: #bfe1cf;
+    background: linear-gradient(180deg, #f5fbf7 0%, #ffffff 100%);
+}
+
+.subscription-plan-card h3 {
+    color: var(--jamb-deep);
+    font-size: 15px;
+    margin: 0;
+}
+
+.subscription-plan-card p {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+.subscription-plan-bottom {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.subscription-plan-bottom strong {
+    color: var(--jamb-deep);
+    font-size: 16px;
+}
+
+.subscription-pay-button {
+    width: auto;
+    min-width: 105px;
+    min-height: 38px;
+    margin-top: 0;
+    padding: 0 16px;
+    border-radius: 11px;
+    font-size: 13px;
+}
+
+.subscription-plan-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 7px;
+    border-radius: 20px;
+    background: var(--jamb-light);
+    color: var(--jamb-dark);
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.premium-benefits {
+    margin-top: 14px;
+    display: grid;
+    gap: 7px;
+    padding: 13px;
+    border-radius: 15px;
+    background: var(--jamb-light);
+    color: var(--jamb-deep);
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.subscription-modal-secondary {
+    width: 100%;
+    min-height: 40px;
+    margin-top: 10px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--jamb-deep);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.subscription-pay-button:disabled {
+    opacity: .65;
+    cursor: wait;
+}
+
+@media (max-width: 760px) {
+    .subscription-modal-backdrop {
+        padding: 12px;
+        align-items: center;
+    }
+    .subscription-modal {
+        width: min(100%, 370px);
+        max-height: calc(100vh - 24px);
+        overflow-y: auto;
+        padding: 17px;
+        border-radius: 18px;
+    }
+    .subscription-modal h2 { font-size: 18px; }
+    .subscription-modal-status { padding: 13px; margin-top: 12px; }
+}
+
+@media (max-width: 380px) {
+    .subscription-modal { padding: 14px; }
+    .subscription-plan-card { padding: 11px; }
+    .subscription-plan-card h3 { font-size: 14px; }
+    .subscription-plan-card p { font-size: 11px; }
+    .subscription-pay-button { min-width: 96px; min-height: 36px; padding: 0 12px; font-size: 12px; }
+}
+
+/* Student notifications */
+.dashboard-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-start;justify-content:center;padding:80px 16px 24px;z-index:3000;}
+.dashboard-modal-backdrop.show{display:flex;}
+.dashboard-modal{width:min(100%,560px);max-height:calc(100vh - 104px);overflow:hidden;background:#fff;border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.2);display:flex;flex-direction:column;}
+.dashboard-modal-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 20px;border-bottom:1px solid #e7eee9;background:#fff;}
+.dashboard-modal-head h2{margin:0;font-size:19px;color:#163c29;}
+.dashboard-modal-head p{margin:4px 0 0;color:#718078;font-size:12px;}
+.dashboard-modal-head button{border:0;background:#f1f5f2;border-radius:50%;width:34px;height:34px;font-size:24px;line-height:1;cursor:pointer;color:#496057;}
+.student-notification-list{padding:14px 16px 18px;overflow:auto;}
+.student-notification-item{padding:14px;border:1px solid #e4ece7;border-radius:13px;margin-bottom:10px;background:#fbfdfc;}
+.student-notification-item:last-child{margin-bottom:0;}
+.student-notification-item h3{margin:0 0 6px;font-size:14px;color:#173d2a;}
+.student-notification-item p{margin:0 0 8px;color:#4d5c54;font-size:13px;line-height:1.55;white-space:pre-wrap;}
+.student-notification-item small{color:#7b8881;font-size:10px;}
+.notification-loading,.notification-empty{text-align:center;padding:30px 12px;color:#718078;font-size:12px;}
+@media(max-width:520px){.dashboard-modal-backdrop{padding:66px 10px 12px}.dashboard-modal{max-height:calc(100vh - 78px);border-radius:16px}.dashboard-modal-head{padding:15px}.student-notification-list{padding:12px;}}
+
+</style>
+</head>
+<body>
+<header class="top-header">
+<div class="header-inner">
+<div class="welcome">
+<h1 id="studentGreeting">Hello, Student 👋</h1>
+<p>Welcome back. Keep preparing for JAMB.</p>
+</div>
+<div class="header-actions">
+<button aria-label="Notifications" class="header-button" id="notificationButton" onclick="openNotifications()" title="Notifications" type="button">
+                🔔
+                <span class="notification-dot"></span>
+</button>
+<button aria-label="Subscription" class="header-button subscription-header-button" id="subscriptionButton" onclick="openSubscription()" title="Subscription" type="button">
+                💳
+            </button>
+<button aria-label="Menu" class="header-button" id="profileButton" onclick="toggleProfileMenu()" title="Menu" type="button">
+<span aria-hidden="true" class="menu-lines">
+<span></span><span></span><span></span>
+</span>
+</button>
+</div>
+</div>
+</header>
+<div class="profile-menu" id="profileMenu">
+<div class="profile-student">
+<div class="profile-student-name" id="profileStudentName">Student</div>
+<div class="profile-student-username" id="profileStudentUsername">@student</div>
+</div>
+<div class="profile-divider"></div>
+<a class="profile-menu-item" href="settings.html?view=settings" aria-label="Open Settings">
+<span>⚙️</span>
+<span>Settings</span>
+</a>
+<a class="profile-menu-item" href="settings.html?view=support" aria-label="Open Help &amp; Support">
+<span>🆘</span>
+<span>Help &amp; Support</span>
+</a>
+<div class="profile-divider"></div>
+<button class="profile-menu-item" onclick="logoutStudent()" type="button">
+<span>🚪</span>
+<span>Logout</span>
+</button>
+</div>
+<div aria-hidden="true" class="subscription-modal-backdrop" id="subscriptionModal">
+<div aria-labelledby="subscriptionModalTitle" aria-modal="true" class="subscription-modal" role="dialog">
+<div class="subscription-modal-head">
+<h2 id="subscriptionModalTitle">Subscription</h2>
+<button aria-label="Close" class="subscription-modal-close" onclick="closeSubscription()" type="button">×</button>
+</div>
+<div class="subscription-modal-status">
+<strong id="subscriptionStatusTitle">Free Plan</strong>
+<span id="subscriptionStatusText">Choose a plan to unlock full premium access.</span>
+</div>
+<div class="subscription-plans" id="subscriptionPlans">
+<div class="subscription-plan-card">
+<div>
+<h3>30 Days</h3>
+<p>Full CBT practice and premium access for 30 days.</p>
+</div>
+<div class="subscription-plan-bottom">
+<strong>₦1,500</strong>
+<button class="subscription-modal-action subscription-pay-button" onclick="startDashboardPayment(1500, 30)" type="button">Subscribe</button>
+</div>
+</div>
+<div class="subscription-plan-card featured">
+<span class="subscription-plan-badge">BEST VALUE</span>
+<div>
+<h3>1 Year</h3>
+<p>Unlimited CBT practice and full premium access for one year.</p>
+</div>
+<div class="subscription-plan-bottom">
+<strong>₦4,000</strong>
+<button class="subscription-modal-action subscription-pay-button" onclick="startDashboardPayment(4000, 365)" type="button">Subscribe</button>
+</div>
+</div>
+</div>
+<div class="premium-benefits" hidden="" id="premiumBenefits">
+<div>✓ Full CBT practice</div>
+<div>✓ Past Questions &amp; Explanations</div>
+<div>✓ Novels / Library</div>
+<div>✓ No advertisements</div>
+</div>
+<button class="subscription-modal-secondary" onclick="closeSubscription()" type="button">
+            Close
+        </button>
+</div>
+</div>
+<div aria-hidden="true" class="dashboard-modal-backdrop" id="notificationsModal">
+<div aria-labelledby="notificationsModalTitle" aria-modal="true" class="dashboard-modal" role="dialog">
+<div class="dashboard-modal-head"><div><h2 id="notificationsModalTitle">Notifications</h2><p id="notificationModalSubtitle">Updates from JAMB CBT</p></div><button aria-label="Close" onclick="closeNotifications()" type="button">×</button></div>
+<div class="student-notification-list" id="studentNotificationList"><div class="notification-loading">Loading notifications...</div></div>
+</div>
+</div>
+<main class="page">
+<section aria-labelledby="quickLinksTitle" class="quick-links">
+<div class="section-header">
+<div class="quick-title-row">
+<span class="quick-title-line"></span>
+<h2 id="quickLinksTitle">QUICK LINKS</h2>
+<span class="quick-title-line right"></span>
+</div>
+<p>Everything you need for your JAMB preparation.</p>
+</div>
+<div class="quick-grid">
+<a class="quick-link jamb-cbt-card" href="subject.html">
+<div class="quick-icon">📝</div>
+<div class="quick-link-content">
+<div class="quick-link-title">JAMB CBT</div>
+<div class="quick-link-description">
+                        Practice JAMB CBT examinations and improve your score.
+                    </div>
+<div class="cbt-action">
+<span>Start Practice</span>
+<span>→</span>
+</div>
+</div>
+</a>
+<a class="quick-link" href="past-questions.html" data-access="premium" data-feature="Past Questions">
+<div class="quick-icon">📚</div>
+<div class="quick-link-content">
+<div class="quick-link-title">Past Questions</div>
+<div class="quick-link-description">
+                        Practice questions from previous years.
+                    </div>
+<span class="quick-card-lock-badge">🔒 Premium</span>
+<span class="quick-arrow">→</span>
+</div>
+</a>
+<a class="quick-link" href="answers.html" data-access="premium" data-feature="Answers &amp; Explanations">
+<div class="quick-icon">💡</div>
+<div class="quick-link-content">
+<div class="quick-link-title">Answers &amp; Explanations</div>
+<div class="quick-link-description">
+                        Learn why each answer is correct.
+                    </div>
+<span class="quick-card-lock-badge">🔒 Premium</span>
+<span class="quick-arrow">→</span>
+</div>
+</a>
+<a class="quick-link" href="subjects.html" data-access="premium" data-feature="Subjects &amp; Topics">
+<div class="quick-icon">📖</div>
+<div class="quick-link-content">
+<div class="quick-link-title">Subjects &amp; Topics</div>
+<div class="quick-link-description">
+                        Study all JAMB subjects and important topics.
+                    </div>
+<span class="quick-card-lock-badge">🔒 Premium</span>
+<span class="quick-arrow">→</span>
+</div>
+</a>
+<a class="quick-link" href="syllabus.html" data-access="premium" data-feature="JAMB Syllabus">
+<div class="quick-icon">📋</div>
+<div class="quick-link-content">
+<div class="quick-link-title">JAMB Syllabus</div>
+<div class="quick-link-description">
+                        View the official JAMB syllabus for all subjects.
+                    </div>
+
+<span class="quick-arrow">→</span>
+</div>
+</a>
+<a class="quick-link" href="brochure.html">
+<div class="quick-icon">📘</div>
+<div class="quick-link-content">
+<div class="quick-link-title">JAMB Brochure</div>
+<div class="quick-link-description">
+                        Download the official JAMB brochure and guides.
+                    </div>
+
+<span class="quick-arrow">→</span>
+</div>
+</a>
+</div>
+</section>
+</main>
+<nav class="bottom-nav" aria-label="Main navigation">
+    <div class="nav-inner">
+        <a href="dashboard.html" class="nav-item active" aria-label="Home"><span class="nav-icon">🏠</span><span>Home</span></a>
+        <a href="challenge.html" class="nav-item" aria-label="Challenges"><span class="nav-icon">⚡</span><span>Challenges</span></a>
+        <a href="novels.html" class="nav-item" aria-label="Novels and Library"><span class="nav-icon">📖</span><span>Novels</span></a>
+        <a href="results.html" class="nav-item" aria-label="Results"><span class="nav-icon">📊</span><span>Results</span></a>
+    </div>
+</nav>
+<script>
+const SUPABASE_URL = 'https://afdnfqmsjmpwlvhloopy.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_LQlMraaULDTdAKeYysPWkA_a8CKvA1V';
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
+
+async function refreshDashboardPremiumState() {
+    try {
+        const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
+        if (sessionError || !sessionData?.session) {
+            dashboardIsPremium = false;
+            localStorage.setItem('studentSubscribed', 'false');
+            return false;
+        }
+
+        const user = sessionData.session.user;
+        const { data: subRows, error: subError } = await supabaseClient
+            .from('subscriptions')
+            .select('*')
+            .eq('user_id', user.id);
+
+        if (subError) {
+            throw subError;
+        }
+
+        const activeRows = Array.isArray(subRows) ? subRows : [];
+        dashboardIsPremium = activeRows.some((row) => {
+            const status = String(row.status ?? row.subscription_status ?? row.plan_status ?? row.payment_status ?? '').trim().toLowerCase();
+            const expiresAt = row.expires_at ?? row.expiresAt ?? row.current_period_end ?? row.ends_at ?? null;
+            const isStatusActive = ['active', 'paid', 'premium', 'subscribed', 'success', 'successful', 'succeeded', 'completed'].includes(status);
+
+            let notExpired = true;
+            if (expiresAt) {
+                const expiry = new Date(expiresAt);
+                notExpired = !Number.isNaN(expiry.getTime()) ? expiry > new Date() : true;
+            }
+
+            return isStatusActive && notExpired;
+        });
+
+        localStorage.setItem('studentSubscribed', dashboardIsPremium ? 'true' : 'false');
+        return dashboardIsPremium;
+    } catch (e) {
+        console.warn('Subscription status lookup skipped:', e);
+        dashboardIsPremium = false;
+        localStorage.setItem('studentSubscribed', 'false');
+        return false;
+    }
+}
+
+async function loadDashboardStudent() {
+    try {
+        const { data, error } = await supabaseClient.auth.getSession();
+
+        if (error || !data.session) {
+            window.location.href = "student.html";
+            return;
+        }
+
+        const user = data.session.user;
+        dashboardCurrentUser = user;
+        await refreshDashboardPremiumState();
+        applyPremiumQuickCardLocks();
+        loadStudentNotifications();
+
+        const challengeCountEl=document.getElementById('challengeQuestionCount');
+        const challengePlanEl=document.getElementById('challengePlanLabel');
+        if(challengeCountEl) challengeCountEl.textContent=(dashboardIsPremium?'15':'5')+' questions today';
+        if(challengePlanEl) challengePlanEl.textContent=dashboardIsPremium?'Premium':'Free';
+
+        let studentName =
+            user.user_metadata?.full_name ||
+            user.email ||
+            "Student";
+
+        const { data: profile, error: profileError } =
+            await supabaseClient
+                .from("Student_profiles")
+                .select("Full_name, Username")
+                .eq("id", user.id)
+                .maybeSingle();
+
+        if (profileError) {
+            console.log("Dashboard profile error:", profileError);
+        }
+
+        if (profile && profile.Full_name) {
+            studentName = profile.Full_name;
+        }
+
+        const greeting = document.getElementById("studentGreeting");
+
+        if (greeting) {
+            greeting.textContent = "Hello, " + studentName + " 👋";
+        }
+
+        localStorage.setItem("studentName", studentName);
+
+        const profileName = document.getElementById("profileStudentName");
+        const profileUsername = document.getElementById("profileStudentUsername");
+
+        if (profileName) {
+            profileName.textContent = studentName;
+        }
+
+        const username =
+            profile?.Username ||
+            user.user_metadata?.username ||
+            "Student";
+
+        if (profileUsername) {
+            profileUsername.textContent =
+                username.startsWith("@") ? username : "@" + username;
+        }
+
+        if (profile && profile.Username) {
+            localStorage.setItem("studentUsername", profile.Username);
+        }
+
+    } catch (error) {
+        console.log("Dashboard loading error:", error);
+    }
+}
+
+function maybeOpenUpgradeFromFeatureParameter() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('upgrade') !== '1') {
+        return;
+    }
+
+    setTimeout(async () => {
+        const isPremiumNow = await refreshDashboardPremiumState();
+        const featureName = params.get('feature') || 'this feature';
+        const readableFeature = featureName.replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        const title = document.getElementById('subscriptionStatusTitle');
+        const text = document.getElementById('subscriptionStatusText');
+
+        if (title) {
+            title.textContent = isPremiumNow ? 'Premium Active ✓' : 'Premium required';
+        }
+        if (text) {
+            text.textContent = isPremiumNow
+                ? 'Your premium access is currently active.'
+                : `Upgrade to unlock ${readableFeature}.`;
+        }
+
+        openSubscription();
+    }, 120);
+}
+
+function toggleProfileMenu() {
+    const profileMenu = document.getElementById("profileMenu");
+
+    if (!profileMenu) {
+        return;
+    }
+
+    profileMenu.classList.toggle("show");
+}
+
+function openSubscription() {
+    const modal = document.getElementById("subscriptionModal");
+    const title = document.getElementById("subscriptionStatusTitle");
+    const text = document.getElementById("subscriptionStatusText");
+    const plans = document.getElementById("subscriptionPlans");
+    const benefits = document.getElementById("premiumBenefits");
+
+    if (!modal) return;
+
+    const subscribed = Boolean(dashboardIsPremium);
+
+    if (subscribed) {
+        if (title) title.textContent = "Premium Active ✓";
+        if (text) text.textContent = "Your premium access is currently active.";
+        if (plans) plans.hidden = true;
+        if (benefits) benefits.hidden = false;
+    } else {
+        if (title) title.textContent = "Free Plan";
+        if (text) text.textContent = "Upgrade to unlock full premium access.";
+        if (plans) plans.hidden = false;
+        if (benefits) benefits.hidden = true;
+    }
+
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+}
+
+function closeSubscription() {
+    const modal = document.getElementById("subscriptionModal");
+    if (!modal) return;
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+}
+
+async function startDashboardPayment(amount, durationDays) {
+    try {
+        const { data: sessionData, error: sessionError } =
+            await supabaseClient.auth.getSession();
+
+        if (sessionError || !sessionData.session) {
+            alert("Your session has expired. Please login again before subscribing.");
+            return;
+        }
+
+        const user = sessionData.session.user;
+
+        if (!user.email) {
+            alert("Your account does not have an email address.");
+            return;
+        }
+
+        if (typeof PaystackPop === "undefined") {
+            alert("Paystack did not load. Please refresh the dashboard and try again.");
+            return;
+        }
+
+    const amountKobo = Math.round(Number(amount) * 100);
+    if (!Number.isFinite(amountKobo) || amountKobo <= 0) {
+        alert("Invalid payment amount.");
+        return;
+    }
+
+    const payButtons = document.querySelectorAll(".subscription-pay-button");
+    payButtons.forEach(button => { button.disabled = true; button.textContent = "Opening…"; });
+
+    const reference = "JAMB_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+    const paystack = new PaystackPop();
+
+    paystack.newTransaction({
+        key: "pk_live_d8f44cfe7a9e237bf9fbae3483da2e2c0e77305e",
+        email: user.email,
+        amount: amountKobo,
+        currency: "NGN",
+        reference: reference,
+        metadata: { user_id: user.id, plan_days: durationDays, amount_naira: Number(amount) },
+        onSuccess: async function(transaction) {
+            await completeDashboardSubscription(user.id, durationDays, transaction.reference);
+        },
+        onCancel: function() {
+            restoreSubscriptionButtons();
+            alert("Payment window closed.");
+        },
+        onError: function(error) {
+            restoreSubscriptionButtons();
+            alert("Paystack payment error: " + (error?.message || "Unknown error"));
+        }
+    });
+} catch (error) {
+    restoreSubscriptionButtons();
+    console.log("Dashboard payment error:", error);
+    alert("Something went wrong: " + (error?.message || "Unknown error"));
+}
+}
+
+function restoreSubscriptionButtons() {
+    document.querySelectorAll(".subscription-pay-button").forEach((button, index) => {
+        button.disabled = false;
+        button.textContent = "Subscribe";
+    });
+}
+
+async function completeDashboardSubscription(userId, durationDays, reference) {
+    try {
+        alert("Payment successful. Verifying payment...");
+
+        const { data, error } = await supabaseClient.functions.invoke(
+            "Paystack_payment",
+            { body: { user_id: userId, reference: reference, plan_days: durationDays } }
+        );
+
+        if (error || !data || !data.success) {
+            console.log("Subscription verification error:", error || data);
+            restoreSubscriptionButtons();
+            alert("Payment was successful, but subscription verification failed. Please check your subscription before paying again.");
+            return;
+        }
+
+        await refreshDashboardPremiumState();
+        alert("Payment successful! Your subscription is now active.");
+        openSubscription();
+    } catch (error) {
+        console.log("Dashboard subscription completion error:", error);
+        restoreSubscriptionButtons();
+        alert("Payment was successful, but something went wrong while activating your subscription.");
+    }
+}
+
+let dashboardCurrentUser = null;
+let dashboardNotifications = [];
+let dashboardIsPremium = false;
+
+function isDashboardPremiumActive() {
+    return Boolean(dashboardIsPremium);
+}
+
+function applyPremiumQuickCardLocks() {
+    const premiumCards = document.querySelectorAll('[data-access="premium"]');
+    premiumCards.forEach((card) => {
+        const isLocked = !isDashboardPremiumActive();
+        card.classList.toggle('locked', isLocked);
+        card.setAttribute('aria-disabled', isLocked ? 'true' : 'false');
+        const title = card.getAttribute('data-feature') || 'Premium feature';
+        card.setAttribute('title', isLocked ? title + ' is available on premium.' : '');
+    });
+}
+
+async function handleDashboardQuickCardAccess(event) {
+    const card = event.target.closest('[data-access="premium"]');
+    if (!card) {
+        return;
+    }
+
+    const isPremiumNow = await refreshDashboardPremiumState();
+    if (isPremiumNow) {
+        return;
+    }
+
+    event.preventDefault();
+    const featureName = card.getAttribute('data-feature') || 'This feature';
+    alert(featureName + ' is available with premium access. Upgrade to continue.');
+    openSubscription();
+}
+
+function notificationText(row, names){
+    for (const n of names) if (row && row[n] !== undefined && row[n] !== null && String(row[n]).trim() !== '') return row[n];
+    return '';
+}
+
+function notificationVisibleToStudent(row){
+    const status=String(notificationText(row,['status']) || 'sent').toLowerCase();
+    if(status==='draft') return false;
+    const active = row && row.is_active !== false;
+    if(!active) return false;
+    const audience=String(notificationText(row,['target_type','audience']) || 'all').toLowerCase();
+    const target=String(notificationText(row,['target_user_id','target']) || '');
+    if(audience==='all') return true;
+    if(audience==='specific') return !!(target && dashboardCurrentUser && target===dashboardCurrentUser.id);
+    if(audience==='premium') return dashboardIsPremium;
+    if(audience==='free') return !dashboardIsPremium;
+    return false;
+}
+
+async function loadStudentNotifications(){
+    const list=document.getElementById('studentNotificationList');
+    if(list) list.innerHTML='<div class="notification-loading">Loading notifications...</div>';
+    try{
+        // The existing notifications table uses target_type/target_user_id and does not
+        // have is_active/status columns. RLS already limits students to sent rows.
+        const {data,error}=await supabaseClient
+            .from('notifications')
+            .select('*')
+            .order('created_at',{ascending:false})
+            .limit(50);
+        if(error) throw error;
+        dashboardNotifications=(data||[]).filter(notificationVisibleToStudent);
+        const dot=document.querySelector('.notification-dot');
+        if(dot) dot.style.display=dashboardNotifications.length?'block':'none';
+        renderStudentNotifications();
+    }catch(error){
+        console.warn('Student notifications error:',error);
+        if(list) list.innerHTML='<div class="notification-empty">Unable to load notifications right now. Please try again.</div>';
+    }
+}
+
+function renderStudentNotifications(){
+    const list=document.getElementById('studentNotificationList'); if(!list)return;
+    if(!dashboardNotifications.length){list.innerHTML='<div class="notification-empty">No new notifications right now.</div>';return;}
+    list.innerHTML=dashboardNotifications.map(row=>{
+        const title=notificationText(row,['title','subject','heading'])||'Notification';
+        const message=notificationText(row,['message','body','content'])||'';
+        const date=notificationText(row,['created_at','sent_at','published_at']);
+        return `<article class="student-notification-item"><h3>${escapeHtmlDashboard(title)}</h3><p>${escapeHtmlDashboard(message)}</p><small>${date?new Date(date).toLocaleString():'Recently'}</small></article>`;
+    }).join('');
+}
+
+function escapeHtmlDashboard(value){return String(value??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));}
+
+function openNotifications(){
+    const modal=document.getElementById('notificationsModal');
+    if(modal){modal.classList.add('show');modal.setAttribute('aria-hidden','false');}
+    loadStudentNotifications();
+}
+function closeNotifications(){
+    const modal=document.getElementById('notificationsModal');
+    if(modal){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');}
+}
+
+
+async function logoutStudent() {
+    const confirmed = window.confirm(
+        "Are you sure you want to logout?"
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        const { error } = await supabaseClient.auth.signOut();
+
+        if (error) {
+            console.log("Supabase logout error:", error);
+            alert("Logout failed. Please try again.");
+            return;
+        }
+
+        localStorage.removeItem("studentName");
+        localStorage.removeItem("studentUsername");
+        localStorage.removeItem("studentPractice");
+        localStorage.removeItem("studentSubscribed");
+        localStorage.removeItem("freePractice");
+
+        window.location.href = "student.html";
+
+    } catch (error) {
+        console.log("Logout error:", error);
+        alert("Something went wrong while logging out.");
+    }
+}
+
+document.addEventListener("click", function(event) {
+    const premiumCard = event.target.closest('[data-access="premium"]');
+    if (premiumCard) {
+        handleDashboardQuickCardAccess(event);
+    }
+
+    const subscriptionModal = document.getElementById("subscriptionModal");
+    if (subscriptionModal && event.target === subscriptionModal) {
+        closeSubscription();
+    }
+
+    const profileMenu = document.getElementById("profileMenu");
+    const profileButton = document.getElementById("profileButton");
+
+    if (!profileMenu || !profileButton) {
+        return;
+    }
+
+    const clickedInsideMenu = profileMenu.contains(event.target);
+    const clickedProfileButton = profileButton.contains(event.target);
+
+    if (!clickedInsideMenu && !clickedProfileButton) {
+        profileMenu.classList.remove("show");
+    }
+});
+
+applyPremiumQuickCardLocks();
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        const profileMenu = document.getElementById("profileMenu");
+
+        if (profileMenu) {
+            profileMenu.classList.remove("show");
+        }
+    }
+});
+
+loadDashboardStudent();
+maybeOpenUpgradeFromFeatureParameter();
+</script>
+</body>
+</html>
