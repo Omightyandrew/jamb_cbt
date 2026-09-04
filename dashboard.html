@@ -1661,6 +1661,50 @@ async function loadDashboardStudent() {
 
         const user = data.session.user;
         dashboardCurrentUser = user;
+
+        // Recover a payment that was saved before Paystack opened but whose
+        // success callback may not have completed because the browser closed,
+        // navigated away, or temporarily lost connectivity.
+        const pendingPayment = getPendingPaystackSubscription();
+        if (pendingPayment) {
+            const createdAt = Date.parse(pendingPayment.created_at || "");
+            const ageMs = Number.isFinite(createdAt) ? Date.now() - createdAt : Infinity;
+            const maxAgeMs = 24 * 60 * 60 * 1000;
+
+            if (
+                pendingPayment.user_id === user.id &&
+                pendingPayment.reference &&
+                Number(pendingPayment.plan_days) > 0 &&
+                ageMs >= 0 &&
+                ageMs <= maxAgeMs
+            ) {
+                console.log("Paystack: pending payment recovery started.", {
+                    reference: pendingPayment.reference,
+                    user_id: user.id,
+                    plan_days: pendingPayment.plan_days
+                });
+
+                const recovered = await verifyDashboardPendingPayment(
+                    user.id,
+                    Number(pendingPayment.plan_days),
+                    String(pendingPayment.reference),
+                    { showSuccessAlert: false, isRecovery: true }
+                );
+
+                if (recovered) {
+                    alert("Your previous payment has been verified and Premium access is now active.");
+                }
+            } else if (
+                pendingPayment.user_id !== user.id ||
+                !pendingPayment.reference ||
+                !pendingPayment.plan_days ||
+                ageMs > maxAgeMs
+            ) {
+                console.warn("Paystack: stale or invalid pending payment ignored.");
+                clearPendingPaystackSubscription();
+            }
+        }
+
         await refreshDashboardPremiumState();
         applyPremiumQuickCardLocks();
         loadStudentNotifications();
@@ -1794,6 +1838,134 @@ function closeSubscription() {
     modal.setAttribute("aria-hidden", "true");
 }
 
+function savePendingPaystackSubscription(payment) {
+    try {
+        localStorage.setItem("pendingPaystackSubscription", JSON.stringify(payment));
+        console.log("Paystack: pending payment saved.", {
+            reference: payment.reference,
+            user_id: payment.user_id,
+            plan_days: payment.plan_days
+        });
+    } catch (error) {
+        console.warn("Paystack: could not save pending payment.", error);
+    }
+}
+
+function getPendingPaystackSubscription() {
+    try {
+        const raw = localStorage.getItem("pendingPaystackSubscription");
+        if (!raw) return null;
+        const payment = JSON.parse(raw);
+        if (!payment || typeof payment !== "object") return null;
+        return payment;
+    } catch (error) {
+        console.warn("Paystack: could not read pending payment.", error);
+        return null;
+    }
+}
+
+function clearPendingPaystackSubscription() {
+    localStorage.removeItem("pendingPaystackSubscription");
+    console.log("Paystack: pending payment cleared after confirmed activation.");
+}
+
+async function verifyDashboardPendingPayment(userId, durationDays, reference, options = {}) {
+    const { showSuccessAlert = false, isRecovery = false } = options;
+
+    if (!userId || !durationDays || !reference) {
+        console.warn("Paystack: verification skipped because payment data is incomplete.");
+        return false;
+    }
+
+    console.log("Paystack: verification started.", {
+        reference,
+        user_id: userId,
+        plan_days: durationDays,
+        recovery: isRecovery
+    });
+
+    try {
+        let { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
+
+        if (sessionError || !sessionData?.session) {
+            console.warn("Paystack: session missing/expired before verification.", sessionError);
+            const refreshed = await supabaseClient.auth.refreshSession();
+            sessionData = refreshed.data;
+            sessionError = refreshed.error;
+        }
+
+        if (sessionError || !sessionData?.session) {
+            console.warn("Paystack: session refresh failed.", sessionError);
+            return false;
+        }
+
+        const authenticatedUser = sessionData.session.user;
+        if (!authenticatedUser || authenticatedUser.id !== userId) {
+            console.warn("Paystack: authenticated user does not match payment user.");
+            return false;
+        }
+
+        console.log("Paystack: invoking Paystack_payment.", { reference, user_id: userId, plan_days: durationDays });
+
+        let result = await supabaseClient.functions.invoke(
+            "Paystack_payment",
+            { body: { user_id: userId, reference: reference, plan_days: durationDays } }
+        );
+
+        console.log("Paystack: verification response received.", {
+            reference,
+            success: Boolean(result?.data?.success),
+            error: result?.error || null
+        });
+
+        if (result.error || !result.data || !result.data.success) {
+            console.warn("Paystack: first verification attempt failed.", result.error || result.data);
+
+            console.log("Paystack: refreshing session and retrying once.");
+            const refreshed = await supabaseClient.auth.refreshSession();
+
+            if (!refreshed.error && refreshed.data?.session) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                result = await supabaseClient.functions.invoke(
+                    "Paystack_payment",
+                    { body: { user_id: userId, reference: reference, plan_days: durationDays } }
+                );
+
+                console.log("Paystack: retry response received.", {
+                    reference,
+                    success: Boolean(result?.data?.success),
+                    error: result?.error || null
+                });
+            }
+        }
+
+        if (result.error || !result.data || !result.data.success) {
+            console.warn("Paystack: activation not yet confirmed.", result.error || result.data);
+            return false;
+        }
+
+        await refreshDashboardPremiumState();
+        clearPendingPaystackSubscription();
+
+        console.log("Paystack: Premium activation confirmed.", {
+            reference,
+            user_id: userId,
+            plan_days: durationDays
+        });
+
+        if (showSuccessAlert) {
+            alert("Payment successful! Your subscription is now active.");
+            openSubscription();
+        }
+
+        return true;
+    } catch (error) {
+        console.error("Paystack: subscription verification failed unexpectedly.", error);
+        return false;
+    }
+}
+
 async function startDashboardPayment(amount, durationDays) {
     try {
         const { data: sessionData, error: sessionError } =
@@ -1816,75 +1988,110 @@ async function startDashboardPayment(amount, durationDays) {
             return;
         }
 
-    const amountKobo = Math.round(Number(amount) * 100);
-    if (!Number.isFinite(amountKobo) || amountKobo <= 0) {
-        alert("Invalid payment amount.");
-        return;
-    }
-
-    const payButtons = document.querySelectorAll(".subscription-pay-button");
-    payButtons.forEach(button => { button.disabled = true; button.textContent = "Opening…"; });
-
-    const reference = "JAMB_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
-    const paystack = new PaystackPop();
-
-    paystack.newTransaction({
-        key: "pk_live_d8f44cfe7a9e237bf9fbae3483da2e2c0e77305e",
-        email: user.email,
-        amount: amountKobo,
-        currency: "NGN",
-        reference: reference,
-        metadata: { user_id: user.id, plan_days: durationDays, amount_naira: Number(amount) },
-        onSuccess: async function(transaction) {
-            await completeDashboardSubscription(user.id, durationDays, transaction.reference);
-        },
-        onCancel: function() {
-            restoreSubscriptionButtons();
-            alert("Payment window closed.");
-        },
-        onError: function(error) {
-            restoreSubscriptionButtons();
-            alert("Paystack payment error: " + (error?.message || "Unknown error"));
+        const amountKobo = Math.round(Number(amount) * 100);
+        if (!Number.isFinite(amountKobo) || amountKobo <= 0) {
+            alert("Invalid payment amount.");
+            return;
         }
-    });
-} catch (error) {
-    restoreSubscriptionButtons();
-    console.log("Dashboard payment error:", error);
-    alert("Something went wrong: " + (error?.message || "Unknown error"));
-}
+
+        const payButtons = document.querySelectorAll(".subscription-pay-button");
+        payButtons.forEach(button => { button.disabled = true; button.textContent = "Opening…"; });
+
+        const reference = "JAMB_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+
+        // Save BEFORE opening Paystack so a browser close/navigation cannot lose
+        // the reference needed for later recovery.
+        savePendingPaystackSubscription({
+            user_id: user.id,
+            reference: reference,
+            plan_days: durationDays,
+            amount: Number(amount),
+            created_at: new Date().toISOString()
+        });
+
+        console.log("Paystack: payment popup opening.", { reference, user_id: user.id, plan_days: durationDays });
+
+        const paystack = new PaystackPop();
+
+        paystack.newTransaction({
+            key: "pk_live_d8f44cfe7a9e237bf9fbae3483da2e2c0e77305e",
+            email: user.email,
+            amount: amountKobo,
+            currency: "NGN",
+            reference: reference,
+            metadata: { user_id: user.id, plan_days: durationDays, amount_naira: Number(amount) },
+            onSuccess: async function(transaction) {
+                const returnedReference = transaction?.reference || reference;
+
+                if (!returnedReference) {
+                    console.error("Paystack: success callback arrived without a reference.");
+                    alert("Payment was received, but the transaction reference could not be confirmed. Please return to the dashboard.");
+                    restoreSubscriptionButtons();
+                    return;
+                }
+
+                console.log("Paystack: success callback reached.", { reference: returnedReference });
+
+                savePendingPaystackSubscription({
+                    user_id: user.id,
+                    reference: returnedReference,
+                    plan_days: durationDays,
+                    amount: Number(amount),
+                    created_at: new Date().toISOString()
+                });
+
+                alert("Payment successful. Verifying payment...");
+
+                const activated = await verifyDashboardPendingPayment(
+                    user.id,
+                    durationDays,
+                    returnedReference,
+                    { showSuccessAlert: false, isRecovery: false }
+                );
+
+                if (activated) {
+                    alert("Payment successful! Your subscription is now active.");
+                    openSubscription();
+                } else {
+                    restoreSubscriptionButtons();
+                    alert("Payment was received. We are completing your Premium activation. Please keep this page open or return to your dashboard shortly.");
+                }
+            },
+            onCancel: function() {
+                // Only clear the pending record created by THIS payment attempt.
+                // Never delete an older pending payment that may still need recovery.
+                const pending = getPendingPaystackSubscription();
+                if (pending?.reference === reference && pending?.user_id === user.id) {
+                    clearPendingPaystackSubscription();
+                }
+                restoreSubscriptionButtons();
+                alert("Payment window closed.");
+            },
+            onError: function(error) {
+                restoreSubscriptionButtons();
+                console.log("Paystack payment error:", error);
+                alert("Paystack payment error: " + (error?.message || "Unknown error"));
+            }
+        });
+    } catch (error) {
+        restoreSubscriptionButtons();
+        console.log("Dashboard payment error:", error);
+        alert("Something went wrong: " + (error?.message || "Unknown error"));
+    }
 }
 
 function restoreSubscriptionButtons() {
-    document.querySelectorAll(".subscription-pay-button").forEach((button, index) => {
+    document.querySelectorAll(".subscription-pay-button").forEach((button) => {
         button.disabled = false;
         button.textContent = "Subscribe";
     });
 }
 
 async function completeDashboardSubscription(userId, durationDays, reference) {
-    try {
-        alert("Payment successful. Verifying payment...");
-
-        const { data, error } = await supabaseClient.functions.invoke(
-            "Paystack_payment",
-            { body: { user_id: userId, reference: reference, plan_days: durationDays } }
-        );
-
-        if (error || !data || !data.success) {
-            console.log("Subscription verification error:", error || data);
-            restoreSubscriptionButtons();
-            alert("Payment was successful, but subscription verification failed. Please check your subscription before paying again.");
-            return;
-        }
-
-        await refreshDashboardPremiumState();
-        alert("Payment successful! Your subscription is now active.");
-        openSubscription();
-    } catch (error) {
-        console.log("Dashboard subscription completion error:", error);
-        restoreSubscriptionButtons();
-        alert("Payment was successful, but something went wrong while activating your subscription.");
-    }
+    return verifyDashboardPendingPayment(userId, durationDays, reference, {
+        showSuccessAlert: true,
+        isRecovery: false
+    });
 }
 
 let dashboardCurrentUser = null;
