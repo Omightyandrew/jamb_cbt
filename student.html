@@ -1,714 +1,740 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
+```
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>JAMB CBT - Student</title>
+<title>JAMB CBT - Student</title>
 
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- SUPABASE -->
+<!-- PAYSTACK -->
+<script src="https://js.paystack.co/v2/inline.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
 
+    * {
+        box-sizing: border-box;
+    }
 
-    <!-- PAYSTACK -->
+    body {
+        margin: 0;
+        padding: 0;
+        background: #f6f8f7;
+        color: #171717;
+        font-family: Arial, Helvetica, sans-serif;
+    }
 
-    <script src="https://js.paystack.co/v2/inline.js"></script>
+    .student-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
 
+    .student-box {
+        width: 100%;
+        max-width: 430px;
+        background: white;
+        border-radius: 22px;
+        padding: 28px;
+        border: 1px solid #e1e7e3;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
 
-    <style>
+    .student-box h1 {
+        margin: 0 0 8px;
+        color: #087f3e;
+        font-size: 28px;
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    .student-box p {
+        color: #777;
+        line-height: 1.5;
+    }
 
+    .student-form {
+        margin-top: 20px;
+    }
 
-        body {
+    .form-group {
+        margin-bottom: 15px;
+    }
 
-            margin: 0;
+    .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 13px;
+        font-weight: bold;
+    }
 
-            padding: 0;
+    .form-group input {
+        width: 100%;
+        padding: 13px;
+        border: 1px solid #dfe5e1;
+        border-radius: 12px;
+        outline: none;
+        font-size: 15px;
+    }
 
-            background: #f6f8f7;
+    .form-group input:focus {
+        border-color: #087f3e;
+    }
 
-            color: #171717;
+    .primary-button {
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 25px;
+        background: #087f3e;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
 
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
+    .secondary-button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 25px;
+        background: #edf7ef;
+        color: #087f3e;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+    }
 
-        }
+    .hidden {
+        display: none !important;
+    }
 
+    .message {
+        margin-top: 15px;
+        padding: 12px;
+        border-radius: 12px;
+        font-size: 13px;
+        display: none;
+    }
+
+    .message.show {
+        display: block;
+    }
+
+    .message.error {
+        background: #fff0f0;
+        color: #b00020;
+    }
+
+    .message.success {
+        background: #edf7ef;
+        color: #087f3e;
+    }
+
+    .loading {
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    .subscription-page {
+        width: 100%;
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .subscription-box {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        border: 1px solid #e0e5e2;
+    }
+
+    .subscription-plan {
+        border: 1px solid #e1e7e3;
+        padding: 18px;
+        border-radius: 15px;
+        margin: 15px 0;
+    }
+
+    .subscription-plan h3 {
+        margin-top: 0;
+    }
+
+    .subscription-plan button {
+        border: none;
+        background: #087f3e;
+        color: white;
+        border-radius: 20px;
+        padding: 11px 18px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .terms-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin: 18px 0 16px;
+        font-size: 14px;
+        color: #2d3d35;
+    }
+
+    .terms-row input {
+        margin-top: 3px;
+        width: 18px;
+        height: 18px;
+        accent-color: #087f3e;
+    }
+
+    .terms-link {
+        border: none;
+        background: transparent;
+        color: #087f3e;
+        font-weight: 700;
+        cursor: pointer;
+        padding: 0;
+        text-decoration: underline;
+    }
+
+    .terms-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(16, 24, 20, 0.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 1000;
+    }
+
+    .terms-modal.hidden {
+        display: none;
+    }
+
+    .terms-modal-content {
+        background: #fff;
+        width: min(700px, 100%);
+        max-height: 85vh;
+        border-radius: 18px;
+        padding: 24px 22px 18px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+    }
+
+    .terms-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .terms-modal-header h2 {
+        margin: 0;
+        color: #087f3e;
+    }
+
+    .modal-close {
+        border: 0;
+        background: #edf7ef;
+        color: #087f3e;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        font-size: 22px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .terms-scroll {
+        max-height: 60vh;
+        overflow: auto;
+        padding-right: 6px;
+        line-height: 1.55;
+        color: #1d2d27;
+    }
+
+    .terms-scroll h3 {
+        margin: 18px 0 8px;
+        color: #087f3e;
+        font-size: 17px;
+    }
+
+    .terms-scroll p,
+    .terms-scroll li {
+        font-size: 14px;
+    }
+
+    @media (max-width: 500px) {
 
         .student-page {
-
-            min-height: 100vh;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            padding: 20px;
-
+            padding: 12px;
         }
-
 
         .student-box {
-
-            width: 100%;
-
-            max-width: 430px;
-
-            background: white;
-
-            border-radius: 22px;
-
-            padding: 28px;
-
-            border:
-                1px solid #e1e7e3;
-
-            box-shadow:
-                0 10px 30px
-                rgba(0,0,0,0.06);
-
+            padding: 22px;
         }
 
+    }
 
-        .student-box h1 {
-
-            margin:
-                0 0 8px;
-
-            color: #087f3e;
-
-            font-size: 28px;
-
-        }
-
-
-        .student-box p {
-
-            color: #777;
-
-            line-height: 1.5;
-
-        }
-
-
-        .student-form {
-
-            margin-top: 20px;
-
-        }
-
-
-        .form-group {
-
-            margin-bottom: 15px;
-
-        }
-
-
-        .form-group label {
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            font-size: 13px;
-
-            font-weight: bold;
-
-        }
-
-
-        .form-group input {
-
-            width: 100%;
-
-            padding: 13px;
-
-            border:
-                1px solid #dfe5e1;
-
-            border-radius: 12px;
-
-            outline: none;
-
-            font-size: 15px;
-
-        }
-
-
-        .form-group input:focus {
-
-            border-color: #087f3e;
-
-        }
-
-
-        .primary-button {
-
-            width: 100%;
-
-            padding: 13px;
-
-            border: none;
-
-            border-radius: 25px;
-
-            background: #087f3e;
-
-            color: white;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-        }
-
-
-        .secondary-button {
-
-            width: 100%;
-
-            padding: 12px;
-
-            border: none;
-
-            border-radius: 25px;
-
-            background: #edf7ef;
-
-            color: #087f3e;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-            margin-top: 10px;
-
-        }
-
-
-        .hidden {
-
-            display: none !important;
-
-        }
-
-
-        .message {
-
-            margin-top: 15px;
-
-            padding: 12px;
-
-            border-radius: 12px;
-
-            font-size: 13px;
-
-            display: none;
-
-        }
-
-
-        .message.show {
-
-            display: block;
-
-        }
-
-
-        .message.error {
-
-            background: #fff0f0;
-
-            color: #b00020;
-
-        }
-
-
-        .message.success {
-
-            background: #edf7ef;
-
-            color: #087f3e;
-
-        }
-
-
-        .loading {
-
-            opacity: 0.7;
-
-            pointer-events: none;
-
-        }
-
-
-        .subscription-page {
-
-            width: 100%;
-
-            max-width: 600px;
-
-            margin: auto;
-
-            padding: 20px;
-
-        }
-
-
-        .subscription-box {
-
-            background: white;
-
-            border-radius: 20px;
-
-            padding: 25px;
-
-            border:
-                1px solid #e0e5e2;
-
-        }
-
-
-        .subscription-plan {
-
-            border:
-                1px solid #e1e7e3;
-
-            padding: 18px;
-
-            border-radius: 15px;
-
-            margin: 15px 0;
-
-        }
-
-
-        .subscription-plan h3 {
-
-            margin-top: 0;
-
-        }
-
-
-        .subscription-plan button {
-
-            border: none;
-
-            background: #087f3e;
-
-            color: white;
-
-            border-radius: 20px;
-
-            padding: 11px 18px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-        }
-
-        .terms-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin: 18px 0 16px;
-            font-size: 14px;
-            color: #2d3d35;
-        }
-
-        .terms-row input {
-            margin-top: 3px;
-            width: 18px;
-            height: 18px;
-            accent-color: #087f3e;
-        }
-
-        .terms-link {
-            border: none;
-            background: transparent;
-            color: #087f3e;
-            font-weight: 700;
-            cursor: pointer;
-            padding: 0;
-            text-decoration: underline;
-        }
-
-        .terms-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(16, 24, 20, 0.55);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            z-index: 1000;
-        }
-
-        .terms-modal.hidden {
-            display: none;
-        }
-
-        .terms-modal-content {
-            background: #fff;
-            width: min(700px, 100%);
-            max-height: 85vh;
-            border-radius: 18px;
-            padding: 24px 22px 18px;
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-        }
-
-        .terms-modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .terms-modal-header h2 {
-            margin: 0;
-            color: #087f3e;
-        }
-
-        .modal-close {
-            border: 0;
-            background: #edf7ef;
-            color: #087f3e;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            font-size: 22px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .terms-scroll {
-            max-height: 60vh;
-            overflow: auto;
-            padding-right: 6px;
-            line-height: 1.55;
-            color: #1d2d27;
-        }
-
-        .terms-scroll h3 {
-            margin: 18px 0 8px;
-            color: #087f3e;
-            font-size: 17px;
-        }
-
-        .terms-scroll p,
-        .terms-scroll li {
-            font-size: 14px;
-        }
-
-        @media (max-width: 500px) {
-
-            .student-page {
-
-                padding: 12px;
-
-            }
-
-
-            .student-box {
-
-                padding: 22px;
-
-            }
-
-        }
-
-    </style>
+</style>
 
 <link rel="stylesheet" href="redesign.css">
-</head>
+```
 
+</head>
 
 <body>
 
-
 <div class="student-page" id="studentPage">
 
+```
+<!-- LOGIN -->
 
-    <!-- LOGIN -->
+<div
+    class="student-box"
+    id="loginBox"
+>
 
-    <div
-        class="student-box"
-        id="loginBox"
+    <h1>
+        JAMB CBT
+    </h1>
+
+    <p>
+        Login to continue to your student dashboard.
+    </p>
+
+    <form
+        class="student-form"
+        id="loginForm"
     >
 
-        <h1>
-            JAMB CBT
-        </h1>
+        <div class="form-group">
 
+            <label for="loginEmail">
+                Email
+            </label>
 
-        <p>
-            Login to continue to your student dashboard.
-        </p>
+            <input
+                type="email"
+                id="loginEmail"
+                required
+            >
 
+        </div>
 
-        <form
-            class="student-form"
-            id="loginForm"
-        >
+        <div class="form-group">
 
-            <div class="form-group">
+            <label for="loginPassword">
+                Password
+            </label>
 
-                <label for="loginEmail">
-                    Email
-                </label>
+            <input
+                type="password"
+                id="loginPassword"
+                required
+            >
 
-                <input
-                    type="email"
-                    id="loginEmail"
-                    required
-                >
+        </div>
 
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="loginPassword">
-                    Password
-                </label>
-
-                <input
-                    type="password"
-                    id="loginPassword"
-                    required
-                >
-
-            </div>
-
-
-            <div style="text-align:right;margin:-4px 0 14px;">
-                <button type="button" onclick="showForgotPassword()" style="border:0;background:none;color:#087f3e;font-weight:700;cursor:pointer;padding:4px 0;">Forgot Password?</button>
-            </div>
+        <div style="text-align:right;margin:-4px 0 14px;">
 
             <button
-                type="submit"
-                class="primary-button"
+                type="button"
+                onclick="showForgotPassword()"
+                style="border:0;background:none;color:#087f3e;font-weight:700;cursor:pointer;padding:4px 0;"
             >
-                Login
+                Forgot Password?
             </button>
 
-        </form>
-
+        </div>
 
         <button
-            type="button"
-            class="secondary-button"
-            onclick="showRegister()"
+            type="submit"
+            class="primary-button"
+        >
+            Login
+        </button>
+
+    </form>
+
+    <button
+        type="button"
+        class="secondary-button"
+        onclick="showRegister()"
+    >
+        Create Account
+    </button>
+
+    <div
+        id="loginMessage"
+        class="message"
+    ></div>
+
+</div>
+
+<!-- FORGOT PASSWORD -->
+
+<div
+    class="student-box hidden"
+    id="forgotPasswordBox"
+>
+
+    <h1>
+        Forgot Password?
+    </h1>
+
+    <p>
+        Enter your account email and we will send you a password reset link.
+    </p>
+
+    <form
+        class="student-form"
+        id="forgotPasswordForm"
+    >
+
+        <div class="form-group">
+
+            <label for="forgotEmail">
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="forgotEmail"
+                required
+                autocomplete="email"
+            >
+
+        </div>
+
+        <button
+            type="submit"
+            class="primary-button"
+            id="forgotPasswordButton"
+        >
+            Send Reset Link
+        </button>
+
+    </form>
+
+    <button
+        type="button"
+        class="secondary-button"
+        onclick="showLogin()"
+    >
+        Back to Login
+    </button>
+
+    <div
+        id="forgotPasswordMessage"
+        class="message"
+    ></div>
+
+</div>
+
+<!-- RESET PASSWORD -->
+
+<div
+    class="student-box hidden"
+    id="resetPasswordBox"
+>
+
+    <h1>
+        Create New Password
+    </h1>
+
+    <p>
+        Enter your new password below.
+    </p>
+
+    <form
+        class="student-form"
+        id="resetPasswordForm"
+    >
+
+        <div class="form-group">
+
+            <label for="newPassword">
+                New Password
+            </label>
+
+            <input
+                type="password"
+                id="newPassword"
+                minlength="6"
+                required
+                autocomplete="new-password"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="confirmNewPassword">
+                Confirm New Password
+            </label>
+
+            <input
+                type="password"
+                id="confirmNewPassword"
+                minlength="6"
+                required
+                autocomplete="new-password"
+            >
+
+        </div>
+
+        <button
+            type="submit"
+            class="primary-button"
+            id="resetPasswordButton"
+        >
+            Update Password
+        </button>
+
+    </form>
+
+    <div
+        id="resetPasswordMessage"
+        class="message"
+    ></div>
+
+</div>
+
+<!-- REGISTER -->
+
+<div
+    class="student-box hidden"
+    id="registerBox"
+>
+
+    <h1>
+        Create Account
+    </h1>
+
+    <p>
+        Create your JAMB CBT student account.
+    </p>
+
+    <form
+        class="student-form"
+        id="registerForm"
+    >
+
+        <div class="form-group">
+
+            <label for="registerName">
+                Full Name
+            </label>
+
+            <input
+                type="text"
+                id="registerName"
+                required
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="registerUsername">
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="registerUsername"
+                required
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="registerEmail">
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="registerEmail"
+                required
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="registerPassword">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="registerPassword"
+                minlength="6"
+                required
+            >
+
+        </div>
+
+        <div class="terms-row">
+
+            <input
+                type="checkbox"
+                id="termsAgreement"
+                required
+            >
+
+            <label for="termsAgreement">
+
+                I agree to the
+
+                <button
+                    type="button"
+                    class="terms-link"
+                    onclick="openTermsModal()"
+                >
+                    Terms &amp; Policies
+                </button>
+
+            </label>
+
+        </div>
+
+        <button
+            type="submit"
+            class="primary-button"
         >
             Create Account
         </button>
 
+    </form>
 
-        <div
-            id="loginMessage"
-            class="message"
-        ></div>
-
-    </div>
-
-
-
-    <!-- FORGOT PASSWORD -->
-    <div class="student-box hidden" id="forgotPasswordBox">
-        <h1>Forgot Password?</h1>
-        <p>Enter your account email and we will send you a password reset link.</p>
-        <form class="student-form" id="forgotPasswordForm">
-            <div class="form-group">
-                <label for="forgotEmail">Email</label>
-                <input type="email" id="forgotEmail" required autocomplete="email">
-            </div>
-            <button type="submit" class="primary-button" id="forgotPasswordButton">Send Reset Link</button>
-        </form>
-        <button type="button" class="secondary-button" onclick="showLogin()">Back to Login</button>
-        <div id="forgotPasswordMessage" class="message"></div>
-    </div>
-
-    <!-- RESET PASSWORD -->
-    <div class="student-box hidden" id="resetPasswordBox">
-        <h1>Create New Password</h1>
-        <p>Enter your new password below.</p>
-        <form class="student-form" id="resetPasswordForm">
-            <div class="form-group"><label for="newPassword">New Password</label><input type="password" id="newPassword" minlength="6" required autocomplete="new-password"></div>
-            <div class="form-group"><label for="confirmNewPassword">Confirm New Password</label><input type="password" id="confirmNewPassword" minlength="6" required autocomplete="new-password"></div>
-            <button type="submit" class="primary-button" id="resetPasswordButton">Update Password</button>
-        </form>
-        <div id="resetPasswordMessage" class="message"></div>
-    </div>
-
-    <!-- REGISTER -->
+    <button
+        type="button"
+        class="secondary-button"
+        onclick="showLogin()"
+    >
+        Back to Login
+    </button>
 
     <div
-        class="student-box hidden"
-        id="registerBox"
-    >
+        id="registerMessage"
+        class="message"
+    ></div>
 
-        <h1>
-            Create Account
-        </h1>
+</div>
+```
 
+</div>
 
-        <p>
-            Create your JAMB CBT student account.
-        </p>
+<!-- TERMS MODAL -->
 
+<div
+    id="termsModal"
+    class="terms-modal hidden"
+    aria-modal="true"
+    role="dialog"
+    aria-labelledby="termsTitle"
+>
 
-        <form
-            class="student-form"
-            id="registerForm"
-        >
+```
+<div class="terms-modal-content">
 
-            <div class="form-group">
+    <div class="terms-modal-header">
 
-                <label for="registerName">
-                    Full Name
-                </label>
-
-                <input
-                    type="text"
-                    id="registerName"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="registerUsername">
-                    Username
-                </label>
-
-                <input
-                    type="text"
-                    id="registerUsername"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="registerEmail">
-                    Email
-                </label>
-
-                <input
-                    type="email"
-                    id="registerEmail"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="registerPassword">
-                    Password
-                </label>
-
-                <input
-                    type="password"
-                    id="registerPassword"
-                    minlength="6"
-                    required
-                >
-
-            </div>
-
-            <div class="terms-row">
-                <input type="checkbox" id="termsAgreement" required>
-                <label for="termsAgreement">
-                    I agree to the <button type="button" class="terms-link" onclick="openTermsModal()">Terms &amp; Policies</button>
-                </label>
-            </div>
-
-            <button
-                type="submit"
-                class="primary-button"
-            >
-                Create Account
-            </button>
-
-        </form>
-
+        <h2 id="termsTitle">
+            Terms &amp; Policies
+        </h2>
 
         <button
             type="button"
-            class="secondary-button"
-            onclick="showLogin()"
+            class="modal-close"
+            aria-label="Close Terms & Policies"
+            onclick="closeTermsModal()"
         >
-            Back to Login
+            ×
         </button>
 
+    </div>
 
-        <div
-            id="registerMessage"
-            class="message"
-        ></div>
+    <div class="terms-scroll">
+
+        <h3>
+            Terms of Use
+        </h3>
+
+        <p>
+            By using JAMB CBT, you agree to use the platform responsibly, study honestly, and follow the rules for all practice and exam activities. You must not misuse the site, attempt to bypass access controls, or share your account with others.
+        </p>
+
+        <h3>
+            Privacy
+        </h3>
+
+        <p>
+            We collect the information needed to create and manage your student account, track your progress, and provide access to learning features. Your data is used only for the services available on the platform and is not shared publicly.
+        </p>
+
+        <h3>
+            Payments &amp; Subscription
+        </h3>
+
+        <p>
+            Premium access is available only through the platform’s subscription flow. You are responsible for keeping your payment details accurate and for reviewing your subscription status before using premium features.
+        </p>
+
+        <h3>
+            Content &amp; Copyright
+        </h3>
+
+        <p>
+            Study content, question materials, explanations, and platform materials are provided for educational use. Do not copy, redistribute, or share the platform content outside of your personal learning use.
+        </p>
+
+        <h3>
+            Account &amp; Security
+        </h3>
+
+        <p>
+            You are responsible for your login details and for keeping your account secure. Do not share your password, and notify support immediately if you suspect unauthorized access.
+        </p>
+
+        <h3>
+            Changes to the Terms
+        </h3>
+
+        <p>
+            We may update these terms to improve the platform, improve security, or reflect new services. Continued use of the platform means you accept any updated terms.
+        </p>
+
+        <h3>
+            Contact
+        </h3>
+
+        <p>
+            If you need help, contact support at igbawuaandrew3@gmail.com or through the WhatsApp number available in the Support section.
+        </p>
 
     </div>
 
 </div>
+```
 
-<div id="termsModal" class="terms-modal hidden" aria-modal="true" role="dialog" aria-labelledby="termsTitle">
-    <div class="terms-modal-content">
-        <div class="terms-modal-header">
-            <h2 id="termsTitle">Terms &amp; Policies</h2>
-            <button type="button" class="modal-close" aria-label="Close Terms & Policies" onclick="closeTermsModal()">×</button>
-        </div>
-
-        <div class="terms-scroll">
-            <h3>Terms of Use</h3>
-            <p>By using JAMB CBT, you agree to use the platform responsibly, study honestly, and follow the rules for all practice and exam activities. You must not misuse the site, attempt to bypass access controls, or share your account with others.</p>
-
-            <h3>Privacy</h3>
-            <p>We collect the information needed to create and manage your student account, track your progress, and provide access to learning features. Your data is used only for the services available on the platform and is not shared publicly.</p>
-
-            <h3>Payments &amp; Subscription</h3>
-            <p>Premium access is available only through the platform’s subscription flow. You are responsible for keeping your payment details accurate and for reviewing your subscription status before using premium features.</p>
-
-            <h3>Content &amp; Copyright</h3>
-            <p>Study content, question materials, explanations, and platform materials are provided for educational use. Do not copy, redistribute, or share the platform content outside of your personal learning use.</p>
-
-            <h3>Account &amp; Security</h3>
-            <p>You are responsible for your login details and for keeping your account secure. Do not share your password, and notify support immediately if you suspect unauthorized access.</p>
-
-            <h3>Changes to the Terms</h3>
-            <p>We may update these terms to improve the platform, improve security, or reflect new services. Continued use of the platform means you accept any updated terms.</p>
-
-            <h3>Contact</h3>
-            <p>If you need help, contact support at igbawuaandrew3@gmail.com or through the WhatsApp number available in the Support section.</p>
-        </div>
-    </div>
 </div>
 
 <script>
-
 
 /* ========================================
    SUPABASE CONFIGURATION
@@ -718,8 +744,7 @@ const SUPABASE_URL =
     "https://afdnfqmsjmpwlvhloopy.supabase.co";
 
 const SUPABASE_ANON_KEY =
-       "sb_publishable_LQlMraaULDTdAKeYysPWkA_a8CKvA1V";
-
+    "sb_publishable_LQlMraaULDTdAKeYysPWkA_a8CKvA1V";
 
 const supabaseClient =
     window.supabase.createClient(
@@ -756,17 +781,12 @@ function showMessage(
             elementId
         );
 
-
     if (!element) {
-
         return;
-
     }
-
 
     element.textContent =
         message;
-
 
     element.className =
         "message show " +
@@ -780,105 +800,443 @@ function showMessage(
 ======================================== */
 
 function hideStudentBoxes() {
-    ["loginBox","registerBox","forgotPasswordBox","resetPasswordBox"].forEach(id => document.getElementById(id)?.classList.add("hidden"));
+
+    [
+        "loginBox",
+        "registerBox",
+        "forgotPasswordBox",
+        "resetPasswordBox"
+    ].forEach(id => {
+
+        document
+            .getElementById(id)
+            ?.classList
+            .add("hidden");
+
+    });
+
 }
+
 
 function showLogin() {
+
     hideStudentBoxes();
-    document.getElementById("loginBox")?.classList.remove("hidden");
+
+    document
+        .getElementById("loginBox")
+        ?.classList
+        .remove("hidden");
+
 }
 
+
 function showForgotPassword() {
+
     hideStudentBoxes();
-    document.getElementById("forgotPasswordBox")?.classList.remove("hidden");
-    const email=document.getElementById("loginEmail")?.value?.trim()||"";
-    if(email) document.getElementById("forgotEmail").value=email;
+
+    document
+        .getElementById("forgotPasswordBox")
+        ?.classList
+        .remove("hidden");
+
+    const email =
+        document
+            .getElementById("loginEmail")
+            ?.value
+            ?.trim() ||
+        "";
+
+    if (email) {
+
+        document
+            .getElementById("forgotEmail")
+            .value =
+            email;
+
+    }
+
 }
+
 
 /* ========================================
    SHOW REGISTER
 ======================================== */
 
 function showRegister() {
+
     hideStudentBoxes();
-    document.getElementById("registerBox")?.classList.remove("hidden");
+
+    document
+        .getElementById("registerBox")
+        ?.classList
+        .remove("hidden");
+
 }
+
 
 function openTermsModal() {
-   const modal = document.getElementById("termsModal");
-   if (!modal) return;
-   modal.classList.remove("hidden");
+
+    const modal =
+        document.getElementById(
+            "termsModal"
+        );
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.remove(
+        "hidden"
+    );
+
 }
+
 
 function closeTermsModal() {
-   const modal = document.getElementById("termsModal");
-   if (!modal) return;
-   modal.classList.add("hidden");
+
+    const modal =
+        document.getElementById(
+            "termsModal"
+        );
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.add(
+        "hidden"
+    );
+
 }
 
-document.getElementById("termsModal")?.addEventListener("click", function(event) {
-   if (event.target === event.currentTarget) {
-       closeTermsModal();
-   }
-});
 
-document.addEventListener("keydown", function(event) {
-   if (event.key === "Escape") {
-       closeTermsModal();
-   }
-});
+document
+    .getElementById("termsModal")
+    ?.addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                event.currentTarget
+            ) {
+
+                closeTermsModal();
+
+            }
+
+        }
+    );
+
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            closeTermsModal();
+
+        }
+
+    }
+);
+
 
 /* ========================================
    FORGOT PASSWORD / RESET PASSWORD
 ======================================== */
+
 async function checkPasswordRecovery() {
-    const isRecovery = (window.location.hash || "").includes("type=recovery") || (window.location.search || "").includes("type=recovery");
-    if (!isRecovery) return false;
-    const { data, error } = await supabaseClient.auth.getSession();
-    if (error || !data?.session) {
-        showLogin();
-        showMessage("loginMessage", "This password reset link is invalid or expired. Please request a new one.", "error");
-        return true;
+
+    const isRecovery =
+        (
+            window.location.hash ||
+            ""
+        ).includes(
+            "type=recovery"
+        ) ||
+        (
+            window.location.search ||
+            ""
+        ).includes(
+            "type=recovery"
+        );
+
+    if (!isRecovery) {
+        return false;
     }
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .auth
+            .getSession();
+
+    if (
+        error ||
+        !data?.session
+    ) {
+
+        showLogin();
+
+        showMessage(
+            "loginMessage",
+            "This password reset link is invalid or expired. Please request a new one.",
+            "error"
+        );
+
+        return true;
+
+    }
+
     hideStudentBoxes();
-    document.getElementById("resetPasswordBox")?.classList.remove("hidden");
+
+    document
+        .getElementById(
+            "resetPasswordBox"
+        )
+        ?.classList
+        .remove("hidden");
+
     return true;
+
 }
 
-document.getElementById("forgotPasswordForm")?.addEventListener("submit", async e => {
-    e.preventDefault();
-    const email=document.getElementById("forgotEmail").value.trim();
-    const btn=document.getElementById("forgotPasswordButton");
-    btn.disabled=true; btn.textContent="Sending...";
-    try {
-        const redirectTo=window.location.origin+window.location.pathname;
-        const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo});
-        if(error) throw error;
-        showMessage("forgotPasswordMessage","Reset link sent. Check your email and open the link to continue.","success");
-    } catch(error) {
-        showMessage("forgotPasswordMessage",error.message||"Could not send reset link.","error");
-    } finally { btn.disabled=false; btn.textContent="Send Reset Link"; }
-});
 
-document.getElementById("resetPasswordForm")?.addEventListener("submit", async e => {
-    e.preventDefault();
-    const password=document.getElementById("newPassword").value;
-    const confirm=document.getElementById("confirmNewPassword").value;
-    const btn=document.getElementById("resetPasswordButton");
-    if(password.length<6) return showMessage("resetPasswordMessage","Password must be at least 6 characters.","error");
-    if(password!==confirm) return showMessage("resetPasswordMessage","The passwords do not match.","error");
-    btn.disabled=true; btn.textContent="Updating...";
-    try {
-        const {data}=await supabaseClient.auth.getSession();
-        if(!data?.session) throw new Error("Reset session is missing or expired. Request a new reset link.");
-        const {error}=await supabaseClient.auth.updateUser({password});
-        if(error) throw error;
-        showMessage("resetPasswordMessage","Password updated successfully. You can now log in.","success");
-        setTimeout(()=>{ showLogin(); showMessage("loginMessage","Password updated successfully. Please log in.","success"); },1200);
-    } catch(error) {
-        showMessage("resetPasswordMessage",error.message||"Could not update password.","error");
-    } finally { btn.disabled=false; btn.textContent="Update Password"; }
-});
+document
+    .getElementById(
+        "forgotPasswordForm"
+    )
+    ?.addEventListener(
+        "submit",
+        async e => {
+
+            e.preventDefault();
+
+            const email =
+                document
+                    .getElementById(
+                        "forgotEmail"
+                    )
+                    .value
+                    .trim();
+
+            const btn =
+                document.getElementById(
+                    "forgotPasswordButton"
+                );
+
+            btn.disabled = true;
+
+            btn.textContent =
+                "Sending...";
+
+            try {
+
+                const redirectTo =
+                    window.location.origin +
+                    window.location.pathname;
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .auth
+                        .resetPasswordForEmail(
+                            email,
+                            {
+                                redirectTo
+                            }
+                        );
+
+                if (error) {
+                    throw error;
+                }
+
+                showMessage(
+                    "forgotPasswordMessage",
+                    "Reset link sent. Check your email and open the link to continue.",
+                    "success"
+                );
+
+            }
+
+            catch (error) {
+
+                showMessage(
+                    "forgotPasswordMessage",
+                    error.message ||
+                    "Could not send reset link.",
+                    "error"
+                );
+
+            }
+
+            finally {
+
+                btn.disabled =
+                    false;
+
+                btn.textContent =
+                    "Send Reset Link";
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "resetPasswordForm"
+    )
+    ?.addEventListener(
+        "submit",
+        async e => {
+
+            e.preventDefault();
+
+            const password =
+                document
+                    .getElementById(
+                        "newPassword"
+                    )
+                    .value;
+
+            const confirm =
+                document
+                    .getElementById(
+                        "confirmNewPassword"
+                    )
+                    .value;
+
+            const btn =
+                document.getElementById(
+                    "resetPasswordButton"
+                );
+
+            if (
+                password.length <
+                6
+            ) {
+
+                showMessage(
+                    "resetPasswordMessage",
+                    "Password must be at least 6 characters.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+            if (
+                password !==
+                confirm
+            ) {
+
+                showMessage(
+                    "resetPasswordMessage",
+                    "The passwords do not match.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+            btn.disabled = true;
+
+            btn.textContent =
+                "Updating...";
+
+            try {
+
+                const {
+                    data
+                } =
+                    await supabaseClient
+                        .auth
+                        .getSession();
+
+                if (
+                    !data?.session
+                ) {
+
+                    throw new Error(
+                        "Reset session is missing or expired. Request a new reset link."
+                    );
+
+                }
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .auth
+                        .updateUser(
+                            {
+                                password
+                            }
+                        );
+
+                if (error) {
+                    throw error;
+                }
+
+                showMessage(
+                    "resetPasswordMessage",
+                    "Password updated successfully. You can now log in.",
+                    "success"
+                );
+
+                setTimeout(
+                    () => {
+
+                        showLogin();
+
+                        showMessage(
+                            "loginMessage",
+                            "Password updated successfully. Please log in.",
+                            "success"
+                        );
+
+                    },
+                    1200
+                );
+
+            }
+
+            catch (error) {
+
+                showMessage(
+                    "resetPasswordMessage",
+                    error.message ||
+                    "Could not update password.",
+                    "error"
+                );
+
+            }
+
+            finally {
+
+                btn.disabled =
+                    false;
+
+                btn.textContent =
+                    "Update Password";
+
+            }
+
+        }
+    );
+
 
 /* ========================================
    SAVE STUDENT PROFILE
@@ -894,18 +1252,36 @@ async function saveStudentProfile(
     try {
 
         if (!user?.id) {
-            console.log("Profile save skipped: missing user ID.");
+
+            console.log(
+                "Profile save skipped: missing user ID."
+            );
+
             return false;
+
         }
 
         const {
             data: sessionData,
             error: sessionError
-        } = await supabaseClient.auth.getSession();
+        } =
+            await supabaseClient
+                .auth
+                .getSession();
 
-        if (sessionError || !sessionData?.session || sessionData.session.user.id !== user.id) {
-            console.log("Profile save skipped until the user has an authenticated session.");
+        if (
+            sessionError ||
+            !sessionData?.session ||
+            sessionData.session.user.id !==
+            user.id
+        ) {
+
+            console.log(
+                "Profile save skipped until the user has an authenticated session."
+            );
+
             return false;
+
         }
 
         const {
@@ -934,7 +1310,6 @@ async function saveStudentProfile(
                     }
                 );
 
-
         if (error) {
 
             console.log(
@@ -945,7 +1320,6 @@ async function saveStudentProfile(
             return false;
 
         }
-
 
         return true;
 
@@ -977,7 +1351,6 @@ document
 
             event.preventDefault();
 
-
             const email =
                 document
                     .getElementById(
@@ -986,14 +1359,12 @@ document
                     .value
                     .trim();
 
-
             const password =
                 document
                     .getElementById(
                         "loginPassword"
                     )
                     .value;
-
 
             try {
 
@@ -1003,21 +1374,18 @@ document
                     "success"
                 );
 
-
                 const {
                     data,
                     error
                 } =
-                    await supabaseClient.auth.signInWithPassword(
-                        {
-                            email:
+                    await supabaseClient
+                        .auth
+                        .signInWithPassword(
+                            {
                                 email,
-
-                            password:
                                 password
-                        }
-                    );
-
+                            }
+                        );
 
                 if (error) {
 
@@ -1031,7 +1399,6 @@ document
 
                 }
 
-
                 if (!data.user) {
 
                     showMessage(
@@ -1044,11 +1411,9 @@ document
 
                 }
 
-
                 await loadStudentProfile(
                     data.user
                 );
-
 
                 window.location.href =
                     "dashboard.html";
@@ -1061,7 +1426,6 @@ document
                     "Login error:",
                     error
                 );
-
 
                 showMessage(
                     "loginMessage",
@@ -1088,7 +1452,6 @@ document
 
             event.preventDefault();
 
-
             const fullName =
                 document
                     .getElementById(
@@ -1096,7 +1459,6 @@ document
                     )
                     .value
                     .trim();
-
 
             const username =
                 document
@@ -1106,7 +1468,6 @@ document
                     .value
                     .trim();
 
-
             const email =
                 document
                     .getElementById(
@@ -1114,7 +1475,6 @@ document
                     )
                     .value
                     .trim();
-
 
             const password =
                 document
@@ -1131,13 +1491,21 @@ document
                     .checked;
 
             if (!termsChecked) {
+
                 showMessage(
                     "registerMessage",
                     "Please agree to the Terms & Policies before creating your account.",
                     "error"
                 );
-                document.getElementById("termsAgreement")?.focus();
+
+                document
+                    .getElementById(
+                        "termsAgreement"
+                    )
+                    ?.focus();
+
                 return;
+
             }
 
             try {
@@ -1148,36 +1516,33 @@ document
                     "success"
                 );
 
-
                 const {
                     data,
                     error
                 } =
-                    await supabaseClient.auth.signUp(
-                        {
-                            email:
+                    await supabaseClient
+                        .auth
+                        .signUp(
+                            {
                                 email,
-
-                            password:
                                 password,
 
-                            options: {
+                                options: {
 
-                                data: {
+                                    data: {
 
-                                    full_name:
-                                        fullName,
+                                        full_name:
+                                            fullName,
 
-                                    username:
-                                        username
+                                        username:
+                                            username
+
+                                    }
 
                                 }
 
                             }
-
-                        }
-                    );
-
+                        );
 
                 if (error) {
 
@@ -1191,7 +1556,6 @@ document
 
                 }
 
-
                 if (!data.user) {
 
                     showMessage(
@@ -1204,8 +1568,8 @@ document
 
                 }
 
-
                 if (data.session) {
+
                     const saved =
                         await saveStudentProfile(
                             data.user,
@@ -1215,22 +1579,38 @@ document
                         );
 
                     if (!saved) {
+
                         showMessage(
                             "registerMessage",
                             "Account created, but the profile could not be saved. Please sign in once your account is confirmed and try again.",
                             "error"
                         );
+
                         return;
+
                     }
 
-                    studentName = fullName;
-                    studentUsername = username;
+                    studentName =
+                        fullName;
 
-                    localStorage.setItem("studentName", studentName);
-                    localStorage.setItem("studentUsername", studentUsername);
+                    studentUsername =
+                        username;
 
-                    window.location.href = "dashboard.html";
+                    localStorage.setItem(
+                        "studentName",
+                        studentName
+                    );
+
+                    localStorage.setItem(
+                        "studentUsername",
+                        studentUsername
+                    );
+
+                    window.location.href =
+                        "dashboard.html";
+
                     return;
+
                 }
 
                 showMessage(
@@ -1238,7 +1618,6 @@ document
                     "Account created successfully. Please check your email to confirm your account, then login.",
                     "success"
                 );
-
 
             }
 
@@ -1248,7 +1627,6 @@ document
                     "Registration error:",
                     error
                 );
-
 
                 showMessage(
                     "registerMessage",
@@ -1267,7 +1645,9 @@ document
    LOAD STUDENT PROFILE
 ======================================== */
 
-async function loadStudentProfile(user) {
+async function loadStudentProfile(
+    user
+) {
 
     try {
 
@@ -1284,7 +1664,6 @@ async function loadStudentProfile(user) {
                 )
                 .maybeSingle();
 
-
         if (error) {
 
             console.log(
@@ -1294,14 +1673,12 @@ async function loadStudentProfile(user) {
 
         }
 
-
         if (!profile) {
 
             const fullName =
                 user.user_metadata?.full_name ||
                 user.email ||
                 "Student";
-
 
             const username =
                 user.user_metadata?.username ||
@@ -1311,14 +1688,12 @@ async function loadStudentProfile(user) {
                         : "student"
                 );
 
-
             await saveStudentProfile(
                 user,
                 fullName,
                 username,
                 user.email
             );
-
 
             profile = {
 
@@ -1335,13 +1710,11 @@ async function loadStudentProfile(user) {
 
         }
 
-
         studentName =
             profile.Full_name ||
             user.user_metadata?.full_name ||
             user.email ||
             "Student";
-
 
         studentUsername =
             profile.Username ||
@@ -1352,18 +1725,15 @@ async function loadStudentProfile(user) {
                     : "student"
             );
 
-
         localStorage.setItem(
             "studentName",
             studentName
         );
 
-
         localStorage.setItem(
             "studentUsername",
             studentUsername
         );
-
 
     }
 
@@ -1376,7 +1746,10 @@ async function loadStudentProfile(user) {
 
     }
 
-}/* ========================================
+}
+
+
+/* ========================================
    LOAD SUBSCRIPTION STATUS
 ======================================== */
 
@@ -1388,35 +1761,27 @@ async function loadSubscriptionStatus() {
             data: sessionData,
             error: sessionError
         } =
-            await supabaseClient.auth.getSession();
-
+            await supabaseClient
+                .auth
+                .getSession();
 
         if (
             sessionError ||
             !sessionData.session
         ) {
 
-            subscribed = false;
+            subscribed =
+                false;
 
-            subscriptionDate = null;
+            subscriptionDate =
+                null;
 
             return false;
 
         }
 
-
         const user =
             sessionData.session.user;
-
-
-        /*
-         * IMPORTANT:
-         * This reads the Subscription table.
-         *
-         * Keep the table/column names the
-         * same as the ones already working
-         * in your Supabase project.
-         */
 
         const {
             data: subscription,
@@ -1431,7 +1796,6 @@ async function loadSubscriptionStatus() {
                 )
                 .maybeSingle();
 
-
         if (error) {
 
             console.log(
@@ -1439,20 +1803,23 @@ async function loadSubscriptionStatus() {
                 error
             );
 
-            subscribed = false;
+            subscribed =
+                false;
 
-            subscriptionDate = null;
+            subscriptionDate =
+                null;
 
             return false;
 
         }
 
-
         if (!subscription) {
 
-            subscribed = false;
+            subscribed =
+                false;
 
-            subscriptionDate = null;
+            subscriptionDate =
+                null;
 
             localStorage.removeItem(
                 "studentSubscribed"
@@ -1462,17 +1829,11 @@ async function loadSubscriptionStatus() {
 
         }
 
-
-        /*
-         * Check possible subscription status.
-         */
-
         const status =
             String(
                 subscription.status ||
                 ""
             ).toLowerCase();
-
 
         const expiresAt =
             subscription.expires_at ||
@@ -1480,21 +1841,18 @@ async function loadSubscriptionStatus() {
             subscription.expiration_date ||
             null;
 
+        let isActive =
+            false;
 
-        let isActive = false;
+        if (
+            status === "active" ||
+            status === "subscribed"
+        ) {
 
-
-        if (status === "active" || status === "subscribed") {
-
-            isActive = true;
+            isActive =
+                true;
 
         }
-
-
-        /*
-         * If an expiry date exists,
-         * make sure it has not expired.
-         */
 
         if (expiresAt) {
 
@@ -1502,7 +1860,6 @@ async function loadSubscriptionStatus() {
                 new Date(
                     expiresAt
                 ).getTime();
-
 
             if (
                 !Number.isNaN(
@@ -1515,7 +1872,8 @@ async function loadSubscriptionStatus() {
                     Date.now()
                 ) {
 
-                    isActive = false;
+                    isActive =
+                        false;
 
                 }
 
@@ -1523,14 +1881,11 @@ async function loadSubscriptionStatus() {
 
         }
 
-
         subscribed =
             isActive;
 
-
         subscriptionDate =
             expiresAt;
-
 
         if (subscribed) {
 
@@ -1549,7 +1904,6 @@ async function loadSubscriptionStatus() {
 
         }
 
-
         return subscribed;
 
     }
@@ -1561,17 +1915,17 @@ async function loadSubscriptionStatus() {
             error
         );
 
+        subscribed =
+            false;
 
-        subscribed = false;
-
-        subscriptionDate = null;
+        subscriptionDate =
+            null;
 
         return false;
 
     }
 
 }
-
 
 
 /* ========================================
@@ -1585,13 +1939,9 @@ function showSubscription() {
             "studentPage"
         );
 
-
     if (!studentPage) {
-
         return;
-
     }
-
 
     studentPage.innerHTML = `
 
@@ -1603,13 +1953,9 @@ function showSubscription() {
                     Practice Subscription
                 </h2>
 
-
                 <p>
                     Choose your subscription plan.
                 </p>
-
-
-                <!-- 30 DAYS -->
 
                 <div class="subscription-plan">
 
@@ -1617,11 +1963,9 @@ function showSubscription() {
                         30 Days
                     </h3>
 
-
                     <p>
                         ₦1,500 for 30 days
                     </p>
-
 
                     <button
                         type="button"
@@ -1632,20 +1976,15 @@ function showSubscription() {
 
                 </div>
 
-
-                <!-- 1 YEAR -->
-
                 <div class="subscription-plan">
 
                     <h3>
                         1 Year
                     </h3>
 
-
                     <p>
                         ₦4,000 for 1 year — unlimited CBT practice
                     </p>
-
 
                     <button
                         type="button"
@@ -1655,7 +1994,6 @@ function showSubscription() {
                     </button>
 
                 </div>
-
 
                 <button
                     type="button"
@@ -1674,7 +2012,6 @@ function showSubscription() {
 }
 
 
-
 /* ========================================
    RETURN TO DASHBOARD
 ======================================== */
@@ -1685,7 +2022,6 @@ function returnToDashboard() {
         "dashboard.html";
 
 }
-
 
 
 /* ========================================
@@ -1702,7 +2038,6 @@ function payFor30Days() {
 }
 
 
-
 /* ========================================
    PAY FOR 1 YEAR
 ======================================== */
@@ -1717,7 +2052,6 @@ function payFor1Year() {
 }
 
 
-
 /* ========================================
    START FREE PRACTICE
 ======================================== */
@@ -1729,17 +2063,14 @@ function startFreePractice() {
         "true"
     );
 
-
     localStorage.removeItem(
         "studentPractice"
     );
-
 
     window.location.href =
         "subject.html";
 
 }
-
 
 
 /* ========================================
@@ -1751,13 +2082,11 @@ async function startPractice() {
     const isSubscribed =
         await loadSubscriptionStatus();
 
-
     if (!isSubscribed) {
 
         alert(
             "Your full practice subscription is not active. You can still use the 10 free questions."
         );
-
 
         showSubscription();
 
@@ -1765,29 +2094,24 @@ async function startPractice() {
 
     }
 
-
     localStorage.setItem(
         "studentPractice",
         "true"
     );
 
-
     localStorage.removeItem(
         "freePractice"
     );
-
 
     localStorage.setItem(
         "studentSubscribed",
         "true"
     );
 
-
     window.location.href =
         "subject.html";
 
 }
-
 
 
 /* ========================================
@@ -1801,21 +2125,18 @@ async function logout() {
             "Are you sure you want to logout?"
         );
 
-
     if (!confirmLogout) {
-
         return;
-
     }
-
 
     try {
 
         const {
             error
         } =
-            await supabaseClient.auth.signOut();
-
+            await supabaseClient
+                .auth
+                .signOut();
 
         if (error) {
 
@@ -1837,53 +2158,42 @@ async function logout() {
 
     }
 
-
     localStorage.removeItem(
         "studentName"
     );
-
 
     localStorage.removeItem(
         "studentUsername"
     );
 
-
     localStorage.removeItem(
         "studentPractice"
     );
-
 
     localStorage.removeItem(
         "studentSubscribed"
     );
 
-
     localStorage.removeItem(
         "freePractice"
     );
 
-
     studentName =
         "";
-
 
     studentUsername =
         "";
 
-
     subscribed =
         false;
 
-
     subscriptionDate =
         null;
-
 
     window.location.href =
         "student.html";
 
 }
-
 
 
 /* ========================================
@@ -1901,8 +2211,9 @@ async function payWithPaystack(
             data: sessionData,
             error: sessionError
         } =
-            await supabaseClient.auth.getSession();
-
+            await supabaseClient
+                .auth
+                .getSession();
 
         if (
             sessionError ||
@@ -1920,10 +2231,8 @@ async function payWithPaystack(
 
         }
 
-
         const user =
             sessionData.session.user;
-
 
         if (!user.email) {
 
@@ -1934,7 +2243,6 @@ async function payWithPaystack(
             return;
 
         }
-
 
         if (
             typeof PaystackPop ===
@@ -1949,7 +2257,6 @@ async function payWithPaystack(
 
         }
 
-
         const reference =
             "JAMB_" +
             Date.now() +
@@ -1958,28 +2265,37 @@ async function payWithPaystack(
                 Math.random() * 100000
             );
 
-        const amountKobo = Math.round(
-            Number(amount) * 100
-        );
+        const amountKobo =
+            Math.round(
+                Number(amount) * 100
+            );
 
-        if (!Number.isFinite(amountKobo) || amountKobo <= 0) {
-            alert("Invalid payment amount.");
+        if (
+            !Number.isFinite(
+                amountKobo
+            ) ||
+            amountKobo <= 0
+        ) {
+
+            alert(
+                "Invalid payment amount."
+            );
+
             return;
+
         }
 
-
         /*
-         * Use the same Paystack TEST public key
-         * that was already working in your project.
+         * Live Paystack public key.
+         * The secret key remains safely inside
+         * the Supabase Edge Function.
          */
 
         const paystackPublicKey =
             "pk_live_d8f44cfe7a9e237bf9fbae3483da2e2c0e77305e";
 
-
         const paystack =
             new PaystackPop();
-
 
         paystack.newTransaction({
 
@@ -2008,14 +2324,12 @@ async function payWithPaystack(
 
             },
 
-
             onSuccess:
                 async function(transaction) {
 
                     alert(
                         "Payment successful. Verifying payment..."
                     );
-
 
                     await completeSubscription(
                         user.id,
@@ -2024,7 +2338,6 @@ async function payWithPaystack(
                     );
 
                 },
-
 
             onCancel:
                 function() {
@@ -2035,7 +2348,6 @@ async function payWithPaystack(
 
                 },
 
-
             onError:
                 function(error) {
 
@@ -2043,7 +2355,6 @@ async function payWithPaystack(
                         "Paystack transaction error:",
                         error
                     );
-
 
                     alert(
                         "Paystack payment error: " +
@@ -2066,7 +2377,6 @@ async function payWithPaystack(
             error
         );
 
-
         alert(
             "Something went wrong: " +
             (
@@ -2077,8 +2387,12 @@ async function payWithPaystack(
 
     }
 
-}/* ========================================
+}
+
+
+/* ========================================
    COMPLETE SUBSCRIPTION
+   WITH AUTOMATIC RETRY
 ======================================== */
 
 async function completeSubscription(
@@ -2087,138 +2401,239 @@ async function completeSubscription(
     reference
 ) {
 
-    try {
+    /*
+     * We try verification up to 3 times.
+     *
+     * Attempt 1 = immediately
+     * Attempt 2 = after 2 seconds
+     * Attempt 3 = after 4 seconds
+     *
+     * This protects students from temporary
+     * network or Edge Function failures.
+     */
 
-        console.log(
-            "Starting payment verification..."
-        );
+    const maxAttempts =
+        3;
 
+    const retryDelays = [
+        0,
+        2000,
+        4000
+    ];
 
-        const {
-            data,
-            error
-        } =
-            await supabaseClient.functions.invoke(
-                "Paystack_payment",
-                {
-                    body: {
+    let lastError =
+        null;
 
-                        user_id:
-                            userId,
+    let lastData =
+        null;
 
-                        reference:
-                            reference,
+    for (
+        let attempt = 1;
+        attempt <= maxAttempts;
+        attempt++
+    ) {
 
-                        plan_days:
-                            durationDays
+        try {
 
-                    }
-                }
-            );
+            if (
+                retryDelays[attempt - 1] >
+                0
+            ) {
 
+                console.log(
+                    "Waiting before payment verification retry:",
+                    retryDelays[attempt - 1],
+                    "ms"
+                );
 
-        console.log(
-            "Edge Function response:",
-            data
-        );
+                await new Promise(
+                    resolve =>
+                        setTimeout(
+                            resolve,
+                            retryDelays[
+                                attempt - 1
+                            ]
+                        )
+                );
 
-
-        if (error) {
+            }
 
             console.log(
-                "Edge Function error:",
+                `Starting payment verification attempt ${attempt}/${maxAttempts}...`
+            );
+
+            const {
+                data,
                 error
-            );
+            } =
+                await supabaseClient
+                    .functions
+                    .invoke(
+                        "Paystack_payment",
+                        {
+                            body: {
 
+                                user_id:
+                                    userId,
 
-            alert(
-                "Payment was successful, but verification failed.\n\n" +
-                (
-                    error.message ||
-                    "Please try again."
-                )
-            );
+                                reference:
+                                    reference,
 
+                                plan_days:
+                                    durationDays
 
-            return;
+                            }
+                        }
+                    );
 
-        }
+            lastData =
+                data;
 
-
-        if (
-            !data ||
-            !data.success
-        ) {
+            lastError =
+                error;
 
             console.log(
-                "Verification response:",
+                `Payment verification attempt ${attempt} response:`,
                 data
             );
 
+            if (error) {
 
-            alert(
-                "Payment was verified, but the subscription could not be activated.\n\n" +
-                (
-                    data?.message ||
-                    "Unknown error."
-                )
+                console.log(
+                    `Payment verification attempt ${attempt} failed:`,
+                    error
+                );
+
+                if (
+                    attempt <
+                    maxAttempts
+                ) {
+
+                    console.log(
+                        "Retrying payment verification..."
+                    );
+
+                    continue;
+
+                }
+
+                break;
+
+            }
+
+            if (
+                data &&
+                data.success
+            ) {
+
+                console.log(
+                    "Payment verification succeeded."
+                );
+
+                subscribed =
+                    true;
+
+                subscriptionDate =
+                    data.expires_at ||
+                    null;
+
+                localStorage.setItem(
+                    "studentSubscribed",
+                    "true"
+                );
+
+                alert(
+                    "Payment successful! Your subscription is now active."
+                );
+
+                window.location.href =
+                    "dashboard.html";
+
+                return;
+
+            }
+
+            /*
+             * If the Edge Function responds normally
+             * but says the payment cannot be activated,
+             * retry as long as attempts remain.
+             */
+
+            console.log(
+                `Verification attempt ${attempt} returned an unsuccessful response:`,
+                data
             );
 
+            if (
+                attempt <
+                maxAttempts
+            ) {
 
-            return;
+                console.log(
+                    "Retrying payment verification..."
+                );
+
+                continue;
+
+            }
+
+            break;
 
         }
 
+        catch (error) {
 
-        subscribed =
-            true;
+            lastError =
+                error;
 
+            console.log(
+                `Payment verification exception on attempt ${attempt}:`,
+                error
+            );
 
-        subscriptionDate =
-            data.expires_at ||
-            null;
+            if (
+                attempt <
+                maxAttempts
+            ) {
 
+                console.log(
+                    "Retrying after temporary error..."
+                );
 
-        localStorage.setItem(
-            "studentSubscribed",
-            "true"
-        );
+                continue;
 
+            }
 
-        alert(
-            "Payment successful! Your subscription is now active."
-        );
+            break;
 
-
-        /*
-         * Go back to the separate dashboard.
-         */
-
-        window.location.href =
-            "dashboard.html";
-
-    }
-
-    catch (error) {
-
-        console.log(
-            "Subscription completion error:",
-            error
-        );
-
-
-        alert(
-            "Payment was successful, but something went wrong while activating your subscription.\n\n" +
-            (
-                error?.message ||
-                "Unknown error."
-            )
-        );
+        }
 
     }
+
+
+    /*
+     * All automatic attempts failed.
+     *
+     * IMPORTANT:
+     * We do NOT tell the student that the
+     * payment failed, because Paystack already
+     * reported the payment as successful.
+     */
+
+    console.log(
+        "All payment verification attempts failed.",
+        {
+            lastData,
+            lastError
+        }
+    );
+
+    alert(
+        "Your payment was successful, but we could not complete the verification right now.\n\n" +
+        "Please do not pay again. Your payment reference has been recorded. Please try again shortly or contact support."
+    );
 
 }
-
 
 
 /* ========================================
@@ -2233,8 +2648,9 @@ async function checkLogin() {
             data,
             error
         } =
-            await supabaseClient.auth.getSession();
-
+            await supabaseClient
+                .auth
+                .getSession();
 
         if (error) {
 
@@ -2243,17 +2659,11 @@ async function checkLogin() {
                 error
             );
 
-
             showLogin();
 
             return;
 
         }
-
-
-        /*
-         * No active session.
-         */
 
         if (!data.session) {
 
@@ -2263,24 +2673,14 @@ async function checkLogin() {
 
         }
 
-
-        /*
-         * User is already logged in.
-         * Load the profile and go directly
-         * to the separate dashboard.
-         */
-
         const user =
             data.session.user;
-
 
         await loadStudentProfile(
             user
         );
 
-
         await loadSubscriptionStatus();
-
 
         window.location.href =
             "dashboard.html";
@@ -2294,7 +2694,6 @@ async function checkLogin() {
             error
         );
 
-
         showLogin();
 
     }
@@ -2302,18 +2701,24 @@ async function checkLogin() {
 }
 
 
-
 /* ========================================
    START APPLICATION
 ======================================== */
 
-(async function(){
-    const recovering = await checkPasswordRecovery();
-    if (!recovering) await checkLogin();
+(async function() {
+
+    const recovering =
+        await checkPasswordRecovery();
+
+    if (!recovering) {
+
+        await checkLogin();
+
+    }
+
 })();
 
 </script>
-
 
 </body>
 
