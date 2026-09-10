@@ -26,7 +26,7 @@
   </section>
 
   <section class="controls" aria-label="Answer filters">
-    <label>Subject<select id="subjectFilter"></select></label>
+    <label>Subject<select id="subjectFilter"><option value="all">All Subjects</option></select></label>
     <label>Question type<select id="typeFilter">
       <option value="all">All Questions</option>
       <option value="practice">Practice Questions</option>
@@ -46,6 +46,7 @@
     <div class="toolbar-actions">
       <button id="clearFilters" type="button">Clear filters</button>
       <button id="expandAll" type="button">Expand all</button>
+      <button id="loadMore" type="button">Load more questions</button>
     </div>
   </div>
   <section id="questionList" class="question-list" aria-live="polite"></section>

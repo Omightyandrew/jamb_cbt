@@ -1,25 +1,80 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JAMB CBT - Student Login</title>
-
-```
-<meta http-equiv="refresh" content="0; url=student.html">
-```
-
+    <title>JAMB CBT Exam</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="exam.css">
 </head>
-<body>
+<body class="exam-body">
+    <header class="exam-header">
+        <div class="exam-brand">
+            <div class="jamb-mark">J</div>
+            <div>
+                <strong>JAMB CBT</strong>
+                <span id="testTypeTitle">Practice Test</span>
+            </div>
+        </div>
+        <div class="exam-header-meta">
+            <div class="subject-summary">
+                <span class="meta-label">SELECTED SUBJECTS</span>
+                <strong id="selectedSubject"></strong>
+            </div>
+            <div class="timer-box" id="timer"><span class="timer-dot"></span>30:00</div>
+            <button class="submit-top" type="button" onclick="submitExam()">Submit Test</button>
+        </div>
+    </header>
 
-```
-<p>Redirecting to student login...</p>
+    <main class="exam-shell">
+        <section class="exam-main">
+            <div class="exam-toolbar">
+                <div>
+                    <div class="eyebrow">CURRENT QUESTION</div>
+                    <div class="question-index">
+                        <strong id="questionNumber">Question 1</strong>
+                        <span id="questionCount">of 0</span>
+                    </div>
+                </div>
+                <div class="current-subject-pill" id="currentSubject">JAMB CBT</div>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="examProgress"></div>
+            </div>
+            <div class="progress-copy">
+                <span id="progressText">0% answered</span>
+                <span><strong id="answeredCount">0</strong> answered · <strong id="unansweredCount">0</strong> unanswered</span>
+            </div>
+            <article class="question-card" id="questionCard">
+                <span class="question-label">QUESTION</span>
+                <strong id="questionText"></strong>
+                <div id="optionA"></div>
+                <div id="optionB"></div>
+                <div id="optionC"></div>
+                <div id="optionD"></div>
+                <div class="exam-navigation">
+                    <button class="secondary-action" id="previousButton" type="button" onclick="previousQuestion()">Previous</button>
+                    <button class="primary-action" id="nextButton" type="button" onclick="nextQuestion()">Next Question <span>→</span></button>
+                </div>
+            </article>
+        </section>
 
-<script>
-    window.location.replace("student.html");
-</script>
-```
+        <aside class="exam-sidebar">
+            <div class="sidebar-card">
+                <div class="sidebar-card-heading">
+                    <div>
+                        <div class="eyebrow">QUESTION MAP</div>
+                        <strong>Navigate</strong>
+                    </div>
+                    <span id="mapTotal">0 Q</span>
+                </div>
+                <div id="questionStatus" class="question-status"></div>
+            </div>
+        </aside>
+    </main>
 
+    <script src="supabase.js"></script>
+    <script src="questions.js"></script>
+    <script src="exam.js"></script>
 </body>
 </html>

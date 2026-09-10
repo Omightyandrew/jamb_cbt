@@ -216,7 +216,7 @@ async function checkStudentAccess() {
         // ==================================
 
         const {
-            data: subscription,
+            data: subscriptions,
             error: subscriptionError
         } =
             await supabaseClient
@@ -234,8 +234,6 @@ async function checkStudentAccess() {
                         ascending: false
                     }
                 )
-                .limit(1)
-                .maybeSingle();
 
 
         // ==================================
@@ -258,7 +256,7 @@ async function checkStudentAccess() {
         // NO SUBSCRIPTION
         // ==================================
 
-        else if (!subscription) {
+        else if (!Array.isArray(subscriptions) || subscriptions.length === 0) {
 
             isSubscribed = false;
 
@@ -269,63 +267,36 @@ async function checkStudentAccess() {
         // ==================================
 
         else {
-
-            const status =
-                String(
+            isSubscribed = subscriptions.some((subscription) => {
+                const status = String(
                     subscription.status || ""
-                )
-                .trim()
-                .toLowerCase();
+                ).trim().toLowerCase();
+                const expiresAt =
+                    subscription.expires_at ||
+                    subscription.expiry_date ||
+                    subscription.expiration_date ||
+                    subscription.current_period_end ||
+                    subscription.ends_at ||
+                    null;
+                const isActiveStatus = [
+                    "active",
+                    "paid",
+                    "premium",
+                    "subscribed",
+                    "success",
+                    "successful",
+                    "succeeded",
+                    "completed"
+                ].includes(status);
 
-
-            let notExpired = true;
-
-
-            // ==================================
-            // CHECK EXPIRATION
-            // ==================================
-
-            if (
-                subscription.expires_at
-            ) {
-
-                const expiry =
-                    new Date(
-                        subscription.expires_at
-                    );
-
-
-                if (
-                    Number.isNaN(
-                        expiry.getTime()
-                    )
-                ) {
-
-                    notExpired = false;
-
+                if (!isActiveStatus || !expiresAt) {
+                    return isActiveStatus;
                 }
 
-                else {
-
-                    notExpired =
-                        expiry > new Date();
-
-                }
-
-            }
-
-
-            // ==================================
-            // ACTIVE SUBSCRIPTION ONLY
-            // ==================================
-
-            isSubscribed =
-                (
-                    status === "subscribed"
-                )
-                &&
-                notExpired;
-
+                const expiry = new Date(expiresAt);
+                return Number.isNaN(expiry.getTime()) ||
+                    expiry > new Date();
+            });
         }
 
 

@@ -384,6 +384,22 @@ function localDate(){
 }
 
 
+function getEffectiveChallengeDate(){
+
+  const params =
+   new URLSearchParams(
+     window.location.search
+   );
+
+
+  return (
+   params.get('date') ||
+   localDate()
+  );
+
+}
+
+
 /* =====================================================
    GET PREVIOUS DATE
 ===================================================== */
@@ -517,8 +533,121 @@ function shuffleArray(
 
   }
 
-
   return result;
+
+}
+
+
+async function loadPreviouslySeenQuestionIds(
+  uid
+){
+
+  const {
+    data,
+    error
+  } =
+    await client
+      .from('challenge_question_history')
+      .select('question_id')
+      .eq(
+        'user_id',
+        uid
+      );
+
+
+  if(error){
+
+    throw new Error(
+      'Your challenge history could not be loaded. Please retry before starting the challenge.'
+    );
+
+  }
+
+
+  if(!Array.isArray(data)){
+
+    throw new Error(
+      'Your challenge history response was invalid. Please retry before starting the challenge.'
+    );
+
+  }
+
+
+  return new Set(
+    data
+      .filter(
+        row =>
+          row &&
+          row.question_id !== null &&
+          row.question_id !== undefined
+      )
+      .map(
+        row =>
+          String(
+            row.question_id
+          )
+      )
+  );
+
+}
+
+
+async function persistChallengeQuestionHistory(
+  uid,
+  date,
+  ids
+){
+
+  const uniqueIds =
+   [...new Set(
+     ids.map(
+       value =>
+         String(value)
+     )
+   )];
+
+
+  if(!uniqueIds.length){
+
+   return true;
+
+  }
+
+
+  const rows =
+   uniqueIds.map(
+     questionId => ({
+       user_id: uid,
+       challenge_date: date,
+       question_id: questionId
+     })
+   );
+
+
+  const {
+   error
+  } =
+   await client
+     .from('challenge_question_history')
+     .upsert(
+       rows,
+       {
+         onConflict:
+           'user_id,challenge_date,question_id'
+       }
+     );
+
+
+  if(error){
+
+   throw new Error(
+     'Your challenge could not be initialized because its question history could not be saved. Please retry.'
+   );
+
+  }
+
+
+  return true;
 
 }
 
@@ -526,7 +655,6 @@ function shuffleArray(
 /* =====================================================
    SUBSCRIPTION STATUS
 ===================================================== */
-
 function normalizeSubscriptionState(
   row
 ){
@@ -779,10 +907,11 @@ function showError(
 async function loadStats(){
 
   const today =
-    localDate();
+  challengeDate ||
+  localDate();
 
 
-  let rows = [];
+let rows = [];
 
 
   try{
@@ -1339,14 +1468,46 @@ async function loadQuestions(
     );
 
 
+  const seenQuestionIds =
+    await loadPreviouslySeenQuestionIds(
+     user.id
+    );
+
+
+  const selectable =
+    valid.filter(
+     question =>
+       !seenQuestionIds.has(
+         String(question.id)
+       )
+    );
+
+
   if(
-    valid.length < count
+    selectable.length < count
+  ){
+
+    console.warn(
+     'Not enough unseen questions remain; falling back to the full valid pool for this challenge date.'
+    );
+
+  }
+
+
+  const challengePool =
+    selectable.length >= count
+     ? selectable
+     : valid;
+
+
+  if(
+    challengePool.length < count
   ){
 
     throw new Error(
-      'Only ' +
-      valid.length +
-      ' valid active practice questions are available for the challenge.'
+     'Only ' +
+     challengePool.length +
+     ' valid active practice questions are available for the challenge.'
     );
 
   }
@@ -1358,20 +1519,20 @@ async function loadQuestions(
 
   const seed =
     hash(
-      `${user.id}|${date}`
+     `${user.id}|${date}`
     );
 
 
   const random =
     createSeededRandom(
-      seed
+     seed
     );
 
 
   const shuffled =
     shuffleArray(
-      valid,
-      random
+     challengePool,
+     random
     );
 
 
@@ -1543,6 +1704,26 @@ async function loadQuestions(
   }
 
 
+  const finalSelection =
+    shuffleArray(
+      selected.slice(
+        0,
+        count
+      ),
+      random
+    );
+
+
+  await persistChallengeQuestionHistory(
+    user.id,
+    date,
+    finalSelection.map(
+      question =>
+        question.id
+    )
+  );
+
+
   /*
    * Final shuffle:
    *
@@ -1551,13 +1732,7 @@ async function loadQuestions(
    * same order.
    */
 
-  return shuffleArray(
-    selected.slice(
-      0,
-      count
-    ),
-    random
-  );
+  return finalSelection;
 
 }
 
@@ -1601,7 +1776,7 @@ async function load(){
 
 
     challengeDate =
-      localDate();
+      getEffectiveChallengeDate();
 
 
     /* =================================================
@@ -2139,6 +2314,7 @@ async function saveChallengeResult(
 ){
 
   const today =
+    challengeDate ||
     localDate();
 
 
