@@ -99,11 +99,15 @@
   }
 
   async function getSupabaseClient() {
-    if (window.supabase) {
-      return window.supabase.createClient(PREMIUM_SUPABASE_URL, PREMIUM_SUPABASE_KEY);
+    // Prefer the already-initialised client from supabase.js
+    if (window.supabaseClient) {
+      return window.supabaseClient;
     }
-    if (typeof supabase !== 'undefined') {
-      return supabase;
+    // Fall back to creating one from the SDK namespace (CDN global)
+    if (window.supabase && typeof window.supabase.createClient === 'function') {
+      const client = window.supabase.createClient(PREMIUM_SUPABASE_URL, PREMIUM_SUPABASE_KEY);
+      window.supabaseClient = client;
+      return client;
     }
     return null;
   }

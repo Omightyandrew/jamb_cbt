@@ -23,11 +23,8 @@
     Geography: '🌍', CRS: '✝️', History: '🏺'
   };
 
-  const bank = (typeof window !== 'undefined' && (window.questionBanks || globalThis.questionBanks)) || (typeof questionBanks !== 'undefined' ? questionBanks : {});
-  const subjects = Object.keys(bank).filter(subject => {
-    const data = bank[subject];
-    return data && (Array.isArray(data.past) || Array.isArray(data.practice));
-  });
+  let bank = {};
+  let subjects = [];
 
   let selected = JSON.parse(localStorage.getItem('pastSelectedSubjects') || '[]')
     .filter(subject => subjects.includes(subject));
@@ -63,7 +60,7 @@
     yearFilter.innerHTML = '<option value="all">All years</option>' + [...years].sort().map(y => `<option value="${escapeHtml(y)}">${escapeHtml(y)}</option>`).join('');
     sessionFilter.innerHTML = '<option value="all">All sessions</option>' + [...sessions].sort().map(x => `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join('');
     yearSessionNotice.textContent = (years.size || sessions.size)
-      ? 'Year/session filters use only metadata present in the verified past-question source.'
+      ? ''
       : 'No year/session metadata is present in the current verified past-question source. No year or session has been invented.';
   }
 
@@ -71,6 +68,62 @@
   function getPastQuestions(subject) {
     const data = bank[subject];
     return data && Array.isArray(data.past) ? data.past : [];
+  }
+
+  async function loadPastQuestions() {
+    const client = typeof window !== 'undefined' && window.supabaseClient
+      ? window.supabaseClient
+      : (typeof supabaseClient !== 'undefined' ? supabaseClient : null);
+    if (!client || typeof client.from !== 'function') {
+      throw new Error('Supabase client unavailable.');
+    }
+
+    const rows = [];
+    const pageSize = 1000;
+    let offset = 0;
+
+    while (true) {
+      const { data, error } = await client
+        .from('Questions')
+        .select('id, Subject, Question, Option_a, Option_b, Option_c, Option_d, Correct_Answer, test_type, Topic, Explanation, year, source, is_active, import_key')
+        .eq('test_type', 'past')
+        .eq('is_active', true)
+        .range(offset, offset + pageSize - 1);
+
+      if (error) throw error;
+
+      const page = Array.isArray(data) ? data : [];
+      rows.push(...page);
+      if (page.length < pageSize) break;
+      offset += pageSize;
+    }
+
+    bank = rows.reduce((result, row) => {
+      const subject = String(row.Subject ?? '').trim();
+      if (!subject) return result;
+      if (!result[subject]) result[subject] = { past: [] };
+      result[subject].past.push({
+        id: row.id,
+        question: row.Question ?? '',
+        options: [
+          row.Option_a ?? '',
+          row.Option_b ?? '',
+          row.Option_c ?? '',
+          row.Option_d ?? ''
+        ],
+        answer: row.Correct_Answer ?? '',
+        subject,
+        testType: row.test_type ?? 'past',
+        topic: row.Topic ?? '',
+        explanation: row.Explanation ?? '',
+        year: row.year ?? null,
+        source: row.source ?? '',
+        import_key: row.import_key ?? ''
+      });
+      return result;
+    }, {});
+
+    subjects = Object.keys(bank);
   }
 
   function totalQuestions() {
@@ -94,7 +147,7 @@
       const isSelected = selected.includes(subject);
       const disabled = count === 0 || (!isSelected && selected.length >= 4);
       const availability = count > 0
-        ? `${count} verified past question${count === 1 ? '' : 's'} • ${expectedQuestions(subject)} used per CBT`
+        ? 'Available for selection'
         : 'No verified past questions added yet';
 
       return `
@@ -120,7 +173,7 @@
       ? selected.map((subject, index) => `
           <div class="selected-chip">
             <span class="chip-number">${index + 1}</span>
-            <span>${escapeHtml(subject)} <small>(${expectedQuestions(subject)} questions)</small></span>
+            <span>${escapeHtml(subject)}</span>
             <button type="button" data-remove="${escapeHtml(subject)}" aria-label="Remove ${escapeHtml(subject)}">×</button>
           </div>`).join('')
       : '<div class="selected-empty">No subjects selected yet.</div>';
@@ -134,7 +187,7 @@
     const selectedAvailableTotal = selected.reduce((total, subject) => total + getFilteredPastQuestions(subject).length, 0);
 
     if (selected.length === 4 && unavailableSelected.length === 0) {
-      message.textContent = `✓ Ready. This CBT will load up to ${selectedQuestionTotal} questions from ${selectedAvailableTotal} verified past questions.`;
+      message.textContent = '✓ Ready. Your CBT is ready to start.';
       message.className = 'selection-message ready';
     } else if (selected.length < 4) {
       const remaining = 4 - selected.length;
@@ -207,9 +260,19 @@
     window.location.href = 'index.html';
   });
 
-  populateYearSessionFilters();
-  const availableSubjectCount = usableSubjects().length;
-  summary.textContent = `${availableSubjectCount} of ${subjects.length} subjects • ${totalQuestions()} verified past questions currently available`;
-  renderSubjects();
-  renderSelected();
+  try {
+    await loadPastQuestions();
+    selected = JSON.parse(localStorage.getItem('pastSelectedSubjects') || '[]')
+      .filter(subject => subjects.includes(subject));
+    populateYearSessionFilters();
+    const availableSubjectCount = usableSubjects().length;
+    summary.textContent = 'Select four subjects to continue.';
+    renderSubjects();
+    renderSelected();
+  } catch (error) {
+    console.error('Past Questions load error:', error);
+    summary.textContent = 'Could not load verified past questions.';
+    renderSubjects();
+    renderSelected();
+  }
 })();

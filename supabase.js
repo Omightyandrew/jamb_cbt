@@ -1,10 +1,10 @@
-const SUPABASE_URL = "https://afdnfqmsjmpwlvhloopy.supabase.co";
+window.SUPABASE_URL = "https://afdnfqmsjmpwlvhloopy.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_LQlMraaULDTdAKeYysPWkA_a8CKvA1V";
+window.SUPABASE_PUBLISHABLE_KEY = "sb_publishable_LQlMraaULDTdAKeYysPWkA_a8CKvA1V";
 
-const SUPABASE_QUESTION_TABLE = "Questions";
-const SUPABASE_QUESTION_COMPAT_VIEW = "questions";
-const SUPABASE_QUESTION_COLUMNS = [
+window.SUPABASE_QUESTION_TABLE = "Questions";
+window.SUPABASE_QUESTION_COMPAT_VIEW = "questions";
+window.SUPABASE_QUESTION_COLUMNS = [
     "id",
     "Subject",
     "Question",
@@ -83,7 +83,10 @@ function buildCanonicalQuestionPayload(data = {}) {
     };
 }
 
-const supabase = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
+var _supabaseClientInit = window.supabaseClient || (
+    window.supabase && typeof window.supabase.createClient === 'function'
+        ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_PUBLISHABLE_KEY)
+        : null
 );
+
+window.supabaseClient = _supabaseClientInit;

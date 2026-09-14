@@ -14,6 +14,7 @@
   const clearFilters=document.getElementById('clearFilters');
   const loadMore=document.getElementById('loadMore');
   const localBank=(typeof window !== 'undefined' && (window.questionBanks || globalThis.questionBanks)) || {};
+  const jambSubjects=['English','Mathematics','Physics','Chemistry','Biology','Government','Literature','Economics','Commerce','Accounting','Geography','CRS','History'];
   const supabaseClient=typeof supabase !== 'undefined' && typeof supabase.from === 'function'
     ? supabase
     : (window.supabase ? window.supabase.createClient(
@@ -129,7 +130,7 @@
 
   function populateSubjects(){
     const selected=subjectFilter.value;
-    const subjects=[...new Set(all.map(q=>q.subject).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+    const subjects=jambSubjects.slice().sort((a,b)=>a.localeCompare(b));
     subjectFilter.innerHTML='<option value="all">All Subjects</option>'+subjects.map(s=>`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
     if(subjects.includes(selected)) subjectFilter.value=selected;
   }
@@ -347,5 +348,6 @@
       await loadQuestions();
     });
   }
+  populateSubjects();
   await loadQuestions({reset:true});
 })();
