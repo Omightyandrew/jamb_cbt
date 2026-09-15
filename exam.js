@@ -423,15 +423,10 @@ function showSubscriptionRequired(message) {
 }
 
 // ========================================
-// GET ADMIN QUESTIONS
+// REMOVE LEGACY ADMIN QUESTION CACHE
 // ========================================
 
-let adminQuestions =
-    JSON.parse(
-        localStorage.getItem(
-            "adminQuestions"
-        )
-    ) || [];
+localStorage.removeItem("adminQuestions");
 
 
 // ========================================
@@ -707,31 +702,6 @@ async function buildQuestions() {
         const allSubjectQuestions = supabaseQuestions.filter((question) =>
             String(question.subject).toLowerCase() === String(subject).toLowerCase()
         );
-
-        // Keep locally-created admin questions available in addition to Supabase.
-        adminQuestions.forEach(function(item) {
-            if (
-                String(item.subject).toLowerCase() === String(subject).toLowerCase() &&
-                item.testType === testType &&
-                Array.isArray(item.options) &&
-                item.options.length >= 4
-            ) {
-                allSubjectQuestions.push({
-                    id: `admin-${item.id || Math.random().toString(36).slice(2)}`,
-                    question: item.question,
-                    options: [
-                        item.options[0],
-                        item.options[1],
-                        item.options[2],
-                        item.options[3]
-                    ],
-                    answer: item.answer,
-                    subject: subject,
-                    testType: testType,
-                    explanation: item.explanation || ""
-                });
-            }
-        });
 
         const selectedQuestions = selectNoRepeatQuestions(
             allSubjectQuestions,
