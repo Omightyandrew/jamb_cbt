@@ -8,3 +8,27 @@ body{background:#f7faf8;color:var(--ink)}
 .syllabus-modal{position:fixed;inset:0;background:rgba(11,24,16,.48);display:grid;place-items:center;padding:18px;z-index:50}.modal-card{position:relative;width:min(560px,100%);max-height:85vh;overflow:auto;background:#fff;border-radius:18px;padding:24px;box-shadow:0 20px 70px rgba(0,0,0,.2)}.modal-close{position:absolute;right:13px;top:11px;width:34px;height:34px;border:0;border-radius:9px;background:#f0f4f1;font-size:22px;cursor:pointer}.modal-card h2{margin:0 0 8px}.modal-card p{color:var(--muted);font-size:13px;line-height:1.55}.guide-list{display:grid;gap:8px;margin:16px 0}.guide-item{display:flex;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:11px}.guide-item strong{font-size:13px}.guide-item span{font-size:11px;color:var(--muted)}.source-note{border-left:3px solid var(--jamb-green);padding-left:10px}
 .study-card{width:min(680px,100%)}.study-label{display:inline-block;color:var(--jamb-green);font-size:10px;font-weight:800;letter-spacing:1.1px;margin-bottom:8px}.study-card h2{font-size:24px;padding-right:32px}.study-context{margin-top:0;color:var(--muted);font-size:12px!important}.study-section{padding:14px 0;border-top:1px solid var(--line)}.study-section h3{margin:0 0 7px;font-size:15px;color:var(--ink)}.study-section p,.study-section li{font-size:14px;line-height:1.65}.study-section ul{margin:0;padding-left:20px}.study-placeholder{padding:11px 13px;background:var(--soft);border-left:3px solid var(--jamb-green);border-radius:7px}.study-complete{width:100%;border:1px solid var(--jamb-green);background:var(--jamb-green);color:#fff;border-radius:11px;padding:12px 14px;font-weight:800;cursor:pointer}.study-complete.is-complete{background:#eaf6ee;color:var(--jamb-dark)}
 @media(max-width:700px){.syllabus-main{padding:14px}.syllabus-header{padding:15px 14px}.header-copy h1{font-size:20px}.header-help{padding:9px 11px}.syllabus-grid{grid-template-columns:1fr}.detail-hero{grid-template-columns:1fr auto;}.detail-back{grid-column:1/-1;justify-self:start}.detail-icon{grid-column:1}.detail-hero>div:last-child{grid-column:2;grid-row:2}.topic-row{grid-template-columns:20px minmax(0,1fr) auto}.topic-row small{display:block;white-space:nowrap;text-align:right}.detail-actions{flex-wrap:wrap}}
+
+@media(max-width:700px){
+	.syllabus-header{flex-wrap:wrap;min-width:0}
+	.header-copy{min-width:0}
+	.header-copy h1,.header-copy p,.syllabus-overview h2,.syllabus-overview p,.syllabus-card-body,.syllabus-card-title,.syllabus-card-title h3{min-width:0;overflow-wrap:anywhere;word-break:break-word}
+	.header-help,.tool-row button,.syllabus-open,.detail-back,.detail-actions button,.study-complete{min-height:48px}
+	.search-wrap input{min-height:48px}
+	.syllabus-main{min-width:0;overflow-x:hidden;padding-bottom:32px}
+	.syllabus-card{min-width:0}
+	.syllabus-card-title{align-items:flex-start}
+	.syllabus-card-title span{flex:none}
+	.syllabus-open{width:44px;height:44px}
+	.detail-hero{grid-template-columns:64px minmax(0,1fr);min-width:0}
+	.detail-hero>div:last-child{min-width:0}
+	.detail-hero h2,.detail-hero p{overflow-wrap:anywhere;word-break:break-word}
+	.detail-back{padding:9px 12px}
+	.detail-actions button{flex:1 1 140px}
+	.topic-row{grid-template-columns:20px minmax(0,1fr) minmax(0,auto);min-width:0;align-items:start;min-height:48px}
+	.topic-row span,.topic-row small{min-width:0;overflow-wrap:anywhere;word-break:break-word}
+	.topic-row small{white-space:normal;text-align:right;max-width:110px}
+	.modal-card,.study-card,.guide-item{min-width:0}
+	.modal-card h2,.modal-card p,.guide-item strong,.guide-item span,.study-card h2,.study-section,.study-section p,.study-section li{overflow-wrap:anywhere;word-break:break-word}
+	.modal-close{width:44px;height:44px}
+}

@@ -43,14 +43,6 @@ function isPremiumSubscriptionRecord(row){
   return isStatusActive && notExpired;
 }
 
-async function ensurePremiumAccess(){
-  if (typeof window.ensurePremiumFeatureAccess === 'function') {
-    return window.ensurePremiumFeatureAccess({ featureName: 'JAMB Brochure', featureKey: 'brochure' });
-  }
-  if (!supabaseClient) return true;
-  return true;
-}
-
 const categories=[...new Set(brochureData.map(x=>x.category))].sort();
 const subjects=[...new Set(brochureData.flatMap(x=>x.subjects))].sort();
 categories.forEach(x=>categoryFilter.insertAdjacentHTML('beforeend',`<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`));
@@ -68,8 +60,4 @@ function clearAll(){search.value='';categoryFilter.value='all';subjectFilter.val
 function openCourse(course){const x=brochureData.find(v=>v.course===course);if(!x)return;document.getElementById('modalCategory').textContent=x.category;document.getElementById('modalTitle').textContent=x.course;document.getElementById('modalDescription').textContent='Planning guide for '+x.course+'. Use the official IBASS checker for the final programme-specific result.';document.getElementById('modalSubjects').innerHTML=x.subjects.map(s=>`<span>${escapeHtml(s)}</span>`).join('');document.getElementById('modalOlevel').textContent=x.olevel;document.getElementById('modalNote').textContent=x.note;modal.classList.add('show');modal.setAttribute('aria-hidden','false');document.body.classList.add('modal-open');modalClose.focus();}
 function closeModal(){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open');}
 search.addEventListener('input',render);categoryFilter.addEventListener('change',render);subjectFilter.addEventListener('change',render);modalClose.addEventListener('click',closeModal);modal.addEventListener('click',e=>{if(e.target.dataset.close==='true')closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
-(async () => {
-  const allowed = await ensurePremiumAccess();
-  if (!allowed) return;
-  render();
-})();
+render();

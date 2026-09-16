@@ -13,3 +13,16 @@ body{margin:0;background:#f5f7f6;color:#163027;font-family:Arial,sans-serif;padd
 
 
 .result-card-actions{margin-top:14px}.result-card-actions .back{cursor:pointer;border:1px solid #d8e4df;background:#fff;border-radius:10px;padding:9px 12px}
+
+@media(max-width:650px){
+	.results-page{width:100%;min-width:0;padding:20px 14px 110px;overflow-x:hidden}
+	.topbar{flex-wrap:wrap;align-items:stretch}
+	.topbar h1{flex:1 1 100%;min-width:0}
+	.topbar>.back{width:100%;min-height:48px}
+	.summary,.stat,#resultsList,.result-card,.result-head,.result-head>div,.details,.result-card-actions{min-width:0}
+	.stat strong,.muted,.pill,.result-card h3{overflow-wrap:anywhere;word-break:break-word}
+	.details{gap:8px}
+	.pill{max-width:100%}
+	.result-card-actions .back{width:100%;min-height:48px}
+	.bottom-nav a{min-height:48px;padding:10px 6px}
+}

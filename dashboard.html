@@ -688,11 +688,14 @@ button {
 
 @media (max-width: 1000px) {
     .header-inner {
-        grid-template-columns: 1fr auto;
+        grid-template-columns: minmax(0, 1fr) auto;
     }
+
     .welcome {
-        display: none;
+        display: block;
+        min-width: 0;
     }
+
     .quick-grid {
         gap: 12px;
     }
@@ -700,12 +703,12 @@ button {
 
 @media (max-width: 760px) {
     body {
-        padding-bottom: 84px;
+        padding-bottom: 86px;
     }
 
     .top-header {
         top: 8px;
-        width: calc(100% - 20px);
+        width: calc(100% - 18px);
         margin-top: 0;
         min-height: 76px;
         padding: 10px 12px;
@@ -715,6 +718,7 @@ button {
     .header-inner {
         min-height: 54px;
         gap: 10px;
+        grid-template-columns: minmax(0, 1fr) auto;
     }
 
     .brand {
@@ -739,18 +743,22 @@ button {
 
     .welcome {
         display: block;
+        min-width: 0;
     }
 
     .welcome h1 {
         font-size: 15px;
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .welcome p {
-        display: none;
-    }
-
-    .header-inner {
-        grid-template-columns: 1fr auto;
+        display: block;
+        margin-top: 2px;
+        font-size: 10px;
+        line-height: 1.2;
     }
 
     .header-actions {
@@ -912,9 +920,16 @@ button {
 
     .quick-link,
     .jamb-cbt-card {
-        min-height: 125px;
+        min-height: 118px;
         padding: 12px;
         border-radius: 18px;
+        max-width: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .quick-link-content {
+        min-width: 0;
     }
 
     .quick-icon,
@@ -927,22 +942,30 @@ button {
     }
 
     .quick-link-title {
-        font-size: 18px;
+        font-size: 17px;
+        line-height: 1.25;
+        letter-spacing: -.2px;
+        max-width: 100%;
+        overflow-wrap: anywhere;
     }
 
     .quick-link-description {
         margin-top: 5px;
         font-size: 12px;
+        max-width: none;
+        line-height: 1.4;
     }
 
     .quick-arrow {
         width: 32px;
         height: 32px;
         font-size: 18px;
+        margin-top: 8px;
+        flex-shrink: 0;
     }
 
     .jamb-cbt-card {
-        min-height: 145px;
+        min-height: 138px;
     }
 
     .jamb-cbt-card .quick-icon {
@@ -1000,6 +1023,10 @@ button {
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+    .page {
+        padding-top: 96px;
+    }
 }
 
 @media (min-width: 761px) and (max-width: 1100px) {
@@ -1023,7 +1050,16 @@ button {
     }
 
     .welcome {
-        display: none;
+        display: block;
+        min-width: 0;
+        max-width: calc(100vw - 140px);
+        overflow: hidden;
+    }
+
+    .welcome h1 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .header-actions {
@@ -1395,6 +1431,15 @@ button {
     .subscription-pay-button { min-width: 96px; min-height: 36px; padding: 0 12px; font-size: 12px; }
 }
 
+@media (max-width: 760px) {
+    .subscription-modal,.subscription-modal-head,.subscription-modal-status,.subscription-plans,.subscription-plan-card,.subscription-plan-card>div,.subscription-plan-bottom,.premium-benefits{min-width:0}
+    .subscription-modal{overflow-x:hidden}
+    .subscription-modal h2,.subscription-modal-status strong,.subscription-modal-status span,.subscription-plan-card h3,.subscription-plan-card p,.subscription-plan-bottom strong,.premium-benefits div{overflow-wrap:anywhere;word-break:break-word}
+    .subscription-modal-close{width:44px;height:44px;flex:0 0 44px}
+    .subscription-pay-button,.subscription-modal-secondary{min-height:44px}
+    .subscription-plan-bottom{flex-wrap:wrap}
+}
+
 /* Student notifications */
 .dashboard-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-start;justify-content:center;padding:80px 16px 24px;z-index:3000;}
 .dashboard-modal-backdrop.show{display:flex;}
@@ -1411,6 +1456,7 @@ button {
 .student-notification-item small{color:#7b8881;font-size:10px;}
 .notification-loading,.notification-empty{text-align:center;padding:30px 12px;color:#718078;font-size:12px;}
 @media(max-width:520px){.dashboard-modal-backdrop{padding:66px 10px 12px}.dashboard-modal{max-height:calc(100vh - 78px);border-radius:16px}.dashboard-modal-head{padding:15px}.student-notification-list{padding:12px;}}
+@media(max-width:520px){.dashboard-modal,.dashboard-modal-head,.student-notification-list,.student-notification-item{min-width:0}.dashboard-modal-head>div{min-width:0;flex:1 1 auto}.dashboard-modal-head h2,.dashboard-modal-head p,.student-notification-item h3,.student-notification-item p,.student-notification-item small{overflow-wrap:anywhere;word-break:break-word}.dashboard-modal-head button{width:44px;height:44px;flex:0 0 44px}.student-notification-list{overflow-x:hidden;overflow-y:auto}.student-notification-item small{font-size:11px}}
 
 </style>
 </head>
