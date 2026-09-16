@@ -1,5 +1,5 @@
 (() => {
-  const syllabus = {
+  const legacyLocalSyllabus = {
     "English": {
       icon: "📝", subtitle: "Use of English",
       overview: "Build comprehension, vocabulary, grammar and oral English skills for UTME preparation.",
@@ -67,6 +67,7 @@
     }
   };
 
+  let syllabus = {};
   const stateKey = 'jambSyllabusProgress';
   const grid = document.getElementById('syllabusSubjects');
   const detail = document.getElementById('syllabusDetail');
@@ -76,7 +77,7 @@
   const modal = document.getElementById('syllabusModal');
   const modalBody = document.getElementById('syllabusModalBody');
   const modalClose = document.getElementById('syllabusModalClose');
-  const supabaseClient = window.supabase ? window.supabase.createClient('https://afdnfqmsjmpwlvhloopy.supabase.co', 'sb_publishable_LQlMraaULDTdAKeYysPWkA_a8CKvA1V') : null;
+  const supabaseClient = window.supabaseClient || null;
 
   function isPremiumSubscriptionRecord(row) {
     if (!row) return false;
@@ -95,8 +96,7 @@
     if (typeof window.ensurePremiumFeatureAccess === 'function') {
       return window.ensurePremiumFeatureAccess({ featureName: 'JAMB Syllabus', featureKey: 'syllabus' });
     }
-    if (!supabaseClient) return false;
-    return false;
+    return Boolean(supabaseClient);
   }
 
   let selectedSubject = null;
@@ -106,8 +106,64 @@
     try { return JSON.parse(localStorage.getItem(stateKey) || '{}'); } catch { return {}; }
   }
   function saveProgress() { localStorage.setItem(stateKey, JSON.stringify(progressState)); }
-  function topicId(subject, section, topic) { return `${subject}::${section}::${topic}`; }
+  function topicId(subject, section, topic) { return `${subject}::${section}::${topic.title}`; }
   function isDone(id) { return !!progressState[id]; }
+  function studyModal() {
+    let element = document.getElementById('syllabusStudyModal');
+    if (element) return element;
+    element = document.createElement('div');
+    element.id = 'syllabusStudyModal';
+    element.className = 'syllabus-modal hidden';
+    element.setAttribute('role', 'dialog');
+    element.setAttribute('aria-modal', 'true');
+    element.setAttribute('aria-labelledby', 'studyLessonTitle');
+    document.body.appendChild(element);
+    return element;
+  }
+  function lessonValue(content, ...keys) {
+    if (!content || typeof content !== 'object') return null;
+    for (const key of keys) {
+      if (content[key] !== undefined && content[key] !== null) return content[key];
+    }
+    return null;
+  }
+  function renderLessonValue(value, fallback) {
+    if (value === null || value === undefined || value === '') return `<p class="study-placeholder">${escapeHtml(fallback)}</p>`;
+    if (Array.isArray(value)) return `<ul>${value.map(item => `<li>${escapeHtml(typeof item === 'string' ? item : JSON.stringify(item))}</li>`).join('')}</ul>`;
+    if (typeof value === 'object') return `<ul>${Object.entries(value).map(([key, item]) => `<li><strong>${escapeHtml(key)}:</strong> ${escapeHtml(typeof item === 'string' ? item : JSON.stringify(item))}</li>`).join('')}</ul>`;
+    return `<p>${escapeHtml(String(value))}</p>`;
+  }
+  async function renderStudyLesson(subject, sectionTitle, topic) {
+    const id = topicId(subject, sectionTitle, topic);
+    const studied = isDone(id);
+    const modal = studyModal();
+    modal.innerHTML = `<div class="modal-card study-card"><button class="modal-close" id="studyModalClose" type="button" aria-label="Close study lesson">×</button><span class="study-label">SUPABASE STUDY LESSON</span><h2 id="studyLessonTitle">${escapeHtml(topic.title)}</h2><p class="study-context">${escapeHtml(subject)} · ${escapeHtml(sectionTitle)}</p><div class="study-loading">Loading lesson content…</div></div>`;
+    modal.classList.remove('hidden');
+    const { data, error } = await supabaseClient.from('syllabus_topics').select('content').eq('id', topic.id).eq('is_active', true).maybeSingle();
+    if (error) {
+      modal.querySelector('.study-loading').innerHTML = `<p class="study-error">We couldn't load this lesson. Please try again.</p>`;
+      return;
+    }
+    const content = data?.content;
+    const overview = lessonValue(content, 'overview', 'introduction');
+    const learn = lessonValue(content, 'what_youll_learn', 'whatYoullLearn', 'what_you_will_learn');
+    const keyPoints = lessonValue(content, 'key_points', 'keyPoints');
+    const examples = lessonValue(content, 'examples');
+    const quickCheck = lessonValue(content, 'quick_check', 'quickCheck');
+    modal.querySelector('.study-card').innerHTML = `<button class="modal-close" id="studyModalClose" type="button" aria-label="Close study lesson">×</button><span class="study-label">SUPABASE STUDY LESSON</span><h2 id="studyLessonTitle">${escapeHtml(topic.title)}</h2><p class="study-context">${escapeHtml(subject)} · ${escapeHtml(sectionTitle)}</p><div class="study-section"><h3>Overview</h3>${renderLessonValue(overview, 'No overview has been added for this topic yet.')}</div><div class="study-section"><h3>What You'll Learn</h3>${renderLessonValue(learn, 'No learning objectives have been added for this topic yet.')}</div><div class="study-section"><h3>Key Points</h3>${renderLessonValue(keyPoints, 'No key points have been added for this topic yet.')}</div><div class="study-section"><h3>Examples</h3>${renderLessonValue(examples, 'No examples have been added for this topic yet.')}</div><div class="study-section"><h3>Quick Check</h3>${renderLessonValue(quickCheck, 'No quick check has been added for this topic yet.')}</div><button class="study-complete ${studied ? 'is-complete' : ''}" id="studyMarkComplete" type="button">${studied ? 'Studied' : 'Mark as Studied'}</button>`;
+    document.getElementById('studyModalClose').addEventListener('click', () => modal.classList.add('hidden'));
+    document.getElementById('studyMarkComplete').addEventListener('click', () => {
+      progressState[id] = true;
+      saveProgress();
+      updateProgress();
+      renderSubjects(search.value);
+      if (selectedSubject) showDetail(selectedSubject);
+      renderStudyLesson(subject, sectionTitle, topic);
+    });
+    modal.onclick = event => {
+      if (event.target === modal) modal.classList.add('hidden');
+    };
+  }
   function totals() {
     let total = 0, done = 0;
     Object.entries(syllabus).forEach(([subject, data]) => data.sections.forEach(section => section.topics.forEach(topic => { total++; if (isDone(topicId(subject, section.title, topic))) done++; })));
@@ -130,14 +186,14 @@
     let shown = 0;
     Object.entries(syllabus).forEach(([subject, data]) => {
       const allTopics = data.sections.flatMap(s => s.topics);
-      const matches = !q || subject.toLowerCase().includes(q) || data.subtitle.toLowerCase().includes(q) || data.sections.some(s => s.title.toLowerCase().includes(q) || s.topics.some(t => t.toLowerCase().includes(q)));
+      const matches = !q || data.displayName.toLowerCase().includes(q) || data.subtitle.toLowerCase().includes(q) || data.sections.some(s => s.title.toLowerCase().includes(q) || s.topics.some(t => t.title.toLowerCase().includes(q)));
       if (!matches) return;
       shown++;
       const done = allTopics.filter(t => isDone(topicId(subject, data.sections.find(s => s.topics.includes(t)).title, t))).length;
-      const pct = Math.round((done / allTopics.length) * 100);
+      const pct = allTopics.length ? Math.round((done / allTopics.length) * 100) : 0;
       const card = document.createElement('article');
       card.className = 'syllabus-card';
-      card.innerHTML = `<div class="syllabus-card-icon">${data.icon}</div><div class="syllabus-card-body"><div class="syllabus-card-title"><h3>${escapeHtml(subject)}</h3><span>${done}/${allTopics.length}</span></div><p>${escapeHtml(data.subtitle)}</p><div class="mini-progress"><span style="width:${pct}%"></span></div><small>${allTopics.length} topics · ${pct}% complete</small></div><button class="syllabus-open" type="button" aria-label="Open ${escapeHtml(subject)}">›</button>`;
+      card.innerHTML = `<div class="syllabus-card-icon">${escapeHtml(data.icon)}</div><div class="syllabus-card-body"><div class="syllabus-card-title"><h3>${escapeHtml(data.displayName)}</h3><span>${done}/${allTopics.length}</span></div><p>${escapeHtml(data.subtitle)}</p><div class="mini-progress"><span style="width:${pct}%"></span></div><small>${allTopics.length} topics · ${pct}% complete</small></div><button class="syllabus-open" type="button" aria-label="Open ${escapeHtml(data.displayName)}">›</button>`;
       card.querySelector('.syllabus-open').addEventListener('click', () => showDetail(subject));
       card.addEventListener('click', e => { if (!e.target.closest('button')) showDetail(subject); });
       grid.appendChild(card);
@@ -150,16 +206,17 @@
     selectedSubject = subject;
     const data = syllabus[subject];
     detail.classList.remove('hidden');
-    detail.innerHTML = `<div class="detail-hero"><button class="detail-back" id="closeDetail" type="button">← All subjects</button><div class="detail-icon">${data.icon}</div><div><span>${escapeHtml(data.subtitle)}</span><h2>${escapeHtml(subject)}</h2><p>${escapeHtml(data.overview)}</p></div></div><div class="detail-actions"><button class="primary" id="markAll" type="button">Mark all complete</button><button class="secondary" id="clearAll" type="button">Reset progress</button></div><div class="section-list">${data.sections.map(section => `<section class="syllabus-section"><div class="section-heading"><div><span>SYLLABUS AREA</span><h3>${escapeHtml(section.title)}</h3></div><span class="section-count">${section.topics.length} topics</span></div><div class="topic-list">${section.topics.map(topic => { const id = topicId(subject, section.title, topic); return `<label class="topic-row ${isDone(id) ? 'done' : ''}"><input type="checkbox" data-topic-id="${escapeHtml(id)}" ${isDone(id) ? 'checked' : ''}><span>${escapeHtml(topic)}</span><small>${isDone(id) ? 'Completed' : 'Mark studied'}</small></label>`; }).join('')}</div></section>`).join('')}</div>`;
+    detail.innerHTML = `<div class="detail-hero"><button class="detail-back" id="closeDetail" type="button">← All subjects</button><div class="detail-icon">${escapeHtml(data.icon)}</div><div><span>${escapeHtml(data.subtitle)}</span><h2>${escapeHtml(data.displayName)}</h2><p>${escapeHtml(data.overview)}</p></div></div><div class="detail-actions"><button class="primary" id="markAll" type="button">Mark all complete</button><button class="secondary" id="clearAll" type="button">Reset progress</button></div><div class="section-list">${data.sections.map(section => `<section class="syllabus-section"><div class="section-heading"><div><span>SYLLABUS AREA</span><h3>${escapeHtml(section.title)}</h3></div><span class="section-count">${section.topics.length} topics</span></div><div class="topic-list">${section.topics.map(topic => { const id = topicId(subject, section.title, topic); return `<label class="topic-row ${isDone(id) ? 'done' : ''}" data-study-topic-id="${escapeHtml(topic.id)}" data-study-section="${escapeHtml(section.title)}"><input type="checkbox" data-topic-id="${escapeHtml(topic.id)}" data-progress-id="${escapeHtml(id)}" ${isDone(id) ? 'checked' : ''}><span>${escapeHtml(topic.title)}</span><small>${isDone(id) ? 'Studied · Open lesson' : 'Open lesson'}</small></label>`; }).join('')}</div></section>`).join('')}</div>`;
     document.getElementById('closeDetail').addEventListener('click', () => { detail.classList.add('hidden'); selectedSubject = null; window.scrollTo({top: 0, behavior: 'smooth'}); });
     document.getElementById('markAll').addEventListener('click', () => { data.sections.forEach(s => s.topics.forEach(t => progressState[topicId(subject, s.title, t)] = true)); saveProgress(); showDetail(subject); renderSubjects(search.value); updateProgress(); });
     document.getElementById('clearAll').addEventListener('click', () => { data.sections.forEach(s => s.topics.forEach(t => delete progressState[topicId(subject, s.title, t)])); saveProgress(); showDetail(subject); renderSubjects(search.value); updateProgress(); });
-    detail.querySelectorAll('input[data-topic-id]').forEach(input => input.addEventListener('change', () => { progressState[input.dataset.topicId] = input.checked; if (!input.checked) delete progressState[input.dataset.topicId]; saveProgress(); input.closest('.topic-row').classList.toggle('done', input.checked); input.closest('.topic-row').querySelector('small').textContent = input.checked ? 'Completed' : 'Mark studied'; renderSubjects(search.value); updateProgress(); }));
+    detail.querySelectorAll('input[data-topic-id]').forEach(input => input.addEventListener('change', event => { event.stopPropagation(); progressState[input.dataset.progressId] = input.checked; if (!input.checked) delete progressState[input.dataset.progressId]; saveProgress(); input.closest('.topic-row').classList.toggle('done', input.checked); input.closest('.topic-row').querySelector('small').textContent = input.checked ? 'Studied · Open lesson' : 'Open lesson'; renderSubjects(search.value); updateProgress(); }));
+    detail.querySelectorAll('[data-study-topic-id]').forEach(row => row.addEventListener('click', event => { if (event.target.closest('input')) return; const topic = data.sections.flatMap(section => section.topics).find(item => item.id === row.dataset.studyTopicId); if (topic) renderStudyLesson(subject, row.dataset.studySection, topic); }));
     detail.scrollIntoView({behavior: 'smooth', block: 'start'});
   }
 
   function openQuickGuide() {
-    const data = Object.entries(syllabus).map(([subject, d]) => `<div class="guide-item"><strong>${d.icon} ${escapeHtml(subject)}</strong><span>${d.sections.reduce((n,s)=>n+s.topics.length,0)} topics across ${d.sections.length} areas</span></div>`).join('');
+    const data = Object.entries(syllabus).map(([, d]) => `<div class="guide-item"><strong>${escapeHtml(d.icon)} ${escapeHtml(d.displayName)}</strong><span>${d.sections.reduce((n,s)=>n+s.topics.length,0)} topics across ${d.sections.length} areas</span></div>`).join('');
     modalBody.innerHTML = `<h2>How to use the syllabus</h2><p>Choose a subject, open a syllabus area and tick topics as you study them. Your progress is stored on this device.</p><div class="guide-list">${data}</div><p class="source-note">For the official JAMB syllabus system, use the Board's IBASS platform.</p>`;
     modal.classList.remove('hidden');
   }
@@ -171,10 +228,54 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') modal?.classList.add('hidden'); });
   document.getElementById('resetAllProgress')?.addEventListener('click', () => { progressState = {}; saveProgress(); renderSubjects(search.value); updateProgress(); if (selectedSubject) showDetail(selectedSubject); });
 
+  function showLoadMessage(title, message, error = false) {
+    grid.innerHTML = `<div class="syllabus-empty ${error ? 'syllabus-load-error' : ''}"><strong>${escapeHtml(title)}</strong><p>${escapeHtml(message)}</p></div>`;
+    if (count) count.textContent = '0 subjects';
+  }
+
+  async function loadSyllabusFromSupabase() {
+    if (!supabaseClient) throw new Error('Supabase client is unavailable.');
+    const [subjectsResult, sectionsResult, topicsResult] = await Promise.all([
+      supabaseClient.from('syllabus_subjects').select('id,name,display_name,subtitle,icon,overview,display_order').eq('is_active', true).order('display_order', { ascending: true }),
+      supabaseClient.from('syllabus_sections').select('id,subject_id,title,description,display_order').eq('is_active', true).order('display_order', { ascending: true }),
+      supabaseClient.from('syllabus_topics').select('id,section_id,title,description,display_order').eq('is_active', true).order('display_order', { ascending: true })
+    ]);
+    const failed = [subjectsResult, sectionsResult, topicsResult].find(result => result.error);
+    if (failed) throw failed.error;
+
+    const sectionsBySubject = new Map();
+    sectionsResult.data.forEach(section => {
+      if (!sectionsBySubject.has(section.subject_id)) sectionsBySubject.set(section.subject_id, []);
+      sectionsBySubject.get(section.subject_id).push({ ...section, topics: [] });
+    });
+    const sectionsById = new Map();
+    sectionsBySubject.forEach(sections => sections.forEach(section => sectionsById.set(section.id, section)));
+    topicsResult.data.forEach(topic => sectionsById.get(topic.section_id)?.topics.push(topic));
+
+    syllabus = {};
+    subjectsResult.data.forEach(subject => {
+      const key = String(subject.name || subject.display_name || subject.id);
+      syllabus[key] = {
+        displayName: String(subject.display_name || subject.name || 'Subject'),
+        subtitle: String(subject.subtitle || ''),
+        icon: String(subject.icon || ''),
+        overview: String(subject.overview || ''),
+        sections: sectionsBySubject.get(subject.id) || []
+      };
+    });
+  }
+
   (async () => {
     const allowed = await ensurePremiumAccess();
     if (!allowed) return;
-    renderSubjects();
-    updateProgress();
+    showLoadMessage('Loading syllabus', 'Loading active syllabus content from Supabase…');
+    try {
+      await loadSyllabusFromSupabase();
+      renderSubjects();
+      updateProgress();
+    } catch (error) {
+      console.error('Syllabus loading failed:', error);
+      showLoadMessage('Syllabus unavailable', 'We could not load the syllabus from Supabase. Please refresh and try again.', true);
+    }
   })();
 })();

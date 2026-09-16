@@ -33,7 +33,7 @@
   async function loadLibraryContent(){
     try{
       if(typeof supabase==='undefined') return;
-      const {data,error}=await supabase.from('Novels').select('id,title,author,category,description,icon,premium,chapters,is_active').eq('is_active',true).order('created_at',{ascending:true});
+      const {data,error}=await window.supabaseClient.from('Novels').select('id,title,author,category,description,icon,premium,chapters,is_active').eq('is_active',true).order('created_at',{ascending:true});
       if(error) throw error;
       const remote=(data||[]).map(normalizeBook).filter(b=>b.chapters.length);
       if(remote.length) books=remote;
