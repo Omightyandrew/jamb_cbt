@@ -787,7 +787,7 @@ function updateCurrentMeta() {
 
     const subjectEl = document.getElementById("currentSubject");
     if (subjectEl) {
-        subjectEl.textContent = q.subject || selectedSubjects[0] || "JAMB CBT";
+        subjectEl.textContent = q.subject || selectedSubjects[0] || "ExamPilot";
     }
 
     const numberEl = document.getElementById("questionNumber");

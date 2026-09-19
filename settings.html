@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Settings - JAMB CBT</title>
+<title>Settings | ExamPilot</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--green:#008751;--dark:#123b2d;--bg:#f5faf7;--line:#dfe9e4;--muted:#687a72}
@@ -30,8 +30,8 @@
             <p>Use your registered email and password on the student login page. If you are already signed in, the dashboard will load your active session. If your session is expired, you can sign back in from the Student login page.</p>
           </details>
           <details class="faq-item">
-            <summary>How does JAMB CBT practice work?</summary>
-            <p>Open JAMB CBT from the dashboard to begin the practice flow. Free users get a daily limit of 20 practice questions. Premium users have unlimited practice access.</p>
+            <summary>How does ExamPilot practice work?</summary>
+            <p>Open ExamPilot from the dashboard to begin the practice flow. Free users get a daily limit of 20 practice questions. Premium users have unlimited practice access.</p>
           </details>
           <details class="faq-item">
             <summary>How do I submit answers and view results?</summary>
@@ -85,7 +85,7 @@
       <div class="support-block">
         <h3>CBT Help</h3>
         <ul>
-          <li>Use the JAMB CBT card on the dashboard to begin your practice session.</li>
+          <li>Use the ExamPilot card on the dashboard to begin your practice session.</li>
           <li>Free users have a 20-question daily limit for practice sessions.</li>
           <li>Premium users can continue without the daily practice cap.</li>
           <li>Answer every question carefully before submitting the set.</li>
@@ -144,13 +144,13 @@
 </main>
 <script>
 function openSupportMail(){
-  const subject = encodeURIComponent('JAMB CBT Support Request');
-  const body = encodeURIComponent('Hello, I need help with the JAMB CBT platform. My issue is:');
+  const subject = encodeURIComponent('ExamPilot Support Request');
+  const body = encodeURIComponent('Hello, I need help with the ExamPilot platform. My issue is:');
   window.location.href = 'mailto:igbawuaandrew3@gmail.com?subject=' + subject + '&body=' + body;
 }
 
 function openWhatsAppSupport(){
-  const message = encodeURIComponent('Hello, I need help with the JAMB CBT platform. My issue is:');
+  const message = encodeURIComponent('Hello, I need help with the ExamPilot platform. My issue is:');
   window.open('https://wa.me/2349155371499?text=' + message, '_blank', 'noopener,noreferrer');
 }
 
@@ -158,8 +158,8 @@ function reportProblemByEmail(){
   const text = document.getElementById('supportProblemText');
   const issue = (text ? text.value.trim() : '').replace(/\r?\n/g, '\n');
   const detail = issue ? issue : 'I would like to report a problem with the platform.';
-  const subject = encodeURIComponent('JAMB CBT Support Request');
-  const body = encodeURIComponent('Hello, I need help with the JAMB CBT platform. My issue is:\n\n' + detail);
+  const subject = encodeURIComponent('ExamPilot Support Request');
+  const body = encodeURIComponent('Hello, I need help with the ExamPilot platform. My issue is:\n\n' + detail);
   window.location.href = 'mailto:igbawuaandrew3@gmail.com?subject=' + subject + '&body=' + body;
 }
 
@@ -219,7 +219,7 @@ function applySettingsView(){
       ? 'Get help with your account, subscription, practice, and platform issues.'
       : 'Manage your student account.';
   }
-  document.title = target === 'support' ? 'Help & Support - JAMB CBT' : 'Settings - JAMB CBT';
+  document.title = target === 'support' ? 'Help & Support - ExamPilot' : 'Settings | ExamPilot';
 }
 
 applySettingsView();

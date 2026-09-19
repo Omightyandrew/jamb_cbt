@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JAMB CBT Admin Dashboard</title>
+<title>ExamPilot Admin Dashboard</title>
 
 <style>
 :root{--green:#087f3e;--green-dark:#056532;--green-soft:#eaf7f0;--text:#17231d;--muted:#718078;--line:#e4ebe7;--bg:#f4f7f5;--white:#fff}
@@ -386,9 +386,9 @@ main{margin-left:245px;width:calc(100% - 245px)}
 
 <aside class="sidebar" id="adminSidebar">
   <div class="brand">
-    <div class="brand-mark">J</div>
+    <div class="brand-mark">E</div>
     <div>
-      <b>JAMB CBT</b>
+      <b>ExamPilot</b>
       <small>Admin Panel</small>
     </div>
   </div>
@@ -555,7 +555,7 @@ main{margin-left:245px;width:calc(100% - 245px)}
 <div class="panel-head">
   <div>
     <h3>Students Management</h3>
-    <p>View, search and monitor registered JAMB CBT students.</p>
+    <p>View, search and monitor registered ExamPilot students.</p>
   </div>
   <button class="linkbtn" onclick="loadStudents()">↻ Refresh</button>
 </div>
@@ -679,7 +679,7 @@ Click Subscriptions in the sidebar to load payment records.
 <div class="panel-head">
 <div>
 <h3>Academic Content Management</h3>
-<p>Manage the learning content areas used across the JAMB CBT platform.</p>
+<p>Manage the learning content areas used across the ExamPilot platform.</p>
 </div>
 
 <button class="linkbtn" onclick="loadAcademicContent()">↻ Refresh</button>
@@ -875,7 +875,7 @@ You can change Free/Premium or Active/Hidden at any time by editing the novel. C
 <div class="panel-head">
 <div>
 <h3>Notifications Management</h3>
-<p>Create, preview and manage messages for JAMB CBT students.</p>
+<p>Create, preview and manage messages for ExamPilot students.</p>
 </div>
 <button class="linkbtn" onclick="loadNotifications()">↻ Refresh</button>
 </div>
@@ -895,7 +895,7 @@ Notifications are stored in the existing Supabase <b>notifications</b> table whe
 <div class="notification-composer">
 
 <label for="notificationTitle">Notification title</label>
-<input id="notificationTitle" maxlength="120" placeholder="e.g. New JAMB CBT practice questions available">
+<input id="notificationTitle" maxlength="120" placeholder="e.g. New ExamPilot practice questions available">
 
 <label for="notificationAudience">Audience</label>
 
@@ -2746,7 +2746,7 @@ document.addEventListener(
     async function(){
 
         console.log(
-            "JAMB CBT Admin security check starting..."
+            "ExamPilot Admin security check starting..."
         );
 
 
@@ -2762,7 +2762,7 @@ document.addEventListener(
 
 
         console.log(
-            "JAMB CBT Admin loaded successfully."
+            "ExamPilot Admin loaded successfully."
         );
 
 

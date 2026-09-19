@@ -34,7 +34,7 @@
   let requestToken=0;
   let searchTimer=null;
 
-  list.innerHTML='<div class="empty"><div class="empty-icon">…</div><h2>Loading answers</h2><p>Connecting to the JAMB question bank…</p></div>';
+  list.innerHTML='<div class="empty"><div class="empty-icon">…</div><h2>Loading answers</h2><p>Connecting to the ExamPilot question bank…</p></div>';
   resultSummary.textContent='Loading questions…';
 
   if (typeof window.ensurePremiumFeatureAccess === 'function') {
@@ -185,7 +185,7 @@
       : (loading?'Loading questions…':'No questions match your filters'));
 
     if(!visibleRows.length&&loadError){
-      list.innerHTML='<div class="empty"><div class="empty-icon">!</div><h2>Could not load answers</h2><p>We could not connect to the JAMB question bank. Please try again.</p></div>';
+      list.innerHTML='<div class="empty"><div class="empty-icon">!</div><h2>Could not load answers</h2><p>We could not connect to the ExamPilot question bank. Please try again.</p></div>';
       updateLoadMore(0);
       return;
     }
@@ -297,7 +297,7 @@
         populateSubjects();
         populateTopics();
         if(!all.length){
-          list.innerHTML='<div class="empty"><div class="empty-icon">!</div><h2>Could not load answers</h2><p>We could not connect to the JAMB question bank. Please refresh and try again.</p></div>';
+          list.innerHTML='<div class="empty"><div class="empty-icon">!</div><h2>Could not load answers</h2><p>We could not connect to the ExamPilot question bank. Please refresh and try again.</p></div>';
           resultSummary.textContent='Question bank unavailable';
         }else{
           loadError='';
