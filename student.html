@@ -1994,8 +1994,20 @@ document
                     );
 
                     return;
-
                 }
+if (
+    data &&
+    data.user &&
+    data.user.identities &&
+    data.user.identities.length === 0
+) {
+    showMessage(
+        "registerMessage",
+        "This email is already registered. Please log in, or use Forgot Password if you can't remember your password.",
+        "error"
+    );
+    return;
+}                
 
 
                 if (
