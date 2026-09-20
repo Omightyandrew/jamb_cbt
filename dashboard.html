@@ -5,6 +5,10 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>ExamPilot — Student Dashboard</title>
+<link rel="stylesheet" href="brand.css">
+<link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+<meta name="theme-color" content="#14213D">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://js.paystack.co/v2/inline.js"></script>
 <script>document.addEventListener("keydown", function(event) {
@@ -1459,11 +1463,13 @@ button {
 @media(max-width:520px){.dashboard-modal,.dashboard-modal-head,.student-notification-list,.student-notification-item{min-width:0}.dashboard-modal-head>div{min-width:0;flex:1 1 auto}.dashboard-modal-head h2,.dashboard-modal-head p,.student-notification-item h3,.student-notification-item p,.student-notification-item small{overflow-wrap:anywhere;word-break:break-word}.dashboard-modal-head button{width:44px;height:44px;flex:0 0 44px}.student-notification-list{overflow-x:hidden;overflow-y:auto}.student-notification-item small{font-size:11px}}
 
 </style>
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
 <header class="top-header">
 <div class="header-inner">
 <div class="welcome">
+<img class="ep-logo ep-logo--compact" src="assets/logo/logo-compact.svg" alt="ExamPilot">
 <h1 id="studentGreeting">Hello, Student 👋</h1>
 <p>Welcome back. Keep preparing for JAMB.</p>
 </div>
@@ -2041,7 +2047,7 @@ async function startDashboardPayment(amount, durationDays) {
         }
 
         const payButtons = document.querySelectorAll(".subscription-pay-button");
-        payButtons.forEach(button => { button.disabled = true; button.textContent = "Opening…"; });
+        payButtons.forEach(button => { button.disabled = true; button.textContent = "Opening?"; });
 
         const reference = "JAMB_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
 
@@ -2314,5 +2320,6 @@ document.addEventListener("keydown", function(event) {
 loadDashboardStudent();
 maybeOpenUpgradeFromFeatureParameter();
 </script>
+    <script src="pwa-register.js"></script>
 </body>
 </html>

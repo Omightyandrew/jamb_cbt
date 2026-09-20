@@ -3,13 +3,18 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Library | ExamPilot</title>
+<link rel="stylesheet" href="brand.css">
+<link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+<meta name="theme-color" content="#14213D">
 <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="novels.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script><script src="premium-access.js"></script>
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
-<header class="library-header"><a class="back-link" href="dashboard.html">← Dashboard</a><div><span class="eyebrow">ExamPilot</span><h1>Novel & Library</h1><p>Read, bookmark and continue your study materials.</p></div><div class="subscription-badge" id="accessBadge">Checking access…</div></header>
+<header class="library-header"><a class="back-link" href="dashboard.html">← Dashboard</a><div><img class="ep-logo ep-logo--header" src="assets/logo/logo-compact.svg" alt="ExamPilot"><span class="eyebrow">ExamPilot</span><h1>Novel & Library</h1><p>Read, bookmark and continue your study materials.</p></div><div class="subscription-badge" id="accessBadge">Checking access?</div></header>
 <main class="library-shell">
 <section class="library-hero"><div><span class="hero-kicker">STUDY LIBRARY</span><h2>Learn at your own pace.</h2><p>Keep your reading materials, study guides and progress in one place.</p></div><div class="hero-stat"><strong id="libraryCount">0</strong><span>materials</span></div></section>
-<section class="library-tools"><label class="search-box">⌕<input id="searchInput" type="search" placeholder="Search books, subjects or authors…"></label><div class="filter-row" id="categoryFilters"></div><button id="bookmarkFilter" class="filter-chip">★ Bookmarked</button></section>
+<section class="library-tools"><label class="search-box">⌕<input id="searchInput" type="search" placeholder="Search books, subjects or authors?"></label><div class="filter-row" id="categoryFilters"></div><button id="bookmarkFilter" class="filter-chip">★ Bookmarked</button></section>
 <section class="section-heading"><div><span class="eyebrow">YOUR LIBRARY</span><h2>Available materials</h2></div><button id="clearSearch" class="text-button">Clear filters</button></section>
 <div id="libraryStatus" class="library-status" aria-live="polite"></div><section id="bookGrid" class="book-grid"></section>
 <section id="emptyState" class="empty-state" hidden><div class="empty-icon">📚</div><h3>No materials found</h3><p>Try another search or category.</p></section>
@@ -21,15 +26,16 @@
     <header class="reader-top"><button id="closeReader" class="icon-button" aria-label="Close reader">×</button><div><span id="readerCategory" class="reader-category"></span><h2 id="readerTitle"></h2><p id="readerMeta"></p></div><button id="bookmarkButton" class="reader-bookmark">☆ Bookmark</button></header>
     <div id="readerControls" class="reader-controls"><button id="fontDown">A−</button><button id="fontReset">A</button><button id="fontUp">A+</button><span class="reader-spacer"></span><span id="readerProgress">0%</span></div>
     <div id="pdfReaderSection" class="pdf-reader-section" hidden>
-      <div id="pdfLoadingState" class="pdf-loading" aria-live="polite">Loading PDF…</div>
+      <div id="pdfLoadingState" class="pdf-loading" aria-live="polite">Loading PDF?</div>
       <div id="pdfErrorState" class="pdf-error" hidden><p>Could not load PDF. Check your connection or <a id="pdfDirectLink" href="#" target="_blank" rel="noopener noreferrer">open directly ↗</a>.</p></div>
       <iframe id="pdfFrame" class="pdf-frame" title="Novel PDF reader" src="about:blank" allow="fullscreen"></iframe>
       <div id="pdfOpenLinkWrap" class="pdf-open-link-wrap" hidden><a id="pdfOpenLink" href="#" target="_blank" rel="noopener noreferrer" class="secondary-button pdf-open-btn">Open PDF in full screen ↗</a></div>
     </div>
     <article id="readerContent" class="reader-content"></article>
-    <footer id="readerNav" class="reader-bottom"><button id="prevChapter">← Previous</button><span id="chapterLabel"></span><button id="nextChapter">Next →</button></footer>
+    <footer id="readerNav" class="reader-bottom"><button id="prevChapter">? Previous</button><span id="chapterLabel"></span><button id="nextChapter">Next →</button></footer>
   </div>
 </div>
 <div id="accessModal" class="access-modal" hidden><div class="access-card"><button id="closeAccess" class="icon-button">×</button><div class="lock-icon">🔒</div><h2>Premium Library</h2><p>Your library reading access is connected to the existing subscription status. Subscribe to unlock full reading materials.</p><button id="goSubscribe" class="primary-button">Go to Subscription</button><a href="dashboard.html">Back to Dashboard</a></div></div>
 <script src="novels.js"></script>
+    <script src="pwa-register.js"></script>
 </body></html>

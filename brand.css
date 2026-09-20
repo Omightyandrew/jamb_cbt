@@ -1,0 +1,28 @@
+:root {
+  --ep-dark-green: #0A302E;
+  --ep-white: #FFFFFF;
+}
+
+.ep-logo {
+  display: block;
+  height: auto;
+}
+
+.ep-logo--compact {
+  width: 160px;
+}
+
+.ep-logo--header {
+  width: 150px;
+}
+
+.ep-logo--symbol {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.ep-logo--auth {
+  width: 190px;
+  margin: 0 auto 16px;
+}

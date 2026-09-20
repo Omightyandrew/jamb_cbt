@@ -70,6 +70,34 @@
     return data && Array.isArray(data.past) ? data.past : [];
   }
 
+  function buildPastBank(rows) {
+    return rows.reduce((result, row) => {
+      const subject = String(row.Subject ?? row.subject ?? '').trim();
+      if (!subject) return result;
+      if (!result[subject]) result[subject] = { past: [] };
+      result[subject].past.push({
+        id: row.id ?? null,
+        question: row.Question ?? row.question ?? '',
+        options: [
+          row.Option_a ?? row.option_a ?? '',
+          row.Option_b ?? row.option_b ?? '',
+          row.Option_c ?? row.option_c ?? '',
+          row.Option_d ?? row.option_d ?? ''
+        ],
+        answer: row.Correct_Answer ?? row.correct_answer ?? '',
+        subject,
+        testType: row.test_type ?? 'past',
+        topic: row.Topic ?? row.topic ?? '',
+        explanation: row.Explanation ?? row.explanation ?? '',
+        year: row.year ?? null,
+        source: row.source ?? '',
+        import_key: row.import_key ?? '',
+        updated_at: row.updated_at ?? null
+      });
+      return result;
+    }, {});
+  }
+
   async function loadPastQuestions() {
     const client = typeof window !== 'undefined' && window.supabaseClient
       ? window.supabaseClient
@@ -78,52 +106,32 @@
       throw new Error('Supabase client unavailable.');
     }
 
-    const rows = [];
-    const pageSize = 1000;
-    let offset = 0;
+    try {
+      const rows = [];
+      const pageSize = 1000;
+      let offset = 0;
 
-    while (true) {
-      const { data, error } = await client
-        .from('Questions')
-        .select('id, Subject, Question, Option_a, Option_b, Option_c, Option_d, Correct_Answer, test_type, Topic, Explanation, year, source, is_active, import_key')
-        .eq('test_type', 'past')
-        .eq('is_active', true)
-        .range(offset, offset + pageSize - 1);
+      while (true) {
+        const { data, error } = await client
+          .from('Questions')
+          .select('id, Subject, Question, Option_a, Option_b, Option_c, Option_d, Correct_Answer, test_type, Topic, Explanation, year, source, is_active, updated_at, import_key')
+          .eq('test_type', 'past')
+          .eq('is_active', true)
+          .range(offset, offset + pageSize - 1);
 
-      if (error) throw error;
+        if (error) throw error;
 
-      const page = Array.isArray(data) ? data : [];
-      rows.push(...page);
-      if (page.length < pageSize) break;
-      offset += pageSize;
+        const page = Array.isArray(data) ? data : [];
+        rows.push(...page);
+        if (page.length < pageSize) break;
+        offset += pageSize;
+      }
+
+      bank = buildPastBank(rows);
+      subjects = Object.keys(bank);
+    } catch (error) {
+      throw error;
     }
-
-    bank = rows.reduce((result, row) => {
-      const subject = String(row.Subject ?? '').trim();
-      if (!subject) return result;
-      if (!result[subject]) result[subject] = { past: [] };
-      result[subject].past.push({
-        id: row.id,
-        question: row.Question ?? '',
-        options: [
-          row.Option_a ?? '',
-          row.Option_b ?? '',
-          row.Option_c ?? '',
-          row.Option_d ?? ''
-        ],
-        answer: row.Correct_Answer ?? '',
-        subject,
-        testType: row.test_type ?? 'past',
-        topic: row.Topic ?? '',
-        explanation: row.Explanation ?? '',
-        year: row.year ?? null,
-        source: row.source ?? '',
-        import_key: row.import_key ?? ''
-      });
-      return result;
-    }, {});
-
-    subjects = Object.keys(bank);
   }
 
   function totalQuestions() {

@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <title>Daily Challenge | ExamPilot</title>
+<link rel="stylesheet" href="brand.css">
+<link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+<meta name="theme-color" content="#14213D">
 
 <style>
 *{
@@ -224,11 +228,13 @@ body{
 
 }
 </style>
+    <link rel="manifest" href="manifest.json">
 </head>
 
 <body>
 
 <header class="top">
+  <img class="ep-logo ep-logo--header" src="assets/logo/logo-compact.svg" alt="ExamPilot">
   <strong>⚡ Daily Challenge</strong>
   <a href="dashboard.html">← Dashboard</a>
 </header>
@@ -250,7 +256,7 @@ body{
     class="status"
     id="challengeStatus"
   >
-    Checking your account…
+    Checking your account?
   </div>
 
   <div class="stats">
@@ -276,7 +282,7 @@ body{
 >
 
   <div class="message">
-    Checking today's challenge…
+    Checking today's challenge?
   </div>
 
 </section>
@@ -289,7 +295,7 @@ body{
   <div id="leaderboard">
 
     <div class="message">
-      Loading leaderboard…
+      Loading leaderboard?
     </div>
 
   </div>
@@ -2103,7 +2109,7 @@ async function submitChallenge(){
       true;
 
     submitButton.textContent =
-      'Submitting…';
+      'Submitting?';
 
   }
 
@@ -2524,5 +2530,6 @@ load();
 
 </script>
 
+    <script src="pwa-register.js"></script>
 </body>
 </html>

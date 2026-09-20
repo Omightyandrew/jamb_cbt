@@ -4,14 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JAMB Syllabus | ExamPilot</title>
+<link rel="stylesheet" href="brand.css">
+<link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+<meta name="theme-color" content="#14213D">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="syllabus.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
 <header class="syllabus-header">
-  <a href="dashboard.html" class="back" aria-label="Back to dashboard">←</a>
-  <div class="header-copy"><span>STUDY CENTRE</span><h1>JAMB Syllabus</h1><p>Plan your revision by subject and topic.</p></div>
+  <a href="dashboard.html" class="back" aria-label="Back to dashboard">?</a>
+  <div class="header-copy"><img class="ep-logo ep-logo--header" src="assets/logo/logo-compact.svg" alt="ExamPilot"><span>STUDY CENTRE</span><h1>JAMB Syllabus</h1><p>Plan your revision by subject and topic.</p></div>
   <button id="quickGuide" class="header-help" type="button">Guide</button>
 </header>
 <main class="syllabus-main">
@@ -33,5 +38,6 @@
 <script src="supabase.js"></script>
 <script src="premium-access.js"></script>
 <script src="syllabus.js"></script>
+    <script src="pwa-register.js"></script>
 </body>
 </html>

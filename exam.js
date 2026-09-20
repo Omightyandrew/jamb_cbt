@@ -211,6 +211,35 @@ async function checkStudentAccess() {
             sessionData.session.user;
 
 
+        // Offline access is limited to cached practice questions. Keep the
+        // local free-use policy active without treating the student as a
+        // verified subscriber.
+        if (
+            navigator.onLine === false &&
+            testType === "practice"
+        ) {
+
+            isSubscribed = false;
+            loadFreeQuestionCount();
+
+            if (
+                freeQuestionsUsed >=
+                FREE_QUESTION_LIMIT
+            ) {
+
+                showSubscriptionRequired(
+                    "You have used your 15 free practice questions for today."
+                );
+
+                return false;
+
+            }
+
+            return true;
+
+        }
+
+
         // ==================================
         // GET SUBSCRIPTION
         // ==================================
@@ -246,6 +275,27 @@ async function checkStudentAccess() {
                 "Subscription check error:",
                 subscriptionError
             );
+
+            if (
+                testType === "practice" &&
+                isQuestionNetworkFailure(subscriptionError)
+            ) {
+                isSubscribed = false;
+                loadFreeQuestionCount();
+
+                if (
+                    freeQuestionsUsed >=
+                    FREE_QUESTION_LIMIT
+                ) {
+                    showSubscriptionRequired(
+                        "You have used your 15 free practice questions for today."
+                    );
+
+                    return false;
+                }
+
+                return true;
+            }
 
 
             isSubscribed = false;
@@ -581,66 +631,150 @@ function mapSupabaseQuestion(row) {
         explanation: row.Explanation ?? row.explanation ?? "",
         year: row.year ?? null,
         source: row.source ?? "",
-        import_key: row.import_key ?? ""
+        import_key: row.import_key ?? "",
+        updated_at: row.updated_at ?? null
     };
+}
+
+function isQuestionNetworkFailure(error) {
+    const message = String(error?.message || error || "").toLowerCase();
+    return navigator.onLine === false ||
+        error instanceof TypeError ||
+        message.includes("network") ||
+        message.includes("failed to fetch") ||
+        message.includes("offline");
+}
+
+function getQuestionDatasetVersion(questionSet) {
+    const versions = questionSet
+        .map((question) => question.updated_at)
+        .filter(Boolean)
+        .sort();
+    return versions.length ? versions[versions.length - 1] : null;
 }
 
 async function loadSupabaseQuestions() {
     const loaded = [];
 
-    // Fetch every matching row in pages. Supabase/PostgREST commonly limits
-    // a single response to 1,000 rows, so one request is NOT enough for this bank.
-    for (const subject of selectedSubjects) {
-        let from = 0;
+    if (
+        testType === "practice" &&
+        navigator.onLine === false &&
+        window.OfflineQuestionStore
+    ) {
+        const cachedSets = await Promise.all(
+            selectedSubjects.map((subject) =>
+                window.OfflineQuestionStore.getSet(subject, testType)
+            )
+        );
 
-        while (true) {
-            const to = from + SUPABASE_PAGE_SIZE - 1;
-
-            const { data, error } = await supabaseClient
-                .from(SUPABASE_QUESTION_TABLE)
-                .select(`
-                    id,
-                    Subject,
-                    Question,
-                    Option_a,
-                    Option_b,
-                    Option_c,
-                    Option_d,
-                    Correct_Answer,
-                    test_type,
-                    Topic,
-                    topic,
-                    Explanation,
-                    explanation,
-                    year,
-                    source,
-                    is_active,
-                    import_key
-                `)
-                .eq("Subject", subject)
-                .eq("test_type", testType)
-                .range(from, to);
-
-            if (error) {
-                console.error("Supabase Questions load error:", error);
+        cachedSets.forEach((cachedSet, index) => {
+            if (
+                !cachedSet ||
+                !Array.isArray(cachedSet.questions) ||
+                !cachedSet.questions.length
+            ) {
                 throw new Error(
-                    `Could not load ${testType} questions for ${subject}: ${error.message}`
+                    `Could not load practice questions for ${selectedSubjects[index]}. No saved questions are available offline.`
                 );
             }
 
-            const page = Array.isArray(data) ? data : [];
-            loaded.push(...page.map(mapSupabaseQuestion));
+            loaded.push(...cachedSet.questions);
+        });
 
-            console.log(
-                `Loaded ${page.length} ${testType} questions for ${subject} (rows ${from}-${from + Math.max(page.length - 1, 0)}).`
-            );
+        window.OfflineQuestionStore.showOfflineNotice();
+    } else {
+    // Fetch every matching row in pages. Supabase/PostgREST commonly limits
+    // a single response to 1,000 rows, so one request is NOT enough for this bank.
+    for (const subject of selectedSubjects) {
+        try {
+            const subjectQuestions = [];
+            let from = 0;
 
-            if (page.length < SUPABASE_PAGE_SIZE) {
-                break;
+            while (true) {
+                const to = from + SUPABASE_PAGE_SIZE - 1;
+
+                const { data, error } = await supabaseClient
+                    .from(SUPABASE_QUESTION_TABLE)
+                    .select(`
+                        id,
+                        Subject,
+                        Question,
+                        Option_a,
+                        Option_b,
+                        Option_c,
+                        Option_d,
+                        Correct_Answer,
+                        test_type,
+                        Topic,
+                        topic,
+                        Explanation,
+                        explanation,
+                        year,
+                        source,
+                        is_active,
+                        updated_at,
+                        import_key
+                    `)
+                    .eq("Subject", subject)
+                    .eq("test_type", testType)
+                    .range(from, to);
+
+                if (error) {
+                    throw new Error(
+                        `Could not load ${testType} questions for ${subject}: ${error.message}`
+                    );
+                }
+
+                const page = Array.isArray(data) ? data : [];
+                subjectQuestions.push(...page.map(mapSupabaseQuestion));
+
+                console.log(
+                    `Loaded ${page.length} ${testType} questions for ${subject} (rows ${from}-${from + Math.max(page.length - 1, 0)}).`
+                );
+
+                if (page.length < SUPABASE_PAGE_SIZE) {
+                    break;
+                }
+
+                from += SUPABASE_PAGE_SIZE;
             }
 
-            from += SUPABASE_PAGE_SIZE;
+            loaded.push(...subjectQuestions);
+            if (window.OfflineQuestionStore) {
+                try {
+                    await window.OfflineQuestionStore.saveSet(
+                        subject,
+                        testType,
+                        subjectQuestions,
+                        getQuestionDatasetVersion(subjectQuestions)
+                    );
+                } catch (storageError) {
+                    console.warn("Could not save CBT questions for offline use:", storageError);
+                }
+            }
+        } catch (error) {
+            console.error("Supabase Questions load error:", error);
+            if (!isQuestionNetworkFailure(error) || !window.OfflineQuestionStore) {
+                throw error;
+            }
+
+            const cachedSet = await window.OfflineQuestionStore.getSet(
+                subject,
+                testType
+            );
+            if (!cachedSet || !Array.isArray(cachedSet.questions) || !cachedSet.questions.length) {
+                throw new Error(
+                    `Could not load ${testType} questions for ${subject}. No saved questions are available offline.`
+                );
+            }
+
+            loaded.push(...cachedSet.questions);
+            window.OfflineQuestionStore.showOfflineNotice();
+            console.warn(
+                `Using saved ${testType} questions for ${subject}; online Supabase data was unavailable.`
+            );
         }
+    }
     }
 
     // Remove duplicate database rows by id/import_key before the no-repeat

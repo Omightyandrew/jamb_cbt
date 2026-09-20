@@ -49,8 +49,9 @@ body.exam-body {
     border-radius: 12px;
     display: grid;
     place-items: center;
-    background: var(--jamb-green);
-    color: white;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--jamb-green);
     font-size: 21px;
     font-weight: 900;
 }

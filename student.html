@@ -4,7 +4,6 @@
 
 <head>
 
-```
 <meta charset="UTF-8">
 
 <meta
@@ -13,6 +12,14 @@
 >
 
 <title>ExamPilot - Student</title>
+<link rel="stylesheet" href="brand.css">
+<link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+<meta name="theme-color" content="#14213D">
+<meta property="og:title" content="ExamPilot">
+<meta property="og:description" content="Prepare smarter for JAMB with ExamPilot.">
+<meta property="og:image" content="assets/logo/og-image.png">
+<meta property="og:url" content="https://exampilot.com.ng/">
 
 <!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -369,15 +376,13 @@
 </style>
 
 <link rel="stylesheet" href="redesign.css">
-```
-
+    <link rel="manifest" href="manifest.json">
 </head>
 
 <body>
 
 <div class="student-page" id="studentPage">
 
-```
 <!-- LOGIN -->
 
 <div
@@ -385,9 +390,7 @@
     id="loginBox"
 >
 
-    <h1>
-        ExamPilot
-    </h1>
+    <img class="ep-logo ep-logo--auth" src="assets/logo/logo-primary.svg" alt="ExamPilot">
 
     <p>
         Login to continue to your student dashboard.
@@ -715,7 +718,6 @@
     ></div>
 
 </div>
-```
 
 </div>
 
@@ -729,7 +731,6 @@
     aria-labelledby="termsTitle"
 >
 
-```
 <div class="terms-modal-content">
 
     <div class="terms-modal-header">
@@ -810,8 +811,6 @@
     </div>
 
 </div>
-```
-
 </div>
 
 <script>
@@ -2800,6 +2799,7 @@ async function checkLogin() {
 
 </script>
 
+    <script src="pwa-register.js"></script>
 </body>
 
 </html>

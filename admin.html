@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ExamPilot Admin Dashboard</title>
+<link rel="stylesheet" href="brand.css">
+<link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+<meta name="theme-color" content="#0A302E">
 
 <style>
 :root{--green:#087f3e;--green-dark:#056532;--green-soft:#eaf7f0;--text:#17231d;--muted:#718078;--line:#e4ebe7;--bg:#f4f7f5;--white:#fff}
@@ -15,7 +19,7 @@ button{cursor:pointer}
 .app{min-height:100vh;display:flex}
 .sidebar{position:fixed;inset:0 auto 0 0;width:245px;background:#fff;border-right:1px solid var(--line);padding:22px 15px;display:flex;flex-direction:column;z-index:20}
 .brand{display:flex;gap:11px;align-items:center;padding:5px 10px 25px}
-.brand-mark{width:42px;height:42px;border-radius:12px;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:900;font-size:21px}
+.brand-mark{width:42px;height:42px;border-radius:12px;background:#fff;border:1px solid var(--line);padding:6px;object-fit:contain;display:grid;place-items:center}
 .brand b{display:block;font-size:15px}
 .brand small{display:block;color:var(--muted);margin-top:3px}
 .nav{display:grid;gap:5px}
@@ -351,7 +355,8 @@ main{margin-left:245px;width:calc(100% - 245px)}
   height:52px;
   margin:0 auto 14px;
   border-radius:14px;
-  background:#087f3e;
+    background:transparent;
+    object-fit:contain;
   color:#fff;
   display:grid;
   place-items:center;
@@ -372,7 +377,7 @@ main{margin-left:245px;width:calc(100% - 245px)}
 
 <div id="adminAuthGate">
   <div class="auth-card">
-    <div class="auth-logo">J</div>
+    <img class="auth-logo" src="assets/logo/favicon.svg" alt="ExamPilot">
     <h2>Admin access required</h2>
     <p id="authGateText">Checking your administrator session…</p>
     <div id="authGateStatus" class="auth-status"></div>
@@ -386,7 +391,7 @@ main{margin-left:245px;width:calc(100% - 245px)}
 
 <aside class="sidebar" id="adminSidebar">
   <div class="brand">
-    <div class="brand-mark">E</div>
+    <img class="brand-mark" src="assets/logo/logo-symbol.svg" alt="ExamPilot">
     <div>
       <b>ExamPilot</b>
       <small>Admin Panel</small>
