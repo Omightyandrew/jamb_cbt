@@ -2,10 +2,30 @@
     "use strict";
 
     var DB_NAME = "exampilot-offline";
-    var DB_VERSION = 1;
+    var DB_VERSION = 2;
     var STORE_NAME = "questionSets";
+    var CREDENTIALS_STORE_NAME = "offlineCredentials";
     var MAX_CACHED_SETS = 8;
     var MAX_QUESTIONS_PER_SET = 120;
+
+    function migrateSchema(database) {
+        if (!database.objectStoreNames.contains(STORE_NAME)) {
+            var store = database.createObjectStore(STORE_NAME, {
+                keyPath: "key"
+            });
+            store.createIndex("cachedAt", "cachedAt", {
+                unique: false
+            });
+            store.createIndex("testType", "testType", {
+                unique: false
+            });
+        }
+        if (!database.objectStoreNames.contains(CREDENTIALS_STORE_NAME)) {
+            database.createObjectStore(CREDENTIALS_STORE_NAME, {
+                keyPath: "email"
+            });
+        }
+    }
 
     function openDatabase() {
         return new Promise(function (resolve, reject) {
@@ -17,18 +37,7 @@
             var request = window.indexedDB.open(DB_NAME, DB_VERSION);
 
             request.onupgradeneeded = function () {
-                var database = request.result;
-                if (!database.objectStoreNames.contains(STORE_NAME)) {
-                    var store = database.createObjectStore(STORE_NAME, {
-                        keyPath: "key"
-                    });
-                    store.createIndex("cachedAt", "cachedAt", {
-                        unique: false
-                    });
-                    store.createIndex("testType", "testType", {
-                        unique: false
-                    });
-                }
+                migrateSchema(request.result);
             };
 
             request.onsuccess = function () {
@@ -38,8 +47,20 @@
             request.onerror = function () {
                 reject(request.error || new Error("Could not open offline question storage."));
             };
+
+            request.onblocked = function () {
+                console.warn("[IndexedDB] Database open blocked. Close other ExamPilot tabs.");
+            };
         });
     }
+
+    // Authoritative shared IndexedDB opener for offline components
+    window.ExamPilotOfflineDB = window.ExamPilotOfflineDB || {
+        DB_NAME: DB_NAME,
+        DB_VERSION: DB_VERSION,
+        open: openDatabase,
+        migrate: migrateSchema
+    };
 
     function transactionRequest(mode, operation) {
         return openDatabase().then(function (database) {

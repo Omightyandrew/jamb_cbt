@@ -10,6 +10,8 @@
 <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
 <meta name="theme-color" content="#14213D">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="offline-store.js"></script>
+<script src="offline-auth.js"></script>
 <script src="https://js.paystack.co/v2/inline.js"></script>
 <script>document.addEventListener("keydown", function(event) {
     if (event.key === "Escape") {
@@ -1706,13 +1708,67 @@ async function loadDashboardStudent() {
     try {
         const { data, error } = await supabaseClient.auth.getSession();
 
-        if (error || !data.session) {
-            window.location.href = "student.html";
-            return;
+        let user = null;
+        let isOfflineSession = false;
+
+        if (error || !data || !data.session) {
+            const rawOffline = localStorage.getItem("examPilotOfflineSession");
+            if (rawOffline) {
+                try {
+                    const offlineSession = JSON.parse(rawOffline);
+                    if (offlineSession && offlineSession.userId) {
+                        isOfflineSession = true;
+                        user = {
+                            id: offlineSession.userId,
+                            email: offlineSession.email || "",
+                            user_metadata: {
+                                full_name: offlineSession.displayName || "Student",
+                                username: offlineSession.username || "student"
+                            }
+                        };
+                    }
+                } catch (e) {}
+            }
+
+            if (!user) {
+                window.location.href = "student.html";
+                return;
+            }
+        } else {
+            user = data.session.user;
         }
 
-        const user = data.session.user;
         dashboardCurrentUser = user;
+
+        if (isOfflineSession) {
+            dashboardIsPremium = false;
+            localStorage.setItem('studentSubscribed', 'false');
+            applyPremiumQuickCardLocks();
+
+            const challengeCountEl = document.getElementById('challengeQuestionCount');
+            const challengePlanEl = document.getElementById('challengePlanLabel');
+            if (challengeCountEl) challengeCountEl.textContent = '5 questions today';
+            if (challengePlanEl) challengePlanEl.textContent = 'Free (Offline)';
+
+            const studentName = user.user_metadata?.full_name || "Student";
+            const greeting = document.getElementById("studentGreeting");
+            if (greeting) {
+                greeting.textContent = "Hello, " + studentName + " 👋";
+            }
+            const subtitle = document.querySelector(".welcome p");
+            if (subtitle) {
+                subtitle.innerHTML = '<span style="display:inline-block;padding:2px 8px;border-radius:10px;background:#53657a;color:#fff;font-size:11px;font-weight:700;margin-right:6px;">Offline Mode</span> Practice CBT with cached questions.';
+            }
+
+            const profileName = document.getElementById("profileStudentName");
+            const profileUsername = document.getElementById("profileStudentUsername");
+            if (profileName) profileName.textContent = studentName;
+            const username = user.user_metadata?.username || "student";
+            if (profileUsername) {
+                profileUsername.textContent = username.startsWith("@") ? username : "@" + username;
+            }
+            return;
+        }
 
         // Recover a payment that was saved before Paystack opened but whose
         // success callback may not have completed because the browser closed,
@@ -2270,6 +2326,7 @@ async function logoutStudent() {
         localStorage.removeItem("studentPractice");
         localStorage.removeItem("studentSubscribed");
         localStorage.removeItem("freePractice");
+        localStorage.removeItem("examPilotOfflineSession");
 
         window.location.href = "student.html";
 

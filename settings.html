@@ -9,6 +9,8 @@
 <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
 <meta name="theme-color" content="#14213D">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="offline-store.js"></script>
+<script src="offline-auth.js"></script>
 <style>
 :root{--green:#008751;--dark:#123b2d;--bg:#f5faf7;--line:#dfe9e4;--muted:#687a72}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#17382d}
@@ -21,7 +23,7 @@
 </head>
 <body>
 <main class="page">
-  <div class="top"><button class="back" onclick="location.href='dashboard.html'" aria-label="Back to Dashboard">?</button><div><h1 id="settingsPageTitle">Settings</h1><p id="settingsPageSubtitle">Manage your student account.</p></div></div>
+  <div class="top"><button class="back" onclick="location.href='dashboard.html'" aria-label="Back to Dashboard">?</button><div><img class="ep-logo ep-logo--header" src="assets/logo/logo-compact.svg" alt="ExamPilot"><h1 id="settingsPageTitle">Settings</h1><p id="settingsPageSubtitle">Manage your student account.</p></div></div>
 
   <section class="card page-section" data-page-section="support" id="supportHelpSection">
     <h2>Support &amp; Help</h2>
@@ -144,7 +146,12 @@
   <section class="card page-section" data-page-section="settings">
     <h2>Account</h2><p class="sub">Your current login session.</p>
     <div class="status" id="accountStatus">Checking account...</div>
-    <div class="actions"><button class="btn primary" type="button" onclick="location.href='dashboard.html'">Back to Dashboard</button><button class="btn danger" id="logoutBtn" type="button">Log Out</button></div>
+    <div class="actions">
+      <button class="btn primary" type="button" onclick="location.href='dashboard.html'">Back to Dashboard</button>
+      <button class="btn secondary" id="removeOfflineAccessBtn" type="button">Remove Offline Access</button>
+      <button class="btn danger" id="logoutBtn" type="button">Log Out</button>
+    </div>
+    <span id="offlineAccessMessage" class="message" style="display:inline-block;margin-top:10px;"></span>
   </section>
 </main>
 <script>
@@ -176,7 +183,28 @@ let currentUser=null;
 function msg(id,text,ok=false){const el=document.getElementById(id);el.textContent=text;el.className='message '+(ok?'success':'error');}
 async function loadSettings(){
   const {data,error}=await supabaseClient.auth.getSession();
-  if(error||!data.session){location.href='student.html';return;}
+  if(error||!data||!data.session){
+    const rawOffline = localStorage.getItem("examPilotOfflineSession");
+    if (rawOffline) {
+      try {
+        const offlineSession = JSON.parse(rawOffline);
+        if (offlineSession && offlineSession.userId) {
+          currentUser = {
+            id: offlineSession.userId,
+            email: offlineSession.email || '',
+            user_metadata: { full_name: offlineSession.displayName || 'Student', username: offlineSession.username || 'student' }
+          };
+          document.getElementById('email').value = currentUser.email || '';
+          document.getElementById('fullName').value = offlineSession.displayName || '';
+          document.getElementById('username').value = offlineSession.username || '';
+          document.getElementById('accountStatus').textContent = 'Signed in as ' + (currentUser.email || 'Student') + ' (Offline Mode)';
+          return;
+        }
+      } catch (e) {}
+    }
+    location.href='student.html';
+    return;
+  }
   currentUser=data.session.user;
   document.getElementById('email').value=currentUser.email||'';
   const {data:profile,error:profileError}=await supabaseClient.from('Student_profiles').select('Full_name, Username').eq('id',currentUser.id).maybeSingle();
@@ -204,7 +232,48 @@ document.getElementById('passwordForm').addEventListener('submit',async e=>{
   msg('passwordMessage','Updating...',true); const {error}=await supabaseClient.auth.updateUser({password:p});
   if(error){msg('passwordMessage',error.message);return;} document.getElementById('passwordForm').reset(); msg('passwordMessage','Password updated successfully.',true);
 });
-document.getElementById('logoutBtn').addEventListener('click',async()=>{if(!confirm('Are you sure you want to logout?'))return;await supabaseClient.auth.signOut();localStorage.removeItem('studentName');localStorage.removeItem('studentUsername');localStorage.removeItem('studentSubscribed');location.href='student.html';});
+document.getElementById('logoutBtn').addEventListener('click',async()=>{
+  if(!confirm('Are you sure you want to logout?'))return;
+  try { await supabaseClient.auth.signOut(); } catch(e){}
+  localStorage.removeItem('studentName');
+  localStorage.removeItem('studentUsername');
+  localStorage.removeItem('studentSubscribed');
+  localStorage.removeItem('examPilotOfflineSession');
+  location.href='student.html';
+});
+document.getElementById('removeOfflineAccessBtn')?.addEventListener('click', async () => {
+  const email = (currentUser?.email || document.getElementById('email')?.value || '').trim().toLowerCase();
+  if (!email) {
+    msg('offlineAccessMessage', 'Could not determine account email.');
+    return;
+  }
+
+  if (!window.OfflineAuth || typeof window.OfflineAuth.hasCredential !== 'function') {
+    msg('offlineAccessMessage', 'Offline authentication module is not available.');
+    return;
+  }
+
+  try {
+    const hasCred = await window.OfflineAuth.hasCredential(email);
+    if (!hasCred) {
+      msg('offlineAccessMessage', 'Offline access is not currently enabled on this device.');
+      return;
+    }
+
+    const confirmed = confirm('Remove offline login access for this account on this device?');
+    if (!confirmed) return;
+
+    const revoked = await window.OfflineAuth.revokeDevice(email);
+    if (revoked) {
+      msg('offlineAccessMessage', 'Offline access has been removed from this device.', true);
+    } else {
+      msg('offlineAccessMessage', 'Could not remove offline access. Please try again.');
+    }
+  } catch (err) {
+    console.warn('Remove offline access error:', err);
+    msg('offlineAccessMessage', 'Could not remove offline access. Please try again.');
+  }
+});
 function applySettingsView(){
   const params = new URLSearchParams(window.location.search);
   const target = params.get('view') === 'support' ? 'support' : 'settings';

@@ -193,29 +193,45 @@ async function checkStudentAccess() {
         // CHECK LOGIN
         // ==================================
 
+        let isOfflineSession = false;
+
         if (
             sessionError ||
+            !sessionData ||
             !sessionData.session
         ) {
+            const rawOffline = localStorage.getItem("examPilotOfflineSession");
+            if (rawOffline) {
+                try {
+                    const offlineSession = JSON.parse(rawOffline);
+                    if (offlineSession && offlineSession.userId) {
+                        isOfflineSession = true;
+                        currentUser = {
+                            id: offlineSession.userId,
+                            email: offlineSession.email || ""
+                        };
+                    }
+                } catch (e) {}
+            }
 
-            showAccessDenied(
-                "Please login as a student first."
-            );
+            if (!currentUser) {
+                showAccessDenied(
+                    "Please login as a student first."
+                );
 
-            return false;
-
+                return false;
+            }
+        } else {
+            currentUser =
+                sessionData.session.user;
         }
-
-
-        currentUser =
-            sessionData.session.user;
 
 
         // Offline access is limited to cached practice questions. Keep the
         // local free-use policy active without treating the student as a
         // verified subscriber.
         if (
-            navigator.onLine === false &&
+            (isOfflineSession || navigator.onLine === false) &&
             testType === "practice"
         ) {
 
@@ -237,6 +253,13 @@ async function checkStudentAccess() {
 
             return true;
 
+        }
+
+        if (isOfflineSession && testType === "past") {
+            showSubscriptionRequired(
+                "Past Questions are available to subscribers only."
+            );
+            return false;
         }
 
 
@@ -653,103 +676,117 @@ function getQuestionDatasetVersion(questionSet) {
     return versions.length ? versions[versions.length - 1] : null;
 }
 
+async function loadAllOfflinePracticeQuestions() {
+    if (!window.OfflineQuestionStore) {
+        return null;
+    }
+
+    const cachedSets = await Promise.all(
+        selectedSubjects.map((subject) =>
+            window.OfflineQuestionStore.getSet(subject, "practice")
+        )
+    );
+
+    const questionsList = [];
+    cachedSets.forEach((cachedSet, index) => {
+        if (
+            !cachedSet ||
+            !Array.isArray(cachedSet.questions) ||
+            !cachedSet.questions.length
+        ) {
+            throw new Error(
+                `Could not load practice questions for ${selectedSubjects[index]}. No saved questions are available offline.`
+            );
+        }
+
+        questionsList.push(...cachedSet.questions);
+    });
+
+    window.OfflineQuestionStore.showOfflineNotice();
+    return questionsList;
+}
+
 async function loadSupabaseQuestions() {
-    const loaded = [];
+    let loaded = [];
 
     if (
         testType === "practice" &&
         navigator.onLine === false &&
         window.OfflineQuestionStore
     ) {
-        const cachedSets = await Promise.all(
-            selectedSubjects.map((subject) =>
-                window.OfflineQuestionStore.getSet(subject, testType)
-            )
-        );
-
-        cachedSets.forEach((cachedSet, index) => {
-            if (
-                !cachedSet ||
-                !Array.isArray(cachedSet.questions) ||
-                !cachedSet.questions.length
-            ) {
-                throw new Error(
-                    `Could not load practice questions for ${selectedSubjects[index]}. No saved questions are available offline.`
-                );
-            }
-
-            loaded.push(...cachedSet.questions);
-        });
-
-        window.OfflineQuestionStore.showOfflineNotice();
+        const cachedQuestions = await loadAllOfflinePracticeQuestions();
+        if (cachedQuestions) {
+            loaded = cachedQuestions;
+        }
     } else {
-    // Fetch every matching row in pages. Supabase/PostgREST commonly limits
-    // a single response to 1,000 rows, so one request is NOT enough for this bank.
-    for (const subject of selectedSubjects) {
         try {
-            const subjectQuestions = [];
-            let from = 0;
+            // Fetch every matching row in pages. Supabase/PostgREST commonly limits
+            // a single response to 1,000 rows, so one request is NOT enough for this bank.
+            for (const subject of selectedSubjects) {
+                const subjectQuestions = [];
+                let from = 0;
 
-            while (true) {
-                const to = from + SUPABASE_PAGE_SIZE - 1;
+                while (true) {
+                    const to = from + SUPABASE_PAGE_SIZE - 1;
 
-                const { data, error } = await supabaseClient
-                    .from(SUPABASE_QUESTION_TABLE)
-                    .select(`
-                        id,
-                        Subject,
-                        Question,
-                        Option_a,
-                        Option_b,
-                        Option_c,
-                        Option_d,
-                        Correct_Answer,
-                        test_type,
-                        Topic,
-                        topic,
-                        Explanation,
-                        explanation,
-                        year,
-                        source,
-                        is_active,
-                        updated_at,
-                        import_key
-                    `)
-                    .eq("Subject", subject)
-                    .eq("test_type", testType)
-                    .range(from, to);
+                    const { data, error } = await supabaseClient
+                        .from(SUPABASE_QUESTION_TABLE)
+                        .select(`
+                            id,
+                            Subject,
+                            Question,
+                            Option_a,
+                            Option_b,
+                            Option_c,
+                            Option_d,
+                            Correct_Answer,
+                            test_type,
+                            Topic,
+                            topic,
+                            Explanation,
+                            explanation,
+                            year,
+                            source,
+                            is_active,
+                            updated_at,
+                            import_key
+                        `)
+                        .eq("Subject", subject)
+                        .eq("test_type", testType)
+                        .range(from, to);
 
-                if (error) {
-                    throw new Error(
-                        `Could not load ${testType} questions for ${subject}: ${error.message}`
+                    if (error) {
+                        throw new Error(
+                            `Could not load ${testType} questions for ${subject}: ${error.message}`
+                        );
+                    }
+
+                    const page = Array.isArray(data) ? data : [];
+                    subjectQuestions.push(...page.map(mapSupabaseQuestion));
+
+                    console.log(
+                        `Loaded ${page.length} ${testType} questions for ${subject} (rows ${from}-${from + Math.max(page.length - 1, 0)}).`
                     );
+
+                    if (page.length < SUPABASE_PAGE_SIZE) {
+                        break;
+                    }
+
+                    from += SUPABASE_PAGE_SIZE;
                 }
 
-                const page = Array.isArray(data) ? data : [];
-                subjectQuestions.push(...page.map(mapSupabaseQuestion));
-
-                console.log(
-                    `Loaded ${page.length} ${testType} questions for ${subject} (rows ${from}-${from + Math.max(page.length - 1, 0)}).`
-                );
-
-                if (page.length < SUPABASE_PAGE_SIZE) {
-                    break;
-                }
-
-                from += SUPABASE_PAGE_SIZE;
-            }
-
-            loaded.push(...subjectQuestions);
-            if (window.OfflineQuestionStore) {
-                try {
-                    await window.OfflineQuestionStore.saveSet(
-                        subject,
-                        testType,
-                        subjectQuestions,
-                        getQuestionDatasetVersion(subjectQuestions)
-                    );
-                } catch (storageError) {
-                    console.warn("Could not save CBT questions for offline use:", storageError);
+                loaded.push(...subjectQuestions);
+                if (window.OfflineQuestionStore) {
+                    try {
+                        await window.OfflineQuestionStore.saveSet(
+                            subject,
+                            testType,
+                            subjectQuestions,
+                            getQuestionDatasetVersion(subjectQuestions)
+                        );
+                    } catch (storageError) {
+                        console.warn("Could not save CBT questions for offline use:", storageError);
+                    }
                 }
             }
         } catch (error) {
@@ -758,23 +795,18 @@ async function loadSupabaseQuestions() {
                 throw error;
             }
 
-            const cachedSet = await window.OfflineQuestionStore.getSet(
-                subject,
-                testType
-            );
-            if (!cachedSet || !Array.isArray(cachedSet.questions) || !cachedSet.questions.length) {
-                throw new Error(
-                    `Could not load ${testType} questions for ${subject}. No saved questions are available offline.`
-                );
+            if (testType === "practice") {
+                const cachedQuestions = await loadAllOfflinePracticeQuestions();
+                if (cachedQuestions) {
+                    loaded = cachedQuestions;
+                    console.warn(
+                        `Using saved practice questions for ${selectedSubjects.join(", ")}; online Supabase data was unavailable.`
+                    );
+                }
+            } else {
+                throw error;
             }
-
-            loaded.push(...cachedSet.questions);
-            window.OfflineQuestionStore.showOfflineNotice();
-            console.warn(
-                `Using saved ${testType} questions for ${subject}; online Supabase data was unavailable.`
-            );
         }
-    }
     }
 
     // Remove duplicate database rows by id/import_key before the no-repeat

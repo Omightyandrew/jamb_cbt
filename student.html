@@ -7,8 +7,9 @@
 <meta charset="UTF-8">
 
 <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
 >
 
 <title>ExamPilot - Student</title>
@@ -22,9 +23,17 @@
 <meta property="og:url" content="https://exampilot.com.ng/">
 
 <!-- SUPABASE -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<!-- OFFLINE AUTH & STORAGE -->
+
+<script src="offline-store.js"></script>
+
+<script src="offline-auth.js"></script>
+
 <!-- PAYSTACK -->
+
 <script src="https://js.paystack.co/v2/inline.js"></script>
 
 <style>
@@ -376,7 +385,8 @@
 </style>
 
 <link rel="stylesheet" href="redesign.css">
-    <link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json">
+
 </head>
 
 <body>
@@ -390,78 +400,84 @@
     id="loginBox"
 >
 
-    <img class="ep-logo ep-logo--auth" src="assets/logo/logo-primary.svg" alt="ExamPilot">
+```
+<img
+    class="ep-logo ep-logo--auth"
+    src="assets/logo/logo-primary.svg"
+    alt="ExamPilot"
+>
 
-    <p>
-        Login to continue to your student dashboard.
-    </p>
+<p>
+    Login to continue to your student dashboard.
+</p>
 
-    <form
-        class="student-form"
-        id="loginForm"
-    >
+<form
+    class="student-form"
+    id="loginForm"
+>
 
-        <div class="form-group">
+    <div class="form-group">
 
-            <label for="loginEmail">
-                Email
-            </label>
+        <label for="loginEmail">
+            Email
+        </label>
 
-            <input
-                type="email"
-                id="loginEmail"
-                required
-            >
+        <input
+            type="email"
+            id="loginEmail"
+            required
+        >
 
-        </div>
+    </div>
 
-        <div class="form-group">
+    <div class="form-group">
 
-            <label for="loginPassword">
-                Password
-            </label>
+        <label for="loginPassword">
+            Password
+        </label>
 
-            <input
-                type="password"
-                id="loginPassword"
-                required
-            >
+        <input
+            type="password"
+            id="loginPassword"
+            required
+        >
 
-        </div>
+    </div>
 
-        <div style="text-align:right;margin:-4px 0 14px;">
-
-            <button
-                type="button"
-                onclick="showForgotPassword()"
-                style="border:0;background:none;color:#087f3e;font-weight:700;cursor:pointer;padding:4px 0;"
-            >
-                Forgot Password?
-            </button>
-
-        </div>
+    <div style="text-align:right;margin:-4px 0 14px;">
 
         <button
-            type="submit"
-            class="primary-button"
+            type="button"
+            onclick="showForgotPassword()"
+            style="border:0;background:none;color:#087f3e;font-weight:700;cursor:pointer;padding:4px 0;"
         >
-            Login
+            Forgot Password?
         </button>
 
-    </form>
+    </div>
 
     <button
-        type="button"
-        class="secondary-button"
-        onclick="showRegister()"
+        type="submit"
+        class="primary-button"
     >
-        Create Account
+        Login
     </button>
 
-    <div
-        id="loginMessage"
-        class="message"
-    ></div>
+</form>
+
+<button
+    type="button"
+    class="secondary-button"
+    onclick="showRegister()"
+>
+    Create Account
+</button>
+
+<div
+    id="loginMessage"
+    class="message"
+></div>
+```
 
 </div>
 
@@ -472,56 +488,58 @@
     id="forgotPasswordBox"
 >
 
-    <h1>
-        Forgot Password?
-    </h1>
+```
+<h1>
+    Forgot Password?
+</h1>
 
-    <p>
-        Enter your account email and we will send you a password reset link.
-    </p>
+<p>
+    Enter your account email and we will send you a password reset link.
+</p>
 
-    <form
-        class="student-form"
-        id="forgotPasswordForm"
-    >
+<form
+    class="student-form"
+    id="forgotPasswordForm"
+>
 
-        <div class="form-group">
+    <div class="form-group">
 
-            <label for="forgotEmail">
-                Email
-            </label>
+        <label for="forgotEmail">
+            Email
+        </label>
 
-            <input
-                type="email"
-                id="forgotEmail"
-                required
-                autocomplete="email"
-            >
-
-        </div>
-
-        <button
-            type="submit"
-            class="primary-button"
-            id="forgotPasswordButton"
+        <input
+            type="email"
+            id="forgotEmail"
+            required
+            autocomplete="email"
         >
-            Send Reset Link
-        </button>
 
-    </form>
+    </div>
 
     <button
-        type="button"
-        class="secondary-button"
-        onclick="showLogin()"
+        type="submit"
+        class="primary-button"
+        id="forgotPasswordButton"
     >
-        Back to Login
+        Send Reset Link
     </button>
 
-    <div
-        id="forgotPasswordMessage"
-        class="message"
-    ></div>
+</form>
+
+<button
+    type="button"
+    class="secondary-button"
+    onclick="showLogin()"
+>
+    Back to Login
+</button>
+
+<div
+    id="forgotPasswordMessage"
+    class="message"
+></div>
+```
 
 </div>
 
@@ -532,65 +550,67 @@
     id="resetPasswordBox"
 >
 
-    <h1>
-        Create New Password
-    </h1>
+```
+<h1>
+    Create New Password
+</h1>
 
-    <p>
-        Enter your new password below.
-    </p>
+<p>
+    Enter your new password below.
+</p>
 
-    <form
-        class="student-form"
-        id="resetPasswordForm"
-    >
+<form
+    class="student-form"
+    id="resetPasswordForm"
+>
 
-        <div class="form-group">
+    <div class="form-group">
 
-            <label for="newPassword">
-                New Password
-            </label>
+        <label for="newPassword">
+            New Password
+        </label>
 
-            <input
-                type="password"
-                id="newPassword"
-                minlength="6"
-                required
-                autocomplete="new-password"
-            >
-
-        </div>
-
-        <div class="form-group">
-
-            <label for="confirmNewPassword">
-                Confirm New Password
-            </label>
-
-            <input
-                type="password"
-                id="confirmNewPassword"
-                minlength="6"
-                required
-                autocomplete="new-password"
-            >
-
-        </div>
-
-        <button
-            type="submit"
-            class="primary-button"
-            id="resetPasswordButton"
+        <input
+            type="password"
+            id="newPassword"
+            minlength="6"
+            required
+            autocomplete="new-password"
         >
-            Update Password
-        </button>
 
-    </form>
+    </div>
 
-    <div
-        id="resetPasswordMessage"
-        class="message"
-    ></div>
+    <div class="form-group">
+
+        <label for="confirmNewPassword">
+            Confirm New Password
+        </label>
+
+        <input
+            type="password"
+            id="confirmNewPassword"
+            minlength="6"
+            required
+            autocomplete="new-password"
+        >
+
+    </div>
+
+    <button
+        type="submit"
+        class="primary-button"
+        id="resetPasswordButton"
+    >
+        Update Password
+    </button>
+
+</form>
+
+<div
+    id="resetPasswordMessage"
+    class="message"
+></div>
+```
 
 </div>
 
@@ -601,121 +621,123 @@
     id="registerBox"
 >
 
-    <h1>
-        Create Account
-    </h1>
+```
+<h1>
+    Create Account
+</h1>
 
-    <p>
-        Create your ExamPilot student account.
-    </p>
+<p>
+    Create your ExamPilot student account.
+</p>
 
-    <form
-        class="student-form"
-        id="registerForm"
-    >
+<form
+    class="student-form"
+    id="registerForm"
+>
 
-        <div class="form-group">
+    <div class="form-group">
 
-            <label for="registerName">
-                Full Name
-            </label>
+        <label for="registerName">
+            Full Name
+        </label>
 
-            <input
-                type="text"
-                id="registerName"
-                required
-            >
-
-        </div>
-
-        <div class="form-group">
-
-            <label for="registerUsername">
-                Username
-            </label>
-
-            <input
-                type="text"
-                id="registerUsername"
-                required
-            >
-
-        </div>
-
-        <div class="form-group">
-
-            <label for="registerEmail">
-                Email
-            </label>
-
-            <input
-                type="email"
-                id="registerEmail"
-                required
-            >
-
-        </div>
-
-        <div class="form-group">
-
-            <label for="registerPassword">
-                Password
-            </label>
-
-            <input
-                type="password"
-                id="registerPassword"
-                minlength="6"
-                required
-            >
-
-        </div>
-
-        <div class="terms-row">
-
-            <input
-                type="checkbox"
-                id="termsAgreement"
-                required
-            >
-
-            <label for="termsAgreement">
-
-                I agree to the
-
-                <button
-                    type="button"
-                    class="terms-link"
-                    onclick="openTermsModal()"
-                >
-                    Terms &amp; Policies
-                </button>
-
-            </label>
-
-        </div>
-
-        <button
-            type="submit"
-            class="primary-button"
+        <input
+            type="text"
+            id="registerName"
+            required
         >
-            Create Account
-        </button>
 
-    </form>
+    </div>
+
+    <div class="form-group">
+
+        <label for="registerUsername">
+            Username
+        </label>
+
+        <input
+            type="text"
+            id="registerUsername"
+            required
+        >
+
+    </div>
+
+    <div class="form-group">
+
+        <label for="registerEmail">
+            Email
+        </label>
+
+        <input
+            type="email"
+            id="registerEmail"
+            required
+        >
+
+    </div>
+
+    <div class="form-group">
+
+        <label for="registerPassword">
+            Password
+        </label>
+
+        <input
+            type="password"
+            id="registerPassword"
+            minlength="6"
+            required
+        >
+
+    </div>
+
+    <div class="terms-row">
+
+        <input
+            type="checkbox"
+            id="termsAgreement"
+            required
+        >
+
+        <label for="termsAgreement">
+
+            I agree to the
+
+            <button
+                type="button"
+                class="terms-link"
+                onclick="openTermsModal()"
+            >
+                Terms &amp; Policies
+            </button>
+
+        </label>
+
+    </div>
 
     <button
-        type="button"
-        class="secondary-button"
-        onclick="showLogin()"
+        type="submit"
+        class="primary-button"
     >
-        Back to Login
+        Create Account
     </button>
 
-    <div
-        id="registerMessage"
-        class="message"
-    ></div>
+</form>
+
+<button
+    type="button"
+    class="secondary-button"
+    onclick="showLogin()"
+>
+    Back to Login
+</button>
+
+<div
+    id="registerMessage"
+    class="message"
+></div>
+```
 
 </div>
 
@@ -733,82 +755,84 @@
 
 <div class="terms-modal-content">
 
-    <div class="terms-modal-header">
+```
+<div class="terms-modal-header">
 
-        <h2 id="termsTitle">
-            Terms &amp; Policies
-        </h2>
+    <h2 id="termsTitle">
+        Terms &amp; Policies
+    </h2>
 
-        <button
-            type="button"
-            class="modal-close"
-            aria-label="Close Terms & Policies"
-            onclick="closeTermsModal()"
-        >
-            ×
-        </button>
+    <button
+        type="button"
+        class="modal-close"
+        aria-label="Close Terms & Policies"
+        onclick="closeTermsModal()"
+    >
+        ×
+    </button>
 
-    </div>
+</div>
 
-    <div class="terms-scroll">
+<div class="terms-scroll">
 
-        <h3>
-            Terms of Use
-        </h3>
+    <h3>
+        Terms of Use
+    </h3>
 
-        <p>
-            By using ExamPilot, you agree to use the platform responsibly, study honestly, and follow the rules for all practice and exam activities. You must not misuse the site, attempt to bypass access controls, or share your account with others.
-        </p>
+    <p>
+        By using ExamPilot, you agree to use the platform responsibly, study honestly, and follow the rules for all practice and exam activities. You must not misuse the site, attempt to bypass access controls, or share your account with others.
+    </p>
 
-        <h3>
-            Privacy
-        </h3>
+    <h3>
+        Privacy
+    </h3>
 
-        <p>
-            We collect the information needed to create and manage your student account, track your progress, and provide access to learning features. Your data is used only for the services available on the platform and is not shared publicly.
-        </p>
+    <p>
+        We collect the information needed to create and manage your student account, track your progress, and provide access to learning features. Your data is used only for the services available on the platform and is not shared publicly.
+    </p>
 
-        <h3>
-            Payments &amp; Subscription
-        </h3>
+    <h3>
+        Payments &amp; Subscription
+    </h3>
 
-        <p>
-            Premium access is available only through the platform’s subscription flow. You are responsible for keeping your payment details accurate and for reviewing your subscription status before using premium features.
-        </p>
+    <p>
+        Premium access is available only through the platform’s subscription flow. You are responsible for keeping your payment details accurate and for reviewing your subscription status before using premium features.
+    </p>
 
-        <h3>
-            Content &amp; Copyright
-        </h3>
+    <h3>
+        Content &amp; Copyright
+    </h3>
 
-        <p>
-            Study content, question materials, explanations, and platform materials are provided for educational use. Do not copy, redistribute, or share the platform content outside of your personal learning use.
-        </p>
+    <p>
+        Study content, question materials, explanations, and platform materials are provided for educational use. Do not copy, redistribute, or share the platform content outside of your personal learning use.
+    </p>
 
-        <h3>
-            Account &amp; Security
-        </h3>
+    <h3>
+        Account &amp; Security
+    </h3>
 
-        <p>
-            You are responsible for your login details and for keeping your account secure. Do not share your password, and notify support immediately if you suspect unauthorized access.
-        </p>
+    <p>
+        You are responsible for your login details and for keeping your account secure. Do not share your password, and notify support immediately if you suspect unauthorized access.
+    </p>
 
-        <h3>
-            Changes to the Terms
-        </h3>
+    <h3>
+        Changes to the Terms
+    </h3>
 
-        <p>
-            We may update these terms to improve the platform, improve security, or reflect new services. Continued use of the platform means you accept any updated terms.
-        </p>
+    <p>
+        We may update these terms to improve the platform, improve security, or reflect new services. Continued use of the platform means you accept any updated terms.
+    </p>
 
-        <h3>
-            Contact
-        </h3>
+    <h3>
+        Contact
+    </h3>
 
-        <p>
-            If you need help, contact support at igbawuaandrew3@gmail.com or through the WhatsApp number available in the Support section.
-        </p>
+    <p>
+        If you need help, contact support at igbawuaandrew3@gmail.com or through the WhatsApp number available in the Support section.
+    </p>
 
-    </div>
+</div>
+```
 
 </div>
 </div>
@@ -1407,7 +1431,7 @@ async function saveStudentProfile(
     catch (error) {
 
         console.log(
-            "Profile save error:",
+            "Save profile error:",
             error
         );
 
@@ -1445,6 +1469,154 @@ document
                     )
                     .value;
 
+
+            /* ----------------------------------------
+               NETWORK ERROR DETECTION
+            ---------------------------------------- */
+
+            function isNetworkError(err) {
+
+                if (
+                    navigator.onLine === false
+                ) {
+                    return true;
+                }
+
+                const msg =
+                    String(
+                        err?.message ||
+                        err ||
+                        ""
+                    ).toLowerCase();
+
+                return (
+                    msg.includes("failed to fetch") ||
+                    msg.includes("network") ||
+                    msg.includes("offline") ||
+                    msg.includes("unable to connect") ||
+                    msg.includes("fetch failed") ||
+                    msg.includes("load failed")
+                );
+
+            }
+
+
+            /* ----------------------------------------
+               OFFLINE LOGIN
+            ---------------------------------------- */
+
+            async function tryOfflineLogin() {
+
+                if (
+                    !window.OfflineAuth ||
+                    typeof window.OfflineAuth.verifyAndDecrypt !==
+                    "function"
+                ) {
+                    console.warn(
+                        "[OfflineAuth] Offline authentication module is unavailable."
+                    );
+
+                    return false;
+                }
+
+                try {
+
+                    const offlineIdentity =
+                        await window.OfflineAuth.verifyAndDecrypt(
+                            email,
+                            password
+                        );
+
+                    if (
+                        offlineIdentity &&
+                        offlineIdentity.userId
+                    ) {
+
+                        studentName =
+                            offlineIdentity.displayName ||
+                            "Student";
+
+                        studentUsername =
+                            offlineIdentity.username ||
+                            "student";
+
+                        localStorage.setItem(
+                            "studentName",
+                            studentName
+                        );
+
+                        localStorage.setItem(
+                            "studentUsername",
+                            studentUsername
+                        );
+
+                        /*
+                         * Offline mode must NEVER grant Premium.
+                         */
+                        localStorage.setItem(
+                            "studentSubscribed",
+                            "false"
+                        );
+
+                        localStorage.removeItem(
+                            "studentPractice"
+                        );
+
+                        localStorage.removeItem(
+                            "freePractice"
+                        );
+
+                        localStorage.setItem(
+                            "examPilotOfflineSession",
+                            JSON.stringify({
+                                userId:
+                                    offlineIdentity.userId,
+
+                                email:
+                                    offlineIdentity.email,
+
+                                displayName:
+                                    studentName,
+
+                                username:
+                                    studentUsername,
+
+                                authenticatedAt:
+                                    Date.now()
+                            })
+                        );
+
+                        console.log(
+                            "[OfflineAuth] Offline login successful."
+                        );
+
+                        window.location.href =
+                            "dashboard.html";
+
+                        return true;
+
+                    }
+
+                    console.warn(
+                        "[OfflineAuth] Offline login rejected: no valid credential."
+                    );
+
+                }
+
+                catch (offlineErr) {
+
+                    console.warn(
+                        "[OfflineAuth] Offline login verification error:",
+                        offlineErr
+                    );
+
+                }
+
+                return false;
+
+            }
+
+
             try {
 
                 showMessage(
@@ -1452,6 +1624,11 @@ document
                     "Logging in...",
                     "success"
                 );
+
+
+                /* ----------------------------------------
+                   AUTHORITATIVE ONLINE LOGIN
+                ---------------------------------------- */
 
                 const {
                     data,
@@ -1466,11 +1643,45 @@ document
                             }
                         );
 
+
                 if (error) {
 
+                    /*
+                     * If the server cannot be reached,
+                     * try the encrypted offline credential.
+                     */
+                    if (
+                        isNetworkError(error)
+                    ) {
+
+                        const loggedInOffline =
+                            await tryOfflineLogin();
+
+                        if (
+                            loggedInOffline
+                        ) {
+                            return;
+                        }
+
+                        showMessage(
+                            "loginMessage",
+                            "Internet connection required to log in. Please check your network and try again.",
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+
+                    /*
+                     * Normal Supabase authentication
+                     * errors remain unchanged.
+                     */
                     showMessage(
                         "loginMessage",
-                        error.message,
+                        error.message ||
+                        "Login failed. Please try again.",
                         "error"
                     );
 
@@ -1478,7 +1689,10 @@ document
 
                 }
 
-                if (!data.user) {
+
+                if (
+                    !data.user
+                ) {
 
                     showMessage(
                         "loginMessage",
@@ -1490,14 +1704,125 @@ document
 
                 }
 
+
+                /* ----------------------------------------
+                   LOAD AUTHORITATIVE PROFILE
+                ---------------------------------------- */
+
                 await loadStudentProfile(
                     data.user
                 );
+
+
+                /* ----------------------------------------
+                   SECURE OFFLINE ENROLLMENT
+                ---------------------------------------- */
+
+                if (
+                    window.OfflineAuth &&
+                    typeof window.OfflineAuth.enroll ===
+                    "function"
+                ) {
+
+                    try {
+
+                        const currentName =
+                            studentName ||
+                            data.user.user_metadata?.full_name ||
+                            data.user.email ||
+                            "Student";
+
+                        const currentUsername =
+                            studentUsername ||
+                            data.user.user_metadata?.username ||
+                            (
+                                data.user.email
+                                    ? data.user.email.split("@")[0]
+                                    : "student"
+                            );
+
+
+                        /*
+                         * IMPORTANT:
+                         * enroll() returns true/false.
+                         *
+                         * A false result means the encrypted
+                         * credential was NOT stored.
+                         *
+                         * We still allow the authoritative
+                         * online login to continue.
+                         */
+                        const offlineEnrollmentResult =
+                            await window.OfflineAuth.enroll(
+                                email,
+                                password,
+                                data.user.id,
+                                currentName,
+                                currentUsername
+                            );
+
+
+                        if (
+                            offlineEnrollmentResult === true
+                        ) {
+
+                            console.log(
+                                "[OfflineAuth] Offline credential enrolled successfully."
+                            );
+
+                        }
+
+                        else {
+
+                            console.warn(
+                                "[OfflineAuth] Offline enrollment was not completed."
+                            );
+
+                        }
+
+                    }
+
+                    catch (enrollErr) {
+
+                        /*
+                         * Offline enrollment failure must NEVER
+                         * block a successful online login.
+                         *
+                         * Do not log the password or any
+                         * credential contents.
+                         */
+                        console.warn(
+                            "[OfflineAuth] Offline enrollment skipped:",
+                            enrollErr
+                        );
+
+                    }
+
+                }
+
+                else {
+
+                    console.warn(
+                        "[OfflineAuth] Offline authentication module is unavailable; enrollment skipped."
+                    );
+
+                }
+
+
+                /*
+                 * The authoritative Supabase session is now active.
+                 * Remove only the temporary offline session marker.
+                 */
+                localStorage.removeItem(
+                    "examPilotOfflineSession"
+                );
+
 
                 window.location.href =
                     "dashboard.html";
 
             }
+
 
             catch (error) {
 
@@ -1506,10 +1831,39 @@ document
                     error
                 );
 
+
+                /*
+                 * A thrown network failure can also occur
+                 * outside the returned Supabase error object.
+                 */
+                if (
+                    isNetworkError(error)
+                ) {
+
+                    const loggedInOffline =
+                        await tryOfflineLogin();
+
+                    if (
+                        loggedInOffline
+                    ) {
+                        return;
+                    }
+
+                    showMessage(
+                        "loginMessage",
+                        "Internet connection required to log in. Please check your network and try again.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
                 showMessage(
                     "loginMessage",
                     error.message ||
-                    "Login failed.",
+                    "Login failed. Please try again.",
                     "error"
                 );
 
@@ -1569,7 +1923,10 @@ document
                     )
                     .checked;
 
-            if (!termsChecked) {
+
+            if (
+                !termsChecked
+            ) {
 
                 showMessage(
                     "registerMessage",
@@ -1587,6 +1944,7 @@ document
 
             }
 
+
             try {
 
                 showMessage(
@@ -1594,6 +1952,7 @@ document
                     "Creating your account...",
                     "success"
                 );
+
 
                 const {
                     data,
@@ -1623,7 +1982,10 @@ document
                             }
                         );
 
-                if (error) {
+
+                if (
+                    error
+                ) {
 
                     showMessage(
                         "registerMessage",
@@ -1635,7 +1997,10 @@ document
 
                 }
 
-                if (!data.user) {
+
+                if (
+                    !data.user
+                ) {
 
                     showMessage(
                         "registerMessage",
@@ -1647,7 +2012,10 @@ document
 
                 }
 
-                if (data.session) {
+
+                if (
+                    data.session
+                ) {
 
                     const saved =
                         await saveStudentProfile(
@@ -1657,7 +2025,10 @@ document
                             email
                         );
 
-                    if (!saved) {
+
+                    if (
+                        !saved
+                    ) {
 
                         showMessage(
                             "registerMessage",
@@ -1669,11 +2040,13 @@ document
 
                     }
 
+
                     studentName =
                         fullName;
 
                     studentUsername =
                         username;
+
 
                     localStorage.setItem(
                         "studentName",
@@ -1685,12 +2058,14 @@ document
                         studentUsername
                     );
 
+
                     window.location.href =
                         "dashboard.html";
 
                     return;
 
                 }
+
 
                 showMessage(
                     "registerMessage",
@@ -1699,6 +2074,7 @@ document
                 );
 
             }
+
 
             catch (error) {
 
@@ -1743,7 +2119,10 @@ async function loadStudentProfile(
                 )
                 .maybeSingle();
 
-        if (error) {
+
+        if (
+            error
+        ) {
 
             console.log(
                 "Profile read error:",
@@ -1752,7 +2131,10 @@ async function loadStudentProfile(
 
         }
 
-        if (!profile) {
+
+        if (
+            !profile
+        ) {
 
             const fullName =
                 user.user_metadata?.full_name ||
@@ -1767,12 +2149,14 @@ async function loadStudentProfile(
                         : "student"
                 );
 
+
             await saveStudentProfile(
                 user,
                 fullName,
                 username,
                 user.email
             );
+
 
             profile = {
 
@@ -1789,11 +2173,13 @@ async function loadStudentProfile(
 
         }
 
+
         studentName =
             profile.Full_name ||
             user.user_metadata?.full_name ||
             user.email ||
             "Student";
+
 
         studentUsername =
             profile.Username ||
@@ -1803,6 +2189,7 @@ async function loadStudentProfile(
                     ? user.email.split("@")[0]
                     : "student"
             );
+
 
         localStorage.setItem(
             "studentName",
@@ -1815,6 +2202,7 @@ async function loadStudentProfile(
         );
 
     }
+
 
     catch (error) {
 
@@ -1844,6 +2232,7 @@ async function loadSubscriptionStatus() {
                 .auth
                 .getSession();
 
+
         if (
             sessionError ||
             !sessionData.session
@@ -1859,8 +2248,10 @@ async function loadSubscriptionStatus() {
 
         }
 
+
         const user =
             sessionData.session.user;
+
 
         const {
             data: subscription,
@@ -1875,7 +2266,10 @@ async function loadSubscriptionStatus() {
                 )
                 .maybeSingle();
 
-        if (error) {
+
+        if (
+            error
+        ) {
 
             console.log(
                 "Subscription read error:",
@@ -1892,7 +2286,10 @@ async function loadSubscriptionStatus() {
 
         }
 
-        if (!subscription) {
+
+        if (
+            !subscription
+        ) {
 
             subscribed =
                 false;
@@ -1908,11 +2305,13 @@ async function loadSubscriptionStatus() {
 
         }
 
+
         const status =
             String(
                 subscription.status ||
                 ""
             ).toLowerCase();
+
 
         const expiresAt =
             subscription.expires_at ||
@@ -1920,8 +2319,10 @@ async function loadSubscriptionStatus() {
             subscription.expiration_date ||
             null;
 
+
         let isActive =
             false;
+
 
         if (
             status === "active" ||
@@ -1933,12 +2334,16 @@ async function loadSubscriptionStatus() {
 
         }
 
-        if (expiresAt) {
+
+        if (
+            expiresAt
+        ) {
 
             const expiryTime =
                 new Date(
                     expiresAt
                 ).getTime();
+
 
             if (
                 !Number.isNaN(
@@ -1960,13 +2365,17 @@ async function loadSubscriptionStatus() {
 
         }
 
+
         subscribed =
             isActive;
 
         subscriptionDate =
             expiresAt;
 
-        if (subscribed) {
+
+        if (
+            subscribed
+        ) {
 
             localStorage.setItem(
                 "studentSubscribed",
@@ -1983,9 +2392,11 @@ async function loadSubscriptionStatus() {
 
         }
 
+
         return subscribed;
 
     }
+
 
     catch (error) {
 
@@ -2018,9 +2429,13 @@ function showSubscription() {
             "studentPage"
         );
 
-    if (!studentPage) {
+
+    if (
+        !studentPage
+    ) {
         return;
     }
+
 
     studentPage.innerHTML = `
 
@@ -2161,10 +2576,13 @@ async function startPractice() {
     const isSubscribed =
         await loadSubscriptionStatus();
 
-    if (!isSubscribed) {
+
+    if (
+        !isSubscribed
+    ) {
 
         alert(
-            "Your full practice subscription is not active. You can still use the 10 free questions."
+            "Your full practice subscription is not active. You can still use the 15 free questions."
         );
 
         showSubscription();
@@ -2172,6 +2590,7 @@ async function startPractice() {
         return;
 
     }
+
 
     localStorage.setItem(
         "studentPractice",
@@ -2186,6 +2605,7 @@ async function startPractice() {
         "studentSubscribed",
         "true"
     );
+
 
     window.location.href =
         "subject.html";
@@ -2204,9 +2624,13 @@ async function logout() {
             "Are you sure you want to logout?"
         );
 
-    if (!confirmLogout) {
+
+    if (
+        !confirmLogout
+    ) {
         return;
     }
+
 
     try {
 
@@ -2217,7 +2641,10 @@ async function logout() {
                 .auth
                 .signOut();
 
-        if (error) {
+
+        if (
+            error
+        ) {
 
             console.log(
                 "Supabase logout error:",
@@ -2228,6 +2655,7 @@ async function logout() {
 
     }
 
+
     catch (error) {
 
         console.log(
@@ -2236,6 +2664,20 @@ async function logout() {
         );
 
     }
+
+
+    /*
+     * Normal logout intentionally does NOT remove
+     * the encrypted offline credential.
+     *
+     * This allows:
+     *
+     * online login → logout → internet OFF
+     * → offline login.
+     *
+     * "Remove Offline Access" in Settings is the
+     * separate action that deletes the credential.
+     */
 
     localStorage.removeItem(
         "studentName"
@@ -2257,6 +2699,11 @@ async function logout() {
         "freePractice"
     );
 
+    localStorage.removeItem(
+        "examPilotOfflineSession"
+    );
+
+
     studentName =
         "";
 
@@ -2268,6 +2715,7 @@ async function logout() {
 
     subscriptionDate =
         null;
+
 
     window.location.href =
         "student.html";
@@ -2294,6 +2742,7 @@ async function payWithPaystack(
                 .auth
                 .getSession();
 
+
         if (
             sessionError ||
             !sessionData.session
@@ -2310,10 +2759,14 @@ async function payWithPaystack(
 
         }
 
+
         const user =
             sessionData.session.user;
 
-        if (!user.email) {
+
+        if (
+            !user.email
+        ) {
 
             alert(
                 "Your account does not have an email address."
@@ -2322,6 +2775,7 @@ async function payWithPaystack(
             return;
 
         }
+
 
         if (
             typeof PaystackPop ===
@@ -2336,6 +2790,7 @@ async function payWithPaystack(
 
         }
 
+
         const reference =
             "JAMB_" +
             Date.now() +
@@ -2344,10 +2799,12 @@ async function payWithPaystack(
                 Math.random() * 100000
             );
 
+
         const amountKobo =
             Math.round(
                 Number(amount) * 100
             );
+
 
         if (
             !Number.isFinite(
@@ -2364,6 +2821,7 @@ async function payWithPaystack(
 
         }
 
+
         /*
          * Live Paystack public key.
          * The secret key remains safely inside
@@ -2373,8 +2831,10 @@ async function payWithPaystack(
         const paystackPublicKey =
             "pk_live_d8f44cfe7a9e237bf9fbae3483da2e2c0e77305e";
 
+
         const paystack =
             new PaystackPop();
+
 
         paystack.newTransaction({
 
@@ -2449,6 +2909,7 @@ async function payWithPaystack(
 
     }
 
+
     catch (error) {
 
         console.log(
@@ -2506,6 +2967,7 @@ async function completeSubscription(
     let lastData =
         null;
 
+
     for (
         let attempt = 1;
         attempt <= maxAttempts;
@@ -2537,9 +2999,11 @@ async function completeSubscription(
 
             }
 
+
             console.log(
                 `Starting payment verification attempt ${attempt}/${maxAttempts}...`
             );
+
 
             const {
                 data,
@@ -2565,23 +3029,29 @@ async function completeSubscription(
                         }
                     );
 
+
             lastData =
                 data;
 
             lastError =
                 error;
 
+
             console.log(
                 `Payment verification attempt ${attempt} response:`,
                 data
             );
 
-            if (error) {
+
+            if (
+                error
+            ) {
 
                 console.log(
                     `Payment verification attempt ${attempt} failed:`,
                     error
                 );
+
 
                 if (
                     attempt <
@@ -2596,9 +3066,11 @@ async function completeSubscription(
 
                 }
 
+
                 break;
 
             }
+
 
             if (
                 data &&
@@ -2609,6 +3081,7 @@ async function completeSubscription(
                     "Payment verification succeeded."
                 );
 
+
                 subscribed =
                     true;
 
@@ -2616,14 +3089,17 @@ async function completeSubscription(
                     data.expires_at ||
                     null;
 
+
                 localStorage.setItem(
                     "studentSubscribed",
                     "true"
                 );
 
+
                 alert(
                     "Payment successful! Your subscription is now active."
                 );
+
 
                 window.location.href =
                     "dashboard.html";
@@ -2632,16 +3108,12 @@ async function completeSubscription(
 
             }
 
-            /*
-             * If the Edge Function responds normally
-             * but says the payment cannot be activated,
-             * retry as long as attempts remain.
-             */
 
             console.log(
                 `Verification attempt ${attempt} returned an unsuccessful response:`,
                 data
             );
+
 
             if (
                 attempt <
@@ -2656,19 +3128,23 @@ async function completeSubscription(
 
             }
 
+
             break;
 
         }
+
 
         catch (error) {
 
             lastError =
                 error;
 
+
             console.log(
                 `Payment verification exception on attempt ${attempt}:`,
                 error
             );
+
 
             if (
                 attempt <
@@ -2682,6 +3158,7 @@ async function completeSubscription(
                 continue;
 
             }
+
 
             break;
 
@@ -2707,6 +3184,7 @@ async function completeSubscription(
         }
     );
 
+
     alert(
         "Your payment was successful, but we could not complete the verification right now.\n\n" +
         "Please do not pay again. Your payment reference has been recorded. Please try again shortly or contact support."
@@ -2731,7 +3209,10 @@ async function checkLogin() {
                 .auth
                 .getSession();
 
-        if (error) {
+
+        if (
+            error
+        ) {
 
             console.log(
                 "Session error:",
@@ -2744,7 +3225,64 @@ async function checkLogin() {
 
         }
 
-        if (!data.session) {
+
+        if (
+            !data ||
+            !data.session
+        ) {
+
+            /*
+             * Offline session created by the secure
+             * OfflineAuth verification flow.
+             */
+            if (
+                navigator.onLine === false
+            ) {
+
+                const rawOffline =
+                    localStorage.getItem(
+                        "examPilotOfflineSession"
+                    );
+
+
+                if (
+                    rawOffline
+                ) {
+
+                    try {
+
+                        const offlineSession =
+                            JSON.parse(
+                                rawOffline
+                            );
+
+
+                        if (
+                            offlineSession &&
+                            offlineSession.userId
+                        ) {
+
+                            window.location.href =
+                                "dashboard.html";
+
+                            return;
+
+                        }
+
+                    }
+
+                    catch (e) {
+
+                        console.warn(
+                            "[OfflineAuth] Invalid offline session marker."
+                        );
+
+                    }
+
+                }
+
+            }
+
 
             showLogin();
 
@@ -2752,19 +3290,122 @@ async function checkLogin() {
 
         }
 
+
         const user =
             data.session.user;
 
-        await loadStudentProfile(
-            user
-        );
 
-        await loadSubscriptionStatus();
+        /*
+         * If the existing Supabase session is still
+         * present while offline, allow the existing
+         * offline-compatible session path.
+         */
+        if (
+            navigator.onLine === false
+        ) {
+
+            const currentName =
+                localStorage.getItem(
+                    "studentName"
+                );
+
+            const currentUsername =
+                localStorage.getItem(
+                    "studentUsername"
+                );
+
+
+            if (
+                !currentName
+            ) {
+
+                const name =
+                    user.user_metadata?.full_name ||
+                    user.email ||
+                    "Student";
+
+
+                localStorage.setItem(
+                    "studentName",
+                    name
+                );
+
+            }
+
+
+            if (
+                !currentUsername
+            ) {
+
+                const uname =
+                    user.user_metadata?.username ||
+                    (
+                        user.email
+                            ? user.email.split("@")[0]
+                            : "student"
+                    );
+
+
+                localStorage.setItem(
+                    "studentUsername",
+                    uname
+                );
+
+            }
+
+
+            window.location.href =
+                "dashboard.html";
+
+            return;
+
+        }
+
+
+        /*
+         * Online session:
+         * load authoritative profile and subscription.
+         */
+
+        try {
+
+            await loadStudentProfile(
+                user
+            );
+
+        }
+
+        catch (profileErr) {
+
+            console.warn(
+                "Offline/stalled profile read skipped:",
+                profileErr
+            );
+
+        }
+
+
+        try {
+
+            await loadSubscriptionStatus();
+
+        }
+
+        catch (subErr) {
+
+            console.warn(
+                "Offline/stalled subscription read skipped:",
+                subErr
+            );
+
+        }
+
 
         window.location.href =
             "dashboard.html";
 
     }
+
 
     catch (error) {
 
@@ -2789,7 +3430,10 @@ async function checkLogin() {
     const recovering =
         await checkPasswordRecovery();
 
-    if (!recovering) {
+
+    if (
+        !recovering
+    ) {
 
         await checkLogin();
 
@@ -2799,7 +3443,8 @@ async function checkLogin() {
 
 </script>
 
-    <script src="pwa-register.js"></script>
+<script src="pwa-register.js"></script>
+
 </body>
 
 </html>

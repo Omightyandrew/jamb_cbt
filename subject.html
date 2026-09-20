@@ -184,28 +184,54 @@
                 // CHECK LOGIN
                 // ==================================
 
+                let user = null;
+                let isOffline = false;
+
                 if (
                     sessionError ||
+                    !sessionData ||
                     !sessionData.session
                 ) {
+                    const rawOffline = localStorage.getItem("examPilotOfflineSession");
+                    if (rawOffline) {
+                        try {
+                            const offlineSession = JSON.parse(rawOffline);
+                            if (offlineSession && offlineSession.userId) {
+                                isOffline = true;
+                                user = { id: offlineSession.userId, email: offlineSession.email || "" };
+                            }
+                        } catch (e) {}
+                    }
 
-                    alert(
-                        "Please login before accessing ExamPilot practice."
-                    );
+                    if (!user) {
+                        alert(
+                            "Please login before accessing ExamPilot practice."
+                        );
 
-                    window.location.href =
-                        "student.html";
+                        window.location.href =
+                            "student.html";
 
-                    return false;
+                        return false;
+                    }
 
+                } else {
+                    user = sessionData.session.user;
                 }
 
 
                 studentLoggedIn = true;
 
 
-                const user =
-                    sessionData.session.user;
+                if (isOffline) {
+                    studentSubscribed = false;
+                    const message = document.getElementById("accessMessage");
+                    if (message) {
+                        message.innerHTML =
+                            "🆓 <strong>Free Practice:</strong> " +
+                            "You can answer up to 15 free questions.";
+                    }
+                    return true;
+                }
 
 
                 // ==================================
@@ -250,7 +276,7 @@
                      * IMPORTANT:
                      *
                      * A subscription error must NOT
-                     * block the 10 free questions.
+                     * block the 15 free questions.
                      *
                      * The student is still allowed
                      * to use free practice.
@@ -352,7 +378,7 @@
                     message.innerHTML =
 
                         "🆓 <strong>Free Practice:</strong> " +
-                        "You can answer up to 10 free questions.";
+                        "You can answer up to 15 free questions.";
 
                 }
 

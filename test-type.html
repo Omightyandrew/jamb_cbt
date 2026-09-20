@@ -110,27 +110,49 @@
                 // CHECK LOGIN
                 // ==================================
 
+                let user = null;
+                let isOffline = false;
+
                 if (
                     sessionError ||
+                    !sessionData ||
                     !sessionData.session
                 ) {
+                    const rawOffline = localStorage.getItem("examPilotOfflineSession");
+                    if (rawOffline) {
+                        try {
+                            const offlineSession = JSON.parse(rawOffline);
+                            if (offlineSession && offlineSession.userId) {
+                                isOffline = true;
+                                user = { id: offlineSession.userId, email: offlineSession.email || "" };
+                            }
+                        } catch (e) {}
+                    }
 
-                    alert(
-                        "Please login before accessing ExamPilot practice."
-                    );
+                    if (!user) {
+                        alert(
+                            "Please login before accessing ExamPilot practice."
+                        );
 
+                        window.location.href =
+                            "student.html";
 
-                    window.location.href =
-                        "student.html";
+                        return false;
+                    }
 
-
-                    return false;
-
+                } else {
+                    user = sessionData.session.user;
                 }
 
-
-                const user =
-                    sessionData.session.user;
+                if (isOffline) {
+                    studentSubscribed = false;
+                    const accessMessage = document.getElementById("accessMessage");
+                    if (accessMessage) {
+                        accessMessage.innerHTML =
+                            "🆓 Free access: You can answer your 15 free questions.";
+                    }
+                    return true;
+                }
 
 
                 // ==================================
@@ -250,7 +272,7 @@
                 else {
 
                     accessMessage.innerHTML =
-                        "🆓 Free access: You can answer your 10 free questions.";
+                        "🆓 Free access: You can answer your 15 free questions.";
 
                 }
 
@@ -294,7 +316,7 @@
                 if (accessMessage) {
 
                     accessMessage.innerHTML =
-                        "🆓 Free access: You can answer your 10 free questions.";
+                        "🆓 Free access: You can answer your 15 free questions.";
 
                 }
 

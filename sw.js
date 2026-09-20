@@ -1,4 +1,4 @@
-const CACHE_VERSION = "exampilot-shell-v7";
+const CACHE_VERSION = "exampilot-shell-v9";
 const SHELL_CACHE = CACHE_VERSION;
 const OFFLINE_URL = "./offline.html";
 const SUPABASE_LIBRARY_URL = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
@@ -9,10 +9,16 @@ const PRECACHE_URLS = [
   "./brand.css",
   "./pwa-register.js",
   "./offline-store.js",
+  "./offline-auth.js",
   "./supabase.js",
   "./questions.js",
   "./exam.js",
-  "./assets/logo/app-icon-512.png"
+  "./assets/logo/app-icon-512.png",
+  "./assets/logo/logo-primary.svg",
+  "./assets/logo/logo-compact.svg",
+  "./assets/logo/logo-symbol.svg",
+  "./assets/logo/logo-mono-light.svg",
+  "./assets/logo/favicon.svg"
 ];
 
 self.addEventListener("install", (event) => {
@@ -52,6 +58,7 @@ function isStaticAsset(request) {
   const pathname = new URL(request.url).pathname;
   return pathname.endsWith("/pwa-register.js") ||
     pathname.endsWith("/offline-store.js") ||
+    pathname.endsWith("/offline-auth.js") ||
     /\.(?:css|png|jpg|jpeg|svg|webp|ico|woff2?)$/i.test(pathname);
 }
 
