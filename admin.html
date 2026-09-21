@@ -919,8 +919,17 @@ Notifications are stored in the existing Supabase <b>notifications</b> table whe
 <label for="notificationMessage">Message</label>
 <textarea id="notificationMessage" maxlength="1000" placeholder="Write the notification message..."></textarea>
 
-<label for="notificationDestination">Destination (optional)</label>
-<input id="notificationDestination" maxlength="500" placeholder="e.g. dashboard.html or results.html">
+<label for="notificationDestination">Destination</label>
+<select id="notificationDestination">
+<option value="./dashboard.html">Dashboard</option>
+<option value="./subject.html">JAMB CBT</option>
+<option value="./past-questions.html">Past Questions</option>
+<option value="./answers.html">Answers &amp; Explanations</option>
+<option value="./subjects.html">Subjects &amp; Topics</option>
+<option value="./syllabus.html">JAMB Syllabus</option>
+<option value="./challenge.html">Daily Challenge</option>
+<option value="./novels.html">Novels / Library</option>
+</select>
 
 <div class="notification-actions">
 <button onclick="sendNotification()">Send Notification</button>
@@ -3781,6 +3790,7 @@ function clearNotificationForm(){
 
 
     toggleNotificationTarget();
+    document.getElementById("notificationDestination").value = "./dashboard.html";
     updateNotificationPreview();
 
 }
