@@ -1463,6 +1463,7 @@ button {
 }
 
 /* Student notifications */
+.hidden{display:none!important;}
 .dashboard-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-start;justify-content:center;padding:80px 16px 24px;z-index:3000;}
 .dashboard-modal-backdrop.show{display:flex;}
 .dashboard-modal{width:min(100%,560px);max-height:calc(100vh - 104px);overflow:hidden;background:#fff;border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.2);display:flex;flex-direction:column;}
@@ -1472,10 +1473,18 @@ button {
 .dashboard-modal-head button{border:0;background:#f1f5f2;border-radius:50%;width:34px;height:34px;font-size:24px;line-height:1;cursor:pointer;color:#496057;}
 .student-notification-list{padding:14px 16px 18px;overflow:auto;}
 .student-notification-item{padding:14px;border:1px solid #e4ece7;border-radius:13px;margin-bottom:10px;background:#fbfdfc;}
+.student-notification-item{width:100%;text-align:left;cursor:pointer;font:inherit;}
+.student-notification-item.is-read{background:#fff;border-color:#edf1ee;}
 .student-notification-item:last-child{margin-bottom:0;}
 .student-notification-item h3{margin:0 0 6px;font-size:14px;color:#173d2a;}
 .student-notification-item p{margin:0 0 8px;color:#4d5c54;font-size:13px;line-height:1.55;white-space:pre-wrap;}
 .student-notification-item small{color:#7b8881;font-size:10px;}
+.student-notification-detail{padding:18px 16px 22px;overflow:auto;}
+.student-notification-detail h3{margin:0 0 8px;color:#173d2a;font-size:19px;line-height:1.3;}
+.student-notification-detail p{margin:0 0 12px;color:#4d5c54;font-size:14px;line-height:1.6;white-space:pre-wrap;}
+.student-notification-detail small{display:block;color:#7b8881;font-size:11px;margin-bottom:16px;}
+.student-notification-detail a{display:inline-flex;min-height:42px;align-items:center;padding:0 14px;border-radius:9px;background:#087f3e;color:#fff;text-decoration:none;font-size:13px;font-weight:700;}
+.notification-back-button{border:0;background:transparent;color:#087f3e;font-size:13px;font-weight:700;cursor:pointer;padding:4px 0;}
 .notification-loading,.notification-empty{text-align:center;padding:30px 12px;color:#718078;font-size:12px;}
 @media(max-width:520px){.dashboard-modal-backdrop{padding:66px 10px 12px}.dashboard-modal{max-height:calc(100vh - 78px);border-radius:16px}.dashboard-modal-head{padding:15px}.student-notification-list{padding:12px;}}
 @media(max-width:520px){.dashboard-modal,.dashboard-modal-head,.student-notification-list,.student-notification-item{min-width:0}.dashboard-modal-head>div{min-width:0;flex:1 1 auto}.dashboard-modal-head h2,.dashboard-modal-head p,.student-notification-item h3,.student-notification-item p,.student-notification-item small{overflow-wrap:anywhere;word-break:break-word}.dashboard-modal-head button{width:44px;height:44px;flex:0 0 44px}.student-notification-list{overflow-x:hidden;overflow-y:auto}.student-notification-item small{font-size:11px}}
@@ -1580,8 +1589,9 @@ button {
 </div>
 <div aria-hidden="true" class="dashboard-modal-backdrop" id="notificationsModal">
 <div aria-labelledby="notificationsModalTitle" aria-modal="true" class="dashboard-modal" role="dialog">
-<div class="dashboard-modal-head"><div><h2 id="notificationsModalTitle">Notifications</h2><p id="notificationModalSubtitle">Updates from ExamPilot</p></div><button aria-label="Close" onclick="closeNotifications()" type="button">×</button></div>
+<div class="dashboard-modal-head"><div><button class="notification-back-button hidden" id="notificationBackButton" onclick="showNotificationList()" type="button">← Back to notifications</button><h2 id="notificationsModalTitle">Notifications</h2><p id="notificationModalSubtitle">Updates from ExamPilot</p></div><button aria-label="Close" onclick="closeNotifications()" type="button">×</button></div>
 <div class="student-notification-list" id="studentNotificationList"><div class="notification-loading">Loading notifications...</div></div>
+<div class="student-notification-detail hidden" id="studentNotificationDetail"></div>
 </div>
 </div>
 <main class="page">
@@ -2281,6 +2291,47 @@ function notificationVisibleToStudent(row){
     return false;
 }
 
+function notificationReadStorageKey(){
+    return 'exampilotReadNotifications:' + String(dashboardCurrentUser?.id || 'anonymous');
+}
+
+function getReadNotificationIds(){
+    try{
+        const value=JSON.parse(localStorage.getItem(notificationReadStorageKey()) || '[]');
+        return new Set(Array.isArray(value) ? value.map(String) : []);
+    }catch(error){
+        console.warn('Could not read notification state:',error);
+        return new Set();
+    }
+}
+
+function saveReadNotificationIds(ids){
+    try{
+        localStorage.setItem(notificationReadStorageKey(),JSON.stringify(Array.from(ids)));
+    }catch(error){
+        console.warn('Could not save notification state:',error);
+    }
+}
+
+function notificationId(row,index){
+    return String(row?.id ?? row?.notification_id ?? ('notification-' + index));
+}
+
+function notificationDateLabel(row){
+    const date=notificationText(row,['created_at','sent_at','published_at']);
+    return date ? new Date(date).toLocaleString() : 'Recently';
+}
+
+function updateNotificationBadge(){
+    const readIds=getReadNotificationIds();
+    const unreadCount=dashboardNotifications.filter((row,index)=>!readIds.has(notificationId(row,index))).length;
+    const dot=document.querySelector('.notification-dot');
+    if(dot){
+        dot.style.display=unreadCount ? 'block' : 'none';
+        dot.setAttribute('aria-label',unreadCount + ' unread notification' + (unreadCount===1?'':'s'));
+    }
+}
+
 async function loadStudentNotifications(){
     const list=document.getElementById('studentNotificationList');
     if(list) list.innerHTML='<div class="notification-loading">Loading notifications...</div>';
@@ -2294,8 +2345,7 @@ async function loadStudentNotifications(){
             .limit(50);
         if(error) throw error;
         dashboardNotifications=(data||[]).filter(notificationVisibleToStudent);
-        const dot=document.querySelector('.notification-dot');
-        if(dot) dot.style.display=dashboardNotifications.length?'block':'none';
+        updateNotificationBadge();
         renderStudentNotifications();
     }catch(error){
         console.warn('Student notifications error:',error);
@@ -2306,24 +2356,76 @@ async function loadStudentNotifications(){
 function renderStudentNotifications(){
     const list=document.getElementById('studentNotificationList'); if(!list)return;
     if(!dashboardNotifications.length){list.innerHTML='<div class="notification-empty">No new notifications right now.</div>';return;}
+    const readIds=getReadNotificationIds();
     list.innerHTML=dashboardNotifications.map(row=>{
         const title=notificationText(row,['title','subject','heading'])||'Notification';
         const message=notificationText(row,['message','body','content'])||'';
-        const date=notificationText(row,['created_at','sent_at','published_at']);
-        return `<article class="student-notification-item"><h3>${escapeHtmlDashboard(title)}</h3><p>${escapeHtmlDashboard(message)}</p><small>${date?new Date(date).toLocaleString():'Recently'}</small></article>`;
+        const index=dashboardNotifications.indexOf(row);
+        const id=notificationId(row,index);
+        const isRead=readIds.has(id);
+        return `<button class="student-notification-item${isRead?' is-read':''}" data-notification-id="${escapeHtmlDashboard(id)}" type="button" aria-label="Read ${escapeHtmlDashboard(title)}"><h3>${escapeHtmlDashboard(title)}</h3><p>${escapeHtmlDashboard(message)}</p><small>${escapeHtmlDashboard(notificationDateLabel(row))}</small></button>`;
     }).join('');
 }
 
 function escapeHtmlDashboard(value){return String(value??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));}
 
+function safeNotificationDestination(value){
+    if(!value)return '';
+    try{
+        const url=new URL(String(value),window.location.href);
+        return url.origin===window.location.origin ? url.href : '';
+    }catch(error){
+        console.warn('Invalid notification destination:',error);
+        return '';
+    }
+}
+
+function showNotificationList(){
+    document.getElementById('studentNotificationDetail')?.classList.add('hidden');
+    document.getElementById('studentNotificationList')?.classList.remove('hidden');
+    document.getElementById('notificationBackButton')?.classList.add('hidden');
+    const title=document.getElementById('notificationsModalTitle');
+    const subtitle=document.getElementById('notificationModalSubtitle');
+    if(title) title.textContent='Notifications';
+    if(subtitle) subtitle.textContent='Updates from ExamPilot';
+    renderStudentNotifications();
+}
+
+function openStudentNotification(id){
+    const index=dashboardNotifications.findIndex((row,rowIndex)=>notificationId(row,rowIndex)===String(id));
+    if(index<0)return;
+    const row=dashboardNotifications[index];
+    const readIds=getReadNotificationIds();
+    readIds.add(notificationId(row,index));
+    saveReadNotificationIds(readIds);
+    updateNotificationBadge();
+    const title=notificationText(row,['title','subject','heading'])||'Notification';
+    const message=notificationText(row,['message','body','content'])||'';
+    const destination=safeNotificationDestination(notificationText(row,['destination_url','url','action_url']));
+    const detail=document.getElementById('studentNotificationDetail');
+    const list=document.getElementById('studentNotificationList');
+    if(!detail || !list)return;
+    const destinationLink=destination ? `<a href="${escapeHtmlDashboard(destination)}">Open destination</a>` : '';
+    detail.innerHTML=`<h3>${escapeHtmlDashboard(title)}</h3><small>${escapeHtmlDashboard(notificationDateLabel(row))}</small><p>${escapeHtmlDashboard(message)}</p>${destinationLink}`;
+    list.classList.add('hidden');
+    detail.classList.remove('hidden');
+    document.getElementById('notificationBackButton')?.classList.remove('hidden');
+    const modalTitle=document.getElementById('notificationsModalTitle');
+    const modalSubtitle=document.getElementById('notificationModalSubtitle');
+    if(modalTitle) modalTitle.textContent='Notification';
+    if(modalSubtitle) modalSubtitle.textContent='ExamPilot update';
+}
+
 function openNotifications(){
     const modal=document.getElementById('notificationsModal');
     if(modal){modal.classList.add('show');modal.setAttribute('aria-hidden','false');}
+    showNotificationList();
     loadStudentNotifications();
 }
 function closeNotifications(){
     const modal=document.getElementById('notificationsModal');
     if(modal){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');}
+    showNotificationList();
 }
 
 
@@ -2361,6 +2463,12 @@ async function logoutStudent() {
 }
 
 document.addEventListener("click", function(event) {
+    const notificationItem = event.target.closest("[data-notification-id]");
+    if (notificationItem) {
+        openStudentNotification(notificationItem.getAttribute("data-notification-id"));
+        return;
+    }
+
     const premiumCard = event.target.closest('[data-access="premium"]');
     if (premiumCard) {
         handleDashboardQuickCardAccess(event);
