@@ -1505,6 +1505,10 @@ button {
 <span>🆘</span>
 <span>Help &amp; Support</span>
 </a>
+<button class="profile-menu-item" id="enableNotificationsButton" onclick="enableExamPilotNotifications()" type="button">
+<span>🔔</span>
+<span>Enable Notifications</span>
+</button>
 <div class="profile-divider"></div>
 <button class="profile-menu-item" onclick="logoutStudent()" type="button">
 <span>🚪</span>
@@ -1659,6 +1663,7 @@ const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
 );
+window.supabaseClient = supabaseClient;
 
 async function refreshDashboardPremiumState() {
     try {
@@ -2377,6 +2382,8 @@ document.addEventListener("keydown", function(event) {
 loadDashboardStudent();
 maybeOpenUpgradeFromFeatureParameter();
 </script>
+    <script src="push-config.js"></script>
+    <script src="push-notifications.js"></script>
     <script src="pwa-register.js"></script>
 </body>
 </html>

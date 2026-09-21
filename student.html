@@ -382,6 +382,55 @@ content="width=device-width, initial-scale=1.0"
 
     }
 
+    /* ---- PWA Install Button ---- */
+
+    .install-section {
+        margin-top: 18px;
+    }
+
+    .install-button {
+        width: 100%;
+        min-height: 48px;
+        padding: 13px;
+        border: 2px solid #087f3e;
+        border-radius: 25px;
+        background: transparent;
+        color: #087f3e;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-family: inherit;
+    }
+
+    .install-button:hover,
+    .install-button:focus-visible {
+        background: #edf7ef;
+        outline: 2px solid #087f3e;
+        outline-offset: 2px;
+    }
+
+    .install-hint {
+        margin: 8px 0 0;
+        font-size: 12px;
+        color: #666;
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    .install-ios-note {
+        margin: 12px 0 0;
+        padding: 12px;
+        background: #edf7ef;
+        border-radius: 12px;
+        font-size: 13px;
+        color: #087f3e;
+        line-height: 1.5;
+    }
+
 </style>
 
 <link rel="stylesheet" href="redesign.css">
@@ -472,6 +521,30 @@ content="width=device-width, initial-scale=1.0"
 >
     Create Account
 </button>
+
+<!-- PWA Install Section — visibility controlled by pwa-register.js -->
+<div id="pwaInstallSection" class="install-section hidden" aria-live="polite">
+
+    <button
+        type="button"
+        id="pwaInstallBtn"
+        class="install-button hidden"
+        aria-label="Install ExamPilot on your device"
+    >
+        📲 Install ExamPilot
+    </button>
+
+    <p class="install-hint hidden" id="pwaInstallHint">
+        Install ExamPilot for quicker access from your home screen.
+    </p>
+
+    <div id="pwaIosNote" class="install-ios-note hidden">
+        📲 To install ExamPilot: tap the <strong>Share</strong> button
+        (<span aria-label="Share icon">⎋</span>) then
+        <strong>Add to Home Screen</strong>.
+    </div>
+
+</div>
 
 <div
     id="loginMessage"
