@@ -345,6 +345,22 @@ button {
     background: var(--jamb-light);
 }
 
+.notification-setting strong,
+.notification-setting small {
+    display: block;
+}
+
+.notification-setting strong {
+    font-size: 13px;
+}
+
+.notification-setting small {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.35;
+    margin-top: 2px;
+}
+
 .profile-student {
     padding: 12px 12px 10px;
 }
@@ -1505,9 +1521,12 @@ button {
 <span>🆘</span>
 <span>Help &amp; Support</span>
 </a>
-<button class="profile-menu-item" id="enableNotificationsButton" onclick="enableExamPilotNotifications()" type="button">
-<span>🔔</span>
-<span>Enable Notifications</span>
+<button aria-pressed="false" class="profile-menu-item notification-setting" id="enableNotificationsButton" type="button">
+<span aria-hidden="true">🔔</span>
+<span>
+<strong id="notificationSettingLabel">Notifications — OFF</strong>
+<small id="notificationSettingDescription">Tap to turn notifications on.</small>
+</span>
 </button>
 <div class="profile-divider"></div>
 <button class="profile-menu-item" onclick="logoutStudent()" type="button">
