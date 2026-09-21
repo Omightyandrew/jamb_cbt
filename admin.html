@@ -934,6 +934,7 @@ Notifications are stored in the existing Supabase <b>notifications</b> table whe
 <div class="notification-actions">
 <button onclick="sendNotification()">Send Notification</button>
 <button class="gray" onclick="saveNotificationDraft()">Save Draft</button>
+<button id="cancelNotificationEdit" class="gray hidden" onclick="cancelNotificationEdit()">Cancel Edit</button>
 <button class="gray" onclick="clearNotificationForm()">Clear</button>
 </div>
 
@@ -3555,6 +3556,7 @@ async function loadAdminOverview(){
 ========================================================= */
 
 let adminNotifications = [];
+let editingNotificationId = "";
 
 
 function notificationValue(
@@ -3791,7 +3793,22 @@ function clearNotificationForm(){
 
     toggleNotificationTarget();
     document.getElementById("notificationDestination").value = "./dashboard.html";
+    editingNotificationId = "";
+    const sendButton = document.querySelector('.notification-actions button[onclick="sendNotification()"]');
+    if(sendButton) sendButton.textContent = "Send Notification";
+    document.getElementById("cancelNotificationEdit")?.classList.add("hidden");
     updateNotificationPreview();
+
+}
+
+
+function cancelNotificationEdit(){
+
+    clearNotificationForm();
+    showMessage(
+        "Notification edit cancelled.",
+        "info"
+    );
 
 }
 
@@ -4055,6 +4072,21 @@ function renderNotifications(){
                                 )}
                             </p>
 
+                            <div class="notification-actions">
+                                <button
+                                    class="gray"
+                                    onclick="editNotification('${escapeHtml(rowId)}')"
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    class="red"
+                                    onclick="deleteNotification('${escapeHtml(rowId)}')"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+
                         </div>
 
                     `;
@@ -4064,6 +4096,178 @@ function renderNotifications(){
             .join("");
 
 }
+
+
+function editNotification(id){
+
+                    const row =
+                        adminNotifications.find(
+                            item =>
+                                String(item.id ?? item.ID ?? "") === String(id)
+                        );
+
+                    if(!row){
+
+                        showMessage(
+                            "That notification is no longer available.",
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+                    editingNotificationId = String(id);
+
+                    document.getElementById("notificationTitle").value =
+                        notificationTitle(row) === "Untitled notification"
+                            ? ""
+                            : notificationTitle(row);
+                    document.getElementById("notificationMessage").value =
+                        notificationMessage(row);
+                    document.getElementById("notificationAudience").value =
+                        notificationAudience(row);
+                    document.getElementById("notificationTarget").value =
+                        notificationValue(row, ["target_user_id", "targetUserId"]);
+                    document.getElementById("notificationDestination").value =
+                        notificationValue(row, ["destination_url", "destinationUrl"]) ||
+                        "./dashboard.html";
+
+                    toggleNotificationTarget();
+                    updateNotificationPreview();
+
+                    const sendButton =
+                        document.querySelector(
+                            '.notification-actions button[onclick="sendNotification()"]'
+                        );
+
+                    if(sendButton) sendButton.textContent = "Save Changes";
+                    document.getElementById("cancelNotificationEdit")?.classList.remove("hidden");
+                    document.getElementById("notificationTitle")?.focus();
+
+                    showMessage(
+                        "Editing notification. Save Changes to update this record.",
+                        "info"
+                    );
+
+                }
+
+
+                async function updateNotification(id, payload){
+
+                    const response =
+                        await fetch(
+                            SUPABASE_URL +
+                            "/rest/v1/notifications?id=eq." +
+                            encodeURIComponent(id),
+                            {
+                                method: "PATCH",
+                                headers: {
+                                    ...(await secureHeaders(true)),
+                                    "Prefer": "return=representation"
+                                },
+                                body: JSON.stringify(payload)
+                            }
+                        );
+
+                    const text = await response.text();
+
+                    if(!response.ok){
+
+                        throw new Error(
+                            text ||
+                            "Could not update the notification."
+                        );
+
+                    }
+
+                    return text ? JSON.parse(text) : [];
+
+                }
+
+
+                async function deleteNotification(id){
+
+                    const row =
+                        adminNotifications.find(
+                            item =>
+                                String(item.id ?? item.ID ?? "") === String(id)
+                        );
+
+                    const title =
+                        row
+                            ? notificationTitle(row)
+                            : "this notification";
+
+                    if(
+                        !confirm(
+                            `Delete "${title}"? This removes it from the stored notification list and does not retract delivered pushes.`
+                        )
+                    ){
+
+                        return;
+
+                    }
+
+                    try{
+
+                        showMessage(
+                            "Deleting notification...",
+                            "info"
+                        );
+
+                        const response =
+                            await fetch(
+                                SUPABASE_URL +
+                                "/rest/v1/notifications?id=eq." +
+                                encodeURIComponent(id),
+                                {
+                                    method: "DELETE",
+                                    headers: {
+                                        ...(await secureHeaders(false)),
+                                        "Prefer": "return=representation"
+                                    }
+                                }
+                            );
+
+                        const text = await response.text();
+
+                        if(!response.ok){
+
+                            throw new Error(
+                                text ||
+                                "Could not delete the notification."
+                            );
+
+                        }
+
+                        if(editingNotificationId === String(id)){
+                            clearNotificationForm();
+                        }
+
+                        showMessage(
+                            "Notification deleted successfully.",
+                            "success"
+                        );
+
+                        await loadNotifications();
+
+                    }catch(error){
+
+                        console.error(
+                            "Delete notification error:",
+                            error
+                        );
+
+                        showMessage(
+                            "Notification was not deleted: " +
+                            error.message,
+                            "error"
+                        );
+
+                    }
+
+                }
 
 
 function notificationPayload(
@@ -4173,19 +4377,36 @@ async function sendNotification(){
 
     try{
 
-        await insertNotification(
+        const payload =
             notificationPayload(
                 title,
                 message,
                 audience,
                 target,
                 destination
-            )
-        );
+            );
+
+        if(editingNotificationId){
+
+            await updateNotification(
+                editingNotificationId,
+                {
+                    ...payload,
+                    target_user_id: target || null
+                }
+            );
+
+        }else{
+
+            await insertNotification(payload);
+
+        }
 
 
         showMessage(
-            "Notification sent successfully.",
+            editingNotificationId
+                ? "Notification updated successfully."
+                : "Notification sent successfully.",
             "success"
         );
 
