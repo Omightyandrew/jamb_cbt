@@ -45,6 +45,16 @@ async function loadResultDetails(){
     } catch(err){ console.error('Result detail loading error:',err); }
     if(!result){ document.body.innerHTML='<main class="details-page"><div class="empty"><h2>Result not found</h2><p>This result may have been cleared from your browser or belongs to another student.</p><button class="primary-action" onclick="location.href=\'results.html\'">Back to Results</button></div></main>'; return; }
     result=projectResult(result,ExamPilotResultAdapter.normalizeResultRecord(result));
+    window.examPilotAiResultContext={
+        testType:result.testType,
+        percentage:result.percentage,
+        score:result.score,
+        total:result.total,
+        correct:result.correct,
+        wrong:result.wrong,
+        unanswered:result.unanswered,
+        subjects:Array.isArray(result.subjects)?result.subjects.slice(0,8):[]
+    };
     const resultType=result.testType==='past'
         ?'Past Questions'
         :result.testType==='practice'
