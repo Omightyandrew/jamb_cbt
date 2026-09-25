@@ -271,7 +271,7 @@
     localStorage.setItem('subjectTitle', selected.join(', '));
     localStorage.setItem('pastQuestionSetStartedAt', new Date().toISOString());
     localStorage.removeItem('pastSelectedQuestions');
-    window.location.href = 'index.html';
+    window.location.href = 'cbt.html';
   });
 
   try {

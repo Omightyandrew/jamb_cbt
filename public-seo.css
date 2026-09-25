@@ -262,9 +262,16 @@
 }
 
 .seo-band {
+  position: relative;
+  isolation: isolate;
   padding: 34px;
   border-radius: 18px;
   background: var(--seo-soft-green);
+}
+
+.seo-band > * {
+  position: relative;
+  z-index: 1;
 }
 
 .seo-band h2 {

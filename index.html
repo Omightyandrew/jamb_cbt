@@ -1,96 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExamPilot Exam</title>
-    <link rel="stylesheet" href="brand.css">
-    <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
-    <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
-    <meta name="theme-color" content="#14213D">
-    <meta property="og:title" content="ExamPilot">
-    <meta property="og:description" content="Prepare smarter for JAMB with ExamPilot.">
-    <meta property="og:image" content="assets/logo/og-image.png">
-    <meta property="og:url" content="https://exampilot.com.ng/">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="exam.css">
-    <script>
-        if (window.location.pathname === "/") {
-            window.location.replace("student.html");
-        }
-    </script>
-    <link rel="manifest" href="manifest.json">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JAMB, UTME &amp; Exam Preparation Online | ExamPilot</title>
+  <meta name="description" content="Prepare for JAMB and UTME with ExamPilot practice tests, CBT preparation, syllabus guidance and subject-based study resources.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://exampilot.com.ng/">
+  <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+  <meta name="theme-color" content="#14213D">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ExamPilot">
+  <meta property="og:title" content="JAMB, UTME &amp; Exam Preparation Online | ExamPilot">
+  <meta property="og:description" content="Prepare for JAMB and UTME with ExamPilot practice tests, CBT preparation, syllabus guidance and subject-based study resources.">
+  <meta property="og:url" content="https://exampilot.com.ng/">
+  <meta property="og:image" content="https://exampilot.com.ng/assets/logo/og-image.png">
+  <meta property="og:image:alt" content="ExamPilot">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="JAMB, UTME &amp; Exam Preparation Online | ExamPilot">
+  <meta name="twitter:description" content="Prepare for JAMB and UTME with ExamPilot practice tests, CBT preparation, syllabus guidance and subject-based study resources.">
+  <meta name="twitter:image" content="https://exampilot.com.ng/assets/logo/og-image.png">
+  <meta name="twitter:image:alt" content="ExamPilot">
+  <link rel="stylesheet" href="brand.css">
+  <link rel="stylesheet" href="public-seo.css">
 </head>
-<body class="exam-body">
-    <header class="exam-header">
-        <div class="exam-brand">
-            <img class="jamb-mark" src="assets/logo/logo-symbol.svg" alt="ExamPilot">
-            <div>
-                <strong>ExamPilot</strong>
-                <span id="testTypeTitle">Practice Test</span>
-            </div>
-        </div>
-        <div class="exam-header-meta">
-            <div class="subject-summary">
-                <span class="meta-label">SELECTED SUBJECTS</span>
-                <strong id="selectedSubject"></strong>
-            </div>
-            <div class="timer-box" id="timer"><span class="timer-dot"></span>30:00</div>
-            <button class="submit-top" type="button" onclick="submitExam()">Submit Test</button>
-        </div>
-    </header>
+<body class="seo-page">
+  <div id="publicHeader"></div>
 
-    <main class="exam-shell">
-        <section class="exam-main">
-            <div class="exam-toolbar">
-                <div>
-                    <div class="eyebrow">CURRENT QUESTION</div>
-                    <div class="question-index">
-                        <strong id="questionNumber">Question 1</strong>
-                        <span id="questionCount">of 0</span>
-                    </div>
-                </div>
-                <div class="current-subject-pill" id="currentSubject">ExamPilot</div>
-            </div>
-            <div class="progress-track">
-                <div class="progress-fill" id="examProgress"></div>
-            </div>
-            <div class="progress-copy">
-                <span id="progressText">0% answered</span>
-                <span><strong id="answeredCount">0</strong> answered · <strong id="unansweredCount">0</strong> unanswered</span>
-            </div>
-            <article class="question-card" id="questionCard">
-                <span class="question-label">QUESTION</span>
-                <strong id="questionText"></strong>
-                <div id="optionA"></div>
-                <div id="optionB"></div>
-                <div id="optionC"></div>
-                <div id="optionD"></div>
-                <div class="exam-navigation">
-                    <button class="secondary-action" id="previousButton" type="button" onclick="previousQuestion()">Previous</button>
-                    <button class="primary-action" id="nextButton" type="button" onclick="nextQuestion()">Next Question <span>→</span></button>
-                </div>
-            </article>
-        </section>
-
-        <aside class="exam-sidebar">
-            <div class="sidebar-card">
-                <div class="sidebar-card-heading">
-                    <div>
-                        <div class="eyebrow">QUESTION MAP</div>
-                        <strong>Navigate</strong>
-                    </div>
-                    <span id="mapTotal">0 Q</span>
-                </div>
-                <div id="questionStatus" class="question-status"></div>
-            </div>
+  <main class="seo-main">
+    <section class="seo-hero">
+      <div class="seo-container seo-hero__grid">
+        <div>
+          <p class="seo-eyebrow">JAMB preparation, made clearer</p>
+          <h1>Prepare with purpose. Practice with confidence.</h1>
+          <p class="seo-hero__summary">ExamPilot helps students prepare for JAMB and UTME with focused CBT practice, syllabus guidance and subject-based study resources.</p>
+          <div class="seo-actions">
+            <a class="seo-cta seo-cta--primary" href="/jamb/">Explore JAMB Preparation</a>
+            <a class="seo-cta seo-cta--secondary" href="/student.html">Start Practicing</a>
+          </div>
+        </div>
+        <aside class="seo-hero__panel">
+          <h2>Start with JAMB</h2>
+          <p>Explore the current JAMB preparation experience today. ExamPilot is being built as a broader exam-preparation platform over time, without making unsupported claims about exams that are not yet available.</p>
         </aside>
-    </main>
+      </div>
+    </section>
 
-    <script src="supabase.js"></script>
-    <script src="questions.js"></script>
-    <script src="offline-store.js"></script>
-    <script src="exam.js"></script>
-    <script src="pwa-register.js"></script>
+    <section class="seo-section" aria-labelledby="offers-heading">
+      <div class="seo-container">
+        <div class="seo-section__heading">
+          <h2 id="offers-heading">What ExamPilot offers</h2>
+          <p>Use the tools that fit your study routine, from guided revision to timed practice.</p>
+        </div>
+        <div class="seo-card-grid">
+          <article class="seo-content-card seo-feature-card"><h3>JAMB CBT practice</h3><p>Work through a focused CBT experience with subject selection, timed questions and result review.</p><a href="/jamb/cbt/">Explore JAMB CBT</a></article>
+          <article class="seo-content-card seo-feature-card"><h3>Practice Questions</h3><p>Build consistency with JAMB practice questions organized around the subjects you are preparing.</p><a href="/jamb/practice-questions/">View Practice Questions</a></article>
+          <article class="seo-content-card seo-feature-card"><h3>Past Questions</h3><p>Explore the dedicated Past Questions experience and its available subject and year filters.</p><a href="/jamb/past-questions/">Explore Past Questions</a></article>
+          <article class="seo-content-card seo-feature-card"><h3>JAMB Syllabus</h3><p>Use subject sections and topic areas to create a clearer revision path.</p><a href="/jamb/syllabus/">View JAMB Syllabus</a></article>
+          <article class="seo-content-card seo-feature-card"><h3>Subjects &amp; Topics</h3><p>Find the subject and topic areas that should guide your next study session.</p><a href="/jamb/">Browse Subjects</a></article>
+          <article class="seo-content-card seo-feature-card"><h3>Answers &amp; Explanations</h3><p>Review your answers and study explanations where they are available in the current bank.</p><a href="/student.html">Open the Study Centre</a></article>
+          <article class="seo-content-card seo-feature-card"><h3>JAMB Brochure</h3><p>Explore course guidance and subject combinations, then verify details with official JAMB IBASS.</p><a href="/jamb/brochure/">Explore the Brochure</a></article>
+          <article class="seo-content-card seo-feature-card"><h3>Novels &amp; Library</h3><p>Access the ExamPilot reading library where the relevant subscription access is available.</p><a href="/student.html">Open the Library</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-section" aria-labelledby="works-heading">
+      <div class="seo-container">
+        <div class="seo-section__heading">
+          <h2 id="works-heading">A simple way to prepare</h2>
+          <p>Move from understanding the syllabus to deliberate practice and better preparation.</p>
+        </div>
+        <div class="seo-steps">
+          <article class="seo-content-card seo-step-card"><strong>1</strong><h3>Learn</h3><p>Understand the syllabus and the topics your subjects cover.</p></article>
+          <article class="seo-content-card seo-step-card"><strong>2</strong><h3>Practice</h3><p>Use questions and CBT sessions to apply what you have studied.</p></article>
+          <article class="seo-content-card seo-step-card"><strong>3</strong><h3>Improve</h3><p>Review answers, identify weak areas and return to focused revision.</p></article>
+          <article class="seo-content-card seo-step-card"><strong>4</strong><h3>Prepare</h3><p>Build a steady study routine that supports your JAMB goals.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="seo-section">
+      <div class="seo-container">
+        <div class="seo-band">
+          <h2>Explore the JAMB preparation path</h2>
+          <p>Start with the overview, choose a subject, review the syllabus and move into the ExamPilot application when you are ready to practice.</p>
+          <div class="seo-actions">
+            <a class="seo-cta seo-cta--primary" href="/jamb/">Open JAMB</a>
+            <a class="seo-cta seo-cta--secondary" href="/jamb/syllabus/">Study the syllabus</a>
+            <a class="seo-cta seo-cta--inline" href="/student.html">Create an account</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="publicFooter"></div>
+
+  <script src="public-seo.js"></script>
+  <script>
+    (function () {
+      var seo = window.ExamPilotPublicSEO;
+      seo.renderHeader("#publicHeader", { currentPath: "/" });
+      seo.renderFooter("#publicFooter");
+      seo.addStructuredData({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://exampilot.com.ng/#organization",
+        "name": "ExamPilot",
+        "url": "https://exampilot.com.ng/",
+        "logo": "https://exampilot.com.ng/assets/logo/logo-compact.svg"
+      });
+      seo.addStructuredData({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://exampilot.com.ng/#website",
+        "name": "ExamPilot",
+        "url": "https://exampilot.com.ng/",
+        "publisher": { "@id": "https://exampilot.com.ng/#organization" }
+      });
+      seo.addStructuredData(seo.webpageData({
+        "name": "JAMB, UTME & Exam Preparation Online | ExamPilot",
+        "url": "/",
+        "description": "Prepare for JAMB and UTME with ExamPilot practice tests, CBT preparation, syllabus guidance and subject-based study resources."
+      }));
+    }());
+  </script>
 </body>
 </html>
