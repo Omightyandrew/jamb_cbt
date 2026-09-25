@@ -13,6 +13,34 @@ function getStoredResults(){
     try { return JSON.parse(localStorage.getItem('jambResults')||'[]'); }
     catch { return []; }
 }
+function projectResult(raw, normalized){
+    const source=raw && typeof raw==='object' ? raw : {};
+    const legacy=normalized.grading.legacyProjection;
+    const timing=normalized.timing;
+    return {
+        id:normalized.identity.legacyId ?? source.id,
+        userId:normalized.identity.userId ?? source.userId,
+        date:timing.legacyDate ?? source.date,
+        subjects:normalized.subjects.length
+            ? normalized.subjects.map(subject=>subject.name)
+            : (source.subjects||[]),
+        testType:normalized.test.testType ?? source.testType,
+        score:legacy.score ?? source.score,
+        total:legacy.total ?? source.total,
+        percentage:legacy.percentage ?? source.percentage,
+        correct:legacy.correct ?? source.correct,
+        wrong:legacy.wrong ?? source.wrong,
+        unanswered:legacy.unanswered ?? source.unanswered,
+        timeUsed:timing.timeUsed ?? source.timeUsed,
+        timeAllowed:timing.timeAllowed ?? source.timeAllowed,
+        subjectStats:normalized.subjectStats.length
+            ? normalized.subjectStats
+            : (source.subjectStats||[]),
+        questionDetails:normalized.content.questionDetails.length
+            ? normalized.content.questionDetails
+            : (source.questionDetails||[])
+    };
+}
 
 async function loadResults(){
     const list=document.getElementById('resultsList');
@@ -26,7 +54,9 @@ async function loadResults(){
         const allResults=getStoredResults();
         // New results are tagged with the authenticated student ID. Legacy results without
         // a userId are retained for backward compatibility on this browser.
-        const results=allResults.filter(r=>!r.userId || r.userId===userId);
+        const results=allResults
+            .filter(r=>!r || !r.userId || r.userId===userId)
+            .map(raw=>projectResult(raw,ExamPilotResultAdapter.normalizeResultRecord(raw)));
         document.getElementById('testsTaken').textContent=results.length;
         const average=results.length?Math.round(results.reduce((sum,r)=>sum+(Number(r.percentage)||0),0)/results.length):0;
         const best=results.length?Math.max(...results.map(r=>Number(r.percentage)||0)):0;
@@ -38,7 +68,11 @@ async function loadResults(){
         }
         list.innerHTML=results.map(r=>{
             const date=new Date(r.date);
-            const type=r.testType==='past'?'Past Questions':'Practice Test';
+            const type=r.testType==='past'
+                ?'Past Questions'
+                :r.testType==='practice'
+                    ?'Practice Test'
+                    :'Unknown Test';
             return `<article class="result-card">
                 <div class="result-head"><div><h3>${escapeHtml(type)}</h3><div class="muted">${escapeHtml(date.toLocaleString())}</div></div><span class="badge">${Number(r.percentage)||0}%</span></div>
                 <div class="details"><span class="pill">Subjects: ${escapeHtml((r.subjects||[]).join(', '))}</span><span class="pill">Score: ${Number(r.score)||0}/${Number(r.total)||0}</span><span class="pill">Correct: ${Number(r.correct)||0}</span><span class="pill">Wrong: ${Number(r.wrong)||0}</span><span class="pill">Unanswered: ${Number(r.unanswered)||0}</span><span class="pill">Time: ${formatDuration(r.timeUsed)}</span></div>

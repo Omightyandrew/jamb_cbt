@@ -267,9 +267,15 @@
     try{
       if(!supabaseClient) throw new Error('Supabase client unavailable');
       const filters=activeFilters();
+      const examCode=typeof window.getSelectedExamCode==='function'
+        ? window.getSelectedExamCode()
+        : 'JAMB';
+      const examId=await window.resolveExamId(supabaseClient,examCode);
       let query=supabaseClient
         .from('Questions')
-        .select('id, Subject, test_type, Question, Option_a, Option_b, Option_c, Option_d, Correct_Answer, Topic, Explanation')
+        .select('id, exam_id, Subject, test_type, Question, Option_a, Option_b, Option_c, Option_d, Correct_Answer, Topic, Explanation')
+        .eq('exam_id',examId)
+        .eq('is_active',true)
         .order('id',{ascending:true})
         .range(offset,offset+pageSize-1);
       query=applyQueryFilters(query,filters);

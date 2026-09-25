@@ -2,15 +2,17 @@
     "use strict";
 
     var DB_NAME = "exampilot-offline";
-    var DB_VERSION = 2;
+    var DB_VERSION = 4;
     var STORE_NAME = "questionSets";
+    var CONFIGURATION_STORE_NAME = "cbtConfigurations";
     var CREDENTIALS_STORE_NAME = "offlineCredentials";
     var MAX_CACHED_SETS = 8;
     var MAX_QUESTIONS_PER_SET = 120;
 
-    function migrateSchema(database) {
+    function migrateSchema(database, upgradeTransaction) {
+        var store;
         if (!database.objectStoreNames.contains(STORE_NAME)) {
-            var store = database.createObjectStore(STORE_NAME, {
+            store = database.createObjectStore(STORE_NAME, {
                 keyPath: "key"
             });
             store.createIndex("cachedAt", "cachedAt", {
@@ -19,10 +21,39 @@
             store.createIndex("testType", "testType", {
                 unique: false
             });
+        } else {
+            store = upgradeTransaction
+                .objectStore(STORE_NAME);
         }
+        if (!store.indexNames.contains("examCode")) {
+            store.createIndex("examCode", "examCode", {
+                unique: false
+            });
+        }
+        var cursorRequest = store.openCursor();
+        cursorRequest.onsuccess = function (event) {
+            var cursor = event.target.result;
+            if (!cursor) {
+                return;
+            }
+
+            var record = cursor.value;
+            if (!record.examCode && typeof record.key === "string") {
+                record.examCode = "JAMB";
+                record.key = "JAMB::" + record.key;
+                cursor.update(record);
+            }
+
+            cursor.continue();
+        };
         if (!database.objectStoreNames.contains(CREDENTIALS_STORE_NAME)) {
             database.createObjectStore(CREDENTIALS_STORE_NAME, {
                 keyPath: "email"
+            });
+        }
+        if (!database.objectStoreNames.contains(CONFIGURATION_STORE_NAME)) {
+            database.createObjectStore(CONFIGURATION_STORE_NAME, {
+                keyPath: "key"
             });
         }
     }
@@ -37,7 +68,7 @@
             var request = window.indexedDB.open(DB_NAME, DB_VERSION);
 
             request.onupgradeneeded = function () {
-                migrateSchema(request.result);
+                migrateSchema(request.result, request.transaction);
             };
 
             request.onsuccess = function () {
@@ -98,8 +129,16 @@
         return String(subject || "").trim();
     }
 
-    function makeKey(subject, testType) {
-        return normalizeTestType(testType) + "::" + normalizeSubject(subject).toLowerCase();
+    function normalizeExamCode(examCode) {
+        return String(examCode || "JAMB").trim().toUpperCase();
+    }
+
+    function makeKey(examCode, subject, testType) {
+        return normalizeExamCode(examCode) +
+            "::" +
+            normalizeTestType(testType) +
+            "::" +
+            normalizeSubject(subject).toLowerCase();
     }
 
     function isQuestion(value) {
@@ -149,7 +188,8 @@
         });
     }
 
-    function saveSet(subject, testType, questions, version) {
+    function saveSet(examCode, subject, testType, questions, version) {
+        var normalizedExamCode = normalizeExamCode(examCode);
         var normalizedSubject = normalizeSubject(subject);
         var normalizedType = normalizeTestType(testType);
         var safeQuestions = (Array.isArray(questions) ? questions : [])
@@ -165,7 +205,8 @@
 
         return transactionRequest("readwrite", function (store) {
             return store.put({
-                key: makeKey(normalizedSubject, normalizedType),
+                key: makeKey(normalizedExamCode, normalizedSubject, normalizedType),
+                examCode: normalizedExamCode,
                 subject: normalizedSubject,
                 testType: normalizedType,
                 datasetVersion: version || null,
@@ -179,9 +220,9 @@
         });
     }
 
-    function getSet(subject, testType) {
+    function getSet(examCode, subject, testType) {
         return transactionRequest("readonly", function (store) {
-            return store.get(makeKey(subject, testType));
+            return store.get(makeKey(examCode, subject, testType));
         });
     }
 
@@ -193,6 +234,68 @@
             return (records || []).filter(function (record) {
                 return record.testType === normalizedType;
             });
+        });
+    }
+
+    function configurationRequest(mode, operation) {
+        return openDatabase().then(function (database) {
+            return new Promise(function (resolve, reject) {
+                var transaction = database.transaction(CONFIGURATION_STORE_NAME, mode);
+                var store = transaction.objectStore(CONFIGURATION_STORE_NAME);
+                var request;
+
+                try {
+                    request = operation(store);
+                } catch (error) {
+                    database.close();
+                    reject(error);
+                    return;
+                }
+
+                transaction.oncomplete = function () {
+                    database.close();
+                    resolve(request && request.result);
+                };
+
+                transaction.onerror = function () {
+                    database.close();
+                    reject(transaction.error || new Error("Offline configuration storage request failed."));
+                };
+            });
+        });
+    }
+
+    function configurationKey(examCode, testType) {
+        return normalizeExamCode(examCode) + "::" + normalizeTestType(testType);
+    }
+
+    function saveConfiguration(exam, testType, configuration) {
+        var examCode = normalizeExamCode(exam && exam.code);
+        var normalizedType = normalizeTestType(testType);
+        if (!exam || !exam.id || !exam.name || !configuration || !configuration.id) {
+            return Promise.reject(new Error("Cannot cache an incomplete CBT configuration."));
+        }
+
+        return configurationRequest("readwrite", function (store) {
+            return store.put({
+                key: configurationKey(examCode, normalizedType),
+                exam: {
+                    id: exam.id,
+                    code: examCode,
+                    name: exam.name
+                },
+                testType: normalizedType,
+                configuration: JSON.parse(JSON.stringify(configuration)),
+                cachedAt: Date.now()
+            });
+        }).then(function () {
+            return true;
+        });
+    }
+
+    function getConfiguration(examCode, testType) {
+        return configurationRequest("readonly", function (store) {
+            return store.get(configurationKey(examCode, testType));
         });
     }
 
@@ -217,6 +320,8 @@
         saveSet: saveSet,
         getSet: getSet,
         getSets: getSets,
+        saveConfiguration: saveConfiguration,
+        getConfiguration: getConfiguration,
         showOfflineNotice: showOfflineNotice,
         maxCachedSets: MAX_CACHED_SETS,
         maxQuestionsPerSet: MAX_QUESTIONS_PER_SET

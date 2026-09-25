@@ -314,6 +314,7 @@ body{
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 
 <script>
 
@@ -1424,6 +1425,10 @@ async function loadQuestions(
   count,
   date
 ){
+  const examCode = typeof window.getSelectedExamCode === 'function'
+    ? window.getSelectedExamCode()
+    : 'JAMB';
+  const examId = await window.resolveExamId(client, examCode);
 
   const {
     data,
@@ -1432,7 +1437,11 @@ async function loadQuestions(
     await client
       .from('Questions')
       .select(
-        'id,Subject,Question,Option_a,Option_b,Option_c,Option_d,Correct_Answer,Explanation,Topic'
+        'id,exam_id,Subject,Question,Option_a,Option_b,Option_c,Option_d,Correct_Answer,Explanation,Topic'
+      )
+      .eq(
+        'exam_id',
+        examId
       )
       .eq(
         'test_type',

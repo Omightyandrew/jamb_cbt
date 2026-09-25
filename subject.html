@@ -13,6 +13,8 @@
 
     <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="offline-store.js"></script>
 
 <link rel="stylesheet" href="redesign.css">
     <link rel="manifest" href="manifest.json">
@@ -25,12 +27,12 @@
         <img class="ep-logo ep-logo--header" src="assets/logo/logo-compact.svg" alt="ExamPilot">
         <h1>ExamPilot Practice</h1>
 
-        <h2>Select 4 Subjects</h2>
+        <h2 id="subjectHeading">Select Subjects</h2>
 
         <p id="accessMessage"></p>
 
         <p id="count">
-            Selected: 0 / 4
+            Selected: 0
         </p>
 
         <label>
@@ -466,16 +468,15 @@
                             );
 
 
-                        if (
-                            selected.length > 4
-                        ) {
+                        if (subjectSelectionRules &&
+                            selected.length > subjectSelectionRules.maximumSubjects) {
 
                             checkbox.checked =
                                 false;
 
 
                             alert(
-                                "You can only select 4 subjects."
+                                getSubjectLimitMessage()
                             );
 
                         }
@@ -486,7 +487,8 @@
                             document.querySelectorAll(
                                 'input[type="checkbox"]:checked'
                             ).length +
-                            " / 4";
+                            " / " +
+                            getSubjectCountLabel();
 
                     }
                 );
@@ -494,6 +496,46 @@
             }
         );
 
+
+        let subjectSelectionRules = null;
+
+        function getSubjectCountLabel() {
+            if (!subjectSelectionRules) return "configured limit";
+            return subjectSelectionRules.minimumSubjects === subjectSelectionRules.maximumSubjects
+                ? subjectSelectionRules.maximumSubjects
+                : subjectSelectionRules.minimumSubjects + "-" + subjectSelectionRules.maximumSubjects;
+        }
+
+        function getSubjectLimitMessage() {
+            if (!subjectSelectionRules) {
+                return "Practice configuration is unavailable.";
+            }
+            if (subjectSelectionRules.minimumSubjects === subjectSelectionRules.maximumSubjects) {
+                return "Please select exactly " +
+                    subjectSelectionRules.requiredSubjectCount +
+                    " subjects.";
+            }
+            return "Please select between " +
+                subjectSelectionRules.minimumSubjects +
+                " and " +
+                subjectSelectionRules.maximumSubjects +
+                " subjects.";
+        }
+
+        async function loadSubjectSelectionRules() {
+            subjectSelectionRules =
+                await window.resolveCbtSubjectSelectionRules(
+                    supabaseClient,
+                    "JAMB",
+                    "practice"
+                );
+            document.getElementById("subjectHeading").textContent =
+                subjectSelectionRules.minimumSubjects === subjectSelectionRules.maximumSubjects
+                    ? "Select " + subjectSelectionRules.requiredSubjectCount + " Subjects"
+                    : "Select " + subjectSelectionRules.minimumSubjects +
+                        "-" + subjectSelectionRules.maximumSubjects + " Subjects";
+            count.textContent = "Selected: 0 / " + getSubjectCountLabel();
+        }
 
         // ========================================
         // START TEST
@@ -528,17 +570,25 @@
                 );
 
 
+            if (!subjectSelectionRules) {
+                alert("Practice configuration is unavailable.");
+                return;
+            }
+
             if (
-                selected.length !== 4
+                selected.length < subjectSelectionRules.minimumSubjects ||
+                selected.length > subjectSelectionRules.maximumSubjects ||
+                selected.length !== subjectSelectionRules.requiredSubjectCount
             ) {
 
                 alert(
-                    "Please select exactly 4 subjects."
+                    getSubjectLimitMessage()
                 );
 
                 return;
 
             }
+
 
 
             // ==================================
@@ -622,6 +672,15 @@
         // PROTECT PAGE ON OPEN
         // ========================================
 
+        loadSubjectSelectionRules().catch(function (error) {
+            console.error("Practice subject configuration error:", error);
+            document.getElementById("subjectHeading").textContent =
+                "Practice configuration unavailable";
+            document.getElementById("count").textContent = error.message;
+            checkboxes.forEach(function (checkbox) {
+                checkbox.disabled = true;
+            });
+        });
         checkAccess();
 
     </script>

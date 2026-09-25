@@ -107,6 +107,10 @@
     }
 
     try {
+      const examCode = typeof window.getSelectedExamCode === 'function'
+        ? window.getSelectedExamCode()
+        : 'JAMB';
+      const examId = await window.resolveExamId(client, examCode);
       const rows = [];
       const pageSize = 1000;
       let offset = 0;
@@ -114,9 +118,11 @@
       while (true) {
         const { data, error } = await client
           .from('Questions')
-          .select('id, Subject, Question, Option_a, Option_b, Option_c, Option_d, Correct_Answer, test_type, Topic, Explanation, year, source, is_active, updated_at, import_key')
+          .select('id, exam_id, Subject, Question, Option_a, Option_b, Option_c, Option_d, Correct_Answer, test_type, Topic, Explanation, year, source, is_active, updated_at, import_key')
+          .eq('exam_id', examId)
           .eq('test_type', 'past')
           .eq('is_active', true)
+          .order('id', { ascending: true })
           .range(offset, offset + pageSize - 1);
 
         if (error) throw error;

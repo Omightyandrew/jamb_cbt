@@ -38,6 +38,14 @@ let testType =
         "testType"
     ) || "practice";
 
+const selectedExamCode =
+    typeof window.getSelectedExamCode === "function"
+        ? window.getSelectedExamCode()
+        : "JAMB";
+
+let selectedExamId = null;
+let sessionContext = null;
+
 
 // ========================================
 // SHOW SELECTED SUBJECTS
@@ -72,11 +80,12 @@ let currentQuestion = 0;
 
 let answers = {};
 
-let timeLeft = 30 * 60;
+let timeLeft = 0;
 
 let timer = null;
 let questionStartedAt = Date.now();
 let questionTimeSpent = {};
+let practiceAttemptSnapshot = null;
 
 
 // ========================================
@@ -577,8 +586,17 @@ function shuffleArray(items) {
     return array;
 }
 
-function selectNoRepeatQuestions(allSubjectQuestions, subject, currentTestType) {
+function selectNoRepeatQuestions(
+    allSubjectQuestions,
+    subject,
+    currentTestType,
+    requestedCount
+) {
     if (!allSubjectQuestions.length) return [];
+    const batchSize = Number(requestedCount);
+    if (!Number.isInteger(batchSize) || batchSize <= 0) {
+        throw new Error("Question allocation is unavailable for this CBT session.");
+    }
 
     const seenIds = loadSeenQuestionIds(subject, currentTestType);
     let pool = allSubjectQuestions.map((question) => ({
@@ -610,9 +628,9 @@ function selectNoRepeatQuestions(allSubjectQuestions, subject, currentTestType) 
     // If a cycle has fewer than 20 questions left, use those remaining
     // questions now and begin a fresh cycle for the rest. This avoids a repeat
     // inside the same CBT.
-    let selected = available.slice(0, QUESTION_BATCH_SIZE);
+    let selected = available.slice(0, batchSize);
 
-    if (selected.length < QUESTION_BATCH_SIZE) {
+    if (selected.length < batchSize) {
         const selectedIds = new Set(
             selected.map((question) => question._questionId)
         );
@@ -620,7 +638,7 @@ function selectNoRepeatQuestions(allSubjectQuestions, subject, currentTestType) 
             pool.filter((question) => !selectedIds.has(question._questionId))
         );
         selected = selected.concat(
-            freshCycle.slice(0, QUESTION_BATCH_SIZE - selected.length)
+            freshCycle.slice(0, batchSize - selected.length)
         );
     }
 
@@ -640,6 +658,7 @@ const SUPABASE_QUESTION_TABLE = "Questions";
 function mapSupabaseQuestion(row) {
     return {
         id: row.id,
+        examId: row.exam_id ?? null,
         question: row.Question ?? row.question ?? "",
         options: [
             row.Option_a ?? row.option_a ?? "",
@@ -676,6 +695,165 @@ function getQuestionDatasetVersion(questionSet) {
     return versions.length ? versions[versions.length - 1] : null;
 }
 
+async function initializePracticeSessionContext() {
+    if (testType !== "practice") {
+        timeLeft = 30 * 60;
+        return;
+    }
+
+    if (navigator.onLine === false) {
+        if (!window.OfflineQuestionStore?.getConfiguration) {
+            throw new Error("Offline Practice configuration is unavailable.");
+        }
+        const cached = await window.OfflineQuestionStore.getConfiguration(
+            selectedExamCode,
+            testType
+        );
+        if (!cached) {
+            throw new Error(
+                `No cached ${testType} configuration is available for exam ${selectedExamCode}.`
+            );
+        }
+        sessionContext = window.buildCbtSessionContextFromCachedConfiguration(
+            cached,
+            selectedSubjects
+        );
+    } else {
+        sessionContext = await window.resolveCbtSessionContext(
+            supabaseClient,
+            selectedExamCode,
+            testType,
+            selectedSubjects
+        );
+        if (window.OfflineQuestionStore?.saveConfiguration) {
+            try {
+                await window.OfflineQuestionStore.saveConfiguration(
+                    sessionContext.exam,
+                    sessionContext.testType,
+                    {
+                        id: sessionContext.configuration.id,
+                        academic_year: sessionContext.configuration.academicYear,
+                        version: sessionContext.configuration.version,
+                        duration_seconds: sessionContext.configuration.durationSeconds,
+                        question_count: sessionContext.configuration.questionCount,
+                        subject_selection_configuration: {
+                            mode: sessionContext.configuration.subjectSelection.mode,
+                            required_subject_count:
+                                sessionContext.configuration.subjectSelection.requiredSubjectCount,
+                            minimum_subjects:
+                                sessionContext.configuration.subjectSelection.minimumSubjects,
+                            maximum_subjects:
+                                sessionContext.configuration.subjectSelection.maximumSubjects,
+                            allocation_mode: sessionContext.configuration.questionAllocation.mode,
+                            questions_per_selected_subject:
+                                sessionContext.configuration.questionAllocation.questionsPerSelectedSubject
+                        },
+                        scoring_configuration: {
+                            method: sessionContext.configuration.scoring.method,
+                            marks_per_question: sessionContext.configuration.scoring.marksPerQuestion,
+                            negative_mark: sessionContext.configuration.scoring.negativeMark
+                        },
+                        grading_configuration: {
+                            method: sessionContext.configuration.grading.method,
+                            bands: [...sessionContext.configuration.grading.bands]
+                        },
+                        is_active: true
+                    }
+                );
+            } catch (error) {
+                console.warn("Could not cache CBT configuration for offline use:", error);
+            }
+        }
+    }
+    selectedExamId = sessionContext.exam.id;
+    timeLeft = sessionContext.configuration.durationSeconds;
+}
+
+function createPracticeAttemptId() {
+    if (window.crypto && typeof window.crypto.randomUUID === "function") {
+        return window.crypto.randomUUID();
+    }
+
+    return `practice-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+function createPracticeAttemptSnapshot() {
+    if (testType !== "practice") {
+        return null;
+    }
+
+    if (practiceAttemptSnapshot) {
+        return practiceAttemptSnapshot;
+    }
+
+    const startedAt = new Date().toISOString();
+    questionStartedAt = Date.now();
+
+    const context = sessionContext;
+    if (!context) {
+        throw new Error("Practice session context is unavailable.");
+    }
+    const selectedQuestionIds = questions.map((question) => question.id ?? null);
+    const questionOrder = questions.map((question, index) => ({
+        position: index,
+        questionId: question.id ?? null,
+        subject: question.subject || null
+    }));
+
+    const snapshotMetadata = window.buildCbtAttemptSnapshotMetadata(context);
+    practiceAttemptSnapshot = {
+        schemaVersion: 1,
+        identity: {
+            attemptId: createPracticeAttemptId(),
+            startedAt,
+            submittedAt: null,
+            ...snapshotMetadata.identity
+        },
+        effectiveRules: snapshotMetadata.effectiveRules,
+        content: {
+            selectedQuestionIds,
+            questionOrder,
+            questionDatasetVersion: getQuestionDatasetVersion(questions)
+        },
+        runtime: {
+            status: "in_progress",
+            currentQuestionIndex: 0,
+            answers: {},
+            questionTimeSpent: {},
+            remainingTime: timeLeft
+        }
+    };
+
+    return practiceAttemptSnapshot;
+}
+
+function copySubmittedPracticeAttemptSnapshot() {
+    if (testType !== "practice" || !practiceAttemptSnapshot) {
+        return null;
+    }
+
+    try {
+        practiceAttemptSnapshot.identity.submittedAt =
+            new Date().toISOString();
+        practiceAttemptSnapshot.runtime.status = "submitted";
+        practiceAttemptSnapshot.runtime.currentQuestionIndex =
+            currentQuestion;
+        practiceAttemptSnapshot.runtime.answers = { ...answers };
+        practiceAttemptSnapshot.runtime.questionTimeSpent = {
+            ...questionTimeSpent
+        };
+        practiceAttemptSnapshot.runtime.remainingTime = timeLeft;
+
+        return JSON.parse(JSON.stringify(practiceAttemptSnapshot));
+    } catch (error) {
+        console.warn(
+            "Could not attach Practice attempt snapshot; preserving the V1 result.",
+            error
+        );
+        return null;
+    }
+}
+
 async function loadAllOfflinePracticeQuestions() {
     if (!window.OfflineQuestionStore) {
         return null;
@@ -683,7 +861,11 @@ async function loadAllOfflinePracticeQuestions() {
 
     const cachedSets = await Promise.all(
         selectedSubjects.map((subject) =>
-            window.OfflineQuestionStore.getSet(subject, "practice")
+            window.OfflineQuestionStore.getSet(
+                selectedExamCode,
+                subject,
+                "practice"
+            )
         )
     );
 
@@ -720,6 +902,9 @@ async function loadSupabaseQuestions() {
         }
     } else {
         try {
+            selectedExamId = sessionContext
+                ? sessionContext.exam.id
+                : await window.resolveExamId(supabaseClient, selectedExamCode);
             // Fetch every matching row in pages. Supabase/PostgREST commonly limits
             // a single response to 1,000 rows, so one request is NOT enough for this bank.
             for (const subject of selectedSubjects) {
@@ -729,10 +914,11 @@ async function loadSupabaseQuestions() {
                 while (true) {
                     const to = from + SUPABASE_PAGE_SIZE - 1;
 
-                    const { data, error } = await supabaseClient
+                    let questionQuery = supabaseClient
                         .from(SUPABASE_QUESTION_TABLE)
                         .select(`
                             id,
+                            exam_id,
                             Subject,
                             Question,
                             Option_a,
@@ -752,8 +938,12 @@ async function loadSupabaseQuestions() {
                             import_key
                         `)
                         .eq("Subject", subject)
+                        .eq("exam_id", selectedExamId)
                         .eq("test_type", testType)
-                        .range(from, to);
+                        .eq("is_active", true)
+                        .order("id", { ascending: true });
+
+                    const { data, error } = await questionQuery.range(from, to);
 
                     if (error) {
                         throw new Error(
@@ -779,6 +969,7 @@ async function loadSupabaseQuestions() {
                 if (window.OfflineQuestionStore) {
                     try {
                         await window.OfflineQuestionStore.saveSet(
+                            selectedExamCode,
                             subject,
                             testType,
                             subjectQuestions,
@@ -869,10 +1060,14 @@ async function buildQuestions() {
             String(question.subject).toLowerCase() === String(subject).toLowerCase()
         );
 
+        const questionsPerSubject = sessionContext
+            ? sessionContext.questionPlan.questionsPerSelectedSubject
+            : QUESTION_BATCH_SIZE;
         const selectedQuestions = selectNoRepeatQuestions(
             allSubjectQuestions,
             subject,
-            testType
+            testType,
+            questionsPerSubject
         );
 
         questions = questions.concat(selectedQuestions);
@@ -881,6 +1076,13 @@ async function buildQuestions() {
             `${subject}: ${allSubjectQuestions.length} available ${testType} questions; ${selectedQuestions.length} selected for this CBT.`
         );
     });
+
+    if (sessionContext && questions.length !== sessionContext.questionPlan.totalQuestionCount) {
+        throw new Error(
+            `Question bank returned ${questions.length} questions; ` +
+            `the active configuration requires ${sessionContext.questionPlan.totalQuestionCount}.`
+        );
+    }
 }
 
 // ========================================
@@ -1174,8 +1376,8 @@ window.finishTest = function() {
     saveAnswer();
     recordQuestionTime();
 
-    let score = 0;
     const subjectStats = {};
+    const outcomes = [];
 
     const questionDetails = questions.map((question, i) => {
         const userAnswer = answers[i] || null;
@@ -1196,13 +1398,16 @@ window.finishTest = function() {
 
         subjectStats[subject].total++;
         if (isCorrect) {
-            score++;
             subjectStats[subject].correct++;
         } else if (userAnswer) {
             subjectStats[subject].wrong++;
         } else {
             subjectStats[subject].unanswered++;
         }
+        outcomes.push({
+            correct: isCorrect,
+            unanswered: !userAnswer
+        });
 
         return {
             number: i + 1,
@@ -1225,13 +1430,24 @@ window.finishTest = function() {
             : 0;
     });
 
-    const wrong = questions.length - score - Object.values(subjectStats).reduce((sum, item) => sum + item.unanswered, 0);
-    const unanswered = questions.length - getAnsweredCount();
-    const percentage = questions.length
-        ? Math.round((score / questions.length) * 100)
-        : 0;
-    const totalAllowedSeconds = 30 * 60;
+    const scoring = sessionContext?.configuration.scoring || {
+        method: "correct_count",
+        marksPerQuestion: 1,
+        negativeMark: 0
+    };
+    const grading = sessionContext?.configuration.grading || {
+        method: "percentage"
+    };
+    const scoreResult = window.calculateConfiguredScore(outcomes, scoring);
+    const percentage = window.calculateConfiguredGrade(scoreResult, grading);
+    const score = scoreResult.score;
+    const wrong = scoreResult.wrong;
+    const unanswered = scoreResult.unanswered;
+    const totalAllowedSeconds = sessionContext
+        ? sessionContext.configuration.durationSeconds
+        : 30 * 60;
     const timeUsed = Math.min(totalAllowedSeconds, Math.max(0, totalAllowedSeconds - Math.max(0, timeLeft)));
+    const attemptSnapshot = copySubmittedPracticeAttemptSnapshot();
 
     const resultRecord = {
         id: Date.now(),
@@ -1242,13 +1458,14 @@ window.finishTest = function() {
         score,
         total: questions.length,
         percentage,
-        correct: score,
+        correct: scoreResult.correct,
         wrong,
         unanswered,
         timeUsed,
         timeAllowed: totalAllowedSeconds,
         subjectStats: Object.values(subjectStats),
-        questionDetails
+        questionDetails,
+        ...(attemptSnapshot ? { attemptSnapshot } : {})
     };
 
     const savedResults = JSON.parse(localStorage.getItem("jambResults")) || [];
@@ -1337,7 +1554,7 @@ async function startCBT() {
     const allowed = await checkStudentAccess();
     if (!allowed) return;
 
-    if (selectedSubjects.length !== 4) {
+    if (testType !== "practice" && selectedSubjects.length !== 4) {
         document.body.innerHTML = `
             <div class="access-page">
                 <div class="access-card">
@@ -1354,6 +1571,18 @@ async function startCBT() {
     }
 
     try {
+        await initializePracticeSessionContext();
+        const subjectSelection = sessionContext?.configuration.subjectSelection;
+        if (
+            subjectSelection &&
+            (selectedSubjects.length < subjectSelection.minimumSubjects ||
+                selectedSubjects.length > subjectSelection.maximumSubjects ||
+                selectedSubjects.length !== subjectSelection.requiredSubjectCount)
+        ) {
+            throw new Error(
+                `Please select exactly ${subjectSelection.requiredSubjectCount} subjects before starting your CBT.`
+            );
+        }
         await buildQuestions();
     } catch (error) {
         console.error("CBT question bank error:", error);
@@ -1377,6 +1606,7 @@ async function startCBT() {
         return;
     }
 
+    createPracticeAttemptSnapshot();
     showQuestion();
     startTimer();
 }

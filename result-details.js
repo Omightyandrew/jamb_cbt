@@ -3,6 +3,34 @@ const SUPABASE_KEY = "sb_publishable_LQlMraaULDTdAKeYysPWkA_a8CKvA1V";
 const detailsSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const escapeHTML = value => String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 const formatDuration = seconds => { const s=Math.max(0,Number(seconds)||0); return `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`; };
+function projectResult(raw, normalized){
+    const source=raw && typeof raw==='object' ? raw : {};
+    const legacy=normalized.grading.legacyProjection;
+    const timing=normalized.timing;
+    return {
+        id:normalized.identity.legacyId ?? source.id,
+        userId:normalized.identity.userId ?? source.userId,
+        date:timing.legacyDate ?? source.date,
+        subjects:normalized.subjects.length
+            ? normalized.subjects.map(subject=>subject.name)
+            : (source.subjects||[]),
+        testType:normalized.test.testType ?? source.testType,
+        score:legacy.score ?? source.score,
+        total:legacy.total ?? source.total,
+        percentage:legacy.percentage ?? source.percentage,
+        correct:legacy.correct ?? source.correct,
+        wrong:legacy.wrong ?? source.wrong,
+        unanswered:legacy.unanswered ?? source.unanswered,
+        timeUsed:timing.timeUsed ?? source.timeUsed,
+        timeAllowed:timing.timeAllowed ?? source.timeAllowed,
+        subjectStats:normalized.subjectStats.length
+            ? normalized.subjectStats
+            : (source.subjectStats||[]),
+        questionDetails:normalized.content.questionDetails.length
+            ? normalized.content.questionDetails
+            : (source.questionDetails||[])
+    };
+}
 
 async function loadResultDetails(){
     const params=new URLSearchParams(location.search); const id=Number(params.get("id"));
@@ -12,11 +40,17 @@ async function loadResultDetails(){
         if(!error && data.session){
             const userId=data.session.user.id;
             const results=JSON.parse(localStorage.getItem("jambResults")||"[]");
-            result=results.find(r=>Number(r.id)===id && (!r.userId || r.userId===userId));
+            result=results.find(r=>r && Number(r.id)===id && (!r.userId || r.userId===userId));
         }
     } catch(err){ console.error('Result detail loading error:',err); }
     if(!result){ document.body.innerHTML='<main class="details-page"><div class="empty"><h2>Result not found</h2><p>This result may have been cleared from your browser or belongs to another student.</p><button class="primary-action" onclick="location.href=\'results.html\'">Back to Results</button></div></main>'; return; }
-    document.getElementById("pageTitle").textContent=(result.testType==='past'?'Past Questions':'Practice Test')+' Analysis';
+    result=projectResult(result,ExamPilotResultAdapter.normalizeResultRecord(result));
+    const resultType=result.testType==='past'
+        ?'Past Questions'
+        :result.testType==='practice'
+            ?'Practice Test'
+            :'Unknown Test';
+    document.getElementById("pageTitle").textContent=resultType+' Analysis';
     document.getElementById("pageMeta").textContent=new Date(result.date).toLocaleString()+" • "+(result.subjects||[]).join(", ");
     const overview=document.getElementById("overview"); overview.innerHTML=`<section class="analysis-hero"><div class="analysis-score"><span>Overall Score</span><strong>${Number(result.percentage)||0}%</strong><small>${Number(result.score)||0}/${Number(result.total)||0} correct</small></div><div class="analysis-stat"><span>Time Used</span><strong>${formatDuration(result.timeUsed)}</strong><small>of ${formatDuration(result.timeAllowed)}</small></div><div class="analysis-stat"><span>Correct</span><strong>${Number(result.correct)||0}</strong></div><div class="analysis-stat"><span>Wrong</span><strong>${Number(result.wrong)||0}</strong></div><div class="analysis-stat"><span>Unanswered</span><strong>${Number(result.unanswered)||0}</strong></div></section>`;
     const stats=result.subjectStats||[]; document.getElementById("subjectBreakdown").innerHTML=stats.map(s=>`<article class="subject-result-card"><div class="subject-result-head"><strong>${escapeHTML(s.subject)}</strong><span>${Number(s.percentage)||0}%</span></div><div class="subject-bar"><span style="width:${Number(s.percentage)||0}%"></span></div><div class="subject-result-meta"><span>${s.correct||0} correct</span><span>${s.wrong||0} wrong</span><span>${s.unanswered||0} unanswered</span><span>${s.total||0} total</span></div></article>`).join("");
