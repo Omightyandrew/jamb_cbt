@@ -80,7 +80,7 @@
         <header class="ep-ai-head"><div><h2 id="epAiTitle">AI Tutor</h2><p id="epAiSubtitle">Ask a focused study question.</p></div><button class="ep-ai-close" type="button" aria-label="Close AI Tutor">×</button></header>
         <div class="ep-ai-answer is-empty" id="epAiAnswer">AI Tutor responses are for study support. Check important answers against your course materials.</div>
         <div class="ep-ai-status" id="epAiStatus" role="status" aria-live="polite"></div>
-        <div class="ep-ai-suggestions"><button type="button" class="ep-ai-suggestion" data-ai-suggestion="Explain this simply.">Explain simply</button><button type="button" class="ep-ai-suggestion" data-ai-suggestion="Give me a short example.">Give an example</button><button type="button" class="ep-ai-suggestion" data-ai-suggestion="Give me one follow-up practice question." data-ai-action="follow_up">Follow-up practice</button></div>
+        <div class="ep-ai-suggestions"><button type="button" class="ep-ai-suggestion" data-ai-suggestion="Explain this simply." data-ai-action="simplify">Explain simply</button><button type="button" class="ep-ai-suggestion" data-ai-suggestion="Give me a short example." data-ai-action="example">Give an example</button><button type="button" class="ep-ai-suggestion" data-ai-suggestion="Give me one follow-up practice question." data-ai-action="follow_up">Follow-up practice</button></div>
         <form class="ep-ai-composer"><textarea maxlength="2000" aria-label="Ask AI Tutor" placeholder="Ask AI Tutor..."></textarea><button class="ep-ai-send" type="submit">Ask</button></form>
       </section>`;
     document.body.appendChild(modal);
