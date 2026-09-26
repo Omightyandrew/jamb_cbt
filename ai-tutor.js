@@ -56,22 +56,14 @@
     if (modal) return;
     var style = document.createElement("style");
     style.textContent = `
-      .ep-ai-launcher{position:fixed;right:16px;bottom:18px;z-index:2500;border:0;border-radius:999px;background:#087f45;color:#fff;padding:12px 16px;box-shadow:0 10px 24px rgba(15,48,38,.2);font:700 14px Arial,sans-serif;cursor:pointer}
       .ep-ai-backdrop{position:fixed;inset:0;z-index:4000;display:none;align-items:flex-end;justify-content:center;padding:14px;background:rgba(8,30,22,.42)}
       .ep-ai-backdrop.is-open{display:flex}
       .ep-ai-dialog{width:min(100%,560px);max-height:min(720px,calc(100vh - 28px));display:flex;flex-direction:column;overflow:hidden;border-radius:18px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.24);font-family:Arial,Helvetica,sans-serif;color:#173229}
       .ep-ai-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid #dce8e0}.ep-ai-head h2{margin:0;font-size:19px}.ep-ai-head p{margin:4px 0 0;color:#5f7169;font-size:12px}.ep-ai-close{width:40px;height:40px;border:0;border-radius:50%;background:#eef8f1;color:#173229;font-size:23px;cursor:pointer}
       .ep-ai-answer{min-height:150px;max-height:390px;overflow:auto;padding:18px;white-space:pre-wrap;color:#314840;line-height:1.6;font-size:14px}.ep-ai-answer.is-empty{color:#6c7b74}.ep-ai-status{padding:0 18px;color:#087f45;font-size:12px;min-height:18px}.ep-ai-composer{display:flex;gap:8px;padding:12px 18px 18px;border-top:1px solid #dce8e0}.ep-ai-composer textarea{min-height:48px;max-height:120px;flex:1;resize:vertical;padding:11px;border:1px solid #cbdcd2;border-radius:10px;font:14px Arial,sans-serif;color:#173229}.ep-ai-send{min-width:82px;border:0;border-radius:10px;background:#087f45;color:#fff;font-weight:700;cursor:pointer}.ep-ai-send:disabled{opacity:.55;cursor:wait}.ep-ai-suggestions{display:flex;flex-wrap:wrap;gap:7px;padding:0 18px 12px}.ep-ai-suggestion{border:1px solid #b8d6c2;border-radius:999px;background:#fff;color:#087f45;padding:7px 10px;font-size:12px;cursor:pointer}.ai-question-button{margin:0 0 12px;padding:8px 11px;border:1px solid #b8d6c2;border-radius:9px;background:#fff;color:#087f45;font-weight:700;cursor:pointer}
-      @media(max-width:520px){.ep-ai-launcher{right:12px;bottom:14px}.ep-ai-backdrop{padding:0}.ep-ai-dialog{max-height:100vh;border-radius:16px 16px 0 0}.ep-ai-answer{max-height:none;flex:1}.ep-ai-composer{padding-bottom:max(14px,env(safe-area-inset-bottom))}}
+      @media(max-width:520px){.ep-ai-backdrop{padding:0}.ep-ai-dialog{max-height:100vh;border-radius:16px 16px 0 0}.ep-ai-answer{max-height:none;flex:1}.ep-ai-composer{padding-bottom:max(14px,env(safe-area-inset-bottom))}}
     `;
     document.head.appendChild(style);
-
-    var launcher = document.createElement("button");
-    launcher.type = "button";
-    launcher.className = "ep-ai-launcher";
-    launcher.textContent = "AI Tutor";
-    launcher.addEventListener("click", function () { openTutor({}); });
-    document.body.appendChild(launcher);
 
     modal = document.createElement("div");
     modal.className = "ep-ai-backdrop";
@@ -208,6 +200,12 @@
     if (["answers", "result", "topics", "syllabus", "general"].indexOf(pageContext()) === -1) return;
     createModal();
     document.addEventListener("click", function (event) {
+      var tutorButton = event.target.closest("[data-ai-tutor-open]");
+      if (tutorButton) {
+        event.preventDefault();
+        openTutor({});
+        return;
+      }
       var questionButton = event.target.closest("[data-ai-question-id]");
       if (questionButton) openTutor({ questionId: questionButton.dataset.aiQuestionId, action: "explain" });
       var resultButton = event.target.closest("[data-ai-result]");
