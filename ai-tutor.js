@@ -6,6 +6,7 @@
   var client = window.supabaseClient || null;
   var conversationId = null;
   var currentContext = {};
+  var pendingAction = null;
   var modal;
   var answer;
   var composer;
@@ -79,7 +80,7 @@
         <header class="ep-ai-head"><div><h2 id="epAiTitle">AI Tutor</h2><p id="epAiSubtitle">Ask a focused study question.</p></div><button class="ep-ai-close" type="button" aria-label="Close AI Tutor">×</button></header>
         <div class="ep-ai-answer is-empty" id="epAiAnswer">AI Tutor responses are for study support. Check important answers against your course materials.</div>
         <div class="ep-ai-status" id="epAiStatus" role="status" aria-live="polite"></div>
-        <div class="ep-ai-suggestions"><button type="button" class="ep-ai-suggestion" data-ai-suggestion="Explain this simply.">Explain simply</button><button type="button" class="ep-ai-suggestion" data-ai-suggestion="Give me a short example.">Give an example</button><button type="button" class="ep-ai-suggestion" data-ai-suggestion="Give me one follow-up practice question.">Follow-up practice</button></div>
+        <div class="ep-ai-suggestions"><button type="button" class="ep-ai-suggestion" data-ai-suggestion="Explain this simply.">Explain simply</button><button type="button" class="ep-ai-suggestion" data-ai-suggestion="Give me a short example.">Give an example</button><button type="button" class="ep-ai-suggestion" data-ai-suggestion="Give me one follow-up practice question." data-ai-action="follow_up">Follow-up practice</button></div>
         <form class="ep-ai-composer"><textarea maxlength="2000" aria-label="Ask AI Tutor" placeholder="Ask AI Tutor..."></textarea><button class="ep-ai-send" type="submit">Ask</button></form>
       </section>`;
     document.body.appendChild(modal);
@@ -90,7 +91,11 @@
     modal.querySelector(".ep-ai-close").addEventListener("click", closeTutor);
     modal.addEventListener("click", function (event) { if (event.target === modal) closeTutor(); });
     modal.querySelectorAll("[data-ai-suggestion]").forEach(function (button) {
-      button.addEventListener("click", function () { composer.value = button.dataset.aiSuggestion; composer.focus(); });
+      button.addEventListener("click", function () {
+        pendingAction = button.dataset.aiAction || null;
+        composer.value = button.dataset.aiSuggestion;
+        composer.focus();
+      });
     });
     composer.addEventListener("keydown", function (event) {
       if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); composer.form.requestSubmit(); }
@@ -101,6 +106,7 @@
   function openTutor(context) {
     createModal();
     currentContext = context || {};
+    pendingAction = null;
     var subtitle = modal.querySelector("#epAiSubtitle");
     if (currentContext.questionId) subtitle.textContent = "Question explanation and answer review.";
     else if (currentContext.topicTitle) subtitle.textContent = "Topic support for " + currentContext.topicTitle + ".";
@@ -124,7 +130,7 @@
     try {
       var result = await supabaseClient.functions.invoke("ai-tutor", {
         body: {
-          action: currentContext.action || (currentContext.questionId ? "explain" : currentContext.topicTitle ? "tutor" : currentContext.result ? "result" : "tutor"),
+          action: pendingAction || currentContext.action || (currentContext.questionId ? "explain" : currentContext.topicTitle ? "tutor" : currentContext.result ? "result" : "tutor"),
           message,
           examCode: typeof window.getSelectedExamCode === "function" ? window.getSelectedExamCode() : "JAMB",
           questionId: currentContext.questionId || undefined,
@@ -140,6 +146,7 @@
       conversationId = result.data.conversationId || conversationId;
       status.textContent = result.data.quota ? `${result.data.quota.remaining} AI request${result.data.quota.remaining === 1 ? "" : "s"} remaining today.` : "";
       composer.value = "";
+      pendingAction = null;
     } catch (error) {
       var responseStatus = 0;
       var responseBody = null;
