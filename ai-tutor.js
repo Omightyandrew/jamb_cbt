@@ -134,15 +134,50 @@
           conversationId: conversationId || undefined
         }
       });
-      if (result.error || !result.data) throw new Error("AI Tutor request failed");
+      if (result.error) throw result.error;
+      if (!result.data) throw new Error("AI Tutor request failed");
       answer.textContent = result.data.answer || "No answer was returned.";
       conversationId = result.data.conversationId || conversationId;
       status.textContent = result.data.quota ? `${result.data.quota.remaining} AI request${result.data.quota.remaining === 1 ? "" : "s"} remaining today.` : "";
       composer.value = "";
     } catch (error) {
+      var responseStatus = 0;
+      var responseBody = null;
+      var responseContext = error && error.context;
+      if (responseContext && typeof responseContext.status === "number") {
+        responseStatus = responseContext.status;
+        if (typeof responseContext.clone === "function") {
+          try {
+            responseBody = await responseContext.clone().json();
+          } catch (_) {
+            responseBody = null;
+          }
+        }
+      }
+
+      var backendMessage = responseBody && typeof responseBody.error === "string"
+        ? responseBody.error
+        : "";
       answer.classList.add("is-empty");
-      answer.textContent = "AI Tutor is unavailable right now. Please try again later.";
-      status.textContent = "No AI usage was deducted for this failed request.";
+      if (responseStatus === 401) {
+        answer.textContent = "Your session has expired. Please sign in again.";
+        status.textContent = "";
+      } else if (responseStatus === 429 && backendMessage.indexOf("Daily AI limit reached.") === 0) {
+        answer.textContent = "Your AI Tutor requests for today are finished.\n\nYour requests will reset tomorrow. Come back then to continue learning.";
+        status.textContent = "No AI usage was deducted.";
+      } else if (responseStatus === 429 && backendMessage.indexOf("Too many AI requests.") === 0) {
+        answer.textContent = "You're sending requests too quickly. Please wait a moment and try again.";
+        status.textContent = "";
+      } else if (responseStatus === 502 || responseStatus >= 500) {
+        answer.textContent = "AI Tutor is temporarily unavailable. Please try again later.";
+        status.textContent = "No AI usage was deducted for this failed request.";
+      } else if (!responseStatus) {
+        answer.textContent = "We couldn't connect to AI Tutor. Please check your internet connection and try again.";
+        status.textContent = "";
+      } else {
+        answer.textContent = "AI Tutor is temporarily unavailable. Please try again later.";
+        status.textContent = "No AI usage was deducted for this failed request.";
+      }
     } finally {
       sendButton.disabled = false;
     }
