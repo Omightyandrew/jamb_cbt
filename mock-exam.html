@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAMB Mock | ExamPilot</title>
+    <link rel="stylesheet" href="brand.css">
+    <link rel="stylesheet" href="exam.css">
+    <link rel="stylesheet" href="mock-exam.css">
+    <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+    <meta name="theme-color" content="#14213D">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="mock-api.js"></script>
+    <script src="mock-exam-ui.js" defer></script>
+</head>
+<body class="exam-body mock-body">
+    <header class="exam-header mock-header">
+        <a class="exam-brand mock-brand" href="dashboard.html" aria-label="Back to dashboard">
+            <img class="mock-logo" src="assets/logo/logo-symbol.svg" alt="">
+            <span><strong>ExamPilot</strong><span>JAMB Mock</span></span>
+        </a>
+        <div class="mock-header-meta">
+            <span class="mock-premium-label">PREMIUM</span>
+            <div class="timer-box mock-timer" id="mockTimer" hidden aria-live="off">02:00:00</div>
+            <button class="submit-top mock-header-submit" id="mockHeaderSubmit" type="button" hidden>Submit</button>
+        </div>
+    </header>
+    <main id="mockApp" class="mock-app" aria-live="polite">
+        <section class="access-page mock-loading">
+            <div class="access-card"><p class="eyebrow">JAMB MOCK</p><h1>Checking your session</h1><p>Please wait.</p></div>
+        </section>
+    </main>
+</body>
+</html>
