@@ -276,8 +276,20 @@
 
   try {
     await loadPastQuestions();
-    selected = JSON.parse(localStorage.getItem('pastSelectedSubjects') || '[]')
-      .filter(subject => subjects.includes(subject));
+    const examCode = typeof window.getSelectedExamCode === 'function'
+      ? window.getSelectedExamCode()
+      : 'JAMB';
+    const requestedSubject = new URLSearchParams(window.location.search).get('subject');
+    if (examCode === 'JAMB') {
+      selected = requestedSubject && subjects.includes(requestedSubject)
+        ? [requestedSubject]
+        : JSON.parse(localStorage.getItem('pastSelectedSubjects') || '[]')
+          .filter(subject => subjects.includes(subject));
+    } else {
+      selected = requestedSubject && subjects.includes(requestedSubject)
+        ? [requestedSubject]
+        : [];
+    }
     populateYearSessionFilters();
     const availableSubjectCount = usableSubjects().length;
     summary.textContent = 'Select four subjects to continue.';

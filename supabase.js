@@ -6,6 +6,7 @@ window.SUPABASE_QUESTION_TABLE = "Questions";
 window.SUPABASE_QUESTION_COMPAT_VIEW = "questions";
 window.SUPABASE_QUESTION_COLUMNS = [
     "id",
+    "exam_id",
     "Subject",
     "Question",
     "Option_a",
@@ -33,6 +34,18 @@ window.getSelectedExamCode = function () {
     return String(stored || window.EXAMPILOT_DEFAULT_EXAM_CODE)
         .trim()
         .toUpperCase();
+};
+
+window.setSelectedExamCode = function (examCode) {
+    const code = String(examCode || "").trim().toUpperCase();
+    if (!/^[A-Z0-9_-]{1,32}$/.test(code)) {
+        throw new Error("A valid exam code is required.");
+    }
+    if (!window.localStorage || typeof window.localStorage.setItem !== "function") {
+        throw new Error("Exam selection storage is unavailable.");
+    }
+    window.localStorage.setItem("selectedExamCode", code);
+    return code;
 };
 
 window.resolveExamId = async function (client, examCode) {
@@ -560,6 +573,7 @@ function normalizeCanonicalQuestionRow(row = {}) {
 
     return {
         id: row.id ?? null,
+        exam_id: row.exam_id ?? null,
         Subject: canonicalQuestionValue(row, "Subject", "subject") || "",
         Question: canonicalQuestionValue(row, "Question", "question") || "",
         Option_a: String(options[0] ?? ""),
@@ -581,6 +595,7 @@ function normalizeCanonicalQuestionRow(row = {}) {
 
 function buildCanonicalQuestionPayload(data = {}) {
     return {
+        exam_id: data.exam_id ?? null,
         Subject: String(data.Subject ?? data.subject ?? "").trim(),
         Question: String(data.Question ?? data.question ?? "").trim(),
         Option_a: String(data.Option_a ?? data.option_a ?? "").trim(),

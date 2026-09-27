@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Choose an Exam | ExamPilot</title>
+    <link rel="stylesheet" href="brand.css">
+    <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+    <meta name="theme-color" content="#14213D">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <style>
+        :root {
+            --jamb-green: #008751;
+            --jamb-dark: #006b40;
+            --jamb-deep: #004f31;
+            --jamb-light: #edf8f2;
+            --background: #f6faf8;
+            --text: #123025;
+            --muted: #64736d;
+            --border: #e2ebe6;
+            --shadow: 0 8px 28px rgba(0, 73, 45, .08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 24px 16px 40px;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 20% 10%, rgba(0, 135, 81, .045), transparent 25%),
+                linear-gradient(180deg, #f9fcfa 0%, var(--background) 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .exam-page {
+            width: min(100%, 720px);
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .page-logo {
+            width: 46px;
+            height: 46px;
+            object-fit: contain;
+        }
+
+        .back-link {
+            min-height: 42px;
+            padding: 0 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fff;
+            color: var(--jamb-deep);
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .exam-content {
+            margin-top: 38px;
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--jamb-deep);
+            font-size: 28px;
+            line-height: 1.2;
+        }
+
+        .intro {
+            margin: 9px 0 22px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .exam-options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .exam-option {
+            width: 100%;
+            min-height: 68px;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: #fff;
+            color: var(--text);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 14px;
+            text-align: left;
+            font: inherit;
+            box-shadow: var(--shadow);
+        }
+
+        .exam-option-name {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .exam-option-status {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 700;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .exam-option[data-available="true"] {
+            cursor: pointer;
+        }
+
+        .exam-option[data-available="true"]:hover,
+        .exam-option[data-available="true"][aria-pressed="true"] {
+            border-color: var(--jamb-green);
+            background: var(--jamb-light);
+        }
+
+        .exam-option[data-available="true"] .exam-option-status {
+            color: var(--jamb-dark);
+        }
+
+        .exam-option:disabled {
+            cursor: not-allowed;
+            opacity: 1;
+        }
+
+        .exam-option:focus-visible,
+        .back-link:focus-visible {
+            outline: 3px solid rgba(0, 135, 81, .28);
+            outline-offset: 2px;
+        }
+
+        .exam-status {
+            min-height: 22px;
+            margin: 14px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 420px) {
+            body {
+                padding: 18px 12px 32px;
+            }
+
+            .exam-content {
+                margin-top: 30px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .exam-option {
+                min-height: 64px;
+                padding: 12px;
+            }
+
+            .exam-option-status {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="exam-page">
+        <header class="page-header">
+            <img class="page-logo" src="assets/logo/logo-compact.svg" alt="ExamPilot">
+            <a class="back-link" href="dashboard.html">← Dashboard</a>
+        </header>
+        <section aria-labelledby="examPageTitle" class="exam-content">
+            <h1 id="examPageTitle">Choose an exam</h1>
+            <p class="intro">Select an available exam. Other exams are coming soon.</p>
+            <div aria-label="Exam options" class="exam-options">
+                <button aria-pressed="false" class="exam-option" data-available="true" data-exam-code="JAMB" id="jambExamOption" type="button">
+                    <span class="exam-option-name">JAMB</span>
+                    <span class="exam-option-status">Available</span>
+                </button>
+                <button class="exam-option" data-exam-code="WAEC" disabled type="button">
+                    <span class="exam-option-name">WAEC</span>
+                    <span class="exam-option-status">Coming Soon</span>
+                </button>
+                <button class="exam-option" data-exam-code="NECO" disabled type="button">
+                    <span class="exam-option-name">NECO</span>
+                    <span class="exam-option-status">Coming Soon</span>
+                </button>
+                <button class="exam-option" data-exam-code="NABTEB" disabled type="button">
+                    <span class="exam-option-name">NABTEB</span>
+                    <span class="exam-option-status">Coming Soon</span>
+                </button>
+            </div>
+            <p aria-live="polite" class="exam-status" id="examSelectionStatus" role="status"></p>
+        </section>
+    </main>
+    <script>
+        const supabaseClient = window.supabase.createClient(
+            window.SUPABASE_URL,
+            window.SUPABASE_PUBLISHABLE_KEY
+        );
+        const jambExamOption = document.getElementById("jambExamOption");
+        const examSelectionStatus = document.getElementById("examSelectionStatus");
+
+        function updateSelectedExamStatus(message) {
+            const selectedExamCode = window.getSelectedExamCode();
+            jambExamOption.setAttribute("aria-pressed", String(selectedExamCode === "JAMB"));
+            examSelectionStatus.textContent = message ||
+                (selectedExamCode === "JAMB"
+                    ? "JAMB is your selected exam."
+                    : "JAMB is available. Select it to make it your active exam.");
+        }
+
+        jambExamOption.addEventListener("click", async () => {
+            jambExamOption.disabled = true;
+            examSelectionStatus.textContent = "Confirming JAMB availability...";
+            try {
+                await window.resolveExamId(supabaseClient, "JAMB");
+                window.setSelectedExamCode("JAMB");
+                window.location.href = "subject.html";
+            } catch (error) {
+                console.error("Could not confirm JAMB availability:", error);
+                updateSelectedExamStatus("JAMB could not be confirmed as available. Please try again.");
+            } finally {
+                jambExamOption.disabled = false;
+            }
+        });
+
+        updateSelectedExamStatus();
+    </script>
+</body>
+</html>

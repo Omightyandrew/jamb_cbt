@@ -10,6 +10,7 @@
 <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
 <meta name="theme-color" content="#14213D">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 <script src="offline-store.js"></script>
 <script src="offline-auth.js"></script>
 <script src="https://js.paystack.co/v2/inline.js"></script>
@@ -557,71 +558,6 @@ button {
     color: var(--jamb-deep);
 }
 
-.jamb-cbt-card {
-    min-height: 165px;
-    border-color: var(--jamb-green);
-    background: linear-gradient(145deg, #008f52 0%, #006f40 100%);
-    color: #fff;
-    box-shadow: 0 14px 30px rgba(0,135,81,.22);
-}
-
-.jamb-cbt-card::before {
-    content: "";
-    position: absolute;
-    width: 130px;
-    height: 130px;
-    right: -55px;
-    top: -60px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,.08);
-    box-shadow: 0 0 0 18px rgba(255,255,255,.025), 0 0 0 36px rgba(255,255,255,.018);
-}
-
-.jamb-cbt-card .quick-icon {
-    margin-left: 0;
-    margin-right: auto;
-    width: 48px;
-    height: 48px;
-    background: rgba(255,255,255,.12);
-    color: #fff;
-    border: 2px solid rgba(255,255,255,.36);
-}
-
-.jamb-cbt-card .quick-link-title,
-.jamb-cbt-card .quick-link-description {
-    color: #fff;
-}
-
-.jamb-cbt-card .quick-link-description {
-    max-width: 360px;
-}
-
-.cbt-action {
-    height: 42px;
-    margin-top: 14px;
-    padding: 0 10px 0 22px;
-    border-radius: 30px;
-    background: #fff;
-    color: var(--jamb-dark);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 16px;
-    font-weight: 750;
-    box-shadow: 0 8px 18px rgba(0,0,0,.1);
-}
-
-.cbt-action span:last-child {
-    width: 37px;
-    height: 37px;
-    border-radius: 50%;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-}
-
 .bottom-nav {
     position: fixed;
     left: 0;
@@ -936,13 +872,13 @@ button {
     }
 
     .quick-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
     }
 
-    .quick-link,
-    .jamb-cbt-card {
+    .quick-link {
         min-height: 118px;
+        min-width: 0;
         padding: 12px;
         border-radius: 18px;
         max-width: 100%;
@@ -954,8 +890,7 @@ button {
         min-width: 0;
     }
 
-    .quick-icon,
-    .jamb-cbt-card .quick-icon {
+    .quick-icon {
         width: 44px;
         height: 44px;
         flex: 0 0 44px;
@@ -984,27 +919,6 @@ button {
         font-size: 18px;
         margin-top: 8px;
         flex-shrink: 0;
-    }
-
-    .jamb-cbt-card {
-        min-height: 138px;
-    }
-
-    .jamb-cbt-card .quick-icon {
-        margin: 0 0 12px;
-    }
-
-    .cbt-action {
-        height: 42px;
-        margin-top: 12px;
-        padding-left: 17px;
-        font-size: 14px;
-    }
-
-    .cbt-action span:last-child {
-        width: 34px;
-        height: 34px;
-        font-size: 19px;
     }
 
     .bottom-nav {
@@ -1605,17 +1519,12 @@ button {
 <p>Everything you need for your JAMB preparation.</p>
 </div>
 <div class="quick-grid">
-<a class="quick-link jamb-cbt-card" href="subject.html">
-<div class="quick-icon">📝</div>
+<a class="quick-link" href="exams.html">
+<div class="quick-icon">🌐</div>
 <div class="quick-link-content">
-<div class="quick-link-title">ExamPilot CBT</div>
-<div class="quick-link-description">
-                        Practice ExamPilot CBT examinations and improve your score.
-                    </div>
-<div class="cbt-action">
-<span>Start Practice</span>
-<span>→</span>
-</div>
+<div class="quick-link-title">Multi-Exam</div>
+<div class="quick-link-description">Explore JAMB, WAEC, NECO &amp; NABTEB</div>
+<span class="quick-arrow">→</span>
 </div>
 </a>
 <a class="quick-link mock-quick-link" href="mock-exam.html">

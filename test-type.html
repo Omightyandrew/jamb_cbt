@@ -341,6 +341,16 @@
                 )
             ) || [];
 
+        const requestedSubject = new URLSearchParams(window.location.search)
+            .get("subject");
+        if (requestedSubject && requestedSubject.trim()) {
+            selectedSubjects = [requestedSubject.trim()];
+            localStorage.setItem(
+                "selectedSubjects",
+                JSON.stringify(selectedSubjects)
+            );
+        }
+
 
         // ========================================
         // CHECK SUBJECT SELECTION
@@ -390,7 +400,7 @@
                 subjectSelectionRules =
                     await window.resolveCbtSubjectSelectionRules(
                         supabaseClient,
-                        "JAMB",
+                        window.getSelectedExamCode(),
                         "practice"
                     );
             } catch (error) {

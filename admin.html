@@ -371,6 +371,7 @@ main{margin-left:245px;width:calc(100% - 245px)}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 </head>
 
 <body>
@@ -1328,6 +1329,7 @@ const SUPABASE_QUESTION_COMPAT_VIEW = "questions";
 
 const SUPABASE_QUESTION_COLUMNS = [
     "id",
+    "exam_id",
     "Subject",
     "Question",
     "Option_a",
@@ -1352,6 +1354,7 @@ function buildQuestionTableUrl(pathSuffix = "") {
 
 function buildCanonicalQuestionPayload(data = {}) {
     return {
+        exam_id: data.exam_id ?? null,
         Subject: String(data.Subject ?? data.subject ?? "").trim(),
         Question: String(data.Question ?? data.question ?? "").trim(),
         Option_a: String(data.Option_a ?? data.option_a ?? "").trim(),
@@ -1982,23 +1985,37 @@ async function saveQuestion(){
             : "Saving...";
 
 
-    const questionData =
-        buildCanonicalQuestionPayload({
-            Subject: subject,
-            test_type: testType,
-            Question: question,
-            Option_a: optionA,
-            Option_b: optionB,
-            Option_c: optionC,
-            Option_d: optionD,
-            Correct_Answer: correctAnswer
-        });
-
-
     try{
 
         const isEdit =
             editingQuestionId !== null;
+
+        const existingQuestion = isEdit
+            ? allQuestions.find(item => String(item.id) === String(editingQuestionId))
+            : null;
+        const examId = isEdit
+            ? existingQuestion?.exam_id
+            : await window.resolveExamId(
+                initAdminSupabase(),
+                window.getSelectedExamCode()
+            );
+
+        if (!examId) {
+            throw new Error("Could not determine the question's exam identity.");
+        }
+
+        const questionData =
+            buildCanonicalQuestionPayload({
+                exam_id: examId,
+                Subject: subject,
+                test_type: testType,
+                Question: question,
+                Option_a: optionA,
+                Option_b: optionB,
+                Option_c: optionC,
+                Option_d: optionD,
+                Correct_Answer: correctAnswer
+            });
 
         const url =
             isEdit

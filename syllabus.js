@@ -68,7 +68,10 @@
   };
 
   let syllabus = {};
-  const stateKey = 'jambSyllabusProgress';
+  const selectedExamCode = window.getSelectedExamCode();
+  const stateKey = selectedExamCode === 'JAMB'
+    ? 'jambSyllabusProgress'
+    : `examPilotSyllabusProgress:${selectedExamCode}`;
   const grid = document.getElementById('syllabusSubjects');
   const detail = document.getElementById('syllabusDetail');
   const search = document.getElementById('syllabusSearch');
@@ -235,25 +238,52 @@
 
   async function loadSyllabusFromSupabase() {
     if (!supabaseClient) throw new Error('Supabase client is unavailable.');
-    const [subjectsResult, sectionsResult, topicsResult] = await Promise.all([
-      supabaseClient.from('syllabus_subjects').select('id,name,display_name,subtitle,icon,overview,display_order').eq('is_active', true).order('display_order', { ascending: true }),
-      supabaseClient.from('syllabus_sections').select('id,subject_id,title,description,display_order').eq('is_active', true).order('display_order', { ascending: true }),
-      supabaseClient.from('syllabus_topics').select('id,section_id,title,description,display_order').eq('is_active', true).order('display_order', { ascending: true })
-    ]);
-    const failed = [subjectsResult, sectionsResult, topicsResult].find(result => result.error);
-    if (failed) throw failed.error;
+    const examId = await window.resolveExamId(supabaseClient, selectedExamCode);
+    const subjectsResult = await supabaseClient
+      .from('syllabus_subjects')
+      .select('id,name,display_name,subtitle,icon,overview,display_order')
+      .eq('exam_id', examId)
+      .eq('is_active', true)
+      .order('display_order', { ascending: true });
+    if (subjectsResult.error) throw subjectsResult.error;
+
+    const subjectIds = (subjectsResult.data || []).map(subject => subject.id);
+    let sections = [];
+    let topics = [];
+    if (subjectIds.length) {
+      const sectionsResult = await supabaseClient
+        .from('syllabus_sections')
+        .select('id,subject_id,title,description,display_order')
+        .in('subject_id', subjectIds)
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+      if (sectionsResult.error) throw sectionsResult.error;
+      sections = sectionsResult.data || [];
+
+      const sectionIds = sections.map(section => section.id);
+      if (sectionIds.length) {
+        const topicsResult = await supabaseClient
+          .from('syllabus_topics')
+          .select('id,section_id,title,description,display_order')
+          .in('section_id', sectionIds)
+          .eq('is_active', true)
+          .order('display_order', { ascending: true });
+        if (topicsResult.error) throw topicsResult.error;
+        topics = topicsResult.data || [];
+      }
+    }
 
     const sectionsBySubject = new Map();
-    sectionsResult.data.forEach(section => {
+    sections.forEach(section => {
       if (!sectionsBySubject.has(section.subject_id)) sectionsBySubject.set(section.subject_id, []);
       sectionsBySubject.get(section.subject_id).push({ ...section, topics: [] });
     });
     const sectionsById = new Map();
     sectionsBySubject.forEach(sections => sections.forEach(section => sectionsById.set(section.id, section)));
-    topicsResult.data.forEach(topic => sectionsById.get(topic.section_id)?.topics.push(topic));
+    topics.forEach(topic => sectionsById.get(topic.section_id)?.topics.push(topic));
 
     syllabus = {};
-    subjectsResult.data.forEach(subject => {
+    (subjectsResult.data || []).forEach(subject => {
       const key = String(subject.name || subject.display_name || subject.id);
       syllabus[key] = {
         displayName: String(subject.display_name || subject.name || 'Subject'),

@@ -35,96 +35,98 @@
             Selected: 0
         </p>
 
-        <label>
-            <input type="checkbox" value="English">
-            English Language
-        </label>
+        <div id="subjectChoices">
+            <label>
+                <input type="checkbox" value="English">
+                English Language
+            </label>
 
-        <br><br>
+            <br><br>
 
-        <label>
-            <input type="checkbox" value="Mathematics">
-            Mathematics
-        </label>
+            <label>
+                <input type="checkbox" value="Mathematics">
+                Mathematics
+            </label>
 
-        <br><br>
+            <br><br>
 
-        <label>
-            <input type="checkbox" value="Physics">
-            Physics
-        </label>
+            <label>
+                <input type="checkbox" value="Physics">
+                Physics
+            </label>
 
-        <br><br>
+            <br><br>
 
-        <label>
-            <input type="checkbox" value="Chemistry">
-            Chemistry
-        </label>
+            <label>
+                <input type="checkbox" value="Chemistry">
+                Chemistry
+            </label>
 
-        <br><br>
+            <br><br>
 
-        <label>
-            <input type="checkbox" value="Biology">
-            Biology
-        </label>
+            <label>
+                <input type="checkbox" value="Biology">
+                Biology
+            </label>
 
-        <br><br>
+            <br><br>
 
-        <label>
-            <input type="checkbox" value="Government">
-            Government
-        </label>
+            <label>
+                <input type="checkbox" value="Government">
+                Government
+            </label>
 
-        <br><br>
+            <br><br>
 
-        <label>
-            <input type="checkbox" value="Economics">
-            Economics
-        </label>
+            <label>
+                <input type="checkbox" value="Economics">
+                Economics
+            </label>
 
-        <br><br>
+            <br><br>
 
-        <label>
-            <input type="checkbox" value="Literature">
-            Literature
-        </label>
+            <label>
+                <input type="checkbox" value="Literature">
+                Literature
+            </label>
 
-        <label>
-            <input type="checkbox" value="CRS">
-            Christian Religious Studies (CRS)
-        </label>
+            <label>
+                <input type="checkbox" value="CRS">
+                Christian Religious Studies (CRS)
+            </label>
 
-        <br><br>
+            <br><br>
 
-        <label>
-            <input type="checkbox" value="History">
-            History
-        </label>
+            <label>
+                <input type="checkbox" value="History">
+                History
+            </label>
 
-        <br><br>
+            <br><br>
 
-        <label>
-            <input type="checkbox" value="Geography">
-            Geography
-        </label>
+            <label>
+                <input type="checkbox" value="Geography">
+                Geography
+            </label>
 
-        <br><br>
+            <br><br>
 
-        <label>
-            <input type="checkbox" value="Commerce">
-            Commerce
-        </label>
+            <label>
+                <input type="checkbox" value="Commerce">
+                Commerce
+            </label>
 
-        <br><br>
+            <br><br>
 
-        <label>
-            <input type="checkbox" value="Accounting">
-            Accounting
-        </label>
+            <label>
+                <input type="checkbox" value="Accounting">
+                Accounting
+            </label>
 
-        <br><br>
+            <br><br>
 
-        <br><br>
+            <br><br>
+        </div>
 
         <button onclick="startTest()">
             Start Test
@@ -443,61 +445,39 @@
         // SUBJECT SELECTION
         // ========================================
 
-        const checkboxes =
-            document.querySelectorAll(
-                'input[type="checkbox"]'
-            );
-
-
+        const subjectChoices = document.getElementById("subjectChoices");
         const count =
             document.getElementById(
                 "count"
             );
 
-
-        checkboxes.forEach(
-            function (checkbox) {
-
-                checkbox.addEventListener(
-                    "change",
-                    function () {
-
-                        let selected =
-                            document.querySelectorAll(
-                                'input[type="checkbox"]:checked'
-                            );
-
-
-                        if (subjectSelectionRules &&
-                            selected.length > subjectSelectionRules.maximumSubjects) {
-
-                            checkbox.checked =
-                                false;
-
-
-                            alert(
-                                getSubjectLimitMessage()
-                            );
-
-                        }
-
-
-                        count.textContent =
-                            "Selected: " +
-                            document.querySelectorAll(
-                                'input[type="checkbox"]:checked'
-                            ).length +
-                            " / " +
-                            getSubjectCountLabel();
-
-                    }
-                );
-
-            }
-        );
-
-
         let subjectSelectionRules = null;
+        const selectedExamCode = window.getSelectedExamCode();
+        if (selectedExamCode !== "JAMB") {
+            subjectChoices.hidden = true;
+        }
+
+        subjectChoices.addEventListener("change", function (event) {
+            const checkbox = event.target;
+            if (!checkbox || checkbox.type !== "checkbox") return;
+
+            const selected = subjectChoices.querySelectorAll(
+                'input[type="checkbox"]:checked'
+            );
+            if (subjectSelectionRules &&
+                selected.length > subjectSelectionRules.maximumSubjects) {
+                checkbox.checked = false;
+                alert(getSubjectLimitMessage());
+            }
+
+            count.textContent =
+                "Selected: " +
+                subjectChoices.querySelectorAll(
+                    'input[type="checkbox"]:checked'
+                ).length +
+                " / " +
+                getSubjectCountLabel();
+        });
 
         function getSubjectCountLabel() {
             if (!subjectSelectionRules) return "configured limit";
@@ -526,15 +506,67 @@
             subjectSelectionRules =
                 await window.resolveCbtSubjectSelectionRules(
                     supabaseClient,
-                    "JAMB",
+                    selectedExamCode,
                     "practice"
                 );
+
+            if (selectedExamCode !== "JAMB") {
+                const examId = await window.resolveExamId(
+                    supabaseClient,
+                    selectedExamCode
+                );
+                const { data, error } = await supabaseClient
+                    .from("syllabus_subjects")
+                    .select("exam_id,name,display_name,display_order")
+                    .eq("exam_id", examId)
+                    .eq("is_active", true)
+                    .order("display_order", { ascending: true });
+
+                if (error) throw error;
+                if (!Array.isArray(data) || data.length === 0 ||
+                    data.some((subject) => subject.exam_id !== examId || !subject.name)) {
+                    throw new Error(
+                        "No active syllabus subjects are available for " +
+                            selectedExamCode + "."
+                    );
+                }
+
+                subjectChoices.replaceChildren();
+                const requestedSubject = new URLSearchParams(window.location.search)
+                    .get("subject");
+                data.forEach(function (subject, index) {
+                    const label = document.createElement("label");
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.value = subject.name;
+                    checkbox.checked = subject.name === requestedSubject;
+                    label.appendChild(checkbox);
+                    label.appendChild(
+                        document.createTextNode(
+                            " " + String(subject.display_name || subject.name)
+                        )
+                    );
+                    subjectChoices.appendChild(label);
+                    if (index < data.length - 1) {
+                        subjectChoices.appendChild(document.createElement("br"));
+                        subjectChoices.appendChild(document.createElement("br"));
+                    }
+                });
+                subjectChoices.hidden = false;
+            }
+
             document.getElementById("subjectHeading").textContent =
                 subjectSelectionRules.minimumSubjects === subjectSelectionRules.maximumSubjects
                     ? "Select " + subjectSelectionRules.requiredSubjectCount + " Subjects"
                     : "Select " + subjectSelectionRules.minimumSubjects +
                         "-" + subjectSelectionRules.maximumSubjects + " Subjects";
-            count.textContent = "Selected: 0 / " + getSubjectCountLabel();
+            count.textContent =
+                "Selected: " +
+                subjectChoices.querySelectorAll(
+                    'input[type="checkbox"]:checked'
+                ).length +
+                " / " +
+                getSubjectCountLabel();
         }
 
         // ========================================
