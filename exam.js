@@ -696,7 +696,10 @@ function getQuestionDatasetVersion(questionSet) {
 }
 
 async function initializePracticeSessionContext() {
-    if (testType !== "practice") {
+    if (
+        testType !== "practice" ||
+        window.isV1JambPractice(selectedExamCode, testType)
+    ) {
         timeLeft = 30 * 60;
         return;
     }
@@ -1554,7 +1557,11 @@ async function startCBT() {
     const allowed = await checkStudentAccess();
     if (!allowed) return;
 
-    if (testType !== "practice" && selectedSubjects.length !== 4) {
+    if (
+        (testType !== "practice" ||
+            window.isV1JambPractice(selectedExamCode, testType)) &&
+        selectedSubjects.length !== 4
+    ) {
         document.body.innerHTML = `
             <div class="access-page">
                 <div class="access-card">
@@ -1606,7 +1613,9 @@ async function startCBT() {
         return;
     }
 
-    createPracticeAttemptSnapshot();
+    if (sessionContext) {
+        createPracticeAttemptSnapshot();
+    }
     showQuestion();
     startTimer();
 }

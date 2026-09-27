@@ -323,6 +323,11 @@ window.resolveCbtSessionContext = async function (
     );
 };
 
+window.isV1JambPractice = function (examCode, testType) {
+    return String(examCode || "").trim().toUpperCase() === "JAMB" &&
+        String(testType || "").trim().toLowerCase() === "practice";
+};
+
 window.resolveCbtSubjectSelectionRules = async function (
     client,
     examCode,
@@ -330,6 +335,15 @@ window.resolveCbtSubjectSelectionRules = async function (
 ) {
     const code = cbtRequiredString(examCode, "examCode").toUpperCase();
     const normalizedTestType = cbtRequiredString(testType, "testType").toLowerCase();
+    if (window.isV1JambPractice(code, normalizedTestType)) {
+        return Object.freeze({
+            testType: normalizedTestType,
+            requiredSubjectCount: 4,
+            minimumSubjects: 4,
+            maximumSubjects: 4
+        });
+    }
+
     let exam;
     let configuration;
     const getCachedConfiguration = async function () {
