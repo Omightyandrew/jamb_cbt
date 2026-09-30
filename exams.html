@@ -194,9 +194,9 @@
                     <span class="exam-option-name">JAMB</span>
                     <span class="exam-option-status">Available</span>
                 </button>
-                <button class="exam-option" data-exam-code="WAEC" disabled type="button">
+                <button aria-pressed="false" class="exam-option" data-available="true" data-exam-code="WAEC" id="waecExamOption" type="button">
                     <span class="exam-option-name">WAEC</span>
-                    <span class="exam-option-status">Coming Soon</span>
+                    <span class="exam-option-status">Available</span>
                 </button>
                 <button class="exam-option" data-exam-code="NECO" disabled type="button">
                     <span class="exam-option-name">NECO</span>
@@ -215,31 +215,35 @@
             window.SUPABASE_URL,
             window.SUPABASE_PUBLISHABLE_KEY
         );
-        const jambExamOption = document.getElementById("jambExamOption");
+        const examOptionButtons = document.querySelectorAll(".exam-option[data-available='true']");
         const examSelectionStatus = document.getElementById("examSelectionStatus");
 
         function updateSelectedExamStatus(message) {
             const selectedExamCode = window.getSelectedExamCode();
-            jambExamOption.setAttribute("aria-pressed", String(selectedExamCode === "JAMB"));
+            examOptionButtons.forEach((button) => {
+                const code = button.dataset.examCode;
+                button.setAttribute("aria-pressed", String(selectedExamCode === code));
+            });
             examSelectionStatus.textContent = message ||
-                (selectedExamCode === "JAMB"
-                    ? "JAMB is your selected exam."
-                    : "JAMB is available. Select it to make it your active exam.");
+                `${selectedExamCode} is your selected exam.`;
         }
 
-        jambExamOption.addEventListener("click", async () => {
-            jambExamOption.disabled = true;
-            examSelectionStatus.textContent = "Confirming JAMB availability...";
-            try {
-                await window.resolveExamId(supabaseClient, "JAMB");
-                window.setSelectedExamCode("JAMB");
-                window.location.href = "subject.html";
-            } catch (error) {
-                console.error("Could not confirm JAMB availability:", error);
-                updateSelectedExamStatus("JAMB could not be confirmed as available. Please try again.");
-            } finally {
-                jambExamOption.disabled = false;
-            }
+        examOptionButtons.forEach((button) => {
+            button.addEventListener("click", async () => {
+                const code = button.dataset.examCode;
+                button.disabled = true;
+                examSelectionStatus.textContent = `Confirming ${code} availability...`;
+                try {
+                    await window.resolveExamId(supabaseClient, code);
+                    window.setSelectedExamCode(code);
+                    window.location.href = "subject.html";
+                } catch (error) {
+                    console.error(`Could not confirm ${code} availability:`, error);
+                    updateSelectedExamStatus(`${code} could not be confirmed as available. Please try again.`);
+                } finally {
+                    button.disabled = false;
+                }
+            });
         });
 
         updateSelectedExamStatus();

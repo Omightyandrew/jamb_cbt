@@ -25,6 +25,11 @@
 
   let bank = {};
   let subjects = [];
+  let subjectRules = {
+    requiredSubjectCount: 4,
+    minimumSubjects: 4,
+    maximumSubjects: 4
+  };
 
   let selected = JSON.parse(localStorage.getItem('pastSelectedSubjects') || '[]')
     .filter(subject => subjects.includes(subject));
@@ -140,6 +145,28 @@
     }
   }
 
+  async function resolveSubjectRules() {
+    const client = typeof window !== 'undefined' && window.supabaseClient
+      ? window.supabaseClient
+      : (typeof supabaseClient !== 'undefined' ? supabaseClient : null);
+    const examCode = typeof window.getSelectedExamCode === 'function'
+      ? window.getSelectedExamCode()
+      : 'JAMB';
+
+    if (typeof window.resolveCbtSubjectSelectionRules === 'function' && client) {
+      return await window.resolveCbtSubjectSelectionRules(
+        client,
+        examCode,
+        'past'
+      );
+    }
+    return {
+      requiredSubjectCount: 4,
+      minimumSubjects: 4,
+      maximumSubjects: 4
+    };
+  }
+
   function totalQuestions() {
     return subjects.reduce((total, subject) => total + getFilteredPastQuestions(subject).length, 0);
   }
@@ -159,7 +186,7 @@
     grid.innerHTML = filtered.map(subject => {
       const count = getFilteredPastQuestions(subject).length;
       const isSelected = selected.includes(subject);
-      const disabled = count === 0 || (!isSelected && selected.length >= 4);
+      const disabled = count === 0 || (!isSelected && selected.length >= (subjectRules?.maximumSubjects ?? 4));
       const availability = count > 0
         ? 'Available for selection'
         : 'No verified past questions added yet';
@@ -200,29 +227,41 @@
     const selectedQuestionTotal = selected.reduce((total, subject) => total + expectedQuestions(subject), 0);
     const selectedAvailableTotal = selected.reduce((total, subject) => total + getFilteredPastQuestions(subject).length, 0);
 
-    if (selected.length === 4 && unavailableSelected.length === 0) {
+    const min = subjectRules?.minimumSubjects ?? 4;
+    const max = subjectRules?.maximumSubjects ?? 4;
+    const required = subjectRules?.requiredSubjectCount ?? 4;
+    const isCountValid = selected.length >= min && selected.length <= max && selected.length === required;
+
+    if (isCountValid && unavailableSelected.length === 0) {
       message.textContent = '✓ Ready. Your CBT is ready to start.';
       message.className = 'selection-message ready';
-    } else if (selected.length < 4) {
-      const remaining = 4 - selected.length;
+    } else if (selected.length < min) {
+      const remaining = min - selected.length;
       message.textContent = `Select ${remaining} more subject${remaining === 1 ? '' : 's'} with available past questions to continue.`;
       message.className = 'selection-message';
+    } else if (selected.length > max || selected.length !== required) {
+      const limitText = min === max
+        ? `exactly ${required}`
+        : `between ${min} and ${max}`;
+      message.textContent = `Please select ${limitText} subjects.`;
+      message.className = 'selection-message warning';
     } else {
       message.textContent = 'Some selected subjects do not have verified past questions yet. Remove them before starting.';
       message.className = 'selection-message warning';
     }
 
-    startBtn.disabled = selected.length !== 4 || unavailableSelected.length > 0;
+    startBtn.disabled = !isCountValid || unavailableSelected.length > 0;
   }
 
   function toggle(subject) {
     if (!subjects.includes(subject) || getFilteredPastQuestions(subject).length === 0) return;
+    const max = subjectRules?.maximumSubjects ?? 4;
     if (selected.includes(subject)) {
       selected = selected.filter(item => item !== subject);
-    } else if (selected.length < 4) {
+    } else if (selected.length < max) {
       selected.push(subject);
     } else {
-      message.textContent = 'You can select a maximum of 4 subjects.';
+      message.textContent = `You can select a maximum of ${max} subjects.`;
       message.className = 'selection-message warning';
       return;
     }
@@ -262,7 +301,17 @@
   });
 
   startBtn.addEventListener('click', () => {
-    if (selected.length !== 4) return;
+    const min = subjectRules?.minimumSubjects ?? 4;
+    const max = subjectRules?.maximumSubjects ?? 4;
+    const required = subjectRules?.requiredSubjectCount ?? 4;
+
+    if (
+      selected.length < min ||
+      selected.length > max ||
+      selected.length !== required
+    ) {
+      return;
+    }
     if (selected.some(subject => getFilteredPastQuestions(subject).length === 0)) return;
 
     localStorage.setItem('selectedSubjects', JSON.stringify(selected));
@@ -275,6 +324,11 @@
   });
 
   try {
+    try {
+      subjectRules = await resolveSubjectRules();
+    } catch (rulesError) {
+      console.warn('Could not resolve past subject-selection rules:', rulesError);
+    }
     await loadPastQuestions();
     const examCode = typeof window.getSelectedExamCode === 'function'
       ? window.getSelectedExamCode()
@@ -292,7 +346,12 @@
     }
     populateYearSessionFilters();
     const availableSubjectCount = usableSubjects().length;
-    summary.textContent = 'Select four subjects to continue.';
+    const required = subjectRules?.requiredSubjectCount ?? 4;
+    const min = subjectRules?.minimumSubjects ?? 4;
+    const max = subjectRules?.maximumSubjects ?? 4;
+    summary.textContent = min === max
+      ? `Select ${required} subject${required === 1 ? '' : 's'} to continue.`
+      : `Select between ${min} and ${max} subjects to continue.`;
     renderSubjects();
     renderSelected();
   } catch (error) {

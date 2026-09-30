@@ -152,6 +152,40 @@ button {
     line-height: 1.35;
 }
 
+.active-exam-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 3px 10px;
+    background: rgba(0, 135, 81, 0.08);
+    border: 1px solid rgba(0, 135, 81, 0.18);
+    border-radius: 999px;
+    font-size: 12px;
+}
+
+.active-exam-pill {
+    color: var(--jamb-deep);
+    font-weight: 600;
+}
+
+.active-exam-pill strong {
+    color: var(--jamb-green);
+    font-weight: 800;
+}
+
+.change-exam-link {
+    color: var(--jamb-green);
+    text-decoration: underline;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.change-exam-link:hover {
+    color: var(--jamb-deep);
+}
+
 .header-actions {
     display: flex;
     align-items: center;
@@ -450,36 +484,95 @@ button {
 }
 
 .quick-link {
+    --quick-accent: #176c4c;
+    --quick-icon-background: #eef6f0;
+    --quick-accent-border: #d9e8dd;
+    --quick-card-wash: #fbfdfb;
     position: relative;
     min-height: 150px;
     padding: 15px;
-    border: 1px solid rgba(225,234,229,.95);
+    border: 1px solid rgba(211,225,216,.88);
     border-radius: 18px;
-    background: #fff;
+    background: linear-gradient(155deg, #ffffff 0%, var(--quick-card-wash) 100%);
     color: var(--text);
     text-decoration: none;
     display: flex;
     flex-direction: column;
-    box-shadow: var(--shadow);
+    box-shadow: 0 1px 2px rgba(18,48,37,.035), 0 6px 18px rgba(18,48,37,.055);
     overflow: hidden;
-    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.quick-link[href="exams.html"] {
+    --quick-accent: #14796c;
+    --quick-icon-background: #eff7f5;
+    --quick-accent-border: #d9eae5;
+}
+
+.quick-link[href="mock-exam.html"] {
+    --quick-accent: #637848;
+    --quick-icon-background: #f3f6ee;
+    --quick-accent-border: #e3eadb;
+}
+
+.quick-link[data-ai-tutor-open] {
+    --quick-accent: #4e7480;
+    --quick-icon-background: #f0f6f7;
+    --quick-accent-border: #dce9ec;
+}
+
+.quick-link[href="past-questions.html"] {
+    --quick-accent: #337550;
+    --quick-icon-background: #edf6f0;
+    --quick-accent-border: #d9e8dd;
+}
+
+.quick-link[href="answers.html"] {
+    --quick-accent: #58718a;
+    --quick-icon-background: #f0f4f8;
+    --quick-accent-border: #dfe8f0;
+}
+
+.quick-link[href="subjects.html"] {
+    --quick-accent: #477465;
+    --quick-icon-background: #eef6f3;
+    --quick-accent-border: #dcebe5;
+}
+
+.quick-link[href="syllabus.html"] {
+    --quick-accent: #4c7451;
+    --quick-icon-background: #f0f6ef;
+    --quick-accent-border: #dfeadd;
+}
+
+.quick-link[href="brochure.html"] {
+    --quick-accent: #667247;
+    --quick-icon-background: #f3f5ed;
+    --quick-accent-border: #e6eadc;
 }
 
 .quick-link.locked {
-    border-style: dashed;
-    border-color: rgba(0, 73, 45, 0.18);
-    background: linear-gradient(180deg, #fafcfb 0%, #f4f7f5 100%);
+    border-style: solid;
+    border-color: rgba(0, 73, 45, .16);
+    background: linear-gradient(155deg, #fbfdfb 0%, #f2f7f3 100%);
 }
 
-.quick-link.locked:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
+@media (hover: hover) and (pointer: fine) {
+    .quick-link:not(.locked):hover {
+        transform: translateY(-3px);
+        box-shadow: 0 2px 5px rgba(18,48,37,.04), 0 11px 24px rgba(18,48,37,.09);
+        border-color: var(--quick-accent-border);
+    }
+
+    .quick-link.locked:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 1px 2px rgba(18,48,37,.035), 0 6px 18px rgba(18,48,37,.055);
+    }
 }
 
-.quick-link:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 16px 35px rgba(0,76,47,.12);
-    border-color: #cfe2d7;
+.quick-link:focus-visible {
+    outline: 3px solid rgba(0, 135, 81, .38);
+    outline-offset: 3px;
 }
 
 .quick-icon {
@@ -487,12 +580,12 @@ button {
     height: 48px;
     margin: 0 auto 10px;
     border-radius: 50%;
-    background: var(--jamb-light);
+    background: var(--quick-icon-background);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 24px;
-    box-shadow: inset 0 0 0 1px rgba(0,135,81,.025);
+    box-shadow: inset 0 0 0 1px var(--quick-accent-border);
 }
 
 .quick-link-content {
@@ -506,13 +599,13 @@ button {
     font-size: 16px;
     line-height: 1.2;
     font-weight: 800;
-    letter-spacing: -.4px;
+    letter-spacing: 0;
 }
 
 .quick-link-description {
     margin-top: 5px;
     max-width: 260px;
-    color: #667780;
+    color: #5c6d65;
     font-size: 12px;
     line-height: 1.35;
 }
@@ -523,14 +616,14 @@ button {
     height: 34px;
     margin-top: auto;
     border-radius: 50%;
-    background: var(--jamb-light);
-    color: var(--jamb-dark);
+    background: var(--quick-icon-background);
+    color: var(--quick-accent);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 13px;
     line-height: 1;
-    box-shadow: 0 4px 12px rgba(0,74,45,.08);
+    box-shadow: 0 2px 8px rgba(18,48,37,.055);
 }
 
 .quick-card-lock-badge {
@@ -540,12 +633,13 @@ button {
     width: fit-content;
     margin-top: 10px;
     padding: 5px 9px;
-    border-radius: 999px;
-    background: rgba(0, 73, 45, 0.08);
+    border: 1px solid rgba(0, 73, 45, .1);
+    border-radius: 8px;
+    background: rgba(0, 73, 45, .055);
     color: var(--jamb-deep);
     font-size: 10px;
     font-weight: 800;
-    letter-spacing: .06em;
+    letter-spacing: 0;
     text-transform: uppercase;
 }
 
@@ -554,8 +648,8 @@ button {
 }
 
 .quick-link.locked .quick-arrow {
-    background: rgba(0, 73, 45, 0.08);
-    color: var(--jamb-deep);
+    background: rgba(0, 73, 45, .055);
+    color: var(--quick-accent);
 }
 
 .bottom-nav {
@@ -901,7 +995,7 @@ button {
     .quick-link-title {
         font-size: 17px;
         line-height: 1.25;
-        letter-spacing: -.2px;
+        letter-spacing: 0;
         max-width: 100%;
         overflow-wrap: anywhere;
     }
@@ -1412,7 +1506,11 @@ button {
 <div class="welcome">
 <img class="ep-logo ep-logo--compact" src="assets/logo/logo-compact.svg" alt="ExamPilot">
 <h1 id="studentGreeting">Hello, Student 👋</h1>
-<p>Welcome back. Keep preparing for JAMB.</p>
+<p id="studentWelcomeSubtitle">Welcome back. Keep preparing for <span id="welcomeExamName">JAMB</span>.</p>
+<div class="active-exam-indicator" id="activeExamIndicator">
+    <span class="active-exam-pill">Active Exam: <strong id="activeExamName">JAMB</strong></span>
+    <a href="exams.html" class="change-exam-link" aria-label="Change active exam">Change</a>
+</div>
 </div>
 <div class="header-actions">
 <button aria-label="Notifications" class="header-button" id="notificationButton" onclick="openNotifications()" title="Notifications" type="button">
@@ -2434,6 +2532,19 @@ document.addEventListener("keydown", function(event) {
         }
     }
 });
+
+function updateDashboardActiveExam() {
+    const code = typeof window.getSelectedExamCode === "function"
+        ? window.getSelectedExamCode()
+        : "JAMB";
+    const nameEl = document.getElementById("activeExamName");
+    if (nameEl) nameEl.textContent = code;
+    const welcomeEl = document.getElementById("welcomeExamName");
+    if (welcomeEl) welcomeEl.textContent = code;
+}
+
+updateDashboardActiveExam();
+window.addEventListener("pageshow", updateDashboardActiveExam);
 
 loadDashboardStudent();
 maybeOpenUpgradeFromFeatureParameter();

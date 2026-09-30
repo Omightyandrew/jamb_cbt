@@ -20,6 +20,8 @@ function projectResult(raw, normalized){
     return {
         id:normalized.identity.legacyId ?? source.id,
         userId:normalized.identity.userId ?? source.userId,
+        examCode:normalized.exam?.examCode || source.examCode || 'JAMB',
+        examId:normalized.exam?.examId || source.examId || null,
         date:timing.legacyDate ?? source.date,
         subjects:normalized.subjects.length
             ? normalized.subjects.map(subject=>subject.name)
@@ -73,9 +75,10 @@ async function loadResults(){
                 :r.testType==='practice'
                     ?'Practice Test'
                     :'Unknown Test';
+            const examLabel = r.examCode || 'JAMB';
             return `<article class="result-card">
                 <div class="result-head"><div><h3>${escapeHtml(type)}</h3><div class="muted">${escapeHtml(date.toLocaleString())}</div></div><span class="badge">${Number(r.percentage)||0}%</span></div>
-                <div class="details"><span class="pill">Subjects: ${escapeHtml((r.subjects||[]).join(', '))}</span><span class="pill">Score: ${Number(r.score)||0}/${Number(r.total)||0}</span><span class="pill">Correct: ${Number(r.correct)||0}</span><span class="pill">Wrong: ${Number(r.wrong)||0}</span><span class="pill">Unanswered: ${Number(r.unanswered)||0}</span><span class="pill">Time: ${formatDuration(r.timeUsed)}</span></div>
+                <div class="details"><span class="pill exam-pill">${escapeHtml(examLabel)}</span><span class="pill">Subjects: ${escapeHtml((r.subjects||[]).join(', '))}</span><span class="pill">Score: ${Number(r.score)||0}/${Number(r.total)||0}</span><span class="pill">Correct: ${Number(r.correct)||0}</span><span class="pill">Wrong: ${Number(r.wrong)||0}</span><span class="pill">Unanswered: ${Number(r.unanswered)||0}</span><span class="pill">Time: ${formatDuration(r.timeUsed)}</span></div>
                 <div class="result-card-actions"><button class="back" onclick="location.href='result-details.html?id=${encodeURIComponent(r.id)}'">View Full Analysis</button></div>
             </article>`;
         }).join('');

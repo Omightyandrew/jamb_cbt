@@ -516,7 +516,7 @@ localStorage.removeItem("adminQuestions");
 // ========================================
 
 const QUESTION_BATCH_SIZE = 20;
-const NO_REPEAT_STORAGE_PREFIX = "jambCBTSeenQuestions_v1";
+const NO_REPEAT_STORAGE_PREFIX = "examPilotSeenQuestions_v1";
 
 function normalizeQuestionText(value) {
     return String(value || "")
@@ -544,9 +544,15 @@ function getQuestionFingerprint(question, subject, currentTestType) {
 
 function getNoRepeatStorageKey(subject, currentTestType) {
     const userId = currentUser?.id || "guest";
+    const examCode = String(
+        typeof window.getSelectedExamCode === "function"
+            ? window.getSelectedExamCode()
+            : "JAMB"
+    ).trim().toUpperCase() || "JAMB";
     return [
         NO_REPEAT_STORAGE_PREFIX,
         userId,
+        examCode,
         String(subject).toLowerCase(),
         currentTestType
     ].join("_");
@@ -1455,6 +1461,8 @@ window.finishTest = function() {
     const resultRecord = {
         id: Date.now(),
         userId: currentUser?.id || null,
+        examCode: selectedExamCode || (sessionContext?.exam?.code) || "JAMB",
+        examId: selectedExamId || (sessionContext?.exam?.id) || null,
         date: new Date().toISOString(),
         subjects: [...selectedSubjects],
         testType,
@@ -1557,17 +1565,36 @@ async function startCBT() {
     const allowed = await checkStudentAccess();
     if (!allowed) return;
 
+    let subjectRules;
+    try {
+        subjectRules = await window.resolveCbtSubjectSelectionRules(
+            supabaseClient,
+            window.getSelectedExamCode(),
+            testType
+        );
+    } catch (error) {
+        console.error("CBT subject-selection rules error:", error);
+        showQuestionLoadError(error);
+        return;
+    }
+
     if (
-        (testType !== "practice" ||
-            window.isV1JambPractice(selectedExamCode, testType)) &&
-        selectedSubjects.length !== 4
+        selectedSubjects.length < subjectRules.minimumSubjects ||
+        selectedSubjects.length > subjectRules.maximumSubjects ||
+        selectedSubjects.length !== subjectRules.requiredSubjectCount
     ) {
+        const required = subjectRules.requiredSubjectCount;
+        const min = subjectRules.minimumSubjects;
+        const max = subjectRules.maximumSubjects;
+        const message = min === max
+            ? `Please select exactly ${required} subjects before starting your CBT.`
+            : `Please select between ${min} and ${max} subjects before starting your CBT.`;
         document.body.innerHTML = `
             <div class="access-page">
                 <div class="access-card">
                     <div class="access-icon">📝</div>
-                    <h2>Select 4 subjects</h2>
-                    <p>Please select exactly 4 subjects before starting your CBT.</p>
+                    <h2>${min === max ? `Select ${required} subjects` : `Select ${min}–${max} subjects`}</h2>
+                    <p>${message}</p>
                     <button class="primary-action" onclick="location.href='subject.html'">
                         Select Subjects
                     </button>
