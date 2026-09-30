@@ -97,7 +97,7 @@
 
   async function ensurePremiumAccess() {
     if (typeof window.ensurePremiumFeatureAccess === 'function') {
-      return window.ensurePremiumFeatureAccess({ featureName: 'JAMB Syllabus', featureKey: 'syllabus' });
+      return window.ensurePremiumFeatureAccess({ featureName: `${selectedExamCode} Syllabus`, featureKey: 'syllabus' });
     }
     return Boolean(supabaseClient);
   }

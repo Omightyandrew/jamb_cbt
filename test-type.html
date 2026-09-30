@@ -502,13 +502,39 @@
 
             }
 
+            const currentExam = window.getSelectedExamCode();
+            if (currentExam !== "JAMB") {
+                alert("Past Questions are coming soon for " + currentExam + ". Please select Practice Test to practice verified questions.");
+                return;
+            }
+
+
+            let subjectSelectionRules;
+            try {
+                subjectSelectionRules =
+                    await window.resolveCbtSubjectSelectionRules(
+                        supabaseClient,
+                        window.getSelectedExamCode(),
+                        "past"
+                    );
+            } catch (error) {
+                alert(error.message);
+                return;
+            }
 
             if (
-                selectedSubjects.length !== 4
+                selectedSubjects.length < subjectSelectionRules.minimumSubjects ||
+                selectedSubjects.length > subjectSelectionRules.maximumSubjects ||
+                selectedSubjects.length !== subjectSelectionRules.requiredSubjectCount
             ) {
 
                 alert(
-                    "Please go back and select exactly 4 subjects."
+                    subjectSelectionRules.minimumSubjects === subjectSelectionRules.maximumSubjects
+                        ? "Please go back and select exactly " +
+                            subjectSelectionRules.requiredSubjectCount + " subjects."
+                        : "Please go back and select between " +
+                            subjectSelectionRules.minimumSubjects + " and " +
+                            subjectSelectionRules.maximumSubjects + " subjects."
                 );
 
 

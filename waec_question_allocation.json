@@ -1,0 +1,2301 @@
+{
+  "metadata": {
+    "title": "WAEC Question Bank Target Allocation",
+    "generated_at": "2026-09-30T17:13:18.629Z",
+    "target_grand_total": 5000,
+    "actual_grand_total": 5000,
+    "total_subjects": 13,
+    "total_sections": 62,
+    "total_topics": 287,
+    "total_topics_covered": 287,
+    "total_topics_zero": 0
+  },
+  "subjects": [
+    {
+      "name": "English",
+      "display_name": "English Language",
+      "display_order": 1,
+      "allocated_questions": 550,
+      "sections_count": 4,
+      "topics_count": 19,
+      "sections": [
+        {
+          "title": "Lexis and Structure",
+          "display_order": 1,
+          "allocated_questions": 203,
+          "topics": [
+            {
+              "title": "Vocabulary in Context",
+              "import_key": "waec-syllabus-english-lexis-and-structure-vocabulary-in-context",
+              "display_order": 1,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Synonyms, Antonyms, and Word Meanings",
+              "import_key": "waec-syllabus-english-lexis-and-structure-synonyms-antonyms-and-word-meanings",
+              "display_order": 2,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Idiomatic Expressions and Figurative Language",
+              "import_key": "waec-syllabus-english-lexis-and-structure-idiomatic-expressions-and-figurative-language",
+              "display_order": 3,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Nouns, Pronouns, and Determiners",
+              "import_key": "waec-syllabus-english-lexis-and-structure-nouns-pronouns-and-determiners",
+              "display_order": 4,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Verbs, Tense, Aspect, and Modals",
+              "import_key": "waec-syllabus-english-lexis-and-structure-verbs-tense-aspect-and-modals",
+              "display_order": 5,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Prepositions and Phrasal Verbs",
+              "import_key": "waec-syllabus-english-lexis-and-structure-prepositions-and-phrasal-verbs",
+              "display_order": 6,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Clauses, Sentence Patterns, and Punctuation",
+              "import_key": "waec-syllabus-english-lexis-and-structure-clauses-sentence-patterns-and-punctuation",
+              "display_order": 7,
+              "allocated_questions": 29
+            }
+          ]
+        },
+        {
+          "title": "Comprehension and Summary",
+          "display_order": 2,
+          "allocated_questions": 116,
+          "topics": [
+            {
+              "title": "Factual Understanding and Inference",
+              "import_key": "waec-syllabus-english-comprehension-and-summary-factual-understanding-and-inference",
+              "display_order": 1,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Tone, Style, and Writer Purpose",
+              "import_key": "waec-syllabus-english-comprehension-and-summary-tone-style-and-writer-purpose",
+              "display_order": 2,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Identification of Topic Sentences and Core Ideas",
+              "import_key": "waec-syllabus-english-comprehension-and-summary-identification-of-topic-sentences-and-core-ideas",
+              "display_order": 3,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Summary Writing and Paraphrasing",
+              "import_key": "waec-syllabus-english-comprehension-and-summary-summary-writing-and-paraphrasing",
+              "display_order": 4,
+              "allocated_questions": 29
+            }
+          ]
+        },
+        {
+          "title": "Continuous Writing",
+          "display_order": 3,
+          "allocated_questions": 116,
+          "topics": [
+            {
+              "title": "Narrative and Descriptive Composition",
+              "import_key": "waec-syllabus-english-continuous-writing-narrative-and-descriptive-composition",
+              "display_order": 1,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Expository and Argumentative Essays",
+              "import_key": "waec-syllabus-english-continuous-writing-expository-and-argumentative-essays",
+              "display_order": 2,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Formal and Informal Letter Writing",
+              "import_key": "waec-syllabus-english-continuous-writing-formal-and-informal-letter-writing",
+              "display_order": 3,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Speeches, Articles, and Reports",
+              "import_key": "waec-syllabus-english-continuous-writing-speeches-articles-and-reports",
+              "display_order": 4,
+              "allocated_questions": 29
+            }
+          ]
+        },
+        {
+          "title": "Oral English",
+          "display_order": 4,
+          "allocated_questions": 115,
+          "topics": [
+            {
+              "title": "Pure Vowels and Diphthongs",
+              "import_key": "waec-syllabus-english-oral-english-pure-vowels-and-diphthongs",
+              "display_order": 1,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Consonants and Consonant Clusters",
+              "import_key": "waec-syllabus-english-oral-english-consonants-and-consonant-clusters",
+              "display_order": 2,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Syllable Structure and Word Stress",
+              "import_key": "waec-syllabus-english-oral-english-syllable-structure-and-word-stress",
+              "display_order": 3,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Emphatic Stress and Intonation Patterns",
+              "import_key": "waec-syllabus-english-oral-english-emphatic-stress-and-intonation-patterns",
+              "display_order": 4,
+              "allocated_questions": 28
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mathematics",
+      "display_name": "General Mathematics",
+      "display_order": 2,
+      "allocated_questions": 600,
+      "sections_count": 7,
+      "topics_count": 34,
+      "sections": [
+        {
+          "title": "Number and Numeration",
+          "display_order": 1,
+          "allocated_questions": 108,
+          "topics": [
+            {
+              "title": "Number Bases and Operations",
+              "import_key": "waec-syllabus-mathematics-number-and-numeration-number-bases-and-operations",
+              "display_order": 1,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Modular Arithmetic",
+              "import_key": "waec-syllabus-mathematics-number-and-numeration-modular-arithmetic",
+              "display_order": 2,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Fractions, Decimals, Approximations, and Percentages",
+              "import_key": "waec-syllabus-mathematics-number-and-numeration-fractions-decimals-approximations-and-percentages",
+              "display_order": 3,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Indices, Logarithms, and Surds",
+              "import_key": "waec-syllabus-mathematics-number-and-numeration-indices-logarithms-and-surds",
+              "display_order": 4,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Sets, Subsets, and Venn Diagrams",
+              "import_key": "waec-syllabus-mathematics-number-and-numeration-sets-subsets-and-venn-diagrams",
+              "display_order": 5,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Commercial Mathematics, Ratio, and Financial Rates",
+              "import_key": "waec-syllabus-mathematics-number-and-numeration-commercial-mathematics-ratio-and-financial-rates",
+              "display_order": 6,
+              "allocated_questions": 18
+            }
+          ]
+        },
+        {
+          "title": "Algebraic Processes",
+          "display_order": 2,
+          "allocated_questions": 108,
+          "topics": [
+            {
+              "title": "Algebraic Simplification and Factorisation",
+              "import_key": "waec-syllabus-mathematics-algebraic-processes-algebraic-simplification-and-factorisation",
+              "display_order": 1,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Linear Equations and Inequalities",
+              "import_key": "waec-syllabus-mathematics-algebraic-processes-linear-equations-and-inequalities",
+              "display_order": 2,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Quadratic Equations and Functions",
+              "import_key": "waec-syllabus-mathematics-algebraic-processes-quadratic-equations-and-functions",
+              "display_order": 3,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Simultaneous Linear and Non-linear Equations",
+              "import_key": "waec-syllabus-mathematics-algebraic-processes-simultaneous-linear-and-non-linear-equations",
+              "display_order": 4,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Variation (Direct, Inverse, Joint, and Partial)",
+              "import_key": "waec-syllabus-mathematics-algebraic-processes-variation-direct-inverse-joint-and-partial",
+              "display_order": 5,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Sequences and Series (Arithmetic and Geometric Progressions)",
+              "import_key": "waec-syllabus-mathematics-algebraic-processes-sequences-and-series-arithmetic-and-geometric-progressions",
+              "display_order": 6,
+              "allocated_questions": 18
+            }
+          ]
+        },
+        {
+          "title": "Geometry, Mensuration, and Vectors",
+          "display_order": 3,
+          "allocated_questions": 126,
+          "topics": [
+            {
+              "title": "Angles, Triangles, and Polygons",
+              "import_key": "waec-syllabus-mathematics-geometry-and-mensuration-angles-triangles-and-polygons",
+              "display_order": 1,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Circles, Chords, and Circle Theorems",
+              "import_key": "waec-syllabus-mathematics-geometry-and-mensuration-circles-chords-and-circle-theorems",
+              "display_order": 2,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Perimeter and Area of Plane Figures",
+              "import_key": "waec-syllabus-mathematics-geometry-and-mensuration-perimeter-and-area-of-plane-figures",
+              "display_order": 3,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Surface Area and Volume of Solid Shapes",
+              "import_key": "waec-syllabus-mathematics-geometry-and-mensuration-surface-area-and-volume-of-solid-shapes",
+              "display_order": 4,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Geometric Constructions and Loci",
+              "import_key": "waec-syllabus-mathematics-geometry-and-mensuration-geometric-constructions-and-loci",
+              "display_order": 5,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Vectors in Two Dimensions (Magnitude, Direction, and Operations)",
+              "import_key": "waec-syllabus-mathematics-geometry-mensuration-and-vectors-vectors-in-two-dimensions",
+              "display_order": 6,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Cartesian Transformations (Reflection, Rotation, Translation, and Enlargement)",
+              "import_key": "waec-syllabus-mathematics-geometry-mensuration-and-vectors-cartesian-transformations",
+              "display_order": 7,
+              "allocated_questions": 18
+            }
+          ]
+        },
+        {
+          "title": "Trigonometry",
+          "display_order": 4,
+          "allocated_questions": 71,
+          "topics": [
+            {
+              "title": "Trigonometric Ratios and Special Angles",
+              "import_key": "waec-syllabus-mathematics-trigonometry-trigonometric-ratios-and-special-angles",
+              "display_order": 1,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Angles of Elevation and Depression",
+              "import_key": "waec-syllabus-mathematics-trigonometry-angles-of-elevation-and-depression",
+              "display_order": 2,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Bearings and Distances",
+              "import_key": "waec-syllabus-mathematics-trigonometry-bearings-and-distances",
+              "display_order": 3,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Sine Rule, Cosine Rule, and Area of Triangles",
+              "import_key": "waec-syllabus-mathematics-trigonometry-sine-rule-cosine-rule-and-area-of-triangles",
+              "display_order": 4,
+              "allocated_questions": 17
+            }
+          ]
+        },
+        {
+          "title": "Statistics and Probability",
+          "display_order": 5,
+          "allocated_questions": 68,
+          "topics": [
+            {
+              "title": "Frequency Distributions, Histograms, and Ogives",
+              "import_key": "waec-syllabus-mathematics-statistics-and-probability-frequency-distributions-histograms-and-ogives",
+              "display_order": 1,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Measures of Central Tendency (Mean, Median, Mode)",
+              "import_key": "waec-syllabus-mathematics-statistics-and-probability-measures-of-central-tendency-mean-median-mode",
+              "display_order": 2,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Measures of Dispersion (Range, Quartiles, Standard Deviation)",
+              "import_key": "waec-syllabus-mathematics-statistics-and-probability-measures-of-dispersion-range-quartiles-standard-deviation",
+              "display_order": 3,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Basic Probability and Compound Events",
+              "import_key": "waec-syllabus-mathematics-statistics-and-probability-basic-probability-and-compound-events",
+              "display_order": 4,
+              "allocated_questions": 17
+            }
+          ]
+        },
+        {
+          "title": "Matrices and Determinants",
+          "display_order": 6,
+          "allocated_questions": 68,
+          "topics": [
+            {
+              "title": "Matrix Operations, Addition, and Scalar Multiplication",
+              "import_key": "waec-syllabus-mathematics-matrices-and-determinants-matrix-operations-and-scalar-multiplication",
+              "display_order": 1,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Matrix Multiplication and Identity Matrices",
+              "import_key": "waec-syllabus-mathematics-matrices-and-determinants-matrix-multiplication-and-identity-matrices",
+              "display_order": 2,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Determinants and Multiplicative Inverses of 2x2 Matrices",
+              "import_key": "waec-syllabus-mathematics-matrices-and-determinants-determinants-and-inverses-of-2x2-matrices",
+              "display_order": 3,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Applications of Matrices to Systems of Linear Equations",
+              "import_key": "waec-syllabus-mathematics-matrices-and-determinants-applications-to-linear-systems",
+              "display_order": 4,
+              "allocated_questions": 17
+            }
+          ]
+        },
+        {
+          "title": "Introductory Calculus",
+          "display_order": 7,
+          "allocated_questions": 51,
+          "topics": [
+            {
+              "title": "Differentiation from First Principles and Standard Polynomial Rules",
+              "import_key": "waec-syllabus-mathematics-introductory-calculus-differentiation-rules",
+              "display_order": 1,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Tangents, Normals, and Maxima/Minima Turning Points",
+              "import_key": "waec-syllabus-mathematics-introductory-calculus-tangents-normals-and-turning-points",
+              "display_order": 2,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Integration of Algebraic Polynomials and Definite Area Evaluation",
+              "import_key": "waec-syllabus-mathematics-introductory-calculus-integration-and-area-evaluation",
+              "display_order": 3,
+              "allocated_questions": 17
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Civic Education",
+      "display_name": "Civic Education",
+      "display_order": 3,
+      "allocated_questions": 350,
+      "sections_count": 3,
+      "topics_count": 12,
+      "sections": [
+        {
+          "title": "Values, Youth, and Citizenship",
+          "display_order": 1,
+          "allocated_questions": 118,
+          "topics": [
+            {
+              "title": "Meaning and Sources of Civic Values",
+              "import_key": "waec-syllabus-civic-education-values-youth-and-citizenship-meaning-and-sources-of-civic-values",
+              "display_order": 1,
+              "allocated_questions": 30
+            },
+            {
+              "title": "Youth Empowerment and National Development",
+              "import_key": "waec-syllabus-civic-education-values-youth-and-citizenship-youth-empowerment-and-national-development",
+              "display_order": 2,
+              "allocated_questions": 30
+            },
+            {
+              "title": "Citizenship Rights, Duties, and Obligations",
+              "import_key": "waec-syllabus-civic-education-values-youth-and-citizenship-citizenship-rights-duties-and-obligations",
+              "display_order": 3,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Political Apathy and Citizen Participation",
+              "import_key": "waec-syllabus-civic-education-values-youth-and-citizenship-political-apathy-and-citizen-participation",
+              "display_order": 4,
+              "allocated_questions": 29
+            }
+          ]
+        },
+        {
+          "title": "Social Problems and Human Rights",
+          "display_order": 2,
+          "allocated_questions": 116,
+          "topics": [
+            {
+              "title": "Fundamental Human Rights and the UDHR",
+              "import_key": "waec-syllabus-civic-education-social-problems-and-human-rights-fundamental-human-rights-and-the-udhr",
+              "display_order": 1,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Human Trafficking and Exploitation",
+              "import_key": "waec-syllabus-civic-education-social-problems-and-human-rights-human-trafficking-and-exploitation",
+              "display_order": 2,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Cultism, Lawlessness, and Youth Deviance",
+              "import_key": "waec-syllabus-civic-education-social-problems-and-human-rights-cultism-lawlessness-and-youth-deviance",
+              "display_order": 3,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Drug Use, Abuse, and Illicit Trafficking",
+              "import_key": "waec-syllabus-civic-education-social-problems-and-human-rights-drug-use-abuse-and-illicit-trafficking",
+              "display_order": 4,
+              "allocated_questions": 29
+            }
+          ]
+        },
+        {
+          "title": "Democracy, Rule of Law, and Public Service",
+          "display_order": 3,
+          "allocated_questions": 116,
+          "topics": [
+            {
+              "title": "Representative Democracy and Constitutional Rule",
+              "import_key": "waec-syllabus-civic-education-democracy-rule-of-law-and-public-service-representative-democracy-and-constitutional-rule",
+              "display_order": 1,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Rule of Law and the Administration of Justice",
+              "import_key": "waec-syllabus-civic-education-democracy-rule-of-law-and-public-service-rule-of-law-and-the-administration-of-justice",
+              "display_order": 2,
+              "allocated_questions": 29
+            },
+            {
+              "title": "The Public Service and Accountability",
+              "import_key": "waec-syllabus-civic-education-democracy-rule-of-law-and-public-service-the-public-service-and-accountability",
+              "display_order": 3,
+              "allocated_questions": 29
+            },
+            {
+              "title": "Civil Society and Anti-Corruption Agencies",
+              "import_key": "waec-syllabus-civic-education-democracy-rule-of-law-and-public-service-civil-society-and-anti-corruption-agencies",
+              "display_order": 4,
+              "allocated_questions": 29
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Biology",
+      "display_name": "Biology",
+      "display_order": 4,
+      "allocated_questions": 400,
+      "sections_count": 5,
+      "topics_count": 24,
+      "sections": [
+        {
+          "title": "Organisation of Life",
+          "display_order": 1,
+          "allocated_questions": 85,
+          "topics": [
+            {
+              "title": "Living and Non-living Characteristics",
+              "import_key": "waec-syllabus-biology-organisation-of-life-living-and-non-living-characteristics",
+              "display_order": 1,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Cell Structure, Organelles, and Microscopy",
+              "import_key": "waec-syllabus-biology-organisation-of-life-cell-structure-organelles-and-microscopy",
+              "display_order": 2,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Levels of Organisation of Life",
+              "import_key": "waec-syllabus-biology-organisation-of-life-levels-of-organisation-of-life",
+              "display_order": 3,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Cell Division (Mitosis and Meiosis)",
+              "import_key": "waec-syllabus-biology-organisation-of-life-cell-division-mitosis-and-meiosis",
+              "display_order": 4,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Classification of Living Organisms",
+              "import_key": "waec-syllabus-biology-organisation-of-life-classification-of-living-organisms",
+              "display_order": 5,
+              "allocated_questions": 17
+            }
+          ]
+        },
+        {
+          "title": "Plant and Animal Nutrition, Respiration, and Excretion",
+          "display_order": 2,
+          "allocated_questions": 85,
+          "topics": [
+            {
+              "title": "Modes of Nutrition and Photosynthesis",
+              "import_key": "waec-syllabus-biology-plant-and-animal-nutrition-respiration-and-excretion-modes-of-nutrition-and-photosynthesis",
+              "display_order": 1,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Alimentary Systems, Digestion, and Enzymes",
+              "import_key": "waec-syllabus-biology-plant-and-animal-nutrition-respiration-and-excretion-alimentary-systems-digestion-and-enzymes",
+              "display_order": 2,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Cellular Respiration and Gaseous Exchange",
+              "import_key": "waec-syllabus-biology-plant-and-animal-nutrition-respiration-and-excretion-cellular-respiration-and-gaseous-exchange",
+              "display_order": 3,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Excretion and Osmoregulation",
+              "import_key": "waec-syllabus-biology-plant-and-animal-nutrition-respiration-and-excretion-excretion-and-osmoregulation",
+              "display_order": 4,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Skeletal Systems and Movement",
+              "import_key": "waec-syllabus-biology-plant-and-animal-nutrition-respiration-and-excretion-skeletal-systems-and-movement",
+              "display_order": 5,
+              "allocated_questions": 17
+            }
+          ]
+        },
+        {
+          "title": "Internal Transport and Coordination",
+          "display_order": 3,
+          "allocated_questions": 85,
+          "topics": [
+            {
+              "title": "Transport in Higher Plants",
+              "import_key": "waec-syllabus-biology-internal-transport-and-coordination-transport-in-higher-plants",
+              "display_order": 1,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Circulatory System in Animals",
+              "import_key": "waec-syllabus-biology-internal-transport-and-coordination-circulatory-system-in-animals",
+              "display_order": 2,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Nervous Coordination and Reflex Actions",
+              "import_key": "waec-syllabus-biology-internal-transport-and-coordination-nervous-coordination-and-reflex-actions",
+              "display_order": 3,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Sense Organs (Eye, Ear, Skin)",
+              "import_key": "waec-syllabus-biology-internal-transport-and-coordination-sense-organs-eye-ear-skin",
+              "display_order": 4,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Hormonal Coordination and Homeostasis",
+              "import_key": "waec-syllabus-biology-internal-transport-and-coordination-hormonal-coordination-and-homeostasis",
+              "display_order": 5,
+              "allocated_questions": 17
+            }
+          ]
+        },
+        {
+          "title": "Reproduction and Growth",
+          "display_order": 4,
+          "allocated_questions": 65,
+          "topics": [
+            {
+              "title": "Asexual Reproduction in Plants and Animals",
+              "import_key": "waec-syllabus-biology-reproduction-and-growth-asexual-reproduction-in-plants-and-animals",
+              "display_order": 1,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Sexual Reproduction in Flowering Plants",
+              "import_key": "waec-syllabus-biology-reproduction-and-growth-sexual-reproduction-in-flowering-plants",
+              "display_order": 2,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Human Reproductive System and Fertilisation",
+              "import_key": "waec-syllabus-biology-reproduction-and-growth-human-reproductive-system-and-fertilisation",
+              "display_order": 3,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Growth, Development, and Metamorphosis",
+              "import_key": "waec-syllabus-biology-reproduction-and-growth-growth-development-and-metamorphosis",
+              "display_order": 4,
+              "allocated_questions": 16
+            }
+          ]
+        },
+        {
+          "title": "Genetics, Evolution, and Ecology",
+          "display_order": 5,
+          "allocated_questions": 80,
+          "topics": [
+            {
+              "title": "Mendelian Genetics and Inheritance Patterns",
+              "import_key": "waec-syllabus-biology-genetics-evolution-and-ecology-mendelian-genetics-and-inheritance-patterns",
+              "display_order": 1,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Hereditary Variation and Chromosomal Mutations",
+              "import_key": "waec-syllabus-biology-genetics-evolution-and-ecology-hereditary-variation-and-chromosomal-mutations",
+              "display_order": 2,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Theories and Evidence of Organic Evolution",
+              "import_key": "waec-syllabus-biology-genetics-evolution-and-ecology-theories-and-evidence-of-organic-evolution",
+              "display_order": 3,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Ecosystems, Food Webs, and Energy Flow",
+              "import_key": "waec-syllabus-biology-genetics-evolution-and-ecology-ecosystems-food-webs-and-energy-flow",
+              "display_order": 4,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Ecological Factors, Biomes, and Conservation",
+              "import_key": "waec-syllabus-biology-genetics-evolution-and-ecology-ecological-factors-biomes-and-conservation",
+              "display_order": 5,
+              "allocated_questions": 16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chemistry",
+      "display_name": "Chemistry",
+      "display_order": 5,
+      "allocated_questions": 350,
+      "sections_count": 5,
+      "topics_count": 24,
+      "sections": [
+        {
+          "title": "Matter, Atomic Structure, and Periodic Table",
+          "display_order": 1,
+          "allocated_questions": 75,
+          "topics": [
+            {
+              "title": "Particulate Nature of Matter and State Changes",
+              "import_key": "waec-syllabus-chemistry-matter-atomic-structure-and-periodic-table-particulate-nature-of-matter-and-state-changes",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Atomic Structure, Isotopes, and Electronic Configuration",
+              "import_key": "waec-syllabus-chemistry-matter-atomic-structure-and-periodic-table-atomic-structure-isotopes-and-electronic-configuration",
+              "display_order": 2,
+              "allocated_questions": 15
+            },
+            {
+              "title": "The Periodic Table and Periodic Properties",
+              "import_key": "waec-syllabus-chemistry-matter-atomic-structure-and-periodic-table-the-periodic-table-and-periodic-properties",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Chemical Bonding (Electrovalent, Covalent, Metallic)",
+              "import_key": "waec-syllabus-chemistry-matter-atomic-structure-and-periodic-table-chemical-bonding-electrovalent-covalent-metallic",
+              "display_order": 4,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Molecular Shapes and Intermolecular Forces",
+              "import_key": "waec-syllabus-chemistry-matter-atomic-structure-and-periodic-table-molecular-shapes-and-intermolecular-forces",
+              "display_order": 5,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "Stoichiometry, Energetics, and Equilibrium",
+          "display_order": 2,
+          "allocated_questions": 75,
+          "topics": [
+            {
+              "title": "The Mole Concept and Chemical Formulae",
+              "import_key": "waec-syllabus-chemistry-stoichiometry-energetics-and-equilibrium-the-mole-concept-and-chemical-formulae",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Gas Laws and Molar Volumes",
+              "import_key": "waec-syllabus-chemistry-stoichiometry-energetics-and-equilibrium-gas-laws-and-molar-volumes",
+              "display_order": 2,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Thermochemistry and Energy Changes",
+              "import_key": "waec-syllabus-chemistry-stoichiometry-energetics-and-equilibrium-thermochemistry-and-energy-changes",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Chemical Kinetics and Reaction Rates",
+              "import_key": "waec-syllabus-chemistry-stoichiometry-energetics-and-equilibrium-chemical-kinetics-and-reaction-rates",
+              "display_order": 4,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Reversible Reactions and Chemical Equilibrium",
+              "import_key": "waec-syllabus-chemistry-stoichiometry-energetics-and-equilibrium-reversible-reactions-and-chemical-equilibrium",
+              "display_order": 5,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "Solutions, Acids, Bases, and Electrochemistry",
+          "display_order": 3,
+          "allocated_questions": 74,
+          "topics": [
+            {
+              "title": "Solutions, Solutes, and Solubility Curves",
+              "import_key": "waec-syllabus-chemistry-solutions-acids-bases-and-electrochemistry-solutions-solutes-and-solubility-curves",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Acids, Bases, pH Scale, and Neutralisation",
+              "import_key": "waec-syllabus-chemistry-solutions-acids-bases-and-electrochemistry-acids-bases-ph-scale-and-neutralisation",
+              "display_order": 2,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Types of Salts, Hydrolysis, and Preparation",
+              "import_key": "waec-syllabus-chemistry-solutions-acids-bases-and-electrochemistry-types-of-salts-hydrolysis-and-preparation",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Redox Reactions and Electrochemical Cells",
+              "import_key": "waec-syllabus-chemistry-solutions-acids-bases-and-electrochemistry-redox-reactions-and-electrochemical-cells",
+              "display_order": 4,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Electrolysis and Quantitative Faradaic Laws",
+              "import_key": "waec-syllabus-chemistry-solutions-acids-bases-and-electrochemistry-electrolysis-and-quantitative-faradaic-laws",
+              "display_order": 5,
+              "allocated_questions": 14
+            }
+          ]
+        },
+        {
+          "title": "Inorganic Chemistry",
+          "display_order": 4,
+          "allocated_questions": 56,
+          "topics": [
+            {
+              "title": "Hydrogen, Oxygen, and Water",
+              "import_key": "waec-syllabus-chemistry-inorganic-chemistry-hydrogen-oxygen-and-water",
+              "display_order": 1,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Halogens and Their Compounds",
+              "import_key": "waec-syllabus-chemistry-inorganic-chemistry-halogens-and-their-compounds",
+              "display_order": 2,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Nitrogen, Phosphorus, and Sulfur Compounds",
+              "import_key": "waec-syllabus-chemistry-inorganic-chemistry-nitrogen-phosphorus-and-sulfur-compounds",
+              "display_order": 3,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Metals: Extraction, Properties, and Group Chemistry",
+              "import_key": "waec-syllabus-chemistry-inorganic-chemistry-metals-extraction-properties-and-group-chemistry",
+              "display_order": 4,
+              "allocated_questions": 14
+            }
+          ]
+        },
+        {
+          "title": "Organic Chemistry and Environment",
+          "display_order": 5,
+          "allocated_questions": 70,
+          "topics": [
+            {
+              "title": "Alkanes, Alkenes, and Alkynes",
+              "import_key": "waec-syllabus-chemistry-organic-chemistry-and-environment-alkanes-alkenes-and-alkynes",
+              "display_order": 1,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Benzene and Aromatic Hydrocarbons",
+              "import_key": "waec-syllabus-chemistry-organic-chemistry-and-environment-benzene-and-aromatic-hydrocarbons",
+              "display_order": 2,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Alcohols, Carboxylic Acids, and Esters",
+              "import_key": "waec-syllabus-chemistry-organic-chemistry-and-environment-alcohols-carboxylic-acids-and-esters",
+              "display_order": 3,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Carbohydrates, Proteins, and Synthetic Polymers",
+              "import_key": "waec-syllabus-chemistry-organic-chemistry-and-environment-carbohydrates-proteins-and-synthetic-polymers",
+              "display_order": 4,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Petroleum Refining and Environmental Pollution",
+              "import_key": "waec-syllabus-chemistry-organic-chemistry-and-environment-petroleum-refining-and-environmental-pollution",
+              "display_order": 5,
+              "allocated_questions": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Physics",
+      "display_name": "Physics",
+      "display_order": 6,
+      "allocated_questions": 350,
+      "sections_count": 5,
+      "topics_count": 28,
+      "sections": [
+        {
+          "title": "Measurement, Kinematics, and Dynamics",
+          "display_order": 1,
+          "allocated_questions": 91,
+          "topics": [
+            {
+              "title": "Dimensions, Units, and Measurement Instruments",
+              "import_key": "waec-syllabus-physics-measurement-kinematics-and-dynamics-dimensions-units-and-measurement-instruments",
+              "display_order": 1,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Scalars, Vectors, and Vector Resolution",
+              "import_key": "waec-syllabus-physics-measurement-kinematics-and-dynamics-scalars-vectors-and-vector-resolution",
+              "display_order": 2,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Rectilinear Motion and Projectiles",
+              "import_key": "waec-syllabus-physics-measurement-kinematics-and-dynamics-rectilinear-motion-and-projectiles",
+              "display_order": 3,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Newton Laws of Motion, Momentum, and Friction",
+              "import_key": "waec-syllabus-physics-measurement-kinematics-and-dynamics-newton-laws-of-motion-momentum-and-friction",
+              "display_order": 4,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Work, Energy, Power, and Simple Machines",
+              "import_key": "waec-syllabus-physics-measurement-kinematics-and-dynamics-work-energy-power-and-simple-machines",
+              "display_order": 5,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Circular Motion, Gravitation, and Satellites",
+              "import_key": "waec-syllabus-physics-measurement-kinematics-and-dynamics-circular-motion-gravitation-and-satellites",
+              "display_order": 6,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Hydrostatics, Elasticity, and Surface Tension",
+              "import_key": "waec-syllabus-physics-measurement-kinematics-and-dynamics-hydrostatics-elasticity-and-surface-tension",
+              "display_order": 7,
+              "allocated_questions": 13
+            }
+          ]
+        },
+        {
+          "title": "Thermal Physics",
+          "display_order": 2,
+          "allocated_questions": 65,
+          "topics": [
+            {
+              "title": "Temperature Scales and Thermometers",
+              "import_key": "waec-syllabus-physics-thermal-physics-temperature-scales-and-thermometers",
+              "display_order": 1,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Thermal Expansion of Solids and Liquids",
+              "import_key": "waec-syllabus-physics-thermal-physics-thermal-expansion-of-solids-and-liquids",
+              "display_order": 2,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Heat Capacity and Latent Heat",
+              "import_key": "waec-syllabus-physics-thermal-physics-heat-capacity-and-latent-heat",
+              "display_order": 3,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Gas Laws and Kinetic Theory of Gases",
+              "import_key": "waec-syllabus-physics-thermal-physics-gas-laws-and-kinetic-theory-of-gases",
+              "display_order": 4,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Conduction, Convection, and Radiation",
+              "import_key": "waec-syllabus-physics-thermal-physics-conduction-convection-and-radiation",
+              "display_order": 5,
+              "allocated_questions": 13
+            }
+          ]
+        },
+        {
+          "title": "Waves, Optics, and Sound",
+          "display_order": 3,
+          "allocated_questions": 74,
+          "topics": [
+            {
+              "title": "Wave Properties and Equations",
+              "import_key": "waec-syllabus-physics-waves-optics-and-sound-wave-properties-and-equations",
+              "display_order": 1,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Sound Waves, Pitch, and Resonance",
+              "import_key": "waec-syllabus-physics-waves-optics-and-sound-sound-waves-pitch-and-resonance",
+              "display_order": 2,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Reflection of Light and Plane/Curved Mirrors",
+              "import_key": "waec-syllabus-physics-waves-optics-and-sound-reflection-of-light-and-plane-curved-mirrors",
+              "display_order": 3,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Refraction of Light, Total Internal Reflection, and Lenses",
+              "import_key": "waec-syllabus-physics-waves-optics-and-sound-refraction-of-light-total-internal-reflection-and-lenses",
+              "display_order": 4,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Optical Instruments and Visual Defects",
+              "import_key": "waec-syllabus-physics-waves-optics-and-sound-optical-instruments-and-visual-defects",
+              "display_order": 5,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Electromagnetic Spectrum and Wave Phenomena",
+              "import_key": "waec-syllabus-physics-waves-optics-and-sound-electromagnetic-spectrum-and-wave-phenomena",
+              "display_order": 6,
+              "allocated_questions": 12
+            }
+          ]
+        },
+        {
+          "title": "Fields, Electricity, and Magnetism",
+          "display_order": 4,
+          "allocated_questions": 60,
+          "topics": [
+            {
+              "title": "Electrostatic Fields and Capacitors",
+              "import_key": "waec-syllabus-physics-fields-electricity-and-magnetism-electrostatic-fields-and-capacitors",
+              "display_order": 1,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Current Electricity, Resistance, and Ohm Law",
+              "import_key": "waec-syllabus-physics-fields-electricity-and-magnetism-current-electricity-resistance-and-ohm-law",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Electrical Energy, Heating Effect, and Metering",
+              "import_key": "waec-syllabus-physics-fields-electricity-and-magnetism-electrical-energy-heating-effect-and-metering",
+              "display_order": 3,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Magnetic Fields and Force on Conductors",
+              "import_key": "waec-syllabus-physics-fields-electricity-and-magnetism-magnetic-fields-and-force-on-conductors",
+              "display_order": 4,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Electromagnetic Induction, Transformers, and AC Circuits",
+              "import_key": "waec-syllabus-physics-fields-electricity-and-magnetism-electromagnetic-induction-transformers-and-ac-circuits",
+              "display_order": 5,
+              "allocated_questions": 12
+            }
+          ]
+        },
+        {
+          "title": "Modern, Atomic, and Nuclear Physics",
+          "display_order": 5,
+          "allocated_questions": 60,
+          "topics": [
+            {
+              "title": "Models of the Atom and Energy Levels",
+              "import_key": "waec-syllabus-physics-modern-atomic-and-nuclear-physics-models-of-the-atom-and-energy-levels",
+              "display_order": 1,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Photoelectric Effect and Wave-Particle Duality",
+              "import_key": "waec-syllabus-physics-modern-atomic-and-nuclear-physics-photoelectric-effect-and-wave-particle-duality",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Radioactivity, Half-life, and Nuclear Decay",
+              "import_key": "waec-syllabus-physics-modern-atomic-and-nuclear-physics-radioactivity-half-life-and-nuclear-decay",
+              "display_order": 3,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Nuclear Reactions: Fission and Fusion",
+              "import_key": "waec-syllabus-physics-modern-atomic-and-nuclear-physics-nuclear-reactions-fission-and-fusion",
+              "display_order": 4,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Semiconductors, P-N Junctions, and Electronics",
+              "import_key": "waec-syllabus-physics-modern-atomic-and-nuclear-physics-semiconductors-p-n-junctions-and-electronics",
+              "display_order": 5,
+              "allocated_questions": 12
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Agricultural Science",
+      "display_name": "Agricultural Science",
+      "display_order": 7,
+      "allocated_questions": 350,
+      "sections_count": 5,
+      "topics_count": 25,
+      "sections": [
+        {
+          "title": "Introduction to Agriculture and Farm Mechanization",
+          "display_order": 1,
+          "allocated_questions": 70,
+          "topics": [
+            {
+              "title": "Meaning, Importance, and Branches of Agriculture",
+              "import_key": "waec-syllabus-agricultural-science-introduction-and-mechanization-meaning-and-branches",
+              "display_order": 1,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Agricultural Ecology and Terrestrial Land Use",
+              "import_key": "waec-syllabus-agricultural-science-introduction-and-mechanization-agricultural-ecology",
+              "display_order": 2,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Farm Power Sources and Energy Systems",
+              "import_key": "waec-syllabus-agricultural-science-introduction-and-mechanization-farm-power-sources",
+              "display_order": 3,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Farm Machinery, Primary/Secondary Implements, and Maintenance",
+              "import_key": "waec-syllabus-agricultural-science-introduction-and-mechanization-farm-machinery-and-maintenance",
+              "display_order": 4,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Farm Surveying, Planning, and Farmstead Layout",
+              "import_key": "waec-syllabus-agricultural-science-introduction-and-mechanization-surveying-and-farmstead-layout",
+              "display_order": 5,
+              "allocated_questions": 14
+            }
+          ]
+        },
+        {
+          "title": "Soil Science and Soil Management",
+          "display_order": 2,
+          "allocated_questions": 70,
+          "topics": [
+            {
+              "title": "Soil Formation, Weathering, and Soil Profile",
+              "import_key": "waec-syllabus-agricultural-science-soil-science-formation-and-profile",
+              "display_order": 1,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Physical and Chemical Properties of Soil",
+              "import_key": "waec-syllabus-agricultural-science-soil-science-physical-and-chemical-properties",
+              "display_order": 2,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Plant Nutrients and Biogeochemical Nutrient Cycles",
+              "import_key": "waec-syllabus-agricultural-science-soil-science-plant-nutrients-and-cycles",
+              "display_order": 3,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Manures, Inorganic Fertilizers, and Soil Amendment Practices",
+              "import_key": "waec-syllabus-agricultural-science-soil-science-manures-fertilizers-and-liming",
+              "display_order": 4,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Soil Conservation, Erosion Control, and Irrigation/Drainage",
+              "import_key": "waec-syllabus-agricultural-science-soil-science-conservation-erosion-and-drainage",
+              "display_order": 5,
+              "allocated_questions": 14
+            }
+          ]
+        },
+        {
+          "title": "Crop Production and Protection",
+          "display_order": 3,
+          "allocated_questions": 70,
+          "topics": [
+            {
+              "title": "Classification and Husbandry of Selected Food and Cash Crops",
+              "import_key": "waec-syllabus-agricultural-science-crop-production-husbandry-of-crops",
+              "display_order": 1,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Pasture and Forage Crops Management",
+              "import_key": "waec-syllabus-agricultural-science-crop-production-pasture-and-forage-management",
+              "display_order": 2,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Crop Improvement and Breeding Principles",
+              "import_key": "waec-syllabus-agricultural-science-crop-production-crop-improvement-and-breeding",
+              "display_order": 3,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Weeds, Weed Identification, and Herbicide Management",
+              "import_key": "waec-syllabus-agricultural-science-crop-production-weeds-and-herbicide-management",
+              "display_order": 4,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Pests and Diseases of Crops and Integrated Pest Management",
+              "import_key": "waec-syllabus-agricultural-science-crop-production-pests-diseases-and-ipm",
+              "display_order": 5,
+              "allocated_questions": 14
+            }
+          ]
+        },
+        {
+          "title": "Animal Production and Health",
+          "display_order": 4,
+          "allocated_questions": 70,
+          "topics": [
+            {
+              "title": "Anatomy and Physiology of Farm Animals",
+              "import_key": "waec-syllabus-agricultural-science-animal-production-anatomy-and-physiology",
+              "display_order": 1,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Animal Nutrition, Ration Formulation, and Feedstuffs",
+              "import_key": "waec-syllabus-agricultural-science-animal-production-nutrition-and-ration-formulation",
+              "display_order": 2,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Animal Reproduction, Breeding, and Artificial Insemination",
+              "import_key": "waec-syllabus-agricultural-science-animal-production-reproduction-and-breeding",
+              "display_order": 3,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Livestock Management Systems (Cattle, Poultry, Swine, and Sheep/Goats)",
+              "import_key": "waec-syllabus-agricultural-science-animal-production-livestock-management-systems",
+              "display_order": 4,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Livestock Diseases, Endoparasites, and Preventative Healthcare",
+              "import_key": "waec-syllabus-agricultural-science-animal-production-diseases-and-veterinary-care",
+              "display_order": 5,
+              "allocated_questions": 14
+            }
+          ]
+        },
+        {
+          "title": "Agricultural Economics, Extension, and Agribusiness",
+          "display_order": 5,
+          "allocated_questions": 70,
+          "topics": [
+            {
+              "title": "Factors of Agricultural Production and Land Tenure Systems",
+              "import_key": "waec-syllabus-agricultural-science-economics-and-extension-production-factors-and-land-tenure",
+              "display_order": 1,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Agricultural Marketing, Value Chains, and Commodity Pricing",
+              "import_key": "waec-syllabus-agricultural-science-economics-and-extension-marketing-and-value-chains",
+              "display_order": 2,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Agricultural Financing, Credit Institutions, and Subsidies",
+              "import_key": "waec-syllabus-agricultural-science-economics-and-extension-financing-and-credit",
+              "display_order": 3,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Farm Management Principles, Budgeting, and Farm Accounting Records",
+              "import_key": "waec-syllabus-agricultural-science-economics-and-extension-farm-records-and-budgeting",
+              "display_order": 4,
+              "allocated_questions": 14
+            },
+            {
+              "title": "Agricultural Extension Methods, Technology Transfer, and Innovations",
+              "import_key": "waec-syllabus-agricultural-science-economics-and-extension-extension-methods-and-adoption",
+              "display_order": 5,
+              "allocated_questions": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Economics",
+      "display_name": "Economics",
+      "display_order": 8,
+      "allocated_questions": 400,
+      "sections_count": 4,
+      "topics_count": 20,
+      "sections": [
+        {
+          "title": "Basic Economic Principles and Systems",
+          "display_order": 1,
+          "allocated_questions": 80,
+          "topics": [
+            {
+              "title": "Nature, Scope, and Methodology of Economics",
+              "import_key": "waec-syllabus-economics-basic-economic-principles-and-systems-nature-scope-and-methodology-of-economics",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Scarcity, Choice, and Opportunity Cost",
+              "import_key": "waec-syllabus-economics-basic-economic-principles-and-systems-scarcity-choice-and-opportunity-cost",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Factors of Production and Production Possibility Curve",
+              "import_key": "waec-syllabus-economics-basic-economic-principles-and-systems-factors-of-production-and-production-possibility-curve",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Comparative Economic Systems",
+              "import_key": "waec-syllabus-economics-basic-economic-principles-and-systems-comparative-economic-systems",
+              "display_order": 4,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Microeconomics: Price Theory, Demand, and Supply",
+          "display_order": 2,
+          "allocated_questions": 120,
+          "topics": [
+            {
+              "title": "Theory of Demand and Elasticity",
+              "import_key": "waec-syllabus-economics-microeconomics-price-theory-demand-and-supply-theory-of-demand-and-elasticity",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Theory of Supply and Elasticity",
+              "import_key": "waec-syllabus-economics-microeconomics-price-theory-demand-and-supply-theory-of-supply-and-elasticity",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Market Equilibrium and Price Legislation",
+              "import_key": "waec-syllabus-economics-microeconomics-price-theory-demand-and-supply-market-equilibrium-and-price-legislation",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Theory of Consumer Behaviour and Diminishing Marginal Utility",
+              "import_key": "waec-syllabus-economics-microeconomics-price-theory-demand-and-supply-theory-of-consumer-behaviour-and-diminishing-marginal-utility",
+              "display_order": 4,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Theory of Production, Cost, and Revenue",
+              "import_key": "waec-syllabus-economics-microeconomics-price-theory-demand-and-supply-theory-of-production-cost-and-revenue",
+              "display_order": 5,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Market Structures (Competitive, Monopolistic, Oligopoly)",
+              "import_key": "waec-syllabus-economics-microeconomics-price-theory-demand-and-supply-market-structures-competitive-monopolistic-oligopoly",
+              "display_order": 6,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Macroeconomics: National Income, Money, and Banking",
+          "display_order": 3,
+          "allocated_questions": 100,
+          "topics": [
+            {
+              "title": "National Income Accounting and Measurement Methods",
+              "import_key": "waec-syllabus-economics-macroeconomics-national-income-money-and-banking-national-income-accounting-and-measurement-methods",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Circular Flow of Income and Multiplier Concept",
+              "import_key": "waec-syllabus-economics-macroeconomics-national-income-money-and-banking-circular-flow-of-income-and-multiplier-concept",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Functions of Money and Quantity Theory of Money",
+              "import_key": "waec-syllabus-economics-macroeconomics-national-income-money-and-banking-functions-of-money-and-quantity-theory-of-money",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Commercial and Central Banking Systems",
+              "import_key": "waec-syllabus-economics-macroeconomics-national-income-money-and-banking-commercial-and-central-banking-systems",
+              "display_order": 4,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Inflation, Deflation, and Monetary Policy",
+              "import_key": "waec-syllabus-economics-macroeconomics-national-income-money-and-banking-inflation-deflation-and-monetary-policy",
+              "display_order": 5,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Public Finance, International Trade, and Development",
+          "display_order": 4,
+          "allocated_questions": 100,
+          "topics": [
+            {
+              "title": "Public Revenue, Principles of Taxation, and Expenditure",
+              "import_key": "waec-syllabus-economics-public-finance-international-trade-and-development-public-revenue-principles-of-taxation-and-expenditure",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Government Budgets and Fiscal Policy",
+              "import_key": "waec-syllabus-economics-public-finance-international-trade-and-development-government-budgets-and-fiscal-policy",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "International Trade, Absolute Advantage, and Tariffs",
+              "import_key": "waec-syllabus-economics-public-finance-international-trade-and-development-international-trade-absolute-advantage-and-tariffs",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Balance of Payments and Foreign Exchange Rates",
+              "import_key": "waec-syllabus-economics-public-finance-international-trade-and-development-balance-of-payments-and-foreign-exchange-rates",
+              "display_order": 4,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Economic Growth, Development Planning, and International Institutions",
+              "import_key": "waec-syllabus-economics-public-finance-international-trade-and-development-economic-growth-development-planning-and-international-institutions",
+              "display_order": 5,
+              "allocated_questions": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Commerce",
+      "display_name": "Commerce",
+      "display_order": 9,
+      "allocated_questions": 300,
+      "sections_count": 4,
+      "topics_count": 18,
+      "sections": [
+        {
+          "title": "Nature, Scope, and History of Commerce",
+          "display_order": 1,
+          "allocated_questions": 68,
+          "topics": [
+            {
+              "title": "Meaning, Scope, and Historical Evolution of Commerce",
+              "import_key": "waec-syllabus-commerce-nature-and-history-meaning-scope-and-evolution",
+              "display_order": 1,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Production, Wealth Creation, and Division of Labour",
+              "import_key": "waec-syllabus-commerce-nature-and-history-production-and-division-of-labour",
+              "display_order": 2,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Types of Occupations and Interdependence of Economic Activities",
+              "import_key": "waec-syllabus-commerce-nature-and-history-occupations-and-interdependence",
+              "display_order": 3,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Direct and Indirect Services in Modern Economies",
+              "import_key": "waec-syllabus-commerce-nature-and-history-direct-and-indirect-services",
+              "display_order": 4,
+              "allocated_questions": 17
+            }
+          ]
+        },
+        {
+          "title": "Trade and Business Units",
+          "display_order": 2,
+          "allocated_questions": 85,
+          "topics": [
+            {
+              "title": "Home Trade: Wholesale and Retail Trade Systems",
+              "import_key": "waec-syllabus-commerce-trade-and-business-units-home-trade-wholesale-retail",
+              "display_order": 1,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Foreign Trade: Import, Export, and Balance of Payments",
+              "import_key": "waec-syllabus-commerce-trade-and-business-units-foreign-trade-and-balance-of-payments",
+              "display_order": 2,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Commercial Documents Used in Home and Foreign Trade",
+              "import_key": "waec-syllabus-commerce-trade-and-business-units-commercial-trade-documents",
+              "display_order": 3,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Forms of Business Ownership: Sole Proprietorships and Partnerships",
+              "import_key": "waec-syllabus-commerce-trade-and-business-units-sole-proprietorships-and-partnerships",
+              "display_order": 4,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Limited Liability Companies, Cooperatives, and Public Corporations",
+              "import_key": "waec-syllabus-commerce-trade-and-business-units-companies-cooperatives-and-corporations",
+              "display_order": 5,
+              "allocated_questions": 17
+            }
+          ]
+        },
+        {
+          "title": "Aids to Trade and Commercial Infrastructure",
+          "display_order": 3,
+          "allocated_questions": 83,
+          "topics": [
+            {
+              "title": "Banking Services and Electronic Payment Systems",
+              "import_key": "waec-syllabus-commerce-aids-to-trade-banking-services-and-electronic-payments",
+              "display_order": 1,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Insurance Principles, Policies, and Underwriting Mechanisms",
+              "import_key": "waec-syllabus-commerce-aids-to-trade-insurance-principles-and-policies",
+              "display_order": 2,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Transport Systems, Containerisation, and Logistics Infrastructure",
+              "import_key": "waec-syllabus-commerce-aids-to-trade-transport-systems-and-logistics",
+              "display_order": 3,
+              "allocated_questions": 17
+            },
+            {
+              "title": "Warehousing, Bonded Stores, and Inventory Management",
+              "import_key": "waec-syllabus-commerce-aids-to-trade-warehousing-and-inventory-management",
+              "display_order": 4,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Communication Systems and Modern Information Networks",
+              "import_key": "waec-syllabus-commerce-aids-to-trade-communication-systems-and-digital-networks",
+              "display_order": 5,
+              "allocated_questions": 16
+            }
+          ]
+        },
+        {
+          "title": "Modern Business Trends, Finance, and Consumer Protection",
+          "display_order": 4,
+          "allocated_questions": 64,
+          "topics": [
+            {
+              "title": "Advertising, Sales Promotion, and Public Relations",
+              "import_key": "waec-syllabus-commerce-modern-trends-advertising-and-sales-promotion",
+              "display_order": 1,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Capital, Business Credit, and Sources of Commercial Finance",
+              "import_key": "waec-syllabus-commerce-modern-trends-capital-credit-and-business-finance",
+              "display_order": 2,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Stock Exchange, Securities, and Capital Market Operations",
+              "import_key": "waec-syllabus-commerce-modern-trends-stock-exchange-and-capital-markets",
+              "display_order": 3,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Consumer Protection, Regulatory Agencies, and Business Ethics",
+              "import_key": "waec-syllabus-commerce-modern-trends-consumer-protection-and-business-ethics",
+              "display_order": 4,
+              "allocated_questions": 16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Accounting",
+      "display_name": "Financial Accounting",
+      "display_order": 10,
+      "allocated_questions": 350,
+      "sections_count": 5,
+      "topics_count": 22,
+      "sections": [
+        {
+          "title": "Accounting Principles and Bookkeeping Process",
+          "display_order": 1,
+          "allocated_questions": 80,
+          "topics": [
+            {
+              "title": "Nature, Purpose, Users, and Accounting Concepts/Conventions",
+              "import_key": "waec-syllabus-accounting-principles-and-process-nature-users-and-concepts",
+              "display_order": 1,
+              "allocated_questions": 16
+            },
+            {
+              "title": "The Accounting Equation and Double Entry Bookkeeping System",
+              "import_key": "waec-syllabus-accounting-principles-and-process-accounting-equation-and-double-entry",
+              "display_order": 2,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Source Documents, Cash Book, and Petty Cash Imprest System",
+              "import_key": "waec-syllabus-accounting-principles-and-process-source-documents-and-cash-books",
+              "display_order": 3,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Books of Prime Entry and Subsidiary Ledgers",
+              "import_key": "waec-syllabus-accounting-principles-and-process-books-of-prime-entry",
+              "display_order": 4,
+              "allocated_questions": 16
+            },
+            {
+              "title": "The Trial Balance and Rectification of Accounting Errors",
+              "import_key": "waec-syllabus-accounting-principles-and-process-trial-balance-and-error-correction",
+              "display_order": 5,
+              "allocated_questions": 16
+            }
+          ]
+        },
+        {
+          "title": "Financial Statements and Year-End Adjustments",
+          "display_order": 2,
+          "allocated_questions": 80,
+          "topics": [
+            {
+              "title": "Statement of Profit or Loss (Trading and Profit/Loss Account)",
+              "import_key": "waec-syllabus-accounting-financial-statements-statement-of-profit-or-loss",
+              "display_order": 1,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Statement of Financial Position (Balance Sheet)",
+              "import_key": "waec-syllabus-accounting-financial-statements-statement-of-financial-position",
+              "display_order": 2,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Accruals, Prepayments, and Provisions for Bad and Doubtful Debts",
+              "import_key": "waec-syllabus-accounting-financial-statements-accruals-prepayments-and-bad-debts",
+              "display_order": 3,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Depreciation of Non-Current Assets and Disposal Accounts",
+              "import_key": "waec-syllabus-accounting-financial-statements-depreciation-and-asset-disposal",
+              "display_order": 4,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Bank Reconciliation Statements and Adjusted Cash Book",
+              "import_key": "waec-syllabus-accounting-financial-statements-bank-reconciliation-statements",
+              "display_order": 5,
+              "allocated_questions": 16
+            }
+          ]
+        },
+        {
+          "title": "Specialized Accounts: Manufacturing and Non-Profit Entities",
+          "display_order": 3,
+          "allocated_questions": 64,
+          "topics": [
+            {
+              "title": "Manufacturing Accounts: Prime Cost and Production Cost Determination",
+              "import_key": "waec-syllabus-accounting-specialized-accounts-manufacturing-accounts",
+              "display_order": 1,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Receipts and Payments Accounts for Not-for-Profit Organisations",
+              "import_key": "waec-syllabus-accounting-specialized-accounts-receipts-and-payments-accounts",
+              "display_order": 2,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Income and Expenditure Accounts and Accumulated Fund",
+              "import_key": "waec-syllabus-accounting-specialized-accounts-income-and-expenditure-accounts",
+              "display_order": 3,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Departmental and Branch Accounts",
+              "import_key": "waec-syllabus-accounting-specialized-accounts-departmental-and-branch-accounts",
+              "display_order": 4,
+              "allocated_questions": 16
+            }
+          ]
+        },
+        {
+          "title": "Partnership and Company Accounts",
+          "display_order": 4,
+          "allocated_questions": 64,
+          "topics": [
+            {
+              "title": "Partnership Formation, Agreements, and Capital/Current Accounts",
+              "import_key": "waec-syllabus-accounting-partnership-and-companies-partnership-formation-and-accounts",
+              "display_order": 1,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Partnership Profit and Loss Appropriation and Admission/Retirement",
+              "import_key": "waec-syllabus-accounting-partnership-and-companies-partnership-appropriation-and-changes",
+              "display_order": 2,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Company Capital Structure: Shares, Debentures, and Share Issues",
+              "import_key": "waec-syllabus-accounting-partnership-and-companies-company-capital-structure",
+              "display_order": 3,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Company Final Accounts and Statutory Presentation Standards",
+              "import_key": "waec-syllabus-accounting-partnership-and-companies-company-final-accounts",
+              "display_order": 4,
+              "allocated_questions": 16
+            }
+          ]
+        },
+        {
+          "title": "Financial Control, Ratios, and Incomplete Records",
+          "display_order": 5,
+          "allocated_questions": 62,
+          "topics": [
+            {
+              "title": "Sales Ledger and Purchases Ledger Control Accounts",
+              "import_key": "waec-syllabus-accounting-financial-control-control-accounts",
+              "display_order": 1,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Incomplete Records and Single Entry Conversion Techniques",
+              "import_key": "waec-syllabus-accounting-financial-control-incomplete-records-and-single-entry",
+              "display_order": 2,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Financial Ratio Analysis and Financial Health Interpretation",
+              "import_key": "waec-syllabus-accounting-financial-control-financial-ratio-analysis",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Public Sector and Government Accounting Principles",
+              "import_key": "waec-syllabus-accounting-financial-control-public-sector-accounting",
+              "display_order": 4,
+              "allocated_questions": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Government",
+      "display_name": "Government",
+      "display_order": 11,
+      "allocated_questions": 400,
+      "sections_count": 4,
+      "topics_count": 20,
+      "sections": [
+        {
+          "title": "Elements of Government and Political Concepts",
+          "display_order": 1,
+          "allocated_questions": 120,
+          "topics": [
+            {
+              "title": "Concepts of State, Nation, and Sovereignty",
+              "import_key": "waec-syllabus-government-elements-of-government-and-political-concepts-concepts-of-state-nation-and-sovereignty",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Power, Authority, and Legitimacy",
+              "import_key": "waec-syllabus-government-elements-of-government-and-political-concepts-power-authority-and-legitimacy",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Rule of Law and Separation of Powers",
+              "import_key": "waec-syllabus-government-elements-of-government-and-political-concepts-rule-of-law-and-separation-of-powers",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Forms of Government (Unitary, Federal, Confederal)",
+              "import_key": "waec-syllabus-government-elements-of-government-and-political-concepts-forms-of-government-unitary-federal-confederal",
+              "display_order": 4,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Systems of Government (Presidential, Parliamentary, Monarchy)",
+              "import_key": "waec-syllabus-government-elements-of-government-and-political-concepts-systems-of-government-presidential-parliamentary-monarchy",
+              "display_order": 5,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Constitutions and Constitutionalism",
+              "import_key": "waec-syllabus-government-elements-of-government-and-political-concepts-constitutions-and-constitutionalism",
+              "display_order": 6,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Political Processes and Public Institutions",
+          "display_order": 2,
+          "allocated_questions": 100,
+          "topics": [
+            {
+              "title": "Political Parties and Party Systems",
+              "import_key": "waec-syllabus-government-political-processes-and-public-institutions-political-parties-and-party-systems",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Pressure Groups and Public Opinion",
+              "import_key": "waec-syllabus-government-political-processes-and-public-institutions-pressure-groups-and-public-opinion",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Electoral Systems, Franchises, and Electoral Commissions",
+              "import_key": "waec-syllabus-government-political-processes-and-public-institutions-electoral-systems-franchises-and-electoral-commissions",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "The Civil Service and Public Corporations",
+              "import_key": "waec-syllabus-government-political-processes-and-public-institutions-the-civil-service-and-public-corporations",
+              "display_order": 4,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Local Government Administration and Reforms",
+              "import_key": "waec-syllabus-government-political-processes-and-public-institutions-local-government-administration-and-reforms",
+              "display_order": 5,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Colonial Administration and Constitutional History",
+          "display_order": 3,
+          "allocated_questions": 100,
+          "topics": [
+            {
+              "title": "Pre-Colonial Political Systems in West Africa",
+              "import_key": "waec-syllabus-government-colonial-administration-and-constitutional-history-pre-colonial-political-systems-in-west-africa",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "British Indirect Rule in West Africa",
+              "import_key": "waec-syllabus-government-colonial-administration-and-constitutional-history-british-indirect-rule-in-west-africa",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "French Policy of Assimilation and Association",
+              "import_key": "waec-syllabus-government-colonial-administration-and-constitutional-history-french-policy-of-assimilation-and-association",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Nationalism and Anti-Colonial Movements",
+              "import_key": "waec-syllabus-government-colonial-administration-and-constitutional-history-nationalism-and-anti-colonial-movements",
+              "display_order": 4,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Constitutional Conferences and Independence Milestones",
+              "import_key": "waec-syllabus-government-colonial-administration-and-constitutional-history-constitutional-conferences-and-independence-milestones",
+              "display_order": 5,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Military Rule, Federalism, and Foreign Policy",
+          "display_order": 4,
+          "allocated_questions": 80,
+          "topics": [
+            {
+              "title": "Military Rule in West Africa: Causes and Consequences",
+              "import_key": "waec-syllabus-government-military-rule-federalism-and-foreign-policy-military-rule-in-west-africa-causes-and-consequences",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Federalism, State Creation, and Revenue Allocation",
+              "import_key": "waec-syllabus-government-military-rule-federalism-and-foreign-policy-federalism-state-creation-and-revenue-allocation",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Foreign Policy Objectives and Formulation",
+              "import_key": "waec-syllabus-government-military-rule-federalism-and-foreign-policy-foreign-policy-objectives-and-formulation",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Regional and International Organizations (ECOWAS, AU, UN, Commonwealth)",
+              "import_key": "waec-syllabus-government-military-rule-federalism-and-foreign-policy-regional-and-international-organizations-ecowas-au-un-commonwealth",
+              "display_order": 4,
+              "allocated_questions": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Literature",
+      "display_name": "Literature in English",
+      "display_order": 12,
+      "allocated_questions": 300,
+      "sections_count": 8,
+      "topics_count": 25,
+      "sections": [
+        {
+          "title": "General Literary Principles and Devices",
+          "display_order": 1,
+          "allocated_questions": 48,
+          "topics": [
+            {
+              "title": "Literary Genres: Prose, Drama, and Poetry",
+              "import_key": "waec-syllabus-literature-general-literary-principles-and-devices-literary-genres-prose-drama-and-poetry",
+              "display_order": 1,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Elements of Fiction: Plot, Setting, Theme, and Narrative Perspective",
+              "import_key": "waec-syllabus-literature-general-literary-principles-and-devices-elements-of-fiction-plot-setting-theme-and-narrative-perspective",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Figurative Language, Tropes, and Rhetorical Devices",
+              "import_key": "waec-syllabus-literature-general-literary-principles-and-devices-figurative-language-tropes-and-rhetorical-devices",
+              "display_order": 3,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Poetic Forms, Meter, Rhyme, and Rhythm",
+              "import_key": "waec-syllabus-literature-general-literary-principles-and-devices-poetic-forms-meter-rhyme-and-rhythm",
+              "display_order": 4,
+              "allocated_questions": 12
+            }
+          ]
+        },
+        {
+          "title": "Shakespearean Drama",
+          "display_order": 2,
+          "allocated_questions": 36,
+          "topics": [
+            {
+              "title": "Antony and Cleopatra: Plot Architecture, Historical Milieu, and Dramatic Conflict",
+              "import_key": "waec-syllabus-literature-shakespearean-drama-antony-and-cleopatra-plot-and-conflict",
+              "display_order": 1,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Antony and Cleopatra: Character Dynamics, Tragic Flaw, and Fatal Infatuation",
+              "import_key": "waec-syllabus-literature-shakespearean-drama-antony-and-cleopatra-characters-and-tragic-flaw",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Antony and Cleopatra: Dramatic Poetry, Imagery, Soliloquy, and Dramatic Irony",
+              "import_key": "waec-syllabus-literature-shakespearean-drama-antony-and-cleopatra-imagery-and-dramatic-devices",
+              "display_order": 3,
+              "allocated_questions": 12
+            }
+          ]
+        },
+        {
+          "title": "African Prose",
+          "display_order": 3,
+          "allocated_questions": 36,
+          "topics": [
+            {
+              "title": "Plot Overview and Structural Development",
+              "import_key": "waec-syllabus-literature-african-prose-plot-overview-and-structural-development",
+              "display_order": 1,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Cultural Context and Thematic Concerns",
+              "import_key": "waec-syllabus-literature-african-prose-cultural-context-and-thematic-concerns",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Character Analysis and Stylistic Techniques",
+              "import_key": "waec-syllabus-literature-african-prose-character-analysis-and-stylistic-techniques",
+              "display_order": 3,
+              "allocated_questions": 12
+            }
+          ]
+        },
+        {
+          "title": "Non-African Prose",
+          "display_order": 4,
+          "allocated_questions": 36,
+          "topics": [
+            {
+              "title": "Narrative Exposition and Conflict",
+              "import_key": "waec-syllabus-literature-non-african-prose-narrative-exposition-and-conflict",
+              "display_order": 1,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Universal Themes and Sociological Milieu",
+              "import_key": "waec-syllabus-literature-non-african-prose-universal-themes-and-sociological-milieu",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Character Traits and Literary Devices",
+              "import_key": "waec-syllabus-literature-non-african-prose-character-traits-and-literary-devices",
+              "display_order": 3,
+              "allocated_questions": 12
+            }
+          ]
+        },
+        {
+          "title": "African Drama",
+          "display_order": 5,
+          "allocated_questions": 36,
+          "topics": [
+            {
+              "title": "Dramatic Plot and Action",
+              "import_key": "waec-syllabus-literature-african-drama-dramatic-plot-and-action",
+              "display_order": 1,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Tradition, Colonial Legacy, and Post-Colonial Themes",
+              "import_key": "waec-syllabus-literature-african-drama-tradition-colonial-legacy-and-post-colonial-themes",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Dramatic Techniques, Irony, and Stagecraft",
+              "import_key": "waec-syllabus-literature-african-drama-dramatic-techniques-irony-and-stagecraft",
+              "display_order": 3,
+              "allocated_questions": 12
+            }
+          ]
+        },
+        {
+          "title": "Non-African Drama",
+          "display_order": 6,
+          "allocated_questions": 36,
+          "topics": [
+            {
+              "title": "Plot Arc and Classical Dramatic Conflict",
+              "import_key": "waec-syllabus-literature-non-african-drama-plot-arc-and-classical-dramatic-conflict",
+              "display_order": 1,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Tragic Flaw, Catharsis, and Dramatic Theme",
+              "import_key": "waec-syllabus-literature-non-african-drama-tragic-flaw-catharsis-and-dramatic-theme",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Soliloquy, Dialogue, and Character Motivation",
+              "import_key": "waec-syllabus-literature-non-african-drama-soliloquy-dialogue-and-character-motivation",
+              "display_order": 3,
+              "allocated_questions": 12
+            }
+          ]
+        },
+        {
+          "title": "African Poetry",
+          "display_order": 7,
+          "allocated_questions": 36,
+          "topics": [
+            {
+              "title": "Colonial Experience, Identity, and Cultural Pride",
+              "import_key": "waec-syllabus-literature-african-poetry-colonial-experience-identity-and-cultural-pride",
+              "display_order": 1,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Imagery, Metaphor, and Indigenous Rhythms",
+              "import_key": "waec-syllabus-literature-african-poetry-imagery-metaphor-and-indigenous-rhythms",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Diction, Tone, and Structural Analysis",
+              "import_key": "waec-syllabus-literature-african-poetry-diction-tone-and-structural-analysis",
+              "display_order": 3,
+              "allocated_questions": 12
+            }
+          ]
+        },
+        {
+          "title": "Non-African Poetry",
+          "display_order": 8,
+          "allocated_questions": 36,
+          "topics": [
+            {
+              "title": "Universal Human Experiences and Philosophical Themes",
+              "import_key": "waec-syllabus-literature-non-african-poetry-universal-human-experiences-and-philosophical-themes",
+              "display_order": 1,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Poetic Forms, Stanzaic Structure, and Meter",
+              "import_key": "waec-syllabus-literature-non-african-poetry-poetic-forms-stanzaic-structure-and-meter",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Symbolism, Allusion, and Aesthetic Devices",
+              "import_key": "waec-syllabus-literature-non-african-poetry-symbolism-allusion-and-aesthetic-devices",
+              "display_order": 3,
+              "allocated_questions": 12
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "CRS",
+      "display_name": "Christian Religious Studies",
+      "display_order": 13,
+      "allocated_questions": 300,
+      "sections_count": 3,
+      "topics_count": 16,
+      "sections": [
+        {
+          "title": "Themes from the Old Testament",
+          "display_order": 1,
+          "allocated_questions": 114,
+          "topics": [
+            {
+              "title": "The Creation, the Fall of Man, and God’s Call of Abraham",
+              "import_key": "waec-syllabus-crs-old-testament-creation-fall-and-call-of-abraham",
+              "display_order": 1,
+              "allocated_questions": 19
+            },
+            {
+              "title": "Deliverance and the Covenant: Moses, the Exodus, and the Ten Commandments",
+              "import_key": "waec-syllabus-crs-old-testament-moses-exodus-and-the-commandments",
+              "display_order": 2,
+              "allocated_questions": 19
+            },
+            {
+              "title": "Leadership and Decision Making: Joseph, Joshua, and Deborah/Gideon",
+              "import_key": "waec-syllabus-crs-old-testament-leadership-and-decision-making",
+              "display_order": 3,
+              "allocated_questions": 19
+            },
+            {
+              "title": "Kingship in Israel: Saul’s Disobedience, David’s Kingdom, and Solomon’s Wisdom",
+              "import_key": "waec-syllabus-crs-old-testament-kingship-saul-david-and-solomon",
+              "display_order": 4,
+              "allocated_questions": 19
+            },
+            {
+              "title": "Religious Reform and True Worship: Elijah, Josiah, and the Prophet Amos",
+              "import_key": "waec-syllabus-crs-old-testament-religious-reform-and-true-worship",
+              "display_order": 5,
+              "allocated_questions": 19
+            },
+            {
+              "title": "Hope of Restoration, Hosea’s Unconditional Love, and the New Covenant in Jeremiah",
+              "import_key": "waec-syllabus-crs-old-testament-restoration-divine-love-and-new-covenant",
+              "display_order": 6,
+              "allocated_questions": 19
+            }
+          ]
+        },
+        {
+          "title": "Themes from the Synoptic Gospels and Acts of the Apostles",
+          "display_order": 2,
+          "allocated_questions": 114,
+          "topics": [
+            {
+              "title": "The Birth, Baptism, and Temptation of Jesus Christ",
+              "import_key": "waec-syllabus-crs-gospels-and-acts-birth-baptism-and-temptation",
+              "display_order": 1,
+              "allocated_questions": 19
+            },
+            {
+              "title": "The Ministry of Jesus: Miracles and Parables of the Kingdom",
+              "import_key": "waec-syllabus-crs-gospels-and-acts-miracles-and-parables-of-the-kingdom",
+              "display_order": 2,
+              "allocated_questions": 19
+            },
+            {
+              "title": "The Passion, Trial, Crucifixion, and Triumphant Resurrection of Jesus Christ",
+              "import_key": "waec-syllabus-crs-gospels-and-acts-passion-crucifixion-and-resurrection",
+              "display_order": 3,
+              "allocated_questions": 19
+            },
+            {
+              "title": "The Early Church: The Holy Spirit, Pentecost, and Christian Fellowship",
+              "import_key": "waec-syllabus-crs-gospels-and-acts-pentecost-and-early-church-fellowship",
+              "display_order": 4,
+              "allocated_questions": 19
+            },
+            {
+              "title": "Opposition, Persecution, Stephen’s Martyrdom, and the Spread to Samaria",
+              "import_key": "waec-syllabus-crs-gospels-and-acts-persecution-martyrdom-and-samaria",
+              "display_order": 5,
+              "allocated_questions": 19
+            },
+            {
+              "title": "The Conversion of Saul, Peter’s Gentile Ministry, and the Council of Jerusalem",
+              "import_key": "waec-syllabus-crs-gospels-and-acts-conversion-of-saul-and-gentile-mission",
+              "display_order": 6,
+              "allocated_questions": 19
+            }
+          ]
+        },
+        {
+          "title": "Themes from Selected Epistles",
+          "display_order": 3,
+          "allocated_questions": 72,
+          "topics": [
+            {
+              "title": "Justification by Faith, Grace, and the Law (Romans and Galatians)",
+              "import_key": "waec-syllabus-crs-epistles-justification-by-faith-and-grace",
+              "display_order": 1,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Christian Conduct, Spiritual Gifts, and the Supremacy of Love (1 Corinthians and Philippians)",
+              "import_key": "waec-syllabus-crs-epistles-christian-conduct-gifts-and-love",
+              "display_order": 2,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Civic Responsibility, Submission to Governing Authorities, and Peaceful Coexistence (Romans and 1 Peter)",
+              "import_key": "waec-syllabus-crs-epistles-civic-responsibility-and-peaceful-living",
+              "display_order": 3,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Impartiality, the Power of the Tongue, and Living Faith Proven by Works (James)",
+              "import_key": "waec-syllabus-crs-epistles-impartiality-tongue-and-living-faith",
+              "display_order": 4,
+              "allocated_questions": 18
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

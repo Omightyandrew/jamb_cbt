@@ -36,6 +36,14 @@
   <div class="modal-card"><button id="syllabusModalClose" class="modal-close" type="button" aria-label="Close">×</button><div id="syllabusModalBody"></div></div>
 </div>
 <script src="supabase.js"></script>
+<script>
+  (() => {
+    const examCode = typeof window.getSelectedExamCode === 'function' ? window.getSelectedExamCode() : 'JAMB';
+    document.title = `${examCode} Syllabus | ExamPilot`;
+    const heading = document.querySelector('.header-copy h1');
+    if (heading) heading.textContent = `${examCode} Syllabus`;
+  })();
+</script>
 <script src="premium-access.js"></script>
 <script src="syllabus.js"></script>
     <script src="ai-tutor.js"></script>
