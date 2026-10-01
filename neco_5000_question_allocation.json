@@ -1,0 +1,2173 @@
+{
+  "metadata": {
+    "title": "NECO Question Bank Target Allocation",
+    "generated_at": "2026-10-01T01:17:09.136314Z",
+    "target_grand_total": 5000,
+    "actual_grand_total": 5000,
+    "total_subjects": 13,
+    "total_sections": 72,
+    "total_topics": 242,
+    "total_topics_covered": 242,
+    "total_topics_zero": 0
+  },
+  "subjects": [
+    {
+      "name": "English",
+      "display_name": "English Language",
+      "display_order": 1,
+      "allocated_questions": 550,
+      "sections_count": 4,
+      "topics_count": 10,
+      "sections": [
+        {
+          "title": "Essay and Letter Writing",
+          "display_order": 1,
+          "allocated_questions": 70,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Essay Writing (Narrative, Descriptive, Argumentative, Expository, Article)",
+              "import_key": "neco-english-essay-and-letter-writing-essay-writing",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Letter Writing (Formal & Informal)",
+              "import_key": "neco-english-essay-and-letter-writing-letter-writing",
+              "display_order": 2,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Speech Writing",
+              "import_key": "neco-english-essay-and-letter-writing-speech-writing",
+              "display_order": 3,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Comprehension",
+          "display_order": 2,
+          "allocated_questions": 120,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Reading Passage Interpretation",
+              "import_key": "neco-english-comprehension-reading-passage",
+              "display_order": 1,
+              "allocated_questions": 45
+            },
+            {
+              "title": "Identifying Intentions, Attitudes, Tone",
+              "import_key": "neco-english-comprehension-intentions-attitudes-tone",
+              "display_order": 2,
+              "allocated_questions": 40
+            },
+            {
+              "title": "Information Extraction",
+              "import_key": "neco-english-comprehension-information-extraction",
+              "display_order": 3,
+              "allocated_questions": 35
+            }
+          ]
+        },
+        {
+          "title": "Lexis and Structure",
+          "display_order": 3,
+          "allocated_questions": 240,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Grammar (Tenses, Concord, Pronouns, Prepositions, Conjunctions)",
+              "import_key": "neco-english-lexis-and-structure-grammar",
+              "display_order": 1,
+              "allocated_questions": 130
+            },
+            {
+              "title": "Vocabulary (Synonyms, Antonyms, Homonyms, Idioms, Collocations, Figurative Language)",
+              "import_key": "neco-english-lexis-and-structure-vocabulary",
+              "display_order": 2,
+              "allocated_questions": 110
+            }
+          ]
+        },
+        {
+          "title": "Oral English",
+          "display_order": 4,
+          "allocated_questions": 120,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Speech Sounds (Vowels & Consonants)",
+              "import_key": "neco-english-oral-english-speech-sounds",
+              "display_order": 1,
+              "allocated_questions": 65
+            },
+            {
+              "title": "Stress and Intonation",
+              "import_key": "neco-english-oral-english-stress-intonation",
+              "display_order": 2,
+              "allocated_questions": 55
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mathematics",
+      "display_name": "Mathematics",
+      "display_order": 2,
+      "allocated_questions": 600,
+      "sections_count": 8,
+      "topics_count": 28,
+      "sections": [
+        {
+          "title": "Number and Numeration",
+          "display_order": 1,
+          "allocated_questions": 170,
+          "topics_count": 8,
+          "topics": [
+            {
+              "title": "Number Bases and Conversion",
+              "import_key": "neco-mathematics-number-and-numeration-number-bases",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Fractions, Decimals & Approximations",
+              "import_key": "neco-mathematics-number-and-numeration-fractions-decimals",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Indices and Standard Form",
+              "import_key": "neco-mathematics-number-and-numeration-indices",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Logarithms",
+              "import_key": "neco-mathematics-number-and-numeration-logarithms",
+              "display_order": 4,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Sequences and Series (AP & GP)",
+              "import_key": "neco-mathematics-number-and-numeration-sequences-series",
+              "display_order": 5,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Sets, Venn Diagrams",
+              "import_key": "neco-mathematics-number-and-numeration-sets",
+              "display_order": 6,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Financial Arithmetic (Interest, Profit/Loss, Taxes)",
+              "import_key": "neco-mathematics-number-and-numeration-financial-arithmetic",
+              "display_order": 7,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Ratio, Proportion & Rates (Variation)",
+              "import_key": "neco-mathematics-number-and-numeration-ratio-proportion",
+              "display_order": 8,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Algebraic Processes",
+          "display_order": 2,
+          "allocated_questions": 115,
+          "topics_count": 5,
+          "topics": [
+            {
+              "title": "Algebraic Expressions (Expansion, Factorisation, Simplification)",
+              "import_key": "neco-mathematics-algebraic-processes-expressions",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Linear, Simultaneous & Quadratic Equations",
+              "import_key": "neco-mathematics-algebraic-processes-equations",
+              "display_order": 2,
+              "allocated_questions": 30
+            },
+            {
+              "title": "Inequalities",
+              "import_key": "neco-mathematics-algebraic-processes-inequalities",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Matrices & Determinants",
+              "import_key": "neco-mathematics-algebraic-processes-matrices",
+              "display_order": 4,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Functions & Relations (Domain, Range, Mapping)",
+              "import_key": "neco-mathematics-algebraic-processes-functions",
+              "display_order": 5,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Geometry and Mensuration",
+          "display_order": 3,
+          "allocated_questions": 110,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Plane Geometry (Angles, Polygons, Circle Theorems, Constructions)",
+              "import_key": "neco-mathematics-geometry-mensuration-plane-geometry",
+              "display_order": 1,
+              "allocated_questions": 40
+            },
+            {
+              "title": "Mensuration (Perimeter, Area, Volume of 2D & 3D Shapes)",
+              "import_key": "neco-mathematics-geometry-mensuration-mensuration",
+              "display_order": 2,
+              "allocated_questions": 45
+            },
+            {
+              "title": "Coordinate Geometry (Distance, Midpoint, Line Equations)",
+              "import_key": "neco-mathematics-geometry-mensuration-coordinate-geometry",
+              "display_order": 3,
+              "allocated_questions": 25
+            }
+          ]
+        },
+        {
+          "title": "Vectors",
+          "display_order": 4,
+          "allocated_questions": 20,
+          "topics_count": 1,
+          "topics": [
+            {
+              "title": "Vector Addition, Magnitude & Direction",
+              "import_key": "neco-mathematics-vectors-basic",
+              "display_order": 1,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Trigonometry",
+          "display_order": 5,
+          "allocated_questions": 55,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Trigonometric Ratios (Sine, Cosine, Tangent)",
+              "import_key": "neco-mathematics-trigonometry-ratios",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Applications (Elevation, Depression, Bearings, Distances)",
+              "import_key": "neco-mathematics-trigonometry-applications",
+              "display_order": 2,
+              "allocated_questions": 30
+            }
+          ]
+        },
+        {
+          "title": "Statistics and Probability",
+          "display_order": 6,
+          "allocated_questions": 75,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "Data Representation (Charts, Histograms, Ogives)",
+              "import_key": "neco-mathematics-statistics-data-representation",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Measures of Central Tendency (Mean, Median, Mode)",
+              "import_key": "neco-mathematics-statistics-central-tendency",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Measures of Dispersion (Range, Quartiles, Std Dev)",
+              "import_key": "neco-mathematics-statistics-dispersion",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Basic Probability (Experimental & Theoretical)",
+              "import_key": "neco-mathematics-statistics-probability",
+              "display_order": 4,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Matrices and Determinants",
+          "display_order": 7,
+          "allocated_questions": 30,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Matrix Operations (Addition, Multiplication, Scalar)",
+              "import_key": "neco-mathematics-matrices-operations",
+              "display_order": 1,
+              "allocated_questions": 10
+            },
+            {
+              "title": "Determinants & Inverses (2x2, 3x3)",
+              "import_key": "neco-mathematics-matrices-determinants",
+              "display_order": 2,
+              "allocated_questions": 10
+            },
+            {
+              "title": "Solving Linear Systems (Cramer’s Rule, Matrix Inverse)",
+              "import_key": "neco-mathematics-matrices-linear-systems",
+              "display_order": 3,
+              "allocated_questions": 10
+            }
+          ]
+        },
+        {
+          "title": "Introductory Calculus",
+          "display_order": 8,
+          "allocated_questions": 25,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Differentiation (First Principles, Standard Rules)",
+              "import_key": "neco-mathematics-calculus-differentiation",
+              "display_order": 1,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Integration (Indefinite, Definite, Area Under Curve)",
+              "import_key": "neco-mathematics-calculus-integration",
+              "display_order": 2,
+              "allocated_questions": 12
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Civic Education",
+      "display_name": "Civic Education",
+      "display_order": 3,
+      "allocated_questions": 350,
+      "sections_count": 3,
+      "topics_count": 15,
+      "sections": [
+        {
+          "title": "Values, Youth and Citizenship",
+          "display_order": 1,
+          "allocated_questions": 110,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "National Values and Ethics",
+              "import_key": "neco-civic-values-national-values",
+              "display_order": 1,
+              "allocated_questions": 30
+            },
+            {
+              "title": "Citizenship Rights, Duties & Obligations",
+              "import_key": "neco-civic-values-citizenship-rights",
+              "display_order": 2,
+              "allocated_questions": 30
+            },
+            {
+              "title": "Youth Empowerment & Economic Self‑Reliance",
+              "import_key": "neco-civic-values-youth-empowerment",
+              "display_order": 3,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Responsible Parenthood & Interpersonal Relationships",
+              "import_key": "neco-civic-values-parenthood-relationships",
+              "display_order": 4,
+              "allocated_questions": 25
+            }
+          ]
+        },
+        {
+          "title": "Social Problems and Human Rights",
+          "display_order": 2,
+          "allocated_questions": 120,
+          "topics_count": 5,
+          "topics": [
+            {
+              "title": "Fundamental Human Rights (UDHR)",
+              "import_key": "neco-civic-social-human-rights-udhr",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Cultism and Lawlessness",
+              "import_key": "neco-civic-social-human-rights-cultism",
+              "display_order": 2,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Drug Abuse & Illicit Trafficking",
+              "import_key": "neco-civic-social-human-rights-drug-abuse",
+              "display_order": 3,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Human Trafficking",
+              "import_key": "neco-civic-social-human-rights-trafficking",
+              "display_order": 4,
+              "allocated_questions": 25
+            },
+            {
+              "title": "HIV/AIDS Awareness",
+              "import_key": "neco-civic-social-human-rights-hiv-aids",
+              "display_order": 5,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Democracy, Rule of Law and Public Service",
+          "display_order": 3,
+          "allocated_questions": 120,
+          "topics_count": 6,
+          "topics": [
+            {
+              "title": "Structure and Functions of Government (Federal, State, Local)",
+              "import_key": "neco-civic-democracy-government-structure",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Principles of Democracy & Constitutional Rule",
+              "import_key": "neco-civic-democracy-principles",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Rule of Law and Administration of Justice",
+              "import_key": "neco-civic-democracy-rule-of-law",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Public Service Accountability",
+              "import_key": "neco-civic-democracy-public-service",
+              "display_order": 4,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Civil Society and Anti‑Corruption Agencies",
+              "import_key": "neco-civic-democracy-civil-society",
+              "display_order": 5,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Political Apathy and Citizen Participation",
+              "import_key": "neco-civic-democracy-political-apathy",
+              "display_order": 6,
+              "allocated_questions": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Biology",
+      "display_name": "Biology",
+      "display_order": 4,
+      "allocated_questions": 400,
+      "sections_count": 5,
+      "topics_count": 24,
+      "sections": [
+        {
+          "title": "Organisation of Life",
+          "display_order": 1,
+          "allocated_questions": 90,
+          "topics_count": 5,
+          "topics": [
+            {
+              "title": "Living and Non‑living Characteristics",
+              "import_key": "neco-biology-organisation-life-living-nonliving",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Cell Structure, Organelles & Microscopy",
+              "import_key": "neco-biology-organisation-life-cell-structure",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Levels of Organisation (Cell, Tissue, Organ, System)",
+              "import_key": "neco-biology-organisation-life-levels",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Cell Division (Mitosis & Meiosis)",
+              "import_key": "neco-biology-organisation-life-cell-division",
+              "display_order": 4,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Classification of Living Organisms",
+              "import_key": "neco-biology-organisation-life-classification",
+              "display_order": 5,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Plant and Animal Nutrition, Respiration and Excretion",
+          "display_order": 2,
+          "allocated_questions": 100,
+          "topics_count": 5,
+          "topics": [
+            {
+              "title": "Modes of Nutrition & Photosynthesis",
+              "import_key": "neco-biology-nutrition-photosynthesis",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Alimentary Systems, Digestion & Enzymes",
+              "import_key": "neco-biology-nutrition-digestion",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Cellular Respiration & Gaseous Exchange",
+              "import_key": "neco-biology-nutrition-respiration",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Excretion & Osmoregulation",
+              "import_key": "neco-biology-nutrition-excretion",
+              "display_order": 4,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Skeletal Systems & Movement",
+              "import_key": "neco-biology-nutrition-skeletal",
+              "display_order": 5,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Internal Transport and Coordination",
+          "display_order": 3,
+          "allocated_questions": 85,
+          "topics_count": 5,
+          "topics": [
+            {
+              "title": "Transport in Higher Plants (Xylem & Phloem)",
+              "import_key": "neco-biology-transport-plants",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Circulatory System in Animals",
+              "import_key": "neco-biology-transport-circulatory",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Nervous Coordination & Reflex Actions",
+              "import_key": "neco-biology-transport-nervous",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Sense Organs (Eye, Ear, Skin)",
+              "import_key": "neco-biology-transport-sense-organs",
+              "display_order": 4,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Hormonal Coordination & Homeostasis",
+              "import_key": "neco-biology-transport-hormonal",
+              "display_order": 5,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "Reproduction and Growth",
+          "display_order": 4,
+          "allocated_questions": 65,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "Asexual Reproduction in Plants & Animals",
+              "import_key": "neco-biology-reproduction-asexual",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Sexual Reproduction in Flowering Plants",
+              "import_key": "neco-biology-reproduction-sexual-plants",
+              "display_order": 2,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Human Reproductive System & Fertilisation",
+              "import_key": "neco-biology-reproduction-human",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Growth, Development & Metamorphosis",
+              "import_key": "neco-biology-reproduction-growth",
+              "display_order": 4,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "Genetics, Evolution and Ecology",
+          "display_order": 5,
+          "allocated_questions": 60,
+          "topics_count": 5,
+          "topics": [
+            {
+              "title": "Mendelian Genetics & Inheritance Patterns",
+              "import_key": "neco-biology-genetics-mendelian",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Hereditary Variation & Chromosomal Mutations",
+              "import_key": "neco-biology-genetics-variation",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Theories & Evidence of Organic Evolution",
+              "import_key": "neco-biology-genetics-evolution-theories",
+              "display_order": 3,
+              "allocated_questions": 11
+            },
+            {
+              "title": "Ecosystems, Food Webs & Energy Flow",
+              "import_key": "neco-biology-genetics-ecology-ecosystems",
+              "display_order": 4,
+              "allocated_questions": 11
+            },
+            {
+              "title": "Ecological Factors, Biomes & Conservation",
+              "import_key": "neco-biology-genetics-ecology-conservation",
+              "display_order": 5,
+              "allocated_questions": 11
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chemistry",
+      "display_name": "Chemistry",
+      "display_order": 5,
+      "allocated_questions": 350,
+      "sections_count": 5,
+      "topics_count": 18,
+      "sections": [
+        {
+          "title": "Matter, Atomic Structure and Periodic Table",
+          "display_order": 1,
+          "allocated_questions": 100,
+          "topics_count": 5,
+          "topics": [
+            {
+              "title": "Particulate Nature of Matter & State Changes",
+              "import_key": "neco-chemistry-matter-particulate-state",
+              "display_order": 1,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Atomic Structure, Isotopes & Electronic Configuration",
+              "import_key": "neco-chemistry-matter-atomic-structure",
+              "display_order": 2,
+              "allocated_questions": 22
+            },
+            {
+              "title": "Periodic Table & Periodic Properties",
+              "import_key": "neco-chemistry-matter-periodic-table",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Chemical Bonding (Ionic, Covalent, Metallic)",
+              "import_key": "neco-chemistry-matter-bonding",
+              "display_order": 4,
+              "allocated_questions": 22
+            },
+            {
+              "title": "Molecular Shapes & Intermolecular Forces",
+              "import_key": "neco-chemistry-matter-molecular-shapes",
+              "display_order": 5,
+              "allocated_questions": 18
+            }
+          ]
+        },
+        {
+          "title": "Stoichiometry, Energetics and Equilibrium",
+          "display_order": 2,
+          "allocated_questions": 90,
+          "topics_count": 5,
+          "topics": [
+            {
+              "title": "Mole Concept & Chemical Formulae",
+              "import_key": "neco-chemistry-stoichiometry-mole-concept",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Gas Laws & Molar Volumes",
+              "import_key": "neco-chemistry-stoichiometry-gas-laws",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Thermochemistry & Energy Changes",
+              "import_key": "neco-chemistry-stoichiometry-thermochemistry",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Chemical Kinetics & Reaction Rates",
+              "import_key": "neco-chemistry-stoichiometry-kinetics",
+              "display_order": 4,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Reversible Reactions & Chemical Equilibrium",
+              "import_key": "neco-chemistry-stoichiometry-equilibrium",
+              "display_order": 5,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "Solutions, Acids, Bases and Electrochemistry",
+          "display_order": 3,
+          "allocated_questions": 80,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Solutions, Solutes & Solubility Curves",
+              "import_key": "neco-chemistry-solutions-solubility",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Acids, Bases, pH Scale & Neutralisation",
+              "import_key": "neco-chemistry-solutions-acids-bases",
+              "display_order": 2,
+              "allocated_questions": 30
+            },
+            {
+              "title": "Redox Reactions & Electrolysis",
+              "import_key": "neco-chemistry-solutions-redox",
+              "display_order": 3,
+              "allocated_questions": 25
+            }
+          ]
+        },
+        {
+          "title": "Organic and Industrial Chemistry",
+          "display_order": 4,
+          "allocated_questions": 50,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Hydrocarbons & Functional Groups",
+              "import_key": "neco-chemistry-organic-hydrocarbons",
+              "display_order": 1,
+              "allocated_questions": 30
+            },
+            {
+              "title": "Polymers & Industrial Processes",
+              "import_key": "neco-chemistry-organic-polymers",
+              "display_order": 2,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Practical Chemistry",
+          "display_order": 5,
+          "allocated_questions": 30,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Separation Techniques (Filtration, Distillation, Chromatography)",
+              "import_key": "neco-chemistry-practical-separation",
+              "display_order": 1,
+              "allocated_questions": 10
+            },
+            {
+              "title": "Qualitative Analysis of Ions",
+              "import_key": "neco-chemistry-practical-qualitative",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Laboratory Safety & Apparatus",
+              "import_key": "neco-chemistry-practical-safety",
+              "display_order": 3,
+              "allocated_questions": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Physics",
+      "display_name": "Physics",
+      "display_order": 6,
+      "allocated_questions": 350,
+      "sections_count": 6,
+      "topics_count": 15,
+      "sections": [
+        {
+          "title": "Mechanics",
+          "display_order": 1,
+          "allocated_questions": 80,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Kinematics & Vectors",
+              "import_key": "neco-physics-mechanics-kinematics",
+              "display_order": 1,
+              "allocated_questions": 30
+            },
+            {
+              "title": "Work, Energy & Power",
+              "import_key": "neco-physics-mechanics-work-energy",
+              "display_order": 2,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Momentum & Collisions",
+              "import_key": "neco-physics-mechanics-momentum",
+              "display_order": 3,
+              "allocated_questions": 25
+            }
+          ]
+        },
+        {
+          "title": "Waves and Sound",
+          "display_order": 2,
+          "allocated_questions": 50,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Wave Properties (Frequency, Wavelength, Speed)",
+              "import_key": "neco-physics-waves-properties",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Sound Characteristics & Doppler Effect",
+              "import_key": "neco-physics-waves-sound-doppler",
+              "display_order": 2,
+              "allocated_questions": 25
+            }
+          ]
+        },
+        {
+          "title": "Heat and Thermodynamics",
+          "display_order": 3,
+          "allocated_questions": 50,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Temperature Scales & Heat Transfer",
+              "import_key": "neco-physics-heat-temperature",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Laws of Thermodynamics",
+              "import_key": "neco-physics-heat-thermodynamics",
+              "display_order": 2,
+              "allocated_questions": 25
+            }
+          ]
+        },
+        {
+          "title": "Electricity and Magnetism",
+          "display_order": 4,
+          "allocated_questions": 60,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Electric Circuits (Ohm’s Law, Series & Parallel)",
+              "import_key": "neco-physics-electric-circuits",
+              "display_order": 1,
+              "allocated_questions": 35
+            },
+            {
+              "title": "Magnetic Fields & Electromagnetic Induction",
+              "import_key": "neco-physics-electric-magnetism",
+              "display_order": 2,
+              "allocated_questions": 25
+            }
+          ]
+        },
+        {
+          "title": "Modern Physics",
+          "display_order": 5,
+          "allocated_questions": 50,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Atomic Models & Structure",
+              "import_key": "neco-physics-modern-atomic-models",
+              "display_order": 1,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Nuclear Physics (Radioactivity, Fission & Fusion)",
+              "import_key": "neco-physics-modern-nuclear",
+              "display_order": 2,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Basic Electronics (Semiconductors, Diodes)",
+              "import_key": "neco-physics-modern-electronics",
+              "display_order": 3,
+              "allocated_questions": 14
+            }
+          ]
+        },
+        {
+          "title": "Light and Optics",
+          "display_order": 6,
+          "allocated_questions": 60,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Reflection of Light (Plane & Curved Mirrors)",
+              "import_key": "neco-physics-optics-reflection",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Refraction of Light & Total Internal Reflection",
+              "import_key": "neco-physics-optics-refraction",
+              "display_order": 2,
+              "allocated_questions": 22
+            },
+            {
+              "title": "Lenses & Optical Instruments",
+              "import_key": "neco-physics-optics-lenses",
+              "display_order": 3,
+              "allocated_questions": 18
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Agricultural Science",
+      "display_name": "Agricultural Science",
+      "display_order": 7,
+      "allocated_questions": 350,
+      "sections_count": 7,
+      "topics_count": 14,
+      "sections": [
+        {
+          "title": "Basic Concepts of Agriculture",
+          "display_order": 1,
+          "allocated_questions": 35,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Definition & Importance of Agriculture",
+              "import_key": "neco-agri-basic-concepts-definition",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Historical Development of Agriculture",
+              "import_key": "neco-agri-basic-concepts-history",
+              "display_order": 2,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "Agricultural Ecology",
+          "display_order": 2,
+          "allocated_questions": 55,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Environmental Factors & Land Use",
+              "import_key": "neco-agri-ecology-environmental-factors",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Soil & Water Conservation",
+              "import_key": "neco-agri-ecology-conservation",
+              "display_order": 2,
+              "allocated_questions": 30
+            }
+          ]
+        },
+        {
+          "title": "Crop Production",
+          "display_order": 3,
+          "allocated_questions": 70,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Principles of Crop Growth & Development",
+              "import_key": "neco-agri-crop-production-growth",
+              "display_order": 1,
+              "allocated_questions": 35
+            },
+            {
+              "title": "Farming Systems & Major Crops",
+              "import_key": "neco-agri-crop-production-farming-systems",
+              "display_order": 2,
+              "allocated_questions": 35
+            }
+          ]
+        },
+        {
+          "title": "Animal Production",
+          "display_order": 4,
+          "allocated_questions": 70,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Livestock Management & Animal Health",
+              "import_key": "neco-agri-animal-production-management",
+              "display_order": 1,
+              "allocated_questions": 35
+            },
+            {
+              "title": "Housing & Feeding Systems",
+              "import_key": "neco-agri-animal-production-housing",
+              "display_order": 2,
+              "allocated_questions": 35
+            }
+          ]
+        },
+        {
+          "title": "Agricultural Economics and Extension",
+          "display_order": 5,
+          "allocated_questions": 50,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Farm Management & Record Keeping",
+              "import_key": "neco-agri-economics-management",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Agricultural Policies & Extension Services",
+              "import_key": "neco-agri-economics-policies",
+              "display_order": 2,
+              "allocated_questions": 25
+            }
+          ]
+        },
+        {
+          "title": "Agricultural Mechanisation",
+          "display_order": 6,
+          "allocated_questions": 35,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Farm Tools & Machinery",
+              "import_key": "neco-agri-mechanisation-tools",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Power Sources & Energy Use",
+              "import_key": "neco-agri-mechanisation-power",
+              "display_order": 2,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "Forestry and Wildlife Management",
+          "display_order": 7,
+          "allocated_questions": 35,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Sustainable Forestry Practices",
+              "import_key": "neco-agri-forestry-sustainable",
+              "display_order": 1,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Wildlife Conservation & Management",
+              "import_key": "neco-agri-wildlife-conservation",
+              "display_order": 2,
+              "allocated_questions": 17
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Economics",
+      "display_name": "Economics",
+      "display_order": 8,
+      "allocated_questions": 400,
+      "sections_count": 6,
+      "topics_count": 16,
+      "sections": [
+        {
+          "title": "Microeconomics",
+          "display_order": 1,
+          "allocated_questions": 90,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Supply & Demand Theory",
+              "import_key": "neco-economics-micro-supply-demand",
+              "display_order": 1,
+              "allocated_questions": 35
+            },
+            {
+              "title": "Market Structures (Perfect, Monopoly, Oligopoly)",
+              "import_key": "neco-economics-micro-market-structures",
+              "display_order": 2,
+              "allocated_questions": 30
+            },
+            {
+              "title": "Consumer Behaviour & Elasticities",
+              "import_key": "neco-economics-micro-consumer-behaviour",
+              "display_order": 3,
+              "allocated_questions": 25
+            }
+          ]
+        },
+        {
+          "title": "Macroeconomics",
+          "display_order": 2,
+          "allocated_questions": 80,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "National Income & GDP",
+              "import_key": "neco-economics-macro-national-income",
+              "display_order": 1,
+              "allocated_questions": 30
+            },
+            {
+              "title": "Inflation & Unemployment",
+              "import_key": "neco-economics-macro-inflation",
+              "display_order": 2,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Monetary & Fiscal Policy",
+              "import_key": "neco-economics-macro-policy",
+              "display_order": 3,
+              "allocated_questions": 25
+            }
+          ]
+        },
+        {
+          "title": "Economic Development",
+          "display_order": 3,
+          "allocated_questions": 40,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Economic Growth Strategies",
+              "import_key": "neco-economics-development-growth",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Poverty Alleviation & Sustainable Development",
+              "import_key": "neco-economics-development-poverty",
+              "display_order": 2,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Money and Banking",
+          "display_order": 4,
+          "allocated_questions": 75,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Functions & Types of Money",
+              "import_key": "neco-economics-money-functions",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Commercial Banks & Credit Creation",
+              "import_key": "neco-economics-money-commercial-banks",
+              "display_order": 2,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Central Bank & Monetary Policy",
+              "import_key": "neco-economics-money-central-bank",
+              "display_order": 3,
+              "allocated_questions": 25
+            }
+          ]
+        },
+        {
+          "title": "International Trade",
+          "display_order": 5,
+          "allocated_questions": 65,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Balance of Trade & Balance of Payments",
+              "import_key": "neco-economics-trade-balance",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Trade Policy, Tariffs & Protectionism",
+              "import_key": "neco-economics-trade-policy",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Foreign Exchange & Exchange Rates",
+              "import_key": "neco-economics-trade-exchange-rates",
+              "display_order": 3,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Public Finance",
+          "display_order": 6,
+          "allocated_questions": 50,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Sources of Government Revenue & Taxation",
+              "import_key": "neco-economics-public-finance-revenue",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Public Expenditure & National Budget",
+              "import_key": "neco-economics-public-finance-expenditure",
+              "display_order": 2,
+              "allocated_questions": 25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Financial Accounting",
+      "display_name": "Financial Accounting",
+      "display_order": 9,
+      "allocated_questions": 350,
+      "sections_count": 6,
+      "topics_count": 16,
+      "sections": [
+        {
+          "title": "Fundamentals of Accounting",
+          "display_order": 1,
+          "allocated_questions": 80,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Accounting Equation & Principles",
+              "import_key": "neco-accounting-fundamentals-equation",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Double‑Entry Bookkeeping",
+              "import_key": "neco-accounting-fundamentals-double-entry",
+              "display_order": 2,
+              "allocated_questions": 30
+            },
+            {
+              "title": "Trial Balance Preparation",
+              "import_key": "neco-accounting-fundamentals-trial-balance",
+              "display_order": 3,
+              "allocated_questions": 25
+            }
+          ]
+        },
+        {
+          "title": "Financial Statements",
+          "display_order": 2,
+          "allocated_questions": 80,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Statement of Financial Position (Balance Sheet)",
+              "import_key": "neco-accounting-statements-balance-sheet",
+              "display_order": 1,
+              "allocated_questions": 30
+            },
+            {
+              "title": "Profit & Loss Account (Income Statement)",
+              "import_key": "neco-accounting-statements-profit-loss",
+              "display_order": 2,
+              "allocated_questions": 30
+            },
+            {
+              "title": "Cash Flow Statement",
+              "import_key": "neco-accounting-statements-cash-flow",
+              "display_order": 3,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Cost Accounting Basics",
+          "display_order": 3,
+          "allocated_questions": 50,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Cost Classifications (Fixed, Variable, Semi‑Variable)",
+              "import_key": "neco-accounting-cost-classifications",
+              "display_order": 1,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Costing Methods (Job, Process, Activity‑Based)",
+              "import_key": "neco-accounting-cost-methods",
+              "display_order": 2,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Budgeting & Variance Analysis",
+              "import_key": "neco-accounting-cost-budgeting",
+              "display_order": 3,
+              "allocated_questions": 14
+            }
+          ]
+        },
+        {
+          "title": "Partnership Accounts",
+          "display_order": 4,
+          "allocated_questions": 55,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Partnership Formation & Profit-Sharing Arrangements",
+              "import_key": "neco-accounting-partnership-formation",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Admission & Retirement of Partners",
+              "import_key": "neco-accounting-partnership-admission",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Dissolution of Partnership",
+              "import_key": "neco-accounting-partnership-dissolution",
+              "display_order": 3,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "Company Accounts",
+          "display_order": 5,
+          "allocated_questions": 50,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Share Capital, Debentures & Issue of Shares",
+              "import_key": "neco-accounting-company-share-capital",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Company Final Accounts & Published Financial Statements",
+              "import_key": "neco-accounting-company-final-accounts",
+              "display_order": 2,
+              "allocated_questions": 25
+            }
+          ]
+        },
+        {
+          "title": "Club and Not-for-Profit Accounts",
+          "display_order": 6,
+          "allocated_questions": 35,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Receipts & Payments Account",
+              "import_key": "neco-accounting-club-receipts-payments",
+              "display_order": 1,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Income & Expenditure Account & Accumulated Fund",
+              "import_key": "neco-accounting-club-income-expenditure",
+              "display_order": 2,
+              "allocated_questions": 17
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Commerce",
+      "display_name": "Commerce",
+      "display_order": 10,
+      "allocated_questions": 300,
+      "sections_count": 5,
+      "topics_count": 15,
+      "sections": [
+        {
+          "title": "Business Organisation and Management",
+          "display_order": 1,
+          "allocated_questions": 70,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Types of Business Organisations (Sole, Partnership, Ltd.)",
+              "import_key": "neco-commerce-organisation-types",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Management Principles (Planning, Organising, Leading, Controlling)",
+              "import_key": "neco-commerce-organisation-management",
+              "display_order": 2,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Marketing Basics (4 Ps, Market Segmentation)",
+              "import_key": "neco-commerce-organisation-marketing",
+              "display_order": 3,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Business Finance",
+          "display_order": 2,
+          "allocated_questions": 60,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Sources of Capital (Equity, Debt)",
+              "import_key": "neco-commerce-finance-capital-sources",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Financial Ratios (Liquidity, Solvency, Profitability)",
+              "import_key": "neco-commerce-finance-ratios",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Investment Appraisal (Payback, NPV, IRR)",
+              "import_key": "neco-commerce-finance-investment",
+              "display_order": 3,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Business Law and Ethics",
+          "display_order": 3,
+          "allocated_questions": 40,
+          "topics_count": 2,
+          "topics": [
+            {
+              "title": "Legal Environment & Contract Law",
+              "import_key": "neco-commerce-law-legal-environment",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Business Ethics & Corporate Social Responsibility",
+              "import_key": "neco-commerce-law-ethics",
+              "display_order": 2,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Home and Foreign Trade",
+          "display_order": 4,
+          "allocated_questions": 70,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Retail & Wholesale Trade",
+              "import_key": "neco-commerce-trade-retail-wholesale",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Channels of Distribution",
+              "import_key": "neco-commerce-trade-distribution",
+              "display_order": 2,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Import & Export Trade (Documents & Procedures)",
+              "import_key": "neco-commerce-trade-import-export",
+              "display_order": 3,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Aids to Trade",
+          "display_order": 5,
+          "allocated_questions": 60,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "Banking & Finance as Aids to Trade",
+              "import_key": "neco-commerce-aids-banking",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Insurance & Risk Management",
+              "import_key": "neco-commerce-aids-insurance",
+              "display_order": 2,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Transport & Warehousing",
+              "import_key": "neco-commerce-aids-transport",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Communication & ICT in Trade",
+              "import_key": "neco-commerce-aids-communication",
+              "display_order": 4,
+              "allocated_questions": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Government",
+      "display_name": "Government",
+      "display_order": 11,
+      "allocated_questions": 400,
+      "sections_count": 7,
+      "topics_count": 27,
+      "sections": [
+        {
+          "title": "Basic Concepts of Government",
+          "display_order": 1,
+          "allocated_questions": 60,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "Meaning, Scope & Importance of Government",
+              "import_key": "neco-government-basic-concepts-meaning",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Power, Authority, Legitimacy & Sovereignty",
+              "import_key": "neco-government-basic-concepts-power-authority",
+              "display_order": 2,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Forms of Government (Democracy, Monarchy, Oligarchy, Totalitarianism)",
+              "import_key": "neco-government-basic-concepts-forms",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Democratic Principles & Political Culture",
+              "import_key": "neco-government-basic-concepts-democratic-principles",
+              "display_order": 4,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "Organs of Government",
+          "display_order": 2,
+          "allocated_questions": 60,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "The Executive (Presidential vs Parliamentary Systems)",
+              "import_key": "neco-government-organs-executive",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "The Legislature (Unicameral & Bicameral, Functions)",
+              "import_key": "neco-government-organs-legislature",
+              "display_order": 2,
+              "allocated_questions": 15
+            },
+            {
+              "title": "The Judiciary (Independence, Functions, Courts)",
+              "import_key": "neco-government-organs-judiciary",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Separation of Powers & Checks and Balances",
+              "import_key": "neco-government-organs-separation-checks",
+              "display_order": 4,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "Constitutions and Constitutional Development",
+          "display_order": 3,
+          "allocated_questions": 70,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "Types & Features of Constitutions (Written, Unwritten, Rigid, Flexible)",
+              "import_key": "neco-government-constitution-types",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Constitutionalism & Rule of Law",
+              "import_key": "neco-government-constitution-constitutionalism",
+              "display_order": 2,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Colonial Constitutions in Nigeria (Clifford 1922 to Lyttleton 1954)",
+              "import_key": "neco-government-constitution-colonial",
+              "display_order": 3,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Post-Independence Nigerian Constitutions (1960, 1963, 1979, 1999)",
+              "import_key": "neco-government-constitution-post-independence",
+              "display_order": 4,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Federalism and Intergovernmental Relations",
+          "display_order": 4,
+          "allocated_questions": 60,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "Meaning & Features of Federalism",
+              "import_key": "neco-government-federalism-meaning",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Advantages & Disadvantages of Federalism",
+              "import_key": "neco-government-federalism-advantages",
+              "display_order": 2,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Nigerian Federalism & Intergovernmental Relations",
+              "import_key": "neco-government-federalism-nigeria",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Revenue Allocation & Fiscal Federalism",
+              "import_key": "neco-government-federalism-revenue-allocation",
+              "display_order": 4,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "Political Parties, Elections and Electoral Process",
+          "display_order": 5,
+          "allocated_questions": 60,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "Political Parties (Functions, Types, Party Systems)",
+              "import_key": "neco-government-parties-political-parties",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Pressure Groups & Public Opinion",
+              "import_key": "neco-government-parties-pressure-groups",
+              "display_order": 2,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Electoral Systems (Proportional, Majority/Plurality)",
+              "import_key": "neco-government-parties-electoral-systems",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Electoral Process & INEC in Nigeria",
+              "import_key": "neco-government-parties-electoral-process",
+              "display_order": 4,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "Public Administration",
+          "display_order": 6,
+          "allocated_questions": 50,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Civil Service (Structure, Functions, Problems)",
+              "import_key": "neco-government-administration-civil-service",
+              "display_order": 1,
+              "allocated_questions": 18
+            },
+            {
+              "title": "Public Corporations & Parastatals",
+              "import_key": "neco-government-administration-public-corporations",
+              "display_order": 2,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Local Government Administration in Nigeria",
+              "import_key": "neco-government-administration-local-government",
+              "display_order": 3,
+              "allocated_questions": 16
+            }
+          ]
+        },
+        {
+          "title": "International Relations and Organisations",
+          "display_order": 7,
+          "allocated_questions": 40,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "Nigeria's Foreign Policy Principles & Objectives",
+              "import_key": "neco-government-international-foreign-policy",
+              "display_order": 1,
+              "allocated_questions": 12
+            },
+            {
+              "title": "United Nations (UN) Structure & Functions",
+              "import_key": "neco-government-international-un",
+              "display_order": 2,
+              "allocated_questions": 10
+            },
+            {
+              "title": "African Union (AU) & ECOWAS",
+              "import_key": "neco-government-international-au-ecowas",
+              "display_order": 3,
+              "allocated_questions": 10
+            },
+            {
+              "title": "Commonwealth of Nations & Other Organisations",
+              "import_key": "neco-government-international-commonwealth",
+              "display_order": 4,
+              "allocated_questions": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Literature in English",
+      "display_name": "Literature in English",
+      "display_order": 12,
+      "allocated_questions": 275,
+      "sections_count": 4,
+      "topics_count": 16,
+      "sections": [
+        {
+          "title": "Prose",
+          "display_order": 1,
+          "allocated_questions": 70,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Elements of Prose (Plot, Character, Setting, Theme, Style, Point of View)",
+              "import_key": "neco-literature-prose-elements",
+              "display_order": 1,
+              "allocated_questions": 25
+            },
+            {
+              "title": "African Prose Texts (Content, Themes & Critical Analysis)",
+              "import_key": "neco-literature-prose-african-texts",
+              "display_order": 2,
+              "allocated_questions": 25
+            },
+            {
+              "title": "Non-African Prose Texts (Content, Themes & Critical Analysis)",
+              "import_key": "neco-literature-prose-non-african-texts",
+              "display_order": 3,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Drama",
+          "display_order": 2,
+          "allocated_questions": 75,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "Elements of Drama (Plot, Conflict, Dramatic Techniques, Stagecraft)",
+              "import_key": "neco-literature-drama-elements",
+              "display_order": 1,
+              "allocated_questions": 20
+            },
+            {
+              "title": "African Drama Texts (Content, Themes & Critical Analysis)",
+              "import_key": "neco-literature-drama-african-texts",
+              "display_order": 2,
+              "allocated_questions": 20
+            },
+            {
+              "title": "Non-African Drama Texts (Content, Themes & Critical Analysis)",
+              "import_key": "neco-literature-drama-non-african-texts",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Shakespearean Drama (Prescribed Text: Themes, Characters, Language)",
+              "import_key": "neco-literature-drama-shakespeare",
+              "display_order": 4,
+              "allocated_questions": 20
+            }
+          ]
+        },
+        {
+          "title": "Poetry",
+          "display_order": 3,
+          "allocated_questions": 75,
+          "topics_count": 5,
+          "topics": [
+            {
+              "title": "Elements of Poetry (Diction, Imagery, Rhythm, Rhyme, Tone, Mood, Theme)",
+              "import_key": "neco-literature-poetry-elements",
+              "display_order": 1,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Figures of Speech & Literary Devices",
+              "import_key": "neco-literature-poetry-figures-of-speech",
+              "display_order": 2,
+              "allocated_questions": 16
+            },
+            {
+              "title": "African Prescribed Poems (Analysis & Appreciation)",
+              "import_key": "neco-literature-poetry-african-poems",
+              "display_order": 3,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Non-African Prescribed Poems (Analysis & Appreciation)",
+              "import_key": "neco-literature-poetry-non-african-poems",
+              "display_order": 4,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Unseen Poetry (Critical Reading & Interpretation)",
+              "import_key": "neco-literature-poetry-unseen",
+              "display_order": 5,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "Literary Appreciation and Criticism",
+          "display_order": 4,
+          "allocated_questions": 55,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "Literary Terms & Devices (Comprehensive)",
+              "import_key": "neco-literature-appreciation-literary-terms",
+              "display_order": 1,
+              "allocated_questions": 16
+            },
+            {
+              "title": "Literary Genres (Novel, Short Story, Tragedy, Comedy, Epic, Lyric)",
+              "import_key": "neco-literature-appreciation-genres",
+              "display_order": 2,
+              "allocated_questions": 13
+            },
+            {
+              "title": "African Literature (History, Themes & Oral Traditions)",
+              "import_key": "neco-literature-appreciation-african-literature",
+              "display_order": 3,
+              "allocated_questions": 13
+            },
+            {
+              "title": "Unseen Prose Passage (Critical Reading & Analysis)",
+              "import_key": "neco-literature-appreciation-unseen-prose",
+              "display_order": 4,
+              "allocated_questions": 13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Christian Religious Studies",
+      "display_name": "Christian Religious Studies",
+      "display_order": 13,
+      "allocated_questions": 325,
+      "sections_count": 6,
+      "topics_count": 28,
+      "sections": [
+        {
+          "title": "Creation, Sovereignty of God and Early History",
+          "display_order": 1,
+          "allocated_questions": 45,
+          "topics_count": 3,
+          "topics": [
+            {
+              "title": "Creation & God's Sovereignty (Genesis 1-2)",
+              "import_key": "neco-crs-creation-sovereignty",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "The Fall of Man & Its Consequences (Genesis 3)",
+              "import_key": "neco-crs-creation-fall-of-man",
+              "display_order": 2,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Cain & Abel, Noah's Covenant (Genesis 4-9)",
+              "import_key": "neco-crs-creation-noah-covenant",
+              "display_order": 3,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "The Patriarchs and the Mosaic Covenant",
+          "display_order": 2,
+          "allocated_questions": 60,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "Abraham: Faith, Call & Covenant (Genesis 12-22)",
+              "import_key": "neco-crs-patriarchs-abraham",
+              "display_order": 1,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Isaac, Jacob & Joseph: Providence & Leadership",
+              "import_key": "neco-crs-patriarchs-isaac-jacob-joseph",
+              "display_order": 2,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Moses: Call, the Exodus & the Ten Commandments",
+              "import_key": "neco-crs-patriarchs-moses-exodus",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "The Sinai Covenant & Wilderness Experience",
+              "import_key": "neco-crs-patriarchs-sinai-covenant",
+              "display_order": 4,
+              "allocated_questions": 15
+            }
+          ]
+        },
+        {
+          "title": "The Monarchy and the Prophets",
+          "display_order": 3,
+          "allocated_questions": 70,
+          "topics_count": 6,
+          "topics": [
+            {
+              "title": "Judges: Deborah, Gideon, Samson",
+              "import_key": "neco-crs-monarchy-judges",
+              "display_order": 1,
+              "allocated_questions": 10
+            },
+            {
+              "title": "Samuel, Saul & the Establishment of the Monarchy",
+              "import_key": "neco-crs-monarchy-samuel-saul",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "David & Solomon: The United Kingdom",
+              "import_key": "neco-crs-monarchy-david-solomon",
+              "display_order": 3,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Division of the Kingdom & Religious Reforms (Elijah, Elisha)",
+              "import_key": "neco-crs-monarchy-division-reforms",
+              "display_order": 4,
+              "allocated_questions": 12
+            },
+            {
+              "title": "The Writing Prophets: Isaiah, Jeremiah, Amos, Hosea",
+              "import_key": "neco-crs-monarchy-writing-prophets",
+              "display_order": 5,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Exile & Return: Ezekiel, Nehemiah, Ezra",
+              "import_key": "neco-crs-monarchy-exile-return",
+              "display_order": 6,
+              "allocated_questions": 12
+            }
+          ]
+        },
+        {
+          "title": "Life and Teachings of Jesus Christ",
+          "display_order": 4,
+          "allocated_questions": 65,
+          "topics_count": 5,
+          "topics": [
+            {
+              "title": "Birth, Childhood & Preparation of Jesus",
+              "import_key": "neco-crs-jesus-birth-preparation",
+              "display_order": 1,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Baptism, Temptation & Call of Disciples",
+              "import_key": "neco-crs-jesus-baptism-temptation",
+              "display_order": 2,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Teachings: Sermon on the Mount & Parables",
+              "import_key": "neco-crs-jesus-teachings-sermon-parables",
+              "display_order": 3,
+              "allocated_questions": 15
+            },
+            {
+              "title": "Miracles of Jesus (Healing, Nature, Resurrection of Dead)",
+              "import_key": "neco-crs-jesus-miracles",
+              "display_order": 4,
+              "allocated_questions": 12
+            },
+            {
+              "title": "Teachings on Forgiveness, Prayer & the Kingdom of God",
+              "import_key": "neco-crs-jesus-teachings-forgiveness-prayer",
+              "display_order": 5,
+              "allocated_questions": 14
+            }
+          ]
+        },
+        {
+          "title": "Passion, Resurrection and the Early Church",
+          "display_order": 5,
+          "allocated_questions": 60,
+          "topics_count": 6,
+          "topics": [
+            {
+              "title": "The Last Supper, Arrest & Trials of Jesus",
+              "import_key": "neco-crs-passion-last-supper-trials",
+              "display_order": 1,
+              "allocated_questions": 10
+            },
+            {
+              "title": "Crucifixion, Death & Burial of Jesus",
+              "import_key": "neco-crs-passion-crucifixion",
+              "display_order": 2,
+              "allocated_questions": 10
+            },
+            {
+              "title": "Resurrection & Ascension of Jesus",
+              "import_key": "neco-crs-passion-resurrection-ascension",
+              "display_order": 3,
+              "allocated_questions": 10
+            },
+            {
+              "title": "Pentecost & the Holy Spirit (Acts 1-2)",
+              "import_key": "neco-crs-passion-pentecost",
+              "display_order": 4,
+              "allocated_questions": 10
+            },
+            {
+              "title": "The Early Church: Fellowship, Mission & Opposition (Acts 3-12)",
+              "import_key": "neco-crs-passion-early-church",
+              "display_order": 5,
+              "allocated_questions": 10
+            },
+            {
+              "title": "Paul's Missionary Journeys & Spread of the Gospel",
+              "import_key": "neco-crs-passion-paul-missionary",
+              "display_order": 6,
+              "allocated_questions": 10
+            }
+          ]
+        },
+        {
+          "title": "Selected Epistles and Christian Ethics",
+          "display_order": 6,
+          "allocated_questions": 25,
+          "topics_count": 4,
+          "topics": [
+            {
+              "title": "Paul's Epistles: Faith, Grace & Christian Living (Romans, Galatians, Corinthians)",
+              "import_key": "neco-crs-epistles-paul",
+              "display_order": 1,
+              "allocated_questions": 7
+            },
+            {
+              "title": "General Epistles: James & 1 Peter (Practical Christian Living)",
+              "import_key": "neco-crs-epistles-james-peter",
+              "display_order": 2,
+              "allocated_questions": 6
+            },
+            {
+              "title": "Christian Virtues & Moral Values",
+              "import_key": "neco-crs-epistles-christian-virtues",
+              "display_order": 3,
+              "allocated_questions": 6
+            },
+            {
+              "title": "The Church & National Development / Social Responsibility",
+              "import_key": "neco-crs-epistles-church-national-development",
+              "display_order": 4,
+              "allocated_questions": 6
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
