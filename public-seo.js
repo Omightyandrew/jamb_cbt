@@ -11,11 +11,11 @@
 
   var navigation = [
     ["JAMB", "/jamb/"],
-    ["Practice Questions", "/jamb/practice-questions/"],
-    ["Past Questions", "/jamb/past-questions/"],
-    ["Syllabus", "/jamb/syllabus/"],
-    ["Subjects", "/jamb/"],
-    ["Resources", "/jamb/brochure/"]
+    ["WAEC", "/waec/"],
+    ["NECO", "/neco/"],
+    ["NABTEB", "/nabteb/"],
+    ["Mock Exams", "/mock-exams/"],
+    ["AI Tutor", "/ai-tutor/"]
   ];
 
   function escapeHtml(value) {
@@ -289,22 +289,26 @@
               '<a class="seo-brand" href="/" aria-label="ExamPilot home">' +
                 '<img class="ep-logo" src="' + LIGHT_LOGO + '" alt="ExamPilot">' +
               "</a>" +
-              '<p class="seo-footer__description">Prepare for JAMB with focused practice, syllabus guidance and subject-based study resources.</p>' +
+              '<p class="seo-footer__description">Nigeria\'s premier exam preparation platform for JAMB, WAEC, NECO, and NABTEB with focused CBT practice, AI tutoring, and syllabus guidance.</p>' +
             "</div>" +
-            '<div><h2>JAMB</h2><ul>' +
-              '<li><a href="/jamb/">JAMB preparation</a></li>' +
-              '<li><a href="/jamb/cbt/">JAMB CBT</a></li>' +
-              '<li><a href="/jamb/syllabus/">JAMB syllabus</a></li>' +
+            '<div><h2>Exams</h2><ul>' +
+              '<li><a href="/jamb/">JAMB (UTME)</a></li>' +
+              '<li><a href="/waec/">WAEC (WASSCE)</a></li>' +
+              '<li><a href="/neco/">NECO (SSCE)</a></li>' +
+              '<li><a href="/nabteb/">NABTEB (NBC/NTC)</a></li>' +
             "</ul></div>" +
-            '<div><h2>Practice</h2><ul>' +
-              '<li><a href="/jamb/practice-questions/">Practice Questions</a></li>' +
-              '<li><a href="/jamb/past-questions/">Past Questions</a></li>' +
-              '<li><a href="/jamb/">Subjects</a></li>' +
+            '<div><h2>Features</h2><ul>' +
+              '<li><a href="/mock-exams/">CBT Mock Exams</a></li>' +
+              '<li><a href="/ai-tutor/">AI Study Tutor</a></li>' +
+              '<li><a href="/daily-challenge/">Daily Challenge</a></li>' +
+              '<li><a href="/novels/">Literature Library</a></li>' +
             "</ul></div>" +
             '<div><h2>Resources</h2><ul>' +
-              '<li><a href="/jamb/brochure/">Brochure</a></li>' +
-              '<li><a href="/jamb/preparation-guide/">Preparation Guide</a></li>' +
-              '<li><a href="/student.html">Create an account</a></li>' +
+              '<li><a href="/jamb/cbt/">JAMB CBT Practice</a></li>' +
+              '<li><a href="/jamb/syllabus/">JAMB Syllabus</a></li>' +
+              '<li><a href="/jamb/practice-questions/">Practice Questions</a></li>' +
+              '<li><a href="/jamb/brochure/">Brochure &amp; Courses</a></li>' +
+              '<li><a href="/student.html">Sign In / Register</a></li>' +
             "</ul></div>" +
           "</div>" +
           '<div class="seo-footer__bottom"><span>© ' + new Date().getFullYear() + " ExamPilot</span><span>Study smarter. Prepare with purpose.</span></div>" +
