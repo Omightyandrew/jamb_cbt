@@ -11,10 +11,6 @@
     <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
     <meta name="theme-color" content="#14213D">
 
-    <!-- SUPABASE -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase.js"></script>
-    <script src="offline-store.js"></script>
 
 <link rel="stylesheet" href="redesign.css">
     <link rel="manifest" href="manifest.json">
@@ -140,6 +136,10 @@
 
     </div>
 
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="offline-store.js"></script>
 
     <script>
 
@@ -511,7 +511,7 @@
                 );
 
             if (selectedExamCode !== "JAMB") {
-                const examId = await window.resolveExamId(
+                const examId = subjectSelectionRules?.exam?.id || await window.resolveExamId(
                     supabaseClient,
                     selectedExamCode
                 );

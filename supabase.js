@@ -378,7 +378,6 @@ window.resolveCbtSubjectSelectionRules = async function (
         return cached;
     };
 
-    await new Promise((resolve) => setTimeout(resolve, 100));
     if (navigator.onLine === false) {
         const cached = await loadCachedConfiguration();
         exam = cached.exam;
