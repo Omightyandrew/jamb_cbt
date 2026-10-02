@@ -17,19 +17,33 @@
     const backendError = payload && typeof payload.error === "object"
       ? payload.error
       : null;
-    const message = typeof backendError?.message === "string"
+    const rawMessage = typeof backendError?.message === "string"
       ? backendError.message
-      : status === 401
-        ? "Authentication is required."
-        : status === 403
-          ? "Mock access is not permitted."
-          : status === 409
-            ? "The Mock attempt state has changed."
-            : "Mock is temporarily unavailable.";
+      : typeof payload?.message === "string"
+        ? payload.message
+        : null;
+
+    let message;
+    if (status === 401) {
+      message = rawMessage || "Authentication is required.";
+    } else if (status === 403) {
+      message = rawMessage || "Mock access is not permitted.";
+    } else if (status === 409) {
+      message = rawMessage || "The Mock attempt state has changed.";
+    } else if (status === 422) {
+      const isTechnical = !rawMessage || /error:|violat|syntax|relation|null value|pl\/pgsql|constraint|internal/i.test(rawMessage);
+      message = (!isTechnical && rawMessage !== "The request is not valid for this Mock operation.")
+        ? rawMessage
+        : "The selected subject combination is not permitted for JAMB.";
+    } else {
+      message = (rawMessage && !/error:|violat|syntax|relation|null value|pl\/pgsql|constraint/i.test(rawMessage))
+        ? rawMessage
+        : "Mock is temporarily unavailable.";
+    }
 
     return {
       status,
-      code: typeof backendError?.code === "string" ? backendError.code : "request_failed",
+      code: typeof backendError?.code === "string" ? backendError.code : (status === 422 ? "invalid_combination" : "request_failed"),
       message
     };
   }

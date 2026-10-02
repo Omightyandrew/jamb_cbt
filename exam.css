@@ -562,7 +562,7 @@ body.exam-body {
     .option-letter { width: 34px; height: 34px; }
     .option-copy { font-size: 14px; }
     .exam-actions .nav-button { min-width: 0; flex: 1; padding: 12px 9px; }
-    .mobile-submit { display: block; margin-top: 10px; }
+    .mobile-submit { display: block; width: 100%; margin-top: 10px; }
     .mobile-submit button { width: 100%; }
     .score-grid { grid-template-columns: 1fr 1fr; }
     .result-actions { flex-direction: column; }
@@ -661,6 +661,7 @@ body.exam-body {
         min-height: 48px;
     }
 
+    .mobile-submit,
     .mobile-submit button {
         min-height: 48px;
     }

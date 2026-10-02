@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="brand.css">
     <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
     <meta name="theme-color" content="#14213D">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase.js"></script>
     <style>
         :root {
             --jamb-green: #008751;
@@ -202,19 +200,17 @@
                     <span class="exam-option-name">NECO</span>
                     <span class="exam-option-status">Available</span>
                 </button>
-                <button class="exam-option" data-exam-code="NABTEB" disabled type="button">
+                <button aria-pressed="false" class="exam-option" data-available="true" data-exam-code="NABTEB" id="nabtebExamOption" type="button">
                     <span class="exam-option-name">NABTEB</span>
-                    <span class="exam-option-status">Coming Soon</span>
+                    <span class="exam-option-status">Available</span>
                 </button>
             </div>
             <p aria-live="polite" class="exam-status" id="examSelectionStatus" role="status"></p>
         </section>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
     <script>
-        const supabaseClient = window.supabase.createClient(
-            window.SUPABASE_URL,
-            window.SUPABASE_PUBLISHABLE_KEY
-        );
         const examOptionButtons = document.querySelectorAll(".exam-option[data-available='true']");
         const examSelectionStatus = document.getElementById("examSelectionStatus");
 
@@ -229,19 +225,14 @@
         }
 
         examOptionButtons.forEach((button) => {
-            button.addEventListener("click", async () => {
+            button.addEventListener("click", () => {
                 const code = button.dataset.examCode;
-                button.disabled = true;
-                examSelectionStatus.textContent = `Confirming ${code} availability...`;
                 try {
-                    await window.resolveExamId(supabaseClient, code);
                     window.setSelectedExamCode(code);
                     window.location.href = "subject.html";
                 } catch (error) {
-                    console.error(`Could not confirm ${code} availability:`, error);
-                    updateSelectedExamStatus(`${code} could not be confirmed as available. Please try again.`);
-                } finally {
-                    button.disabled = false;
+                    console.error(`Could not select ${code}:`, error);
+                    updateSelectedExamStatus(`Could not select ${code}. Please try again.`);
                 }
             });
         });

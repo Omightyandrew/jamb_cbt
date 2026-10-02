@@ -152,40 +152,6 @@ button {
     line-height: 1.35;
 }
 
-.active-exam-indicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 8px;
-    padding: 3px 10px;
-    background: rgba(0, 135, 81, 0.08);
-    border: 1px solid rgba(0, 135, 81, 0.18);
-    border-radius: 999px;
-    font-size: 12px;
-}
-
-.active-exam-pill {
-    color: var(--jamb-deep);
-    font-weight: 600;
-}
-
-.active-exam-pill strong {
-    color: var(--jamb-green);
-    font-weight: 800;
-}
-
-.change-exam-link {
-    color: var(--jamb-green);
-    text-decoration: underline;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.change-exam-link:hover {
-    color: var(--jamb-deep);
-}
-
 .header-actions {
     display: flex;
     align-items: center;
@@ -1055,7 +1021,7 @@ button {
     }
 
     .page {
-        padding-top: 96px;
+        padding-top: 122px;
     }
 }
 
@@ -1137,7 +1103,7 @@ button {
     }
 
     .nav-item {
-        font-size: 9px;
+        font-size: 11px;
     }
 
     .nav-icon {
@@ -1301,7 +1267,7 @@ button {
     }
 
     .page {
-        padding-top: 92px;
+        padding-top: 118px;
     }
 }
 
@@ -1336,7 +1302,7 @@ button {
     }
 
     .nav-item {
-        font-size: 9px;
+        font-size: 11px;
     }
 }
 
@@ -1506,11 +1472,7 @@ button {
 <div class="welcome">
 <img class="ep-logo ep-logo--compact" src="assets/logo/logo-compact.svg" alt="ExamPilot">
 <h1 id="studentGreeting">Hello, Student 👋</h1>
-<p id="studentWelcomeSubtitle">Welcome back. Keep preparing for <span id="welcomeExamName">JAMB</span>.</p>
-<div class="active-exam-indicator" id="activeExamIndicator">
-    <span class="active-exam-pill">Active Exam: <strong id="activeExamName">JAMB</strong></span>
-    <a href="exams.html" class="change-exam-link" aria-label="Change active exam">Change</a>
-</div>
+<p id="studentWelcomeSubtitle">Welcome back. Keep preparing for your exams.</p>
 </div>
 <div class="header-actions">
 <button aria-label="Notifications" class="header-button" id="notificationButton" onclick="openNotifications()" title="Notifications" type="button">
@@ -2532,19 +2494,6 @@ document.addEventListener("keydown", function(event) {
         }
     }
 });
-
-function updateDashboardActiveExam() {
-    const code = typeof window.getSelectedExamCode === "function"
-        ? window.getSelectedExamCode()
-        : "JAMB";
-    const nameEl = document.getElementById("activeExamName");
-    if (nameEl) nameEl.textContent = code;
-    const welcomeEl = document.getElementById("welcomeExamName");
-    if (welcomeEl) welcomeEl.textContent = code;
-}
-
-updateDashboardActiveExam();
-window.addEventListener("pageshow", updateDashboardActiveExam);
 
 loadDashboardStudent();
 maybeOpenUpgradeFromFeatureParameter();

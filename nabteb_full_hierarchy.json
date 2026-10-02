@@ -1,0 +1,2322 @@
+[
+  {
+    "name": "English Language",
+    "display_name": "English Language",
+    "subtitle": "NABTEB English Language",
+    "icon": "E",
+    "display_order": 1,
+    "sections": [
+      {
+        "title": "Comprehension and Summary Writing",
+        "display_order": 1,
+        "description": "Reading passages, literal and inferential comprehension, vocabulary in context, and summary techniques.",
+        "topics": [
+          {
+            "title": "Reading Comprehension & Factual Extraction",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-english-comprehension-factual-extraction"
+          },
+          {
+            "title": "Vocabulary in Context & Implied Meaning",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-english-comprehension-implied-meaning"
+          },
+          {
+            "title": "Tone, Mood and Authorial Purpose",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-english-comprehension-tone-purpose"
+          },
+          {
+            "title": "Summary Writing Techniques",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-english-comprehension-summary-techniques"
+          }
+        ]
+      },
+      {
+        "title": "Essay, Composition and Technical Correspondence",
+        "display_order": 2,
+        "description": "Narrative, descriptive, argumentative, expository essays, official correspondence, and technical reports.",
+        "topics": [
+          {
+            "title": "Narrative and Descriptive Essay Writing",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-english-essay-narrative-descriptive"
+          },
+          {
+            "title": "Argumentative and Expository Writing",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-english-essay-argumentative-expository"
+          },
+          {
+            "title": "Formal Letters and Business Correspondence",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-english-essay-formal-correspondence"
+          },
+          {
+            "title": "Technical Report Writing and Speeches",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-english-essay-technical-reports"
+          }
+        ]
+      },
+      {
+        "title": "Lexis, Structure and Mechanics",
+        "display_order": 3,
+        "description": "Vocabulary, grammar, concord, prepositions, phrasal verbs, clauses, and punctuation mechanics.",
+        "topics": [
+          {
+            "title": "Grammar, Tenses and Subject-Verb Concord",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-english-lexis-grammar-concord"
+          },
+          {
+            "title": "Parts of Speech (Nouns, Pronouns, Verbs, Adjectives, Adverbs)",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-english-lexis-parts-of-speech"
+          },
+          {
+            "title": "Prepositions, Conjunctions and Phrasal Verbs",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-english-lexis-prepositions-phrasal-verbs"
+          },
+          {
+            "title": "Synonyms, Antonyms, Idioms and Collocations",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-english-lexis-synonyms-idioms"
+          },
+          {
+            "title": "Sentence Structure, Clauses and Punctuation",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-english-lexis-clauses-punctuation"
+          }
+        ]
+      },
+      {
+        "title": "Oral English and Phonetics",
+        "display_order": 4,
+        "description": "Vowels, consonants, consonant clusters, syllable stress, emphatic stress, and intonation.",
+        "topics": [
+          {
+            "title": "Vowel Sounds (Monophthongs and Diphthongs)",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-english-oral-vowel-sounds"
+          },
+          {
+            "title": "Consonant Sounds and Consonant Clusters",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-english-oral-consonant-sounds"
+          },
+          {
+            "title": "Syllable Stress, Word Stress and Intonation",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-english-oral-stress-intonation"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Mathematics",
+    "display_name": "Mathematics",
+    "subtitle": "NABTEB Mathematics",
+    "icon": "M",
+    "display_order": 2,
+    "sections": [
+      {
+        "title": "Number and Numeration",
+        "display_order": 1,
+        "description": "Number bases, fractions, decimals, percentages, indices, logarithms, surds, sets, and sequences.",
+        "topics": [
+          {
+            "title": "Number Bases and Base Conversions",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-mathematics-number-bases"
+          },
+          {
+            "title": "Fractions, Decimals, Percentages and Approximations",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-mathematics-fractions-percentages"
+          },
+          {
+            "title": "Indices, Logarithms and Surds",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-mathematics-indices-logarithms-surds"
+          },
+          {
+            "title": "Sets, Venn Diagrams and Operations",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-mathematics-sets-venn-diagrams"
+          },
+          {
+            "title": "Modular Arithmetic and Sequences (AP and GP)",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-mathematics-sequences-ap-gp"
+          }
+        ]
+      },
+      {
+        "title": "Algebraic Processes",
+        "display_order": 2,
+        "description": "Algebraic expressions, linear/quadratic equations, simultaneous equations, inequalities, and variations.",
+        "topics": [
+          {
+            "title": "Algebraic Expressions and Factorization",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-mathematics-algebraic-expressions"
+          },
+          {
+            "title": "Linear and Quadratic Equations",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-mathematics-linear-quadratic-equations"
+          },
+          {
+            "title": "Simultaneous Linear and Quadratic Equations",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-mathematics-simultaneous-equations"
+          },
+          {
+            "title": "Linear Inequalities in One and Two Variables",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-mathematics-linear-inequalities"
+          },
+          {
+            "title": "Algebraic Fractions and Variation (Direct, Inverse, Joint, Partial)",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-mathematics-variation-fractions"
+          }
+        ]
+      },
+      {
+        "title": "Mensuration and Geometry",
+        "display_order": 3,
+        "description": "Plane geometry, angles, polygons, circle theorems, and surface areas and volumes of solids.",
+        "topics": [
+          {
+            "title": "Perimeters, Areas of Triangles, Quadrilaterals and Circles",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-mathematics-plane-mensuration"
+          },
+          {
+            "title": "Surface Areas and Volumes of Solids (Cylinders, Cones, Spheres, Prisms)",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-mathematics-solid-mensuration"
+          },
+          {
+            "title": "Angles, Parallel Lines and Polygons",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-mathematics-angles-polygons"
+          },
+          {
+            "title": "Circle Theorems and Tangents",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-mathematics-circle-theorems"
+          }
+        ]
+      },
+      {
+        "title": "Trigonometry and Coordinate Geometry",
+        "display_order": 4,
+        "description": "Trigonometric ratios, angles of elevation/depression, sine/cosine rules, and coordinate geometry.",
+        "topics": [
+          {
+            "title": "Trigonometric Ratios (Sine, Cosine, Tangent)",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-mathematics-trigonometric-ratios"
+          },
+          {
+            "title": "Angles of Elevation and Depression",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-mathematics-angles-elevation-depression"
+          },
+          {
+            "title": "Sine and Cosine Rules and Bearings",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-mathematics-sine-cosine-bearings"
+          },
+          {
+            "title": "Coordinate Geometry: Gradient, Midpoint and Distance Formula",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-mathematics-coordinate-geometry"
+          }
+        ]
+      },
+      {
+        "title": "Statistics and Probability",
+        "display_order": 5,
+        "description": "Data presentation, measures of central tendency, measures of dispersion, and probability theory.",
+        "topics": [
+          {
+            "title": "Frequency Distributions, Histograms and Pie Charts",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-mathematics-frequency-distributions"
+          },
+          {
+            "title": "Measures of Central Tendency (Mean, Median, Mode)",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-mathematics-central-tendency"
+          },
+          {
+            "title": "Measures of Dispersion (Range, Variance, Standard Deviation)",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-mathematics-measures-dispersion"
+          },
+          {
+            "title": "Theoretical and Experimental Probability",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-mathematics-probability-theory"
+          }
+        ]
+      },
+      {
+        "title": "Commercial, Technical and Applied Mathematics",
+        "display_order": 6,
+        "description": "Commercial calculations, interest, taxation, hire purchase, and introductory differentiation.",
+        "topics": [
+          {
+            "title": "Simple and Compound Interest, Profit and Loss",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-mathematics-interest-commercial"
+          },
+          {
+            "title": "Depreciation, Taxation and Hire Purchase",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-mathematics-depreciation-hire-purchase"
+          },
+          {
+            "title": "Basic Calculus: Differentiation and Rates of Change",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-mathematics-basic-calculus"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Civic Education",
+    "display_name": "Civic Education",
+    "subtitle": "NABTEB Civic Education",
+    "icon": "CE",
+    "display_order": 3,
+    "sections": [
+      {
+        "title": "National Values, Citizenship and Society",
+        "display_order": 1,
+        "description": "National values, integrity, citizenship acquisition, rights, duties, and national symbols.",
+        "topics": [
+          {
+            "title": "National Values, Integrity and Self-Reliance",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-civic-national-values-integrity"
+          },
+          {
+            "title": "Meaning, Acquisition and Renunciation of Citizenship",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-civic-citizenship-acquisition"
+          },
+          {
+            "title": "Fundamental Human Rights and Duties of Citizens",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-civic-fundamental-human-rights"
+          },
+          {
+            "title": "National Symbols and Pride",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-civic-national-symbols"
+          }
+        ]
+      },
+      {
+        "title": "Democratic Governance and Rule of Law",
+        "display_order": 2,
+        "description": "Democracy, constitutionalism, rule of law, separation of powers, and arms of government.",
+        "topics": [
+          {
+            "title": "Meaning, Features and Pillars of Democracy",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-civic-democracy-pillars"
+          },
+          {
+            "title": "The Constitution and Constitutionalism",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-civic-constitution-constitutionalism"
+          },
+          {
+            "title": "The Rule of Law and Due Process",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-civic-rule-of-law-due-process"
+          },
+          {
+            "title": "Separation of Powers and Arms of Government",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-civic-arms-of-government"
+          }
+        ]
+      },
+      {
+        "title": "Social Issues, Youth Empowerment and National Development",
+        "display_order": 3,
+        "description": "Cultism, drug abuse, human trafficking, anti-corruption, youth empowerment, and peace building.",
+        "topics": [
+          {
+            "title": "Cultism, Drug Abuse and Human Trafficking",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-civic-cultism-drug-abuse-trafficking"
+          },
+          {
+            "title": "Public Service, Corruption and Anti-Corruption Agencies",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-civic-public-service-anti-corruption"
+          },
+          {
+            "title": "Youth Empowerment, Skills Acquisition and Self-Employment",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-civic-youth-empowerment-skills"
+          },
+          {
+            "title": "Peace, Conflict Resolution and National Integration",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-civic-peace-conflict-resolution"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Economics",
+    "display_name": "Economics",
+    "subtitle": "NABTEB Economics",
+    "icon": "EC",
+    "display_order": 4,
+    "sections": [
+      {
+        "title": "Introduction to Basic Economic Concepts",
+        "display_order": 1,
+        "description": "Scarcity, choice, opportunity cost, basic economic problems, and economic systems.",
+        "topics": [
+          {
+            "title": "Scarcity, Choice, Scale of Preference and Opportunity Cost",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-economics-scarcity-choice-preference"
+          },
+          {
+            "title": "Basic Economic Problems of Society and Economic Systems",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-economics-problems-economic-systems"
+          },
+          {
+            "title": "Production Possibility Curve and Economic Methodology",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-economics-production-possibility-curve"
+          }
+        ]
+      },
+      {
+        "title": "Theory of Demand, Supply and Price Determination",
+        "display_order": 2,
+        "description": "Laws of demand/supply, determinants, elasticity, and market equilibrium.",
+        "topics": [
+          {
+            "title": "Law of Demand, Demand Schedule and Demand Curves",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-economics-demand-theory-schedule"
+          },
+          {
+            "title": "Law of Supply, Supply Schedule and Supply Curves",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-economics-supply-theory-schedule"
+          },
+          {
+            "title": "Elasticity of Demand and Supply",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-economics-elasticity-demand-supply"
+          },
+          {
+            "title": "Market Equilibrium and Price Determination",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-economics-market-equilibrium-price"
+          }
+        ]
+      },
+      {
+        "title": "Theory of Production, Cost and Business Organizations",
+        "display_order": 3,
+        "description": "Factors of production, division of labour, returns to scale, cost/revenue, and business types.",
+        "topics": [
+          {
+            "title": "Factors of Production and Division of Labour",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-economics-factors-production-labour"
+          },
+          {
+            "title": "Scale of Production and Laws of Returns",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-economics-scale-production-returns"
+          },
+          {
+            "title": "Cost and Revenue Concepts",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-economics-cost-revenue-concepts"
+          },
+          {
+            "title": "Types of Business Enterprises in Nigeria",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-economics-business-enterprises"
+          }
+        ]
+      },
+      {
+        "title": "Market Structures and Pricing",
+        "display_order": 4,
+        "description": "Perfect competition, monopoly, monopolistic competition, and oligopoly.",
+        "topics": [
+          {
+            "title": "Perfect Competition and Price/Output Determination",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-economics-perfect-competition"
+          },
+          {
+            "title": "Monopoly, Monopolistic Competition and Oligopoly",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-economics-imperfect-markets"
+          }
+        ]
+      },
+      {
+        "title": "National Income, Money and Financial Institutions",
+        "display_order": 5,
+        "description": "National income accounting, money, banking institutions, inflation, and monetary policy.",
+        "topics": [
+          {
+            "title": "National Income Concepts (GDP, GNP, NNP) and Computation",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-economics-national-income-concepts"
+          },
+          {
+            "title": "Functions and Characteristics of Money",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-economics-money-functions"
+          },
+          {
+            "title": "Commercial and Central Banking",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-economics-commercial-central-banking"
+          },
+          {
+            "title": "Inflation, Deflation and Monetary Policy",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-economics-inflation-monetary-policy"
+          }
+        ]
+      },
+      {
+        "title": "Public Finance, International Trade and Economic Development",
+        "display_order": 6,
+        "description": "Public revenue, taxation, government budget, foreign trade, and balance of payments.",
+        "topics": [
+          {
+            "title": "Public Revenue, Taxation and Government Expenditure",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-economics-taxation-public-expenditure"
+          },
+          {
+            "title": "Government Budget and National Debt",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-economics-budget-national-debt"
+          },
+          {
+            "title": "International Trade: Absolute and Comparative Advantage",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-economics-international-trade-advantage"
+          },
+          {
+            "title": "Balance of Payments, Commercial Policies and Globalization",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-economics-balance-of-payments"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Physics",
+    "display_name": "Physics",
+    "subtitle": "NABTEB Physics",
+    "icon": "P",
+    "display_order": 5,
+    "sections": [
+      {
+        "title": "Mechanics and Properties of Matter",
+        "display_order": 1,
+        "description": "Kinematics, dynamics, vectors, Newton's laws, work/energy, machines, and hydrostatics.",
+        "topics": [
+          {
+            "title": "Units, Dimensions and Measurement of Physical Quantities",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-physics-measurement-dimensions"
+          },
+          {
+            "title": "Scalars, Vectors and Resolution of Forces",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-physics-vectors-forces"
+          },
+          {
+            "title": "Kinematics: Rectilinear Motion and Projectiles",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-physics-kinematics-projectiles"
+          },
+          {
+            "title": "Newton's Laws of Motion, Momentum and Collisions",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-physics-newtons-laws-momentum"
+          },
+          {
+            "title": "Work, Energy, Power and Simple Machines",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-physics-work-energy-machines"
+          },
+          {
+            "title": "Gravitation, Circular Motion and Simple Harmonic Motion",
+            "display_order": 6,
+            "description": "",
+            "import_key": "nabteb-physics-gravitation-circular-motion"
+          },
+          {
+            "title": "Elasticity, Hydrostatics, Viscosity and Surface Tension",
+            "display_order": 7,
+            "description": "",
+            "import_key": "nabteb-physics-elasticity-hydrostatics"
+          }
+        ]
+      },
+      {
+        "title": "Thermal Physics",
+        "display_order": 2,
+        "description": "Thermometry, thermal expansion, specific heat, change of state, gas laws, and heat transfer.",
+        "topics": [
+          {
+            "title": "Temperature and Its Measurement",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-physics-temperature-thermometry"
+          },
+          {
+            "title": "Thermal Expansion of Solids, Liquids and Gases",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-physics-thermal-expansion"
+          },
+          {
+            "title": "Heat Capacity, Specific Heat and Calorimetry",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-physics-heat-capacity-calorimetry"
+          },
+          {
+            "title": "Change of State and Latent Heat",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-physics-latent-heat-change-state"
+          },
+          {
+            "title": "Gas Laws (Boyle's, Charles', Pressure Law)",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-physics-gas-laws"
+          },
+          {
+            "title": "Heat Transfer: Conduction, Convection and Radiation",
+            "display_order": 6,
+            "description": "",
+            "import_key": "nabteb-physics-heat-transfer-mechanisms"
+          }
+        ]
+      },
+      {
+        "title": "Waves and Optics",
+        "display_order": 3,
+        "description": "Wave properties, sound, reflection, refraction, lenses, optical instruments, and electromagnetic spectrum.",
+        "topics": [
+          {
+            "title": "Wave Motion, Wave Classification and Properties",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-physics-wave-motion-properties"
+          },
+          {
+            "title": "Sound Waves, Resonance and Characteristics of Notes",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-physics-sound-waves-resonance"
+          },
+          {
+            "title": "Reflection of Light at Plane and Curved Surfaces",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-physics-reflection-mirrors"
+          },
+          {
+            "title": "Refraction of Light, Lenses and Prisms",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-physics-refraction-lenses"
+          },
+          {
+            "title": "Optical Instruments: Microscopes, Telescopes and the Human Eye",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-physics-optical-instruments"
+          },
+          {
+            "title": "Electromagnetic Spectrum and Dispersion of Light",
+            "display_order": 6,
+            "description": "",
+            "import_key": "nabteb-physics-electromagnetic-spectrum"
+          }
+        ]
+      },
+      {
+        "title": "Electricity and Magnetism",
+        "display_order": 4,
+        "description": "Electrostatics, current electricity, Ohm's law, power, magnetic fields, induction, and AC circuits.",
+        "topics": [
+          {
+            "title": "Electrostatics, Capacitors and Capacitance",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-physics-electrostatics-capacitance"
+          },
+          {
+            "title": "Current Electricity: Ohm's Law, Resistance and Resistivity",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-physics-current-electricity-ohms-law"
+          },
+          {
+            "title": "Electrical Energy, Power and Heating Effect",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-physics-electrical-energy-power"
+          },
+          {
+            "title": "Magnetic Fields, Force on Current and Electromagnets",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-physics-magnetic-fields-forces"
+          },
+          {
+            "title": "Electromagnetic Induction, Transformers and AC Principles",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-physics-induction-transformers-ac"
+          }
+        ]
+      },
+      {
+        "title": "Modern Physics and Basic Electronics",
+        "display_order": 5,
+        "description": "Atomic structure, photoelectric effect, radioactivity, nuclear energy, semiconductors, and diodes.",
+        "topics": [
+          {
+            "title": "Atomic Structure, Energy Levels and Photoelectric Effect",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-physics-atomic-structure-photoelectric"
+          },
+          {
+            "title": "Radioactivity, Half-life and Nuclear Energy",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-physics-radioactivity-nuclear-energy"
+          },
+          {
+            "title": "Semiconductor Devices: Diodes, Transistors and Rectification",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-physics-semiconductors-diodes"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Chemistry",
+    "display_name": "Chemistry",
+    "subtitle": "NABTEB Chemistry",
+    "icon": "C",
+    "display_order": 6,
+    "sections": [
+      {
+        "title": "Nature of Matter, Atomic Structure and Bonding",
+        "display_order": 1,
+        "description": "Particulate nature of matter, atomic models, electronic configuration, periodic trends, and bonding.",
+        "topics": [
+          {
+            "title": "Particulate Nature of Matter, Elements, Compounds and Mixtures",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-chemistry-particulate-nature-mixtures"
+          },
+          {
+            "title": "Atomic Structure, Isotopy and Electronic Configuration",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-chemistry-atomic-structure-isotopy"
+          },
+          {
+            "title": "The Periodic Table and Periodic Trends",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-chemistry-periodic-table-trends"
+          },
+          {
+            "title": "Chemical Bonding: Ionic, Covalent, Metallic and Intermolecular",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-chemistry-chemical-bonding"
+          }
+        ]
+      },
+      {
+        "title": "Stoichiometry, Energetics and Reaction Kinetics",
+        "display_order": 2,
+        "description": "Mole concept, chemical equations, gas laws, enthalpy changes, reaction rates, and equilibrium.",
+        "topics": [
+          {
+            "title": "Mole Concept, Chemical Formulas and Equations",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-chemistry-mole-concept-formulas"
+          },
+          {
+            "title": "Gas Laws and Kinetic Theory of Gases",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-chemistry-gas-laws-kinetic-theory"
+          },
+          {
+            "title": "Energy Changes in Chemical Reactions (Enthalpy)",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-chemistry-energetics-enthalpy"
+          },
+          {
+            "title": "Rates of Chemical Reactions and Chemical Equilibrium",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-chemistry-rates-equilibrium"
+          }
+        ]
+      },
+      {
+        "title": "States of Matter, Solutions, Acids, Bases and Salts",
+        "display_order": 3,
+        "description": "Solutions, solubility, acids, bases, salts, pH, titrations, redox reactions, and electrolysis.",
+        "topics": [
+          {
+            "title": "Solutions, Suspensions, Colloids and Solubility",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-chemistry-solubility-colloids"
+          },
+          {
+            "title": "Acids, Bases, Salts and Neutralization",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-chemistry-acids-bases-salts"
+          },
+          {
+            "title": "pH Scale, Acid-Base Titrations and Indicators",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-chemistry-ph-titrations-indicators"
+          },
+          {
+            "title": "Oxidation-Reduction (Redox) Reactions and Oxidation Numbers",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-chemistry-redox-reactions"
+          },
+          {
+            "title": "Electrolysis and Electrochemical Cells",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-chemistry-electrolysis-electrochemistry"
+          }
+        ]
+      },
+      {
+        "title": "Chemistry of Non-Metals and Metals",
+        "display_order": 4,
+        "description": "Hydrogen, oxygen, carbon, nitrogen, sulfur, halogens, metals extraction, and alloys.",
+        "topics": [
+          {
+            "title": "Hydrogen, Oxygen, Water and Air",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-chemistry-hydrogen-oxygen-water"
+          },
+          {
+            "title": "Carbon, Allotropes and Its Oxides",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-chemistry-carbon-allotropes-oxides"
+          },
+          {
+            "title": "Nitrogen, Ammonia and Nitric Acid",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-chemistry-nitrogen-ammonia-nitric"
+          },
+          {
+            "title": "Sulfur and Its Compounds (Sulfur Dioxide, Sulfuric Acid)",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-chemistry-sulfur-compounds"
+          },
+          {
+            "title": "Halogens and Halide Compounds",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-chemistry-halogens-halides"
+          },
+          {
+            "title": "Metals: General Properties, Extraction of Iron, Aluminum and Alloys",
+            "display_order": 6,
+            "description": "",
+            "import_key": "nabteb-chemistry-metals-extraction-alloys"
+          }
+        ]
+      },
+      {
+        "title": "Organic Chemistry and Industrial Processes",
+        "display_order": 5,
+        "description": "Hydrocarbons, alcohols, carboxylic acids, esters, polymers, and petroleum refining.",
+        "topics": [
+          {
+            "title": "Hydrocarbons: Alkanes, Alkenes and Alkynes",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-chemistry-hydrocarbons-alkanes-alkenes"
+          },
+          {
+            "title": "Aromatic Hydrocarbons (Benzene) and Alcohols",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-chemistry-aromatic-benzene-alcohols"
+          },
+          {
+            "title": "Carboxylic Acids, Esters and Fats/Oils (Saponification)",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-chemistry-carboxylic-acids-esters"
+          },
+          {
+            "title": "Polymers and Polymerization (Plastics and Synthetic Fibers)",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-chemistry-polymers-plastics"
+          },
+          {
+            "title": "Petroleum Refining and Petrochemical Industries",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-chemistry-petroleum-petrochemicals"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Biology",
+    "display_name": "Biology",
+    "subtitle": "NABTEB Biology",
+    "icon": "B",
+    "display_order": 7,
+    "sections": [
+      {
+        "title": "Organization of Life and the Cell",
+        "display_order": 1,
+        "description": "Classification of living organisms, cell structure, organelles, tissues, and cellular transport.",
+        "topics": [
+          {
+            "title": "Classification and Characteristics of Living Organisms",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-biology-classification-organisms"
+          },
+          {
+            "title": "Cell Structure, Cell Organelles and Functions",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-biology-cell-structure-organelles"
+          },
+          {
+            "title": "Cellular Organization (Tissues, Organs and Systems)",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-biology-tissues-organs-systems"
+          },
+          {
+            "title": "Movement of Substances: Diffusion, Osmosis and Active Transport",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-biology-diffusion-osmosis-transport"
+          }
+        ]
+      },
+      {
+        "title": "Plant and Animal Nutrition and Physiology",
+        "display_order": 2,
+        "description": "Modes of nutrition, photosynthesis, digestion, plant transport, and animal circulatory systems.",
+        "topics": [
+          {
+            "title": "Modes of Nutrition: Autotrophic and Heterotrophic",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-biology-nutrition-autotrophic-heterotrophic"
+          },
+          {
+            "title": "Photosynthesis: Mechanism and Factors Affecting It",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-biology-photosynthesis-factors"
+          },
+          {
+            "title": "Digestive System and Enzyme Action in Animals",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-biology-digestive-system-enzymes"
+          },
+          {
+            "title": "Transport Systems in Plants (Xylem and Phloem)",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-biology-plant-transport-xylem-phloem"
+          },
+          {
+            "title": "Circulatory System in Animals and Blood Composition",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-biology-circulatory-system-blood"
+          }
+        ]
+      },
+      {
+        "title": "Respiration, Excretion and Regulation",
+        "display_order": 3,
+        "description": "Cellular respiration, gaseous exchange mechanisms, excretory systems, and homeostasis.",
+        "topics": [
+          {
+            "title": "Cellular Respiration: Aerobic and Anaerobic Pathways",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-biology-cellular-respiration-pathways"
+          },
+          {
+            "title": "Respiratory Structures and Gaseous Exchange Mechanisms",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-biology-gaseous-exchange-mechanisms"
+          },
+          {
+            "title": "Excretory Systems in Animals and Osmoregulation",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-biology-excretion-osmoregulation"
+          },
+          {
+            "title": "Homeostasis: Regulation of Body Temperature and Blood Sugar",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-biology-homeostasis-regulation"
+          }
+        ]
+      },
+      {
+        "title": "Coordination, Reproduction and Development",
+        "display_order": 4,
+        "description": "Nervous coordination, endocrine system, plant/animal reproduction, and development.",
+        "topics": [
+          {
+            "title": "Nervous System, Sense Organs and Reflex Actions",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-biology-nervous-system-reflexes"
+          },
+          {
+            "title": "Endocrine System and Hormonal Control",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-biology-endocrine-system-hormones"
+          },
+          {
+            "title": "Asexual and Sexual Reproduction in Plants and Animals",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-biology-reproduction-asexual-sexual"
+          },
+          {
+            "title": "Human Reproductive System and Embryonic Development",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-biology-human-reproductive-system"
+          }
+        ]
+      },
+      {
+        "title": "Genetics, Evolution and Ecology",
+        "display_order": 5,
+        "description": "Mendelian genetics, variation, DNA, ecosystems, nutrient cycles, and environmental conservation.",
+        "topics": [
+          {
+            "title": "Mendelian Inheritance, Chromosomes and DNA",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-biology-mendelian-inheritance-dna"
+          },
+          {
+            "title": "Variation, Mutation and Heredity in Man",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-biology-variation-mutation-heredity"
+          },
+          {
+            "title": "Ecosystems, Biomes, Food Chains and Food Webs",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-biology-ecosystems-food-chains"
+          },
+          {
+            "title": "Nutrient Cycles, Population Ecology and Conservation",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-biology-nutrient-cycles-conservation"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Agricultural Science",
+    "display_name": "Agricultural Science",
+    "subtitle": "NABTEB Agricultural Science",
+    "icon": "AG",
+    "display_order": 8,
+    "sections": [
+      {
+        "title": "Basic Agricultural Principles and Soil Science",
+        "display_order": 1,
+        "description": "Scope of agriculture, land tenure, soil formation, properties, fertility, and soil conservation.",
+        "topics": [
+          {
+            "title": "Scope, Importance of Agriculture and Land Tenure Systems",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-agriculture-scope-land-tenure"
+          },
+          {
+            "title": "Soil Formation, Physical and Chemical Properties",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-agriculture-soil-formation-properties"
+          },
+          {
+            "title": "Soil Fertility, Manures, Fertilizers and Liming",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-agriculture-soil-fertility-fertilizers"
+          },
+          {
+            "title": "Soil Erosion, Conservation and Land Degradation",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-agriculture-erosion-soil-conservation"
+          }
+        ]
+      },
+      {
+        "title": "Crop Production and Management",
+        "display_order": 2,
+        "description": "Husbandry of cereals, legumes, roots, tubers, weeds, pests, and integrated pest control.",
+        "topics": [
+          {
+            "title": "Classification and Husbandry of Cereal and Legume Crops",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-agriculture-cereals-legumes"
+          },
+          {
+            "title": "Husbandry of Root, Tuber, Fiber and Beverage Crops",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-agriculture-tubers-cash-crops"
+          },
+          {
+            "title": "Weeds, Weed Control and Herbicides",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-agriculture-weeds-weed-control"
+          },
+          {
+            "title": "Crop Pests, Diseases and Integrated Pest Management",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-agriculture-crop-pests-diseases"
+          }
+        ]
+      },
+      {
+        "title": "Animal Science and Livestock Husbandry",
+        "display_order": 3,
+        "description": "Animal anatomy, physiology, feeds, nutrition, ruminants, non-ruminants, and diseases.",
+        "topics": [
+          {
+            "title": "Anatomy, Physiology and Reproduction of Farm Animals",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-agriculture-animal-anatomy-reproduction"
+          },
+          {
+            "title": "Animal Feeds, Nutrition, Ration Formulation and Digestion",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-agriculture-animal-feeds-nutrition"
+          },
+          {
+            "title": "Husbandry of Ruminants (Cattle, Sheep, Goats)",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-agriculture-ruminants-husbandry"
+          },
+          {
+            "title": "Husbandry of Non-Ruminants (Poultry, Pigs, Rabbits)",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-agriculture-nonruminants-poultry"
+          },
+          {
+            "title": "Livestock Pests, Parasites and Animal Diseases",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-agriculture-livestock-pests-diseases"
+          }
+        ]
+      },
+      {
+        "title": "Agricultural Economics, Farm Management and Extension",
+        "display_order": 4,
+        "description": "Farm planning, farm records, balance sheets, agricultural marketing, and extension services.",
+        "topics": [
+          {
+            "title": "Principles of Agricultural Economics and Farm Planning",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-agriculture-farm-planning-management"
+          },
+          {
+            "title": "Farm Records, Accounts and Balance Sheets",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-agriculture-farm-records-accounts"
+          },
+          {
+            "title": "Agricultural Marketing, Supply Chains and Pricing",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-agriculture-marketing-supply-chains"
+          },
+          {
+            "title": "Agricultural Extension and Rural Development",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-agriculture-extension-rural-development"
+          }
+        ]
+      },
+      {
+        "title": "Farm Mechanization and Agricultural Engineering",
+        "display_order": 5,
+        "description": "Simple farm tools, tractors, tillage implements, irrigation, drainage, and farmstead planning.",
+        "topics": [
+          {
+            "title": "Simple Farm Tools, Maintenance and Safety",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-agriculture-simple-farm-tools"
+          },
+          {
+            "title": "Farm Machinery, Tractors and Tillage Implements",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-agriculture-tractors-tillage-machinery"
+          },
+          {
+            "title": "Irrigation, Drainage Systems and Soil Water Management",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-agriculture-irrigation-drainage"
+          },
+          {
+            "title": "Farm Surveying, Farmstead Planning and Buildings",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-agriculture-surveying-farmstead-planning"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Financial Accounting",
+    "display_name": "Financial Accounting",
+    "subtitle": "NABTEB Financial Accounting",
+    "icon": "FA",
+    "display_order": 9,
+    "sections": [
+      {
+        "title": "Foundations and Principles of Accounting",
+        "display_order": 1,
+        "description": "Nature and objectives of accounting, accounting concepts, conventions, and double-entry system.",
+        "topics": [
+          {
+            "title": "Nature, Purpose and History of Bookkeeping and Accounting",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-accounting-purpose-history"
+          },
+          {
+            "title": "Accounting Concepts, Conventions and Bases",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-accounting-concepts-conventions"
+          },
+          {
+            "title": "The Accounting Equation and Double-Entry System",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-accounting-equation-double-entry"
+          }
+        ]
+      },
+      {
+        "title": "Books of Prime Entry and Ledgers",
+        "display_order": 2,
+        "description": "Source documents, daybooks, cash books, petty cash, ledger accounts, and trial balance.",
+        "topics": [
+          {
+            "title": "Source Documents and Books of Original Entry",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-accounting-source-documents-journals"
+          },
+          {
+            "title": "Two-Column and Three-Column Cash Books",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-accounting-cash-books"
+          },
+          {
+            "title": "Petty Cash Book and Imprest System",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-accounting-petty-cash-imprest"
+          },
+          {
+            "title": "Classification of Accounts, Ledgers and Trial Balance",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-accounting-ledgers-trial-balance"
+          }
+        ]
+      },
+      {
+        "title": "Period-End Adjustments and Final Accounts of Sole Traders",
+        "display_order": 3,
+        "description": "Accruals, prepayments, bad debts, depreciation, trading/profit and loss accounts, and balance sheet.",
+        "topics": [
+          {
+            "title": "Accruals, Prepayments and Provisions for Bad/Doubtful Debts",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-accounting-accruals-prepayments-baddebts"
+          },
+          {
+            "title": "Depreciation Methods and Asset Disposal",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-accounting-depreciation-asset-disposal"
+          },
+          {
+            "title": "Trading, Profit and Loss Account (Statement of Profit or Loss)",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-accounting-trading-profit-loss"
+          },
+          {
+            "title": "Balance Sheet (Statement of Financial Position)",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-accounting-balance-sheet"
+          }
+        ]
+      },
+      {
+        "title": "Bank Reconciliation, Suspense Accounts and Errors",
+        "display_order": 4,
+        "description": "Bank reconciliation statements, adjusted cash book, correction of errors, and single entry.",
+        "topics": [
+          {
+            "title": "Bank Reconciliation Statement and Adjusted Cash Book",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-accounting-bank-reconciliation"
+          },
+          {
+            "title": "Types of Accounting Errors, Correction and Suspense Account",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-accounting-errors-suspense-account"
+          },
+          {
+            "title": "Single Entry and Incomplete Records",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-accounting-single-entry-incomplete-records"
+          }
+        ]
+      },
+      {
+        "title": "Special Accounts: Partnerships, Manufacturing and Companies",
+        "display_order": 5,
+        "description": "Partnership accounts, manufacturing accounts, company shares, and non-profit organizations.",
+        "topics": [
+          {
+            "title": "Partnership Accounts: Profit Sharing, Capital/Current Accounts",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-accounting-partnership-accounts"
+          },
+          {
+            "title": "Partnership Adjustments: Admission, Retirement and Goodwill",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-accounting-partnership-admission-goodwill"
+          },
+          {
+            "title": "Manufacturing Accounts: Production Cost and Work-in-Progress",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-accounting-manufacturing-accounts"
+          },
+          {
+            "title": "Introduction to Limited Liability Company Accounts",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-accounting-company-accounts"
+          },
+          {
+            "title": "Non-Profit Organizations: Receipts/Payments and Income/Expenditure",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-accounting-nonprofit-accounts"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Commerce",
+    "display_name": "Commerce",
+    "subtitle": "NABTEB Commerce",
+    "icon": "CM",
+    "display_order": 10,
+    "sections": [
+      {
+        "title": "Introduction to Commerce, Production and Occupation",
+        "display_order": 1,
+        "description": "Meaning of commerce, branches, factors of production, occupation, and specialization.",
+        "topics": [
+          {
+            "title": "Meaning, Scope and Evolution of Commerce",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-commerce-meaning-scope-evolution"
+          },
+          {
+            "title": "Production: Primary, Secondary, Tertiary and Factors",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-commerce-production-factors"
+          },
+          {
+            "title": "Occupation and Division of Labour",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-commerce-occupation-division-labour"
+          }
+        ]
+      },
+      {
+        "title": "Home Trade and Foreign Trade",
+        "display_order": 2,
+        "description": "Retail trade, wholesale trade, channels of distribution, foreign trade, and trade documents.",
+        "topics": [
+          {
+            "title": "Retail Trade: Types of Retailers, Modern Retailing Trends",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-commerce-retail-trade-types"
+          },
+          {
+            "title": "Wholesale Trade: Functions and Channels of Distribution",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-commerce-wholesale-distribution-channels"
+          },
+          {
+            "title": "Documents Used in Home Trade",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-commerce-home-trade-documents"
+          },
+          {
+            "title": "Foreign Trade: Import, Export, Entrepôt Trade and Balance of Trade",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-commerce-foreign-trade-import-export"
+          },
+          {
+            "title": "International Commercial Documents and Customs Procedures",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-commerce-international-trade-documents"
+          }
+        ]
+      },
+      {
+        "title": "Aids to Trade",
+        "display_order": 3,
+        "description": "Banking, insurance, transportation, warehousing, communication, and advertising.",
+        "topics": [
+          {
+            "title": "Banking: Types of Banks and Banking Services",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-commerce-banking-services"
+          },
+          {
+            "title": "Insurance: Principles, Types of Policies and Re-insurance",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-commerce-insurance-principles-policies"
+          },
+          {
+            "title": "Transportation: Modes, Advantages and Transport Documents",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-commerce-transportation-modes"
+          },
+          {
+            "title": "Warehousing: Importance, Types and Functions",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-commerce-warehousing-types"
+          },
+          {
+            "title": "Communication: Courier, Telecommunication, ICT and Internet",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-commerce-communication-telecom-ict"
+          },
+          {
+            "title": "Advertising: Forms, Functions, Media and Sales Promotion",
+            "display_order": 6,
+            "description": "",
+            "import_key": "nabteb-commerce-advertising-sales-promotion"
+          }
+        ]
+      },
+      {
+        "title": "Business Organizations and Management",
+        "display_order": 4,
+        "description": "Sole proprietorship, partnership, limited liability companies, public corporations, and mergers.",
+        "topics": [
+          {
+            "title": "Sole Proprietorships and Partnerships",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-commerce-sole-proprietorship-partnership"
+          },
+          {
+            "title": "Limited Liability Companies: Private and Public",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-commerce-limited-liability-companies"
+          },
+          {
+            "title": "Public Enterprises and Co-operative Societies",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-commerce-public-enterprises-cooperatives"
+          },
+          {
+            "title": "Business Combinations, Mergers and Takeovers",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-commerce-mergers-acquisitions"
+          }
+        ]
+      },
+      {
+        "title": "Financial Markets, Consumer Protection and Modern Business",
+        "display_order": 5,
+        "description": "Stock exchange, capital market, consumer rights, regulatory bodies, and e-commerce.",
+        "topics": [
+          {
+            "title": "Money and Capital Markets, Stock Exchange",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-commerce-stock-exchange-capital-markets"
+          },
+          {
+            "title": "Consumer Protection: Rights, Legislation and Agencies (CPC, NAFDAC, SON)",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-commerce-consumer-protection-agencies"
+          },
+          {
+            "title": "Electronic Commerce (E-Commerce) and Electronic Banking",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-commerce-ecommerce-ebanking"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Office Practice",
+    "display_name": "Office Practice",
+    "subtitle": "NABTEB Office Practice",
+    "icon": "OP",
+    "display_order": 11,
+    "sections": [
+      {
+        "title": "The Modern Office, Structure and Personnel",
+        "display_order": 1,
+        "description": "Office functions, office layouts, organizational departments, and office staff qualities.",
+        "topics": [
+          {
+            "title": "Meaning, Functions and Importance of the Modern Office",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-office-meaning-functions"
+          },
+          {
+            "title": "Office Structure, Departments and Layout (Open vs Private)",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-office-departments-layout"
+          },
+          {
+            "title": "Office Personnel: Duties, Qualities and Career Path",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-office-personnel-duties-qualities"
+          }
+        ]
+      },
+      {
+        "title": "Mail Handling and Office Communication",
+        "display_order": 2,
+        "description": "Incoming/outgoing mail procedures, postal services, reception duties, and telephone etiquette.",
+        "topics": [
+          {
+            "title": "Handling Incoming and Outgoing Mail, Mail Registers",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-office-mail-incoming-outgoing"
+          },
+          {
+            "title": "Postal Services, Courier Agencies and Despatch Procedures",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-office-postal-courier-services"
+          },
+          {
+            "title": "Receptionist Duties, Managing Visitors and Appointments",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-office-receptionist-duties-visitors"
+          },
+          {
+            "title": "Telecommunication Facilities and Telephone Etiquette",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-office-telephone-etiquette-telecom"
+          }
+        ]
+      },
+      {
+        "title": "Records Management, Filing and Indexing",
+        "display_order": 3,
+        "description": "Filing systems, classification rules, filing equipment, indexing, and electronic archiving.",
+        "topics": [
+          {
+            "title": "Meaning and Importance of Records Management",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-office-records-management-importance"
+          },
+          {
+            "title": "Filing Systems, Centralized vs Decentralized Filing",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-office-filing-systems-classification"
+          },
+          {
+            "title": "Filing Equipment, Methods of Indexing and Cross-Referencing",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-office-filing-equipment-indexing"
+          },
+          {
+            "title": "Electronic Records Management and Computerized Archiving",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-office-electronic-records-archiving"
+          }
+        ]
+      },
+      {
+        "title": "Office Machines, Reprographics and Automation",
+        "display_order": 4,
+        "description": "Manual/electrical equipment, photocopiers, scanners, office computers, and automation.",
+        "topics": [
+          {
+            "title": "Manual and Electrical Office Equipment (Typewriters, Calculators)",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-office-manual-electrical-equipment"
+          },
+          {
+            "title": "Reprographic Equipment: Photocopiers, Duplicators and Scanners",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-office-reprographic-equipment-scanners"
+          },
+          {
+            "title": "Office Computers, Word Processors and Office Automation",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-office-computers-automation"
+          }
+        ]
+      },
+      {
+        "title": "Meetings, Conferences and Office Security",
+        "display_order": 5,
+        "description": "Meeting arrangements, notice, agenda, minutes preparation, safety, and fire prevention.",
+        "topics": [
+          {
+            "title": "Business Meetings: Notice, Agenda, Quorum and Procedure",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-office-meetings-notice-agenda"
+          },
+          {
+            "title": "Drafting Minutes of Meetings, Reports and Action Logs",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-office-minutes-drafting-reports"
+          },
+          {
+            "title": "Office Safety, Health Regulations, First Aid and Fire Prevention",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-office-safety-health-firstaid"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Technical Drawing",
+    "display_name": "Technical Drawing",
+    "subtitle": "NABTEB Technical Drawing",
+    "icon": "TD",
+    "display_order": 12,
+    "sections": [
+      {
+        "title": "Drawing Instruments, Materials, Lettering and Linework",
+        "display_order": 1,
+        "description": "Drawing instruments, care, sheet layout, lettering, linework, dimensioning, and scales.",
+        "topics": [
+          {
+            "title": "Drawing Equipment, Instruments, Care and Preparation",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-drawing-instruments-care"
+          },
+          {
+            "title": "Standard Drawing Sheet Layout, Title Blocks and Borders",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-drawing-sheet-layout-title-blocks"
+          },
+          {
+            "title": "Technical Lettering, Dimensioning Rules and Standard Linework",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-drawing-lettering-linework-dimensioning"
+          },
+          {
+            "title": "Types of Scales (Plain, Diagonal and Proportional Scales)",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-drawing-scales-plain-diagonal"
+          }
+        ]
+      },
+      {
+        "title": "Plane Geometry",
+        "display_order": 2,
+        "description": "Geometric construction of angles, triangles, polygons, circles, tangency, and loci.",
+        "topics": [
+          {
+            "title": "Geometrical Constructions: Angles, Lines and Bisectors",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-drawing-angles-lines-bisectors"
+          },
+          {
+            "title": "Construction of Triangles, Quadrilaterals and Regular Polygons",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-drawing-triangles-polygons"
+          },
+          {
+            "title": "Circles, Tangents, Arcs and Tangency Constructions",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-drawing-circles-tangents-arcs"
+          },
+          {
+            "title": "Areas of Plane Figures and Equivalent Geometric Figures",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-drawing-areas-equivalent-figures"
+          },
+          {
+            "title": "Geometric Loci: Cycloid, Epicycloid, Hypocycloid and Involute",
+            "display_order": 5,
+            "description": "",
+            "import_key": "nabteb-drawing-loci-cycloids-involutes"
+          }
+        ]
+      },
+      {
+        "title": "Solid Geometry and Descriptive Geometry",
+        "display_order": 3,
+        "description": "Orthographic projection (first and third angle), isometric, oblique, and auxiliary views.",
+        "topics": [
+          {
+            "title": "Orthographic Projection: Principles of First and Third Angle",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-drawing-orthographic-first-third-angle"
+          },
+          {
+            "title": "Isometric Drawing, Isometric Axes and Circles",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-drawing-isometric-drawing-circles"
+          },
+          {
+            "title": "Oblique and Axonometric Projections",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-drawing-oblique-projections"
+          },
+          {
+            "title": "Auxiliary Views and True Shapes of Inclined Surfaces",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-drawing-auxiliary-views-true-shapes"
+          }
+        ]
+      },
+      {
+        "title": "Sections, Surface Developments and Interpenetration",
+        "display_order": 4,
+        "description": "Sectional views, true shapes, surface development of solids, and interpenetration.",
+        "topics": [
+          {
+            "title": "Sectional Views of Prisms, Cylinders, Pyramids and Cones",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-drawing-sectional-views-solids"
+          },
+          {
+            "title": "Surface Development of Prisms, Cylinders, Cones and Pyramids",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-drawing-surface-development-solids"
+          },
+          {
+            "title": "Intersection and Interpenetration of Geometric Solids",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-drawing-interpenetration-solids"
+          }
+        ]
+      },
+      {
+        "title": "Engineering Drafting and Building Drafting Foundations",
+        "display_order": 5,
+        "description": "Fasteners, machine components, architectural conventions, floor plans, and sectional elevations.",
+        "topics": [
+          {
+            "title": "Mechanical Fasteners: Threads, Bolts, Nuts, Screws and Rivets",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-drawing-mechanical-fasteners-threads"
+          },
+          {
+            "title": "Basic Machine Components: Shafts, Pulleys, Keys and Bearings",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-drawing-machine-components-shafts"
+          },
+          {
+            "title": "Architectural Symbols, Conventions and Building Elevations",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-drawing-architectural-symbols-elevations"
+          },
+          {
+            "title": "Foundation Plans, Floor Plans and Sectional Elevations",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-drawing-floor-plans-sections"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Basic Electricity",
+    "display_name": "Basic Electricity",
+    "subtitle": "NABTEB Basic Electricity",
+    "icon": "BE",
+    "display_order": 13,
+    "sections": [
+      {
+        "title": "Electrical Fundamentals, Atomic Structure and Units",
+        "display_order": 1,
+        "description": "Structure of atom, electric charge, conductors, insulators, EMF, current, and electrical units.",
+        "topics": [
+          {
+            "title": "Structure of the Atom, Electron Theory and Electric Charge",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-electricity-atomic-structure-charge"
+          },
+          {
+            "title": "Conductors, Insulators and Semiconductor Materials",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-electricity-conductors-insulators"
+          },
+          {
+            "title": "Potential Difference, Electromotive Force (EMF) and Current",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-electricity-emf-potential-current"
+          },
+          {
+            "title": "Units and Measurements in Electrical Science",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-electricity-electrical-units-measurements"
+          }
+        ]
+      },
+      {
+        "title": "Direct Current (DC) Circuits and Circuit Laws",
+        "display_order": 2,
+        "description": "Ohm's law, resistance, series/parallel combinations, Kirchhoff's laws, and Joule's law.",
+        "topics": [
+          {
+            "title": "Ohm's Law, Resistance and Factors Affecting Resistance",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-electricity-ohms-law-resistance"
+          },
+          {
+            "title": "Resistors in Series, Parallel and Series-Parallel Combinations",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-electricity-resistors-series-parallel"
+          },
+          {
+            "title": "Kirchhoff's Current and Voltage Laws",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-electricity-kirchhoffs-laws"
+          },
+          {
+            "title": "Electrical Power, Energy and Heating Effects (Joule's Law)",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-electricity-power-energy-joules-law"
+          }
+        ]
+      },
+      {
+        "title": "Electrostatics, Capacitors and Chemical Cells",
+        "display_order": 3,
+        "description": "Electrostatic fields, capacitors, capacitance, dielectric materials, and secondary cells.",
+        "topics": [
+          {
+            "title": "Electrostatic Fields, Capacitance and Types of Capacitors",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-electricity-electrostatics-capacitors"
+          },
+          {
+            "title": "Capacitors in Series and Parallel Combinations",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-electricity-capacitors-series-parallel"
+          },
+          {
+            "title": "Primary and Secondary Cells (Lead-Acid and Alkaline Batteries)",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-electricity-cells-batteries"
+          }
+        ]
+      },
+      {
+        "title": "Magnetism, Electromagnetism and Induction",
+        "display_order": 4,
+        "description": "Magnetic fields, electromagnetism, motor principle, and electromagnetic induction.",
+        "topics": [
+          {
+            "title": "Magnetic Fields, Magnetic Materials and Earth's Magnetism",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-electricity-magnetic-fields-materials"
+          },
+          {
+            "title": "Electromagnetism, Magnetic Field Around Current-Carrying Conductors",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-electricity-electromagnetism-conductors"
+          },
+          {
+            "title": "Force on Current in a Magnetic Field and Motor Principle",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-electricity-motor-principle-forces"
+          },
+          {
+            "title": "Electromagnetic Induction: Faraday's and Lenz's Laws",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-electricity-electromagnetic-induction-laws"
+          }
+        ]
+      },
+      {
+        "title": "Alternating Current (AC) Principles and Machines",
+        "display_order": 5,
+        "description": "AC waveforms, peak/RMS values, RLC circuits, transformers, and electric motors/generators.",
+        "topics": [
+          {
+            "title": "AC Generation, Waveforms, Frequency, Peak and RMS Values",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-electricity-ac-waveforms-rms"
+          },
+          {
+            "title": "AC Circuits Containing Resistance, Inductance and Capacitance (RLC)",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-electricity-rlc-circuits-impedance"
+          },
+          {
+            "title": "Transformers: Construction, Principles and Efficiency",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-electricity-transformers-principles"
+          },
+          {
+            "title": "Principles of DC and AC Electric Motors and Generators",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-electricity-motors-generators-principles"
+          }
+        ]
+      },
+      {
+        "title": "Electrical Installation, Wiring, Safety and Instruments",
+        "display_order": 6,
+        "description": "Safety regulations, earthing, fuses, domestic wiring systems, and measuring instruments.",
+        "topics": [
+          {
+            "title": "Electrical Safety Rules, Earthing and Protective Devices",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-electricity-safety-earthing-fuses"
+          },
+          {
+            "title": "Domestic and Workshop Wiring Systems and Accessories",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-electricity-wiring-systems-accessories"
+          },
+          {
+            "title": "Electrical Measuring Instruments (Ammeters, Voltmeters, Multimeters)",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-electricity-measuring-instruments"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Information & Communication Technology (ICT)",
+    "display_name": "Information & Communication Technology (ICT)",
+    "subtitle": "NABTEB Information & Communication Technology",
+    "icon": "IT",
+    "display_order": 14,
+    "sections": [
+      {
+        "title": "Computer Fundamentals, History and Hardware Architecture",
+        "display_order": 1,
+        "description": "Computer evolution, classification, system architecture, CPU, storage, and peripherals.",
+        "topics": [
+          {
+            "title": "Evolution, Generations and Classification of Computers",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-ict-evolution-generations-classification"
+          },
+          {
+            "title": "Computer System Architecture (Input, Processing, Storage, Output)",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-ict-system-architecture"
+          },
+          {
+            "title": "Primary and Secondary Storage Devices",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-ict-storage-devices"
+          },
+          {
+            "title": "Input and Output Peripherals and Their Interfacing",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-ict-input-output-peripherals"
+          }
+        ]
+      },
+      {
+        "title": "Computer Software and Operating Systems",
+        "display_order": 2,
+        "description": "Software classification, operating system functions, user interfaces, and file management.",
+        "topics": [
+          {
+            "title": "Types of Software: System Software vs Application Software",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-ict-software-types-classification"
+          },
+          {
+            "title": "Operating Systems: Functions, Types and User Interfaces (GUI vs CLI)",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-ict-operating-systems-interfaces"
+          },
+          {
+            "title": "File Management, Directory Structures and Utility Programs",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-ict-file-management-utilities"
+          }
+        ]
+      },
+      {
+        "title": "Word Processing and Spreadsheet Applications",
+        "display_order": 3,
+        "description": "Document formatting, tables, mail merge, spreadsheet formulas, functions, and charting.",
+        "topics": [
+          {
+            "title": "Word Processing: Document Creation, Formatting and Editing",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-ict-word-processing-formatting"
+          },
+          {
+            "title": "Advanced Word Processing: Tables, Mail Merge and Graphics",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-ict-word-processing-tables-mailmerge"
+          },
+          {
+            "title": "Spreadsheets: Worksheets, Cell Referencing and Formatting",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-ict-spreadsheets-worksheets-cells"
+          },
+          {
+            "title": "Spreadsheet Formulas, Standard Functions and Chart Creation",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-ict-spreadsheets-formulas-charts"
+          }
+        ]
+      },
+      {
+        "title": "Database Management and Presentation Graphics",
+        "display_order": 4,
+        "description": "Database concepts, tables, queries, reports, presentation slides, and animation.",
+        "topics": [
+          {
+            "title": "Database Concepts, Tables, Records, Fields and Keys",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-ict-database-concepts-tables"
+          },
+          {
+            "title": "Database Queries, Forms and Report Generation",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-ict-database-queries-reports"
+          },
+          {
+            "title": "Presentation Software: Slide Creation, Templates and Animation",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-ict-presentation-slides-animations"
+          }
+        ]
+      },
+      {
+        "title": "Computer Networking, Internet, Cybersecurity and Ethics",
+        "display_order": 5,
+        "description": "Network topologies, internet services, email, malware, cybersecurity, and computer ethics.",
+        "topics": [
+          {
+            "title": "Computer Networks: Topologies, LAN, MAN, WAN and Media",
+            "display_order": 1,
+            "description": "",
+            "import_key": "nabteb-ict-network-topologies-types"
+          },
+          {
+            "title": "The Internet, World Wide Web, Email and Search Engines",
+            "display_order": 2,
+            "description": "",
+            "import_key": "nabteb-ict-internet-web-email"
+          },
+          {
+            "title": "Computer Viruses, Malware and Antivirus Systems",
+            "display_order": 3,
+            "description": "",
+            "import_key": "nabteb-ict-malware-viruses-antivirus"
+          },
+          {
+            "title": "Cybersecurity, Data Privacy and Computer Ethics",
+            "display_order": 4,
+            "description": "",
+            "import_key": "nabteb-ict-cybersecurity-ethics-privacy"
+          }
+        ]
+      }
+    ]
+  }
+]
