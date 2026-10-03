@@ -2,12 +2,46 @@
   "use strict";
 
   var ROOT = "https://exampilot.com.ng";
+  var GA_MEASUREMENT_ID = "G-SJ14FWR89F";
   var LOGO = "/assets/logo/logo-compact.svg";
   var LIGHT_LOGO = "/assets/logo/logo-mono-light.svg";
   var SYMBOL = "/assets/logo/logo-symbol.svg";
   var FAVICON = "/assets/logo/favicon.svg";
   var APPLE_TOUCH_ICON = "/assets/logo/apple-touch-icon.png";
   var OG_IMAGE = "/assets/logo/og-image.png";
+
+  function ensureGoogleAnalytics() {
+    if (window._epGA4Initialized) {
+      return;
+    }
+    window._epGA4Initialized = true;
+    window.dataLayer = window.dataLayer || [];
+    if (typeof window.gtag !== "function") {
+      window.gtag = function () {
+        window.dataLayer.push(arguments);
+      };
+      window.gtag("js", new Date());
+      window.gtag("config", GA_MEASUREMENT_ID);
+    }
+    var existingScript = document.querySelector('script[src*="googletagmanager.com/gtag/js?id="]');
+    if (!existingScript) {
+      var script = document.createElement("script");
+      script.async = true;
+      script.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(GA_MEASUREMENT_ID);
+      var head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
+      if (head) {
+        head.appendChild(script);
+      }
+    }
+  }
+
+  function trackEvent(eventName, params) {
+    try {
+      if (typeof window.gtag === "function") {
+        window.gtag("event", eventName, params || {});
+      }
+    } catch (_) {}
+  }
 
   var navigation = [
     ["JAMB", "/jamb/"],
@@ -258,13 +292,16 @@
   window.ExamPilotPublicSEO = {
     addStructuredData: addStructuredData,
     breadcrumbData: breadcrumbData,
+    ensureGoogleAnalytics: ensureGoogleAnalytics,
     organizationData: organizationData,
     renderBreadcrumbs: renderBreadcrumbs,
     renderFooter: renderFooter,
     renderHeader: renderHeader,
     setMetadata: setMetadata,
+    trackEvent: trackEvent,
     websiteData: websiteData,
     webpageData: webpageData,
+    gaMeasurementId: GA_MEASUREMENT_ID,
     assets: {
       favicon: FAVICON,
       logo: LOGO,
@@ -315,4 +352,6 @@
         "</div>" +
       "</footer>";
   }
+
+  ensureGoogleAnalytics();
 }(window, document));

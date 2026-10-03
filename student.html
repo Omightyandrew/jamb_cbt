@@ -22,6 +22,15 @@ content="width=device-width, initial-scale=1.0"
 <meta property="og:image" content="assets/logo/og-image.png">
 <meta property="og:url" content="https://exampilot.com.ng/">
 
+<!-- GOOGLE ANALYTICS (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SJ14FWR89F"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-SJ14FWR89F');
+</script>
+
 <!-- SUPABASE -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2098,6 +2107,13 @@ if (
                 }
 
 
+                try {
+                    if (typeof window.gtag === "function") {
+                        window.gtag("event", "sign_up_completed", {});
+                    }
+                } catch (_) {}
+
+
                 if (
                     data.session
                 ) {
@@ -2917,6 +2933,20 @@ async function payWithPaystack(
             "pk_live_d8f44cfe7a9e237bf9fbae3483da2e2c0e77305e";
 
 
+        const planName =
+            Number(durationDays) >= 365
+                ? "1_year"
+                : "30_days";
+
+        try {
+            if (typeof window.gtag === "function") {
+                window.gtag("event", "checkout_initiated", {
+                    plan: planName,
+                    amount: Number(amountNaira)
+                });
+            }
+        } catch (_) {}
+
         const paystack =
             new PaystackPop();
 
@@ -2966,6 +2996,15 @@ async function payWithPaystack(
             onCancel:
                 function() {
 
+                    try {
+                        if (typeof window.gtag === "function") {
+                            window.gtag("event", "checkout_cancelled", {
+                                plan: planName,
+                                amount: Number(amountNaira)
+                            });
+                        }
+                    } catch (_) {}
+
                     alert(
                         "Payment window closed."
                     );
@@ -2974,6 +3013,15 @@ async function payWithPaystack(
 
             onError:
                 function(error) {
+
+                    try {
+                        if (typeof window.gtag === "function") {
+                            window.gtag("event", "checkout_cancelled", {
+                                plan: planName,
+                                amount: Number(amountNaira)
+                            });
+                        }
+                    } catch (_) {}
 
                     console.log(
                         "Paystack transaction error:",
@@ -3166,6 +3214,19 @@ async function completeSubscription(
                     "Payment verification succeeded."
                 );
 
+                try {
+                    if (typeof window.gtag === "function") {
+                        window.gtag("event", "purchase", {
+                            transaction_id: reference,
+                            value: Number(durationDays) >= 365 ? 4000 : 1500,
+                            currency: "NGN",
+                            items: [{
+                                item_name: Number(durationDays) >= 365 ? "1_year" : "30_days",
+                                price: Number(durationDays) >= 365 ? 4000 : 1500
+                            }]
+                        });
+                    }
+                } catch (_) {}
 
                 subscribed =
                     true;

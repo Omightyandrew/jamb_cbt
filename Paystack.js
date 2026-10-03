@@ -257,6 +257,20 @@ async function startPaystackPayment(
         // OPEN PAYSTACK PAYMENT
         // ----------------------------------------------
 
+        const planName =
+            Number(durationDays) >= 365
+                ? "1_year"
+                : "30_days";
+
+        try {
+            if (typeof window.gtag === "function") {
+                window.gtag("event", "checkout_initiated", {
+                    plan: planName,
+                    amount: Number(amountNaira)
+                });
+            }
+        } catch (_) {}
+
         paystack.newTransaction({
 
             key:
@@ -363,6 +377,15 @@ async function startPaystackPayment(
             onCancel:
                 function() {
 
+                    try {
+                        if (typeof window.gtag === "function") {
+                            window.gtag("event", "checkout_cancelled", {
+                                plan: planName,
+                                amount: Number(amountNaira)
+                            });
+                        }
+                    } catch (_) {}
+
                     console.log(
                         "PAYMENT CANCELLED"
                     );
@@ -381,6 +404,15 @@ async function startPaystackPayment(
 
             onError:
                 function(error) {
+
+                    try {
+                        if (typeof window.gtag === "function") {
+                            window.gtag("event", "checkout_cancelled", {
+                                plan: planName,
+                                amount: Number(amountNaira)
+                            });
+                        }
+                    } catch (_) {}
 
                     console.error(
                         "PAYSTACK ERROR:",
@@ -602,6 +634,20 @@ async function verifyPayment(
         console.log(
             "================================"
         );
+
+        try {
+            if (typeof window.gtag === "function") {
+                window.gtag("event", "purchase", {
+                    transaction_id: paymentReference,
+                    value: Math.round(Number(amountKobo) / 100),
+                    currency: "NGN",
+                    items: [{
+                        item_name: Number(durationDays) >= 365 ? "1_year" : "30_days",
+                        price: Math.round(Number(amountKobo) / 100)
+                    }]
+                });
+            }
+        } catch (_) {}
 
 
         // ----------------------------------------------

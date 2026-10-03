@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment & Secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Tests
+*.test.js
+
+# Build, generation & migration artifacts
+nabteb_gen/
+sql/
+supabase/
+build_*.js
+validate_*.js
+
+# Temporary & design assets
+desktop-cbt-check.png
+*.pdf
+
+# Question JSON batches
+*_batch_*.json
+*_allocation.json
+*_hierarchy.json
+waec_*.json

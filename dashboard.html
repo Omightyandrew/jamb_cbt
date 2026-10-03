@@ -9,6 +9,14 @@
 <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
 <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
 <meta name="theme-color" content="#14213D">
+<!-- GOOGLE ANALYTICS (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SJ14FWR89F"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-SJ14FWR89F');
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script src="offline-store.js"></script>
@@ -2142,6 +2150,16 @@ async function startDashboardPayment(amount, durationDays) {
 
         console.log("Paystack: payment popup opening.", { reference, user_id: user.id, plan_days: durationDays });
 
+        const planName = Number(durationDays) >= 365 ? "1_year" : "30_days";
+        try {
+            if (typeof window.gtag === "function") {
+                window.gtag("event", "checkout_initiated", {
+                    plan: planName,
+                    amount: Number(amount)
+                });
+            }
+        } catch (_) {}
+
         const paystack = new PaystackPop();
 
         paystack.newTransaction({
@@ -2181,6 +2199,19 @@ async function startDashboardPayment(amount, durationDays) {
                 );
 
                 if (activated) {
+                    try {
+                        if (typeof window.gtag === "function") {
+                            window.gtag("event", "purchase", {
+                                transaction_id: returnedReference,
+                                value: Number(amount),
+                                currency: "NGN",
+                                items: [{
+                                    item_name: planName,
+                                    price: Number(amount)
+                                }]
+                            });
+                        }
+                    } catch (_) {}
                     alert("Payment successful! Your subscription is now active.");
                     openSubscription();
                 } else {
@@ -2189,6 +2220,14 @@ async function startDashboardPayment(amount, durationDays) {
                 }
             },
             onCancel: function() {
+                try {
+                    if (typeof window.gtag === "function") {
+                        window.gtag("event", "checkout_cancelled", {
+                            plan: planName,
+                            amount: Number(amount)
+                        });
+                    }
+                } catch (_) {}
                 // Only clear the pending record created by THIS payment attempt.
                 // Never delete an older pending payment that may still need recovery.
                 const pending = getPendingPaystackSubscription();
@@ -2199,6 +2238,14 @@ async function startDashboardPayment(amount, durationDays) {
                 alert("Payment window closed.");
             },
             onError: function(error) {
+                try {
+                    if (typeof window.gtag === "function") {
+                        window.gtag("event", "checkout_cancelled", {
+                            plan: planName,
+                            amount: Number(amount)
+                        });
+                    }
+                } catch (_) {}
                 restoreSubscriptionButtons();
                 console.log("Paystack payment error:", error);
                 alert("Paystack payment error: " + (error?.message || "Unknown error"));

@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="brand.css">
     <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
     <meta name="theme-color" content="#14213D">
+    <!-- GOOGLE ANALYTICS (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SJ14FWR89F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-SJ14FWR89F');
+    </script>
     <style>
         :root {
             --jamb-green: #008751;
@@ -229,6 +237,11 @@
                 const code = button.dataset.examCode;
                 try {
                     window.setSelectedExamCode(code);
+                    try {
+                        if (typeof window.gtag === "function") {
+                            window.gtag("event", "exam_selected", { exam_code: code });
+                        }
+                    } catch (_) {}
                     window.location.href = "subject.html";
                 } catch (error) {
                     console.error(`Could not select ${code}:`, error);
