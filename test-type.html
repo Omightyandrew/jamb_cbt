@@ -20,6 +20,42 @@
 
 <link rel="stylesheet" href="redesign.css">
     <link rel="manifest" href="manifest.json">
+    <style>
+        .test-type-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 18px;
+        }
+        .test-type-actions .primary-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .test-type-actions button {
+            min-height: 48px;
+        }
+        .test-type-actions .btn-back {
+            background: #edf2ef !important;
+            color: #294235 !important;
+            box-shadow: none !important;
+            align-self: flex-start;
+        }
+        .test-type-actions .btn-back:hover {
+            background: #e2e8e4 !important;
+        }
+        @media (max-width: 600px) {
+            .test-type-actions .primary-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .test-type-actions .primary-group button,
+            .test-type-actions .btn-back {
+                width: 100% !important;
+                align-self: stretch;
+            }
+        }
+    </style>
 </head>
 
 
@@ -45,21 +81,19 @@
         </p>
 
 
-        <button onclick="startPractice()">
-            Practice Test
-        </button>
-
-
-        <button onclick="startPastQuestions()">
-            Past Questions
-        </button>
-
-
-        <br><br>
-
-        <button onclick="goBack()">
-            Back to Subjects
-        </button>
+        <div class="test-type-actions">
+            <div class="primary-group">
+                <button onclick="startPractice()">
+                    Practice Test
+                </button>
+                <button onclick="startPastQuestions()">
+                    Past Questions
+                </button>
+            </div>
+            <button class="btn-back" onclick="goBack()">
+                Back to Subjects
+            </button>
+        </div>
 
     </div>
 

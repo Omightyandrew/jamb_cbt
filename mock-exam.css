@@ -113,3 +113,28 @@
     .mock-result-actions { flex-direction: column; }
     .mock-result-actions > * { width: 100%; }
 }
+
+@media (max-width: 380px) {
+    .mock-header {
+        padding: 8px 10px;
+        gap: 6px;
+    }
+    .mock-premium-label {
+        display: none;
+    }
+    .mock-logo {
+        width: 32px;
+        height: 32px;
+    }
+    .mock-brand span strong {
+        font-size: 13px;
+    }
+    .mock-brand span span {
+        font-size: 11px;
+    }
+    .mock-timer {
+        min-width: 86px;
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+}

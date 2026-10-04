@@ -14,6 +14,35 @@
 
 <link rel="stylesheet" href="redesign.css">
     <link rel="manifest" href="manifest.json">
+    <style>
+        #subjectChoices br {
+            display: none;
+        }
+        .subject-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .subject-actions button {
+            min-height: 48px;
+        }
+        .subject-actions .btn-back {
+            background: #edf2ef !important;
+            color: #294235 !important;
+            box-shadow: none !important;
+            align-self: flex-start;
+        }
+        .subject-actions .btn-back:hover {
+            background: #e2e8e4 !important;
+        }
+        @media (max-width: 600px) {
+            .subject-actions button {
+                width: 100% !important;
+                align-self: stretch;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -37,49 +66,35 @@
                 English Language
             </label>
 
-            <br><br>
-
             <label>
                 <input type="checkbox" value="Mathematics">
                 Mathematics
             </label>
-
-            <br><br>
 
             <label>
                 <input type="checkbox" value="Physics">
                 Physics
             </label>
 
-            <br><br>
-
             <label>
                 <input type="checkbox" value="Chemistry">
                 Chemistry
             </label>
-
-            <br><br>
 
             <label>
                 <input type="checkbox" value="Biology">
                 Biology
             </label>
 
-            <br><br>
-
             <label>
                 <input type="checkbox" value="Government">
                 Government
             </label>
 
-            <br><br>
-
             <label>
                 <input type="checkbox" value="Economics">
                 Economics
             </label>
-
-            <br><br>
 
             <label>
                 <input type="checkbox" value="Literature">
@@ -91,48 +106,35 @@
                 Christian Religious Studies (CRS)
             </label>
 
-            <br><br>
-
             <label>
                 <input type="checkbox" value="History">
                 History
             </label>
-
-            <br><br>
 
             <label>
                 <input type="checkbox" value="Geography">
                 Geography
             </label>
 
-            <br><br>
-
             <label>
                 <input type="checkbox" value="Commerce">
                 Commerce
             </label>
 
-            <br><br>
-
             <label>
                 <input type="checkbox" value="Accounting">
                 Accounting
             </label>
-
-            <br><br>
-
-            <br><br>
         </div>
 
-        <button onclick="startTest()">
-            Start Test
-        </button>
-
-        <br><br>
-
-        <button onclick="goBack()">
-            Back to Dashboard
-        </button>
+        <div class="subject-actions">
+            <button onclick="startTest()">
+                Start Test
+            </button>
+            <button class="btn-back" onclick="goBack()">
+                Back to Dashboard
+            </button>
+        </div>
 
     </div>
 

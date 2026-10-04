@@ -114,7 +114,7 @@ content="width=device-width, initial-scale=1.0"
         border: 1px solid #dfe5e1;
         border-radius: 12px;
         outline: none;
-        font-size: 15px;
+        font-size: 16px;
         -webkit-appearance: none;
         appearance: none;
     }
@@ -181,37 +181,234 @@ content="width=device-width, initial-scale=1.0"
 
     .subscription-page {
         width: 100%;
-        max-width: 600px;
+        max-width: 520px;
         margin: auto;
-        padding: 20px;
+        padding: 24px 16px;
     }
 
     .subscription-box {
         background: white;
+        border-radius: 22px;
+        padding: 28px 24px;
+        border: 1px solid #d8e5dd;
+        box-shadow: 0 10px 32px rgba(0, 73, 45, .06);
+    }
+
+    .subscription-head {
+        text-align: center;
+        margin-bottom: 18px;
+    }
+
+    .subscription-head h2 {
+        font-size: 20px;
+        color: #004d2e;
+        margin: 0 0 6px;
+        font-weight: 800;
+    }
+
+    .subscription-subhead {
+        font-size: 13px;
+        color: #5c6d65;
+        margin: 0;
+        line-height: 1.4;
+    }
+
+    .subscription-features {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px 10px;
+        padding: 11px 14px;
+        border-radius: 14px;
+        background: #edf6f0;
+        margin-bottom: 16px;
+    }
+
+    .subscription-feature-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11.5px;
+        color: #004d2e;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    .subscription-feature-item span {
+        color: #008751;
+        font-weight: 800;
+        font-size: 12px;
+    }
+
+    .subscription-plan-card {
+        position: relative;
+        padding: 16px;
+        border: 1px solid #d8e5dd;
+        border-radius: 16px;
+        background: #fff;
+        margin-bottom: 12px;
+        transition: border-color .15s ease;
+    }
+
+    .subscription-plan-card.featured {
+        border-color: #a4d5bc;
+        background: linear-gradient(180deg, #f4faf6 0%, #ffffff 100%);
+    }
+
+    .subscription-plan-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        padding: 4px 8px;
         border-radius: 20px;
-        padding: 25px;
-        border: 1px solid #e0e5e2;
+        background: #edf6f0;
+        color: #006b40;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: .3px;
     }
 
-    .subscription-plan {
-        border: 1px solid #e1e7e3;
-        padding: 18px;
-        border-radius: 15px;
-        margin: 15px 0;
+    .subscription-plan-card h3 {
+        color: #004d2e;
+        font-size: 15px;
+        margin: 0 0 4px;
+        font-weight: 800;
     }
 
-    .subscription-plan h3 {
-        margin-top: 0;
+    .subscription-plan-card p {
+        margin: 0;
+        color: #607369;
+        font-size: 12px;
+        line-height: 1.35;
     }
 
-    .subscription-plan button {
+    .subscription-plan-bottom {
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .subscription-price-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+    }
+
+    .subscription-price {
+        color: #004d2e;
+        font-size: 20px;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+
+    .subscription-duration {
+        color: #607369;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .subscription-savings {
+        display: inline-block;
+        color: #008751;
+        font-size: 10.5px;
+        font-weight: 750;
+        margin-top: 2px;
+    }
+
+    .subscription-pay-button {
+        width: auto;
+        min-width: 110px;
+        min-height: 44px;
+        padding: 0 16px;
         border: none;
-        background: #087f3e;
-        color: white;
-        border-radius: 20px;
-        padding: 11px 18px;
-        font-weight: bold;
+        border-radius: 12px;
+        background: #008751;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 750;
         cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background .15s ease;
+    }
+
+    .subscription-pay-button:hover {
+        background: #006b40;
+    }
+
+    .subscription-trust-badge {
+        text-align: center;
+        font-size: 11px;
+        color: #607369;
+        margin-top: 14px;
+        margin-bottom: 12px;
+        line-height: 1.35;
+    }
+
+    .subscription-back-btn {
+        width: 100%;
+        min-height: 44px;
+        padding: 10px 14px;
+        border: 1px solid #d8e5dd;
+        border-radius: 12px;
+        background: #fbfdfc;
+        color: #004d2e;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 4px;
+    }
+
+    .subscription-back-btn:hover {
+        background: #edf6f0;
+    }
+
+    @media (max-width: 480px) {
+        .subscription-box {
+            padding: 18px 14px;
+            border-radius: 18px;
+        }
+        .subscription-head h2 {
+            font-size: 18px;
+        }
+        .subscription-features {
+            padding: 9px 10px;
+            gap: 5px 8px;
+        }
+        .subscription-feature-item {
+            font-size: 11px;
+        }
+        .subscription-plan-card {
+            padding: 13px;
+        }
+        .subscription-price {
+            font-size: 19px;
+        }
+        .subscription-pay-button {
+            min-height: 44px;
+            min-width: 100px;
+        }
+    }
+
+    @media (max-width: 360px) {
+        .subscription-page {
+            padding: 12px 8px;
+        }
+        .subscription-box {
+            padding: 14px 10px;
+        }
+        .subscription-features {
+            grid-template-columns: 1fr;
+            gap: 4px;
+        }
+        .subscription-plan-bottom {
+            flex-wrap: wrap;
+        }
+        .subscription-pay-button {
+            width: 100%;
+        }
     }
 
     .terms-row {
@@ -290,12 +487,15 @@ content="width=device-width, initial-scale=1.0"
         border: 0;
         background: #edf7ef;
         color: #087f3e;
-        width: 36px;
-        height: 36px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
-        font-size: 22px;
+        font-size: 24px;
         font-weight: 700;
         cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .terms-scroll {
@@ -857,61 +1057,41 @@ content="width=device-width, initial-scale=1.0"
 
 <div class="terms-scroll">
 
-    <h3>
-        Terms of Use
-    </h3>
+    <p class="terms-meta"><strong>Last Updated: October 2026</strong></p>
 
-    <p>
-        By using ExamPilot, you agree to use the platform responsibly, study honestly, and follow the rules for all practice and exam activities. You must not misuse the site, attempt to bypass access controls, or share your account with others.
-    </p>
+    <p>By creating or using an ExamPilot account, you agree to these Terms &amp; Policies.</p>
 
-    <h3>
-        Privacy
-    </h3>
+    <h3>1. Use of ExamPilot</h3>
+    <p>ExamPilot provides educational tools for exam preparation, including practice questions, mock exams, past questions, AI Tutor, Daily Challenges, and learning resources. Use the platform honestly and do not attempt to bypass access controls, abuse the service, or share your account.</p>
 
-    <p>
-        We collect the information needed to create and manage your student account, track your progress, and provide access to learning features. Your data is used only for the services available on the platform and is not shared publicly.
-    </p>
+    <h3>2. Accounts &amp; Security</h3>
+    <p>You are responsible for keeping your account information secure. Contact us if you believe your account has been accessed without permission.</p>
 
-    <h3>
-        Payments &amp; Subscription
-    </h3>
+    <h3>3. Free &amp; Premium Access</h3>
+    <p>Some features are available free of charge, while Premium features require payment. Premium access is provided for the period selected during purchase and does not automatically renew unless clearly stated otherwise.</p>
 
-    <p>
-        Premium access is available only through the platform’s subscription flow. You are responsible for keeping your payment details accurate and for reviewing your subscription status before using premium features.
-    </p>
+    <h3>4. Payments &amp; Payment Problems</h3>
+    <p>Payments are processed securely through Paystack. If you experience a failed payment, duplicate charge, or an issue where payment was completed but Premium access was not activated, contact ExamPilot support for assistance and verification.</p>
 
-    <h3>
-        Content &amp; Copyright
-    </h3>
+    <h3>5. Privacy</h3>
+    <p>We collect information necessary to provide and improve ExamPilot, manage accounts, deliver features, and provide support. Your username may appear on features such as public leaderboards. We do not intentionally publish your private account information.</p>
 
-    <p>
-        Study content, question materials, explanations, and platform materials are provided for educational use. Do not copy, redistribute, or share the platform content outside of your personal learning use.
-    </p>
+    <h3>6. AI Tutor</h3>
+    <p>AI Tutor provides educational assistance and explanations. AI-generated responses may occasionally contain errors and should be reviewed alongside trusted study materials.</p>
 
-    <h3>
-        Account &amp; Security
-    </h3>
+    <h3>7. Educational Content</h3>
+    <p>ExamPilot is an independent educational platform. JAMB, WAEC, NECO, and NABTEB are trademarks of their respective examination authorities. ExamPilot is not affiliated with or endorsed by these examination bodies unless explicitly stated.</p>
 
-    <p>
-        You are responsible for your login details and for keeping your account secure. Do not share your password, and notify support immediately if you suspect unauthorized access.
-    </p>
+    <h3>8. Content &amp; Copyright</h3>
+    <p>ExamPilot's original software, explanations, designs, and materials may not be copied, redistributed, or commercially reused without permission.</p>
 
-    <h3>
-        Changes to the Terms
-    </h3>
+    <h3>9. Changes</h3>
+    <p>We may update these Terms &amp; Policies when necessary. Continued use of ExamPilot after an update means you accept the revised policy.</p>
 
-    <p>
-        We may update these terms to improve the platform, improve security, or reflect new services. Continued use of the platform means you accept any updated terms.
-    </p>
+    <h3>10. Contact</h3>
+    <p>For account, payment, or other support issues, contact us through the support options provided within ExamPilot.</p>
 
-    <h3>
-        Contact
-    </h3>
-
-    <p>
-        If you need help, contact support at igbawuaandrew3@gmail.com or through the WhatsApp number available in the Support section.
-    </p>
+    <p class="terms-footer-note"><strong>By using ExamPilot, you agree to these Terms &amp; Policies.</strong></p>
 
 </div>
 
@@ -2544,55 +2724,70 @@ function showSubscription() {
 
             <div class="subscription-box">
 
-                <h2>
-                    Practice Subscription
-                </h2>
-
-                <p>
-                    Choose your subscription plan.
-                </p>
-
-                <div class="subscription-plan">
-
-                    <h3>
-                        30 Days
-                    </h3>
-
-                    <p>
-                        ₦1,500 for 30 days
-                    </p>
-
-                    <button
-                        type="button"
-                        onclick="payFor30Days()"
-                    >
-                        Pay ₦1,500
-                    </button>
-
+                <div class="subscription-head">
+                    <img class="ep-logo ep-logo--header" src="assets/logo/logo-compact.svg" alt="ExamPilot" style="height:36px;margin:0 auto 10px;display:block;">
+                    <h2>Unlock Full Practice Access</h2>
+                    <p class="subscription-subhead">Choose a plan to continue practice with unlimited questions and full CBT features.</p>
                 </div>
 
-                <div class="subscription-plan">
+                <div class="subscription-features">
+                    <div class="subscription-feature-item"><span>✓</span> Full CBT practice</div>
+                    <div class="subscription-feature-item"><span>✓</span> Past Questions &amp; Answers</div>
+                    <div class="subscription-feature-item"><span>✓</span> Full Mock Exams</div>
+                    <div class="subscription-feature-item"><span>✓</span> Novels / Literature</div>
+                    <div class="subscription-feature-item"><span>✓</span> AI Tutor</div>
+                    <div class="subscription-feature-item"><span>✓</span> Ad-free experience</div>
+                </div>
 
-                    <h3>
-                        1 Year
-                    </h3>
+                <div class="subscription-plan-card">
+                    <div>
+                        <h3>30 Days Access</h3>
+                        <p>Full CBT practice and premium access for 30 days.</p>
+                    </div>
+                    <div class="subscription-plan-bottom">
+                        <div class="subscription-price-group">
+                            <strong class="subscription-price">₦1,500</strong>
+                            <span class="subscription-duration">/ 30 days</span>
+                        </div>
+                        <button
+                            type="button"
+                            class="subscription-pay-button"
+                            onclick="payFor30Days()"
+                        >
+                            Pay ₦1,500
+                        </button>
+                    </div>
+                </div>
 
-                    <p>
-                        ₦4,000 for 1 year — unlimited CBT practice
-                    </p>
+                <div class="subscription-plan-card featured">
+                    <span class="subscription-plan-badge">BEST VALUE</span>
+                    <div>
+                        <h3>1 Year Access</h3>
+                        <p>Unlimited CBT practice and full premium access for one year.</p>
+                    </div>
+                    <div class="subscription-plan-bottom">
+                        <div class="subscription-price-group">
+                            <strong class="subscription-price">₦4,000</strong>
+                            <span class="subscription-duration">/ 1 year</span>
+                            <span class="subscription-savings">Save over 75%</span>
+                        </div>
+                        <button
+                            type="button"
+                            class="subscription-pay-button"
+                            onclick="payFor1Year()"
+                        >
+                            Pay ₦4,000
+                        </button>
+                    </div>
+                </div>
 
-                    <button
-                        type="button"
-                        onclick="payFor1Year()"
-                    >
-                        Pay ₦4,000
-                    </button>
-
+                <div class="subscription-trust-badge">
+                    🔒 Secure payment via Paystack · Instant activation
                 </div>
 
                 <button
                     type="button"
-                    class="secondary-button"
+                    class="secondary-button subscription-back-btn"
                     onclick="returnToDashboard()"
                 >
                     Back to Dashboard

@@ -346,9 +346,10 @@
               '<li><a href="/jamb/practice-questions/">Practice Questions</a></li>' +
               '<li><a href="/jamb/brochure/">Brochure &amp; Courses</a></li>' +
               '<li><a href="/student.html">Sign In / Register</a></li>' +
+              '<li><a href="/terms.html">Terms &amp; Policies</a></li>' +
             "</ul></div>" +
           "</div>" +
-          '<div class="seo-footer__bottom"><span>© ' + new Date().getFullYear() + " ExamPilot</span><span>Study smarter. Prepare with purpose.</span></div>" +
+          '<div class="seo-footer__bottom"><span>© ' + new Date().getFullYear() + ' ExamPilot · <a href="/terms.html" style="color:inherit;text-decoration:underline;">Terms &amp; Policies</a></span><span>Study smarter. Prepare with purpose.</span></div>' +
         "</div>" +
       "</footer>";
   }
