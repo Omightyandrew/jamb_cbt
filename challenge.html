@@ -267,10 +267,15 @@ body{
     </div>
 
     <div class="stat">
-      🏆 Rank
-      <b id="rank">—</b>
+      🏆 Milestone
+      <b id="milestoneBadge" style="font-size:16px;line-height:1.35;margin-top:2px;">None</b>
     </div>
 
+  </div>
+
+  <div class="stat" style="margin-top:10px;">
+    🏅 Rank
+    <b id="rank" style="font-size:18px;">—</b>
   </div>
 
 </section>
@@ -373,20 +378,26 @@ function esc(value){
 
 function localDate(){
 
-  const d =
-    new Date();
+  try{
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Africa/Lagos',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).formatToParts(new Date());
 
-  return (
-    d.getFullYear() +
-    '-' +
-    String(
-      d.getMonth() + 1
-    ).padStart(2,'0') +
-    '-' +
-    String(
-      d.getDate()
-    ).padStart(2,'0')
-  );
+    const map = Object.fromEntries(
+      parts
+        .filter(p => p.type !== 'literal')
+        .map(p => [p.type, p.value])
+    );
+
+    return `${map.year}-${map.month}-${map.day}`;
+  }catch(e){
+    const d = new Date();
+    const lagosTime = new Date(d.getTime() + (d.getTimezoneOffset() + 60) * 60000);
+    return lagosTime.toISOString().slice(0, 10);
+  }
 
 }
 
@@ -439,6 +450,30 @@ function dayBefore(
     ).padStart(2,'0')
   );
 
+}
+
+
+/* =====================================================
+   STREAK MILESTONES DEFINITIONS & HELPER
+===================================================== */
+
+const STREAK_MILESTONES = [
+  { id: 'legend', days: 100, name: 'ExamPilot Legend', icon: '👑', description: 'Completed 100 consecutive daily challenges.' },
+  { id: 'elite', days: 60, name: 'Elite', icon: '💎', description: 'Completed 60 consecutive daily challenges.' },
+  { id: 'master', days: 30, name: 'Challenge Master', icon: '🏆', description: 'Completed 30 consecutive daily challenges.' },
+  { id: 'consistent', days: 14, name: 'Consistent', icon: '⚡', description: 'Completed 14 consecutive daily challenges.' },
+  { id: 'dedicated', days: 7, name: 'Dedicated', icon: '🔥', description: 'Completed 7 consecutive daily challenges.' },
+  { id: 'starter', days: 3, name: 'Starter', icon: '🌱', description: 'Completed 3 consecutive daily challenges.' }
+];
+
+function getStreakMilestone(streakDays){
+  const days = Number(streakDays) || 0;
+  for(const m of STREAK_MILESTONES){
+    if(days >= m.days){
+      return m;
+    }
+  }
+  return null;
 }
 
 
@@ -1111,6 +1146,26 @@ let rows = [];
           : 's'
       );
 
+  }
+
+  /* ===================================================
+     STREAK MILESTONES & BADGES
+  =================================================== */
+
+  const activeMilestone = getStreakMilestone(streak);
+  const milestoneElement =
+    document.getElementById(
+      'milestoneBadge'
+    );
+
+  if(milestoneElement){
+    if(activeMilestone){
+      milestoneElement.textContent = `${activeMilestone.icon} ${activeMilestone.days}d · ${activeMilestone.name}`;
+      milestoneElement.title = `${activeMilestone.name}: ${activeMilestone.description}`;
+    }else{
+      milestoneElement.textContent = 'None';
+      milestoneElement.title = 'Reach a 3-day streak to earn your first milestone badge!';
+    }
   }
 
 
@@ -2157,9 +2212,7 @@ async function submitChallenge(){
 
 
   const saved =
-    await saveChallengeResult(
-      score
-    );
+    await saveChallengeResult();
 
 
   if(!saved){
@@ -2275,10 +2328,20 @@ async function submitChallenge(){
      RESULT
   ================================================= */
 
+  const finalScore =
+    typeof saved.score === 'number'
+      ? saved.score
+      : score;
+
+  const finalTotal =
+    typeof saved.total === 'number'
+      ? saved.total
+      : questions.length;
+
   const percentage =
     Math.round(
-      score /
-      questions.length *
+      finalScore /
+      finalTotal *
       100
     );
 
@@ -2294,14 +2357,19 @@ async function submitChallenge(){
     result.style.display =
       'block';
 
+    const xpFeedbackHtml = (saved && saved.xp_awarded === 10)
+      ? '<div class="challenge-xp-feedback" style="display:inline-flex;align-items:center;gap:6px;margin:10px 0 4px;padding:5px 12px;border-radius:20px;background:#eef7f2;color:#00492d;font-weight:700;font-size:12px;border:1px solid rgba(0,135,81,.2);">✨ +10 XP Earned!</div>'
+      : '';
 
     result.innerHTML = `
 
       <strong>
         You scored
-        ${score}/${questions.length}
+        ${finalScore}/${finalTotal}
         (${percentage}%).
       </strong>
+
+      ${xpFeedbackHtml}
 
       <p
         style="margin:8px 0 0"
@@ -2321,12 +2389,10 @@ async function submitChallenge(){
 
 
 /* =====================================================
-   SAVE CHALLENGE RESULT
+   SAVE CHALLENGE RESULT (SERVER-AUTHORITATIVE)
 ===================================================== */
 
-async function saveChallengeResult(
-  score
-){
+async function saveChallengeResult(){
 
   const today =
     challengeDate ||
@@ -2335,38 +2401,45 @@ async function saveChallengeResult(
 
   try{
 
-    /* ===============================================
-       CHECK EXISTING RESULT
-    =============================================== */
+    /*
+     * Build answer submission array without client score.
+     * The server authoritatively validates each answer against
+     * public."Questions" and enforces subscription quotas.
+     */
+    const submissionAnswers =
+      questions.map(
+        (q, idx) => ({
+          question_id: q.id,
+          answer: answers[idx] ? String(answers[idx]).trim().toUpperCase() : ''
+        })
+      );
+
 
     const {
-      data:existing,
-      error:checkError
+      data,
+      error
     } =
       await client
-        .from('challenge_attempts')
-        .select(
-          'id,score,total'
-        )
-        .eq(
-          'user_id',
-          user.id
-        )
-        .eq(
-          'challenge_date',
-          today
-        )
-        .maybeSingle();
+        .rpc(
+          'submit_daily_challenge',
+          {
+            p_answers: submissionAnswers,
+            p_challenge_date: today
+          }
+        );
 
 
-    if(checkError){
+    if(error){
 
-      throw checkError;
+      throw error;
 
     }
 
 
-    if(existing){
+    if(
+      data &&
+      data.already_completed
+    ){
 
       const card =
         document.getElementById(
@@ -2396,115 +2469,24 @@ async function saveChallengeResult(
       }
 
 
-      return true;
+      return {
+        success: true,
+        already_completed: true,
+        score: Number(data.score) || 0,
+        total: Number(data.total) || questions.length,
+        xp_awarded: 0
+      };
 
     }
 
 
-    /* ===============================================
-       DISPLAY NAME
-    =============================================== */
-
-    const displayName =
-      await getDisplayName();
-
-
-    /* ===============================================
-       PAYLOAD
-    =============================================== */
-
-    const payload = {
-
-      user_id:
-        user.id,
-
-      display_name:
-        displayName,
-
-      challenge_date:
-        today,
-
-      score:
-        score,
-
-      total:
-        questions.length,
-
-      completed_at:
-        new Date().toISOString()
-
+    return {
+      success: true,
+      already_completed: false,
+      score: Number(data?.score) || 0,
+      total: Number(data?.total) || questions.length,
+      xp_awarded: Number(data?.xp_awarded) || 0
     };
-
-
-    /* ===============================================
-       SAVE
-    =============================================== */
-
-    const {
-      error
-    } =
-      await client
-        .from('challenge_attempts')
-        .upsert(
-          payload,
-          {
-            onConflict:
-              'user_id,challenge_date'
-          }
-        );
-
-
-    if(error){
-
-      /*
-       * Another submission may have been
-       * recorded at exactly the same time.
-       */
-
-      if(
-        String(error.code) ===
-        '23505'
-      ){
-
-        const card =
-          document.getElementById(
-            'challengeCard'
-          );
-
-
-        if(card){
-
-          card.innerHTML = `
-
-            <div class="message">
-
-              <h2>
-                ✅ Today’s Challenge Completed
-              </h2>
-
-              <p>
-                Your challenge has already
-                been recorded.
-              </p>
-
-            </div>
-
-          `;
-
-        }
-
-
-        return true;
-
-      }
-
-
-      throw error;
-
-    }
-
-
-    return true;
 
 
   }catch(error){
@@ -2524,7 +2506,7 @@ async function saveChallengeResult(
     );
 
 
-    return false;
+    return null;
 
   }
 

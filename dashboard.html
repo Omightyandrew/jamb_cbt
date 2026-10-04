@@ -1471,6 +1471,261 @@ button {
 @media(max-width:520px){.dashboard-modal-backdrop{padding:66px 10px 12px}.dashboard-modal{max-height:calc(100vh - 78px);border-radius:16px}.dashboard-modal-head{padding:15px}.student-notification-list{padding:12px;}}
 @media(max-width:520px){.dashboard-modal,.dashboard-modal-head,.student-notification-list,.student-notification-item{min-width:0}.dashboard-modal-head>div{min-width:0;flex:1 1 auto}.dashboard-modal-head h2,.dashboard-modal-head p,.student-notification-item h3,.student-notification-item p,.student-notification-item small{overflow-wrap:anywhere;word-break:break-word}.dashboard-modal-head button{width:44px;height:44px;flex:0 0 44px}.student-notification-list{overflow-x:hidden;overflow-y:auto}.student-notification-item small{font-size:11px}}
 
+/* Daily Challenge Engagement Widget */
+.challenge-widget {
+    background: linear-gradient(145deg, #ffffff 0%, #f4faf6 100%);
+    border: 1px solid rgba(0, 135, 81, .18);
+    border-radius: 20px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 20px rgba(0, 73, 45, .06);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+}
+
+.challenge-widget-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.challenge-widget-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.challenge-widget-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: var(--jamb-light);
+    color: var(--jamb-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    box-shadow: inset 0 0 0 1px rgba(0, 135, 81, .15);
+}
+
+.challenge-widget-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--jamb-deep);
+    letter-spacing: -.2px;
+    margin: 0;
+}
+
+.challenge-widget-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.challenge-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.challenge-badge-quota {
+    background: #eef7f2;
+    color: var(--jamb-deep);
+    border: 1px solid rgba(0, 135, 81, .14);
+}
+
+.challenge-badge-streak {
+    background: #fff6ea;
+    color: #9c5500;
+    border: 1px solid rgba(230, 138, 0, .22);
+}
+
+.challenge-widget-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 4px;
+    border-top: 1px solid rgba(0, 135, 81, .07);
+}
+
+.challenge-widget-status {
+    color: #496055;
+    font-size: 13px;
+    line-height: 1.4;
+    min-width: 0;
+    flex: 1;
+}
+
+.challenge-widget-status strong {
+    color: var(--jamb-deep);
+    font-weight: 700;
+}
+
+.challenge-widget-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    border-radius: 13px;
+    background: var(--jamb-green);
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 0;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 135, 81, .18);
+    transition: background .16s ease, transform .16s ease;
+    flex-shrink: 0;
+}
+
+.challenge-widget-action:hover {
+    background: var(--jamb-dark);
+    transform: translateY(-1px);
+}
+
+.challenge-widget-action.secondary {
+    background: var(--jamb-light);
+    color: var(--jamb-deep);
+    border: 1px solid rgba(0, 135, 81, .18);
+    box-shadow: none;
+}
+
+.challenge-widget-action.secondary:hover {
+    background: #e1f2e8;
+}
+
+/* Daily Challenge XP Progression Section */
+.challenge-progression {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 14px;
+    background: rgba(0, 135, 81, .04);
+    border: 1px solid rgba(0, 135, 81, .1);
+    border-radius: 12px;
+}
+
+.challenge-progression-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    line-height: 1.3;
+}
+
+.challenge-progression-level {
+    font-size: 12px;
+    font-weight: 750;
+    color: var(--jamb-deep);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.challenge-progression-stats {
+    font-size: 11px;
+    font-weight: 700;
+    color: #496055;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.challenge-progression-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(0, 135, 81, .12);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+}
+
+.challenge-progression-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--jamb-green, #008751), #10b981);
+    transition: width .25s ease;
+    max-width: 100%;
+    min-width: 0;
+}
+
+@media (max-width: 600px) {
+    .challenge-widget {
+        padding: 14px 15px;
+        margin-bottom: 22px;
+        border-radius: 16px;
+        gap: 10px;
+    }
+
+    .challenge-progression {
+        padding: 8px 12px;
+        gap: 5px;
+    }
+
+    .challenge-progression-level {
+        font-size: 11.5px;
+    }
+
+    .challenge-progression-stats {
+        font-size: 10.5px;
+    }
+
+    .challenge-progression-bar {
+        height: 5px;
+    }
+
+    .challenge-widget-top {
+        gap: 8px;
+    }
+
+    .challenge-widget-title {
+        font-size: 15px;
+    }
+
+    .challenge-widget-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        border-radius: 10px;
+    }
+
+    .challenge-widget-body {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding-top: 6px;
+    }
+
+    .challenge-widget-action {
+        width: 100%;
+        min-height: 42px;
+        font-size: 13px;
+    }
+
+    .challenge-widget-status {
+        font-size: 12px;
+    }
+}
+
 </style>
     <link rel="manifest" href="manifest.json">
 </head>
@@ -1577,6 +1832,34 @@ button {
 </div>
 </div>
 <main class="page">
+<aside aria-label="Daily Challenge" class="challenge-widget" id="challengeWidget">
+    <div class="challenge-widget-top">
+        <div class="challenge-widget-title-group">
+            <div class="challenge-widget-icon" aria-hidden="true">⚡</div>
+            <h2 class="challenge-widget-title">Daily Challenge</h2>
+        </div>
+        <div class="challenge-widget-badges">
+            <span class="challenge-badge challenge-badge-quota">
+                <span id="challengeQuestionCount">5 Questions</span> · <span id="challengePlanLabel">Free</span>
+            </span>
+            <span class="challenge-badge challenge-badge-streak" id="challengeStreak">🔥 0 Days</span>
+            <span class="challenge-badge challenge-badge-quota" id="challengeXpBadge" style="display:none;">✨ 0 XP</span>
+        </div>
+    </div>
+    <div class="challenge-progression" id="challengeProgression" style="display:none;">
+        <div class="challenge-progression-info">
+            <span class="challenge-progression-level" id="challengeProgressionLevel">⭐ Level 1 · Novice</span>
+            <span class="challenge-progression-stats" id="challengeProgressionStats">0 / 50 XP</span>
+        </div>
+        <div class="challenge-progression-bar" role="progressbar" aria-label="Level progression" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="challenge-progression-fill" id="challengeProgressionFill" style="width: 0%;"></div>
+        </div>
+    </div>
+    <div class="challenge-widget-body">
+        <div class="challenge-widget-status" id="challengeStatusText">Checking challenge status...</div>
+        <a class="challenge-widget-action" href="./challenge.html" id="challengeActionBtn">Start Challenge →</a>
+    </div>
+</aside>
 <section aria-labelledby="quickLinksTitle" class="quick-links">
 <div class="section-header">
 <div class="quick-title-row">
@@ -1778,8 +2061,9 @@ async function loadDashboardStudent() {
 
             const challengeCountEl = document.getElementById('challengeQuestionCount');
             const challengePlanEl = document.getElementById('challengePlanLabel');
-            if (challengeCountEl) challengeCountEl.textContent = '5 questions today';
+            if (challengeCountEl) challengeCountEl.textContent = '5 Questions';
             if (challengePlanEl) challengePlanEl.textContent = 'Free (Offline)';
+            loadDashboardChallengeWidget(user);
 
             const studentName = user.user_metadata?.full_name || "Student";
             const greeting = document.getElementById("studentGreeting");
@@ -1850,7 +2134,7 @@ async function loadDashboardStudent() {
 
         const challengeCountEl=document.getElementById('challengeQuestionCount');
         const challengePlanEl=document.getElementById('challengePlanLabel');
-        if(challengeCountEl) challengeCountEl.textContent=(dashboardIsPremium?'15':'5')+' questions today';
+        if(challengeCountEl) challengeCountEl.textContent=dashboardIsPremium?'15 Questions':'5 Questions';
         if(challengePlanEl) challengePlanEl.textContent=dashboardIsPremium?'Premium':'Free';
 
         let studentName =
@@ -1902,8 +2186,288 @@ async function loadDashboardStudent() {
             localStorage.setItem("studentUsername", profile.Username);
         }
 
+        loadDashboardChallengeWidget(user);
+
     } catch (error) {
         console.log("Dashboard loading error:", error);
+    }
+}
+
+function getLagosDate() {
+    try {
+        const parts = new Intl.DateTimeFormat('en-CA', {
+            timeZone: 'Africa/Lagos',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        }).formatToParts(new Date());
+
+        const map = Object.fromEntries(
+            parts
+                .filter(p => p.type !== 'literal')
+                .map(p => [p.type, p.value])
+        );
+
+        return `${map.year}-${map.month}-${map.day}`;
+    } catch (e) {
+        // Fallback to UTC+1 calculation
+        const now = new Date();
+        const lagosTime = new Date(now.getTime() + (now.getTimezoneOffset() + 60) * 60000);
+        return lagosTime.toISOString().slice(0, 10);
+    }
+}
+
+function dayBeforeDashboard(dateStr, numberOfDays) {
+    const d = new Date(dateStr + 'T12:00:00');
+    d.setDate(d.getDate() - numberOfDays);
+    return (
+        d.getFullYear() +
+        '-' +
+        String(d.getMonth() + 1).padStart(2, '0') +
+        '-' +
+        String(d.getDate()).padStart(2, '0')
+    );
+}
+
+function calculateChallengeStreak(attemptDates, todayLagos) {
+    const dates = new Set(attemptDates.map(d => String(d).slice(0, 10)));
+    let streak = 0;
+
+    if (dates.has(todayLagos)) {
+        streak = 1;
+        while (dates.has(dayBeforeDashboard(todayLagos, streak))) {
+            streak++;
+        }
+    } else {
+        const yesterday = dayBeforeDashboard(todayLagos, 1);
+        if (dates.has(yesterday)) {
+            streak = 1;
+            while (dates.has(dayBeforeDashboard(yesterday, streak))) {
+                streak++;
+            }
+        }
+    }
+    return streak;
+}
+
+const LEVEL_CONFIG = [
+    { level: 1, name: 'Novice', threshold: 0 },
+    { level: 2, name: 'Apprentice', threshold: 50 },
+    { level: 3, name: 'Scholar', threshold: 120 },
+    { level: 4, name: 'Achiever', threshold: 220 },
+    { level: 5, name: 'Master', threshold: 360 },
+    { level: 6, name: 'Champion', threshold: 550 },
+    { level: 7, name: 'Elite', threshold: 800 },
+    { level: 8, name: 'JAMB Legend', threshold: 1200 }
+];
+
+function calculateLevelProgression(xp) {
+    const safeXp = Math.max(0, Math.floor(Number(xp) || 0));
+    let currentIndex = 0;
+    for (let i = LEVEL_CONFIG.length - 1; i >= 0; i--) {
+        if (safeXp >= LEVEL_CONFIG[i].threshold) {
+            currentIndex = i;
+            break;
+        }
+    }
+    const current = LEVEL_CONFIG[currentIndex];
+    const isMaxLevel = currentIndex === LEVEL_CONFIG.length - 1;
+    const xpAtStart = current.threshold;
+
+    if (isMaxLevel) {
+        return {
+            currentLevel: current.level,
+            level: current.level,
+            currentLevelName: current.name,
+            name: current.name,
+            xpAtStart: xpAtStart,
+            xpStart: xpAtStart,
+            xpRequiredForNextLevel: 0,
+            xpRequired: 0,
+            xpEarnedWithinLevel: safeXp - xpAtStart,
+            xpEarnedInLevel: safeXp - xpAtStart,
+            progressPercentage: 100,
+            progress: 100,
+            isMaxLevel: true
+        };
+    }
+
+    const next = LEVEL_CONFIG[currentIndex + 1];
+    const xpRequiredForNextLevel = next.threshold - current.threshold;
+    const xpEarnedWithinLevel = safeXp - current.threshold;
+    const rawProgress = (xpEarnedWithinLevel / xpRequiredForNextLevel) * 100;
+    const progressPercentage = Math.min(100, Math.max(0, Math.floor(rawProgress)));
+
+    return {
+        currentLevel: current.level,
+        level: current.level,
+        currentLevelName: current.name,
+        name: current.name,
+        xpAtStart: xpAtStart,
+        xpStart: xpAtStart,
+        xpRequiredForNextLevel: xpRequiredForNextLevel,
+        xpRequired: xpRequiredForNextLevel,
+        xpEarnedWithinLevel: xpEarnedWithinLevel,
+        xpEarnedInLevel: xpEarnedWithinLevel,
+        progressPercentage: progressPercentage,
+        progress: progressPercentage,
+        isMaxLevel: false
+    };
+}
+
+function renderChallengeProgression(xpTotal) {
+    const container = document.getElementById('challengeProgression');
+    const levelEl = document.getElementById('challengeProgressionLevel');
+    const statsEl = document.getElementById('challengeProgressionStats');
+    const fillEl = document.getElementById('challengeProgressionFill');
+
+    if (!container || !levelEl || !statsEl || !fillEl) return;
+
+    if (typeof xpTotal !== 'number' || xpTotal < 0 || Number.isNaN(xpTotal)) {
+        container.style.display = 'none';
+        return;
+    }
+
+    const prog = calculateLevelProgression(xpTotal);
+
+    levelEl.textContent = `⭐ Level ${prog.currentLevel} · ${prog.currentLevelName}`;
+
+    if (prog.isMaxLevel) {
+        statsEl.textContent = 'Maximum level reached';
+        fillEl.style.width = '100%';
+    } else {
+        statsEl.textContent = `${prog.xpEarnedWithinLevel} / ${prog.xpRequiredForNextLevel} XP`;
+        fillEl.style.width = `${prog.progressPercentage}%`;
+    }
+
+    const bar = container.querySelector('.challenge-progression-bar');
+    if (bar) {
+        bar.setAttribute('aria-valuenow', String(prog.progressPercentage));
+    }
+
+    container.style.display = 'flex';
+}
+
+const STREAK_MILESTONES = [
+    { id: 'legend', days: 100, name: 'ExamPilot Legend', icon: '👑', description: 'Completed 100 consecutive daily challenges.' },
+    { id: 'elite', days: 60, name: 'Elite', icon: '💎', description: 'Completed 60 consecutive daily challenges.' },
+    { id: 'master', days: 30, name: 'Challenge Master', icon: '🏆', description: 'Completed 30 consecutive daily challenges.' },
+    { id: 'consistent', days: 14, name: 'Consistent', icon: '⚡', description: 'Completed 14 consecutive daily challenges.' },
+    { id: 'dedicated', days: 7, name: 'Dedicated', icon: '🔥', description: 'Completed 7 consecutive daily challenges.' },
+    { id: 'starter', days: 3, name: 'Starter', icon: '🌱', description: 'Completed 3 consecutive daily challenges.' }
+];
+
+function getStreakMilestone(streakDays) {
+    const days = Number(streakDays) || 0;
+    for (const m of STREAK_MILESTONES) {
+        if (days >= m.days) {
+            return m;
+        }
+    }
+    return null;
+}
+
+async function loadDashboardChallengeWidget(user) {
+    const widget = document.getElementById('challengeWidget');
+    const countEl = document.getElementById('challengeQuestionCount');
+    const planEl = document.getElementById('challengePlanLabel');
+    const streakEl = document.getElementById('challengeStreak');
+    const statusEl = document.getElementById('challengeStatusText');
+    const actionBtn = document.getElementById('challengeActionBtn');
+
+    if (!widget || !statusEl || !actionBtn) return;
+
+    // 1. Quota & Plan Badge
+    const isPremium = Boolean(dashboardIsPremium);
+    if (countEl) countEl.textContent = isPremium ? '15 Questions' : '5 Questions';
+    if (planEl) planEl.textContent = isPremium ? 'Premium' : 'Free';
+
+    // 2. Offline / Sessionless check
+    if (!user || !user.id || !window.navigator.onLine) {
+        if (streakEl) streakEl.textContent = '🔥 0 Days';
+        statusEl.textContent = 'Ready to practice?';
+        actionBtn.textContent = 'Open Daily Challenge →';
+        actionBtn.href = './challenge.html';
+        actionBtn.classList.remove('secondary');
+        return;
+    }
+
+    try {
+        const todayLagos = getLagosDate();
+
+        // 3. Single read-only query against public.challenge_attempts
+        const { data: attempts, error } = await supabaseClient
+            .from('challenge_attempts')
+            .select('challenge_date, score, total')
+            .eq('user_id', user.id)
+            .order('challenge_date', { ascending: false })
+            .limit(120);
+
+        if (error) {
+            throw error;
+        }
+
+        const attemptList = Array.isArray(attempts) ? attempts : [];
+        const attemptDates = attemptList.map(a => a.challenge_date).filter(Boolean);
+
+        // 4. Streak calculation
+        const streak = calculateChallengeStreak(attemptDates, todayLagos);
+        const activeMilestone = getStreakMilestone(streak);
+
+        if (streakEl) {
+            if (activeMilestone) {
+                streakEl.textContent = `🔥 ${streak} Day${streak === 1 ? '' : 's'} (${activeMilestone.icon} ${activeMilestone.name})`;
+                streakEl.title = `${activeMilestone.name}: ${activeMilestone.description}`;
+            } else {
+                streakEl.textContent = streak === 0
+                    ? '🔥 0 Days'
+                    : `🔥 ${streak} Day${streak === 1 ? '' : 's'} Streak`;
+                streakEl.title = 'Complete daily challenges to build your streak and earn milestone badges!';
+            }
+        }
+
+        // 5. Completion State for Today
+        const todayAttempt = attemptList.find(a => String(a.challenge_date).slice(0, 10) === todayLagos);
+
+        if (todayAttempt) {
+            const score = Number(todayAttempt.score) || 0;
+            const total = Number(todayAttempt.total) || 0;
+            const pct = total > 0 ? Math.round((score / total) * 100) : 0;
+            const milestoneNote = activeMilestone ? ` · <span>${activeMilestone.icon} ${activeMilestone.name} unlocked!</span>` : '';
+
+            statusEl.innerHTML = `Completed today! Scored: <strong>${score}/${total}</strong> (${pct}%)${milestoneNote}`;
+            actionBtn.textContent = 'View Leaderboard →';
+            actionBtn.href = './challenge.html';
+            actionBtn.classList.add('secondary');
+        } else {
+            statusEl.textContent = "Today's challenge is waiting for you!";
+            actionBtn.textContent = 'Start Challenge →';
+            actionBtn.href = './challenge.html';
+            actionBtn.classList.remove('secondary');
+        }
+
+        // 6. Secure student XP total read
+        const xpBadge = document.getElementById('challengeXpBadge');
+        if (xpBadge) {
+            try {
+                const { data: xpTotal, error: xpError } = await supabaseClient.rpc('get_my_xp');
+                if (!xpError && typeof xpTotal === 'number' && xpTotal >= 0) {
+                    xpBadge.textContent = `✨ ${xpTotal} XP`;
+                    xpBadge.style.display = 'inline-flex';
+                    renderChallengeProgression(xpTotal);
+                }
+            } catch (xpEx) {
+                // Ignore if migration not yet applied
+            }
+        }
+
+    } catch (err) {
+        console.warn('Dashboard Daily Challenge widget data load skipped:', err);
+        if (streakEl) streakEl.textContent = '🔥 0 Days';
+        statusEl.textContent = 'Ready to practice?';
+        actionBtn.textContent = 'Open Daily Challenge →';
+        actionBtn.href = './challenge.html';
+        actionBtn.classList.remove('secondary');
     }
 }
 
@@ -2327,26 +2891,42 @@ function notificationVisibleToStudent(row){
     return false;
 }
 
+let dashboardReadNotificationIds = new Set();
+let dashboardReadStateLoaded = false;
+
 function notificationReadStorageKey(){
     return 'exampilotReadNotifications:' + String(dashboardCurrentUser?.id || 'anonymous');
 }
 
-function getReadNotificationIds(){
+function getLocalStorageReadNotificationIds(){
     try{
         const value=JSON.parse(localStorage.getItem(notificationReadStorageKey()) || '[]');
         return new Set(Array.isArray(value) ? value.map(String) : []);
     }catch(error){
-        console.warn('Could not read notification state:',error);
+        console.warn('Could not read notification state from localStorage:',error);
         return new Set();
     }
 }
 
-function saveReadNotificationIds(ids){
+function saveLocalStorageReadNotificationIds(ids){
     try{
-        localStorage.setItem(notificationReadStorageKey(),JSON.stringify(Array.from(ids)));
+        const array = ids instanceof Set ? Array.from(ids) : Array.from(new Set(Array.isArray(ids) ? ids : []));
+        localStorage.setItem(notificationReadStorageKey(),JSON.stringify(array.map(String)));
     }catch(error){
-        console.warn('Could not save notification state:',error);
+        console.warn('Could not save notification state to localStorage:',error);
     }
+}
+
+function getReadNotificationIds(){
+    if(dashboardReadStateLoaded || dashboardReadNotificationIds.size > 0){
+        return dashboardReadNotificationIds;
+    }
+    return getLocalStorageReadNotificationIds();
+}
+
+function saveReadNotificationIds(ids){
+    dashboardReadNotificationIds = ids instanceof Set ? ids : new Set(Array.from(ids || []).map(String));
+    saveLocalStorageReadNotificationIds(dashboardReadNotificationIds);
 }
 
 function notificationId(row,index){
@@ -2381,6 +2961,34 @@ async function loadStudentNotifications(){
             .limit(50);
         if(error) throw error;
         dashboardNotifications=(data||[]).filter(notificationVisibleToStudent);
+
+        // Fetch authoritative server-side read receipts if student is authenticated
+        if(dashboardCurrentUser?.id && typeof supabaseClient !== 'undefined' && supabaseClient){
+            try{
+                const {data:readRows, error:readError}=await supabaseClient
+                    .from('notification_reads')
+                    .select('notification_id')
+                    .eq('user_id', dashboardCurrentUser.id);
+
+                if(!readError && Array.isArray(readRows)){
+                    const serverReadIds = new Set(readRows.map(r => String(r.notification_id)));
+                    const localIds = getLocalStorageReadNotificationIds();
+                    // Merge server receipts with local cache (server is authoritative)
+                    dashboardReadNotificationIds = new Set([...serverReadIds, ...localIds]);
+                    dashboardReadStateLoaded = true;
+                    saveLocalStorageReadNotificationIds(dashboardReadNotificationIds);
+                } else if(readError){
+                    console.warn('Could not load notification_reads from database, using localStorage fallback:', readError);
+                    dashboardReadNotificationIds = getLocalStorageReadNotificationIds();
+                }
+            }catch(readErr){
+                console.warn('Error querying notification_reads, using localStorage fallback:', readErr);
+                dashboardReadNotificationIds = getLocalStorageReadNotificationIds();
+            }
+        }else{
+            dashboardReadNotificationIds = getLocalStorageReadNotificationIds();
+        }
+
         updateNotificationBadge();
         renderStudentNotifications();
     }catch(error){
@@ -2427,14 +3035,37 @@ function showNotificationList(){
     renderStudentNotifications();
 }
 
+async function markNotificationAsRead(id){
+    const stringId = String(id);
+    const readIds = getReadNotificationIds();
+    readIds.add(stringId);
+    saveReadNotificationIds(readIds);
+    updateNotificationBadge();
+
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(stringId);
+    if(isUuid && dashboardCurrentUser?.id && typeof supabaseClient !== 'undefined' && supabaseClient){
+        try{
+            await supabaseClient
+                .from('notification_reads')
+                .upsert({
+                    notification_id: stringId,
+                    user_id: dashboardCurrentUser.id,
+                    read_at: new Date().toISOString()
+                }, { onConflict: 'notification_id,user_id' });
+        }catch(err){
+            console.warn('Could not persist read receipt to notification_reads, kept in localStorage:', err);
+        }
+    }
+}
+
 function openStudentNotification(id){
     const index=dashboardNotifications.findIndex((row,rowIndex)=>notificationId(row,rowIndex)===String(id));
     if(index<0)return;
     const row=dashboardNotifications[index];
-    const readIds=getReadNotificationIds();
-    readIds.add(notificationId(row,index));
-    saveReadNotificationIds(readIds);
-    updateNotificationBadge();
+    const notifId = notificationId(row,index);
+
+    markNotificationAsRead(notifId);
+
     const title=notificationText(row,['title','subject','heading'])||'Notification';
     const message=notificationText(row,['message','body','content'])||'';
     const destination=safeNotificationDestination(notificationText(row,['destination_url','url','action_url']));
