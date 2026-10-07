@@ -11,6 +11,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="offline-store.js"></script>
 <script src="offline-auth.js"></script>
+<script src="referral-tracker.js"></script>
 <style>
 :root{--green:#008751;--dark:#123b2d;--bg:#f5faf7;--line:#dfe9e4;--muted:#687a72}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#17382d}
@@ -154,6 +155,89 @@
     </div>
     <span id="offlineAccessMessage" class="message" style="display:inline-block;margin-top:10px;"></span>
   </section>
+
+  <section class="card page-section" data-page-section="referrals" id="referralOverviewSection">
+    <h2>Your Referral Link</h2>
+    <p class="sub">Invite fellow students to ExamPilot. Earn a <strong>20% commission</strong> on their first verified Premium subscription.</p>
+    <div class="grid">
+      <div class="field">
+        <label for="myReferralCode">Your Referral Code</label>
+        <div style="display:flex;gap:8px;">
+          <input id="myReferralCode" class="readonly" readonly value="Loading...">
+          <button class="btn secondary" type="button" onclick="copyReferralCode()">Copy</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="myReferralLink">Your Referral Link</label>
+        <div style="display:flex;gap:8px;">
+          <input id="myReferralLink" class="readonly" readonly value="Loading...">
+          <button class="btn secondary" type="button" onclick="copyReferralLink()">Copy</button>
+        </div>
+      </div>
+    </div>
+    <div class="actions" style="margin-top:14px;">
+      <button class="btn primary" type="button" onclick="shareReferralWhatsApp()">💬 Share on WhatsApp</button>
+      <span id="referralShareMsg" class="message"></span>
+    </div>
+  </section>
+
+  <section class="card page-section" data-page-section="referrals" id="referralStatsSection">
+    <h2>Referral Statistics</h2>
+    <p class="sub">Overview of your invited students, conversions, and commission earnings.</p>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:12px;margin-bottom:14px;">
+      <div class="status" style="text-align:center;">
+        <span style="font-size:12px;color:var(--muted);display:block;">People Referred</span>
+        <strong id="statReferredCount" style="font-size:22px;color:var(--dark);">0</strong>
+      </div>
+      <div class="status" style="text-align:center;">
+        <span style="font-size:12px;color:var(--muted);display:block;">Premium Referrals</span>
+        <strong id="statPremiumCount" style="font-size:22px;color:var(--green);">0</strong>
+      </div>
+      <div class="status" style="text-align:center;">
+        <span style="font-size:12px;color:var(--muted);display:block;">Total Commission</span>
+        <strong id="statTotalCommission" style="font-size:22px;color:var(--dark);">₦0</strong>
+      </div>
+      <div class="status" style="text-align:center;">
+        <span style="font-size:12px;color:var(--muted);display:block;">Available Balance</span>
+        <strong id="statAvailableBalance" style="font-size:22px;color:var(--green);">₦0</strong>
+      </div>
+      <div class="status" style="text-align:center;">
+        <span style="font-size:12px;color:var(--muted);display:block;">Paid Amount</span>
+        <strong id="statPaidAmount" style="font-size:22px;color:var(--muted);">₦0</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="card page-section" data-page-section="referrals" id="referralPayoutSection">
+    <h2>Bank Payout Details</h2>
+    <p class="sub">Save your Nigerian bank account for payouts. Minimum withdrawal is <strong>₦1,200</strong> (fixed ₦120 withdrawal fee applies).</p>
+    <form id="payoutAccountForm">
+      <div class="grid">
+        <div class="field">
+          <label for="bankName">Bank Name</label>
+          <input id="bankName" placeholder="e.g. OPay, PalmPay, GTBank, Access Bank" required>
+        </div>
+        <div class="field">
+          <label for="accountNumber">Account Number</label>
+          <input id="accountNumber" maxlength="10" placeholder="10-digit NUBAN" required>
+        </div>
+        <div class="field" style="grid-column:1/-1;">
+          <label for="accountName">Account Name</label>
+          <input id="accountName" placeholder="Name registered on bank account" required>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" type="submit">Save Bank Details</button>
+        <button class="btn secondary" id="requestPayoutBtn" type="button" onclick="requestReferralPayout()">Request Payout</button>
+        <span id="payoutAccountMsg" class="message"></span>
+      </div>
+      <div id="payoutThresholdHint" style="font-size:12px;color:var(--muted);margin-top:8px;"></div>
+    </form>
+    <div id="payoutHistoryContainer" style="margin-top:22px;">
+      <h3 style="font-size:15px;margin:0 0 10px;color:var(--dark);">Payout History</h3>
+      <div id="payoutHistoryList" style="font-size:13px;color:var(--muted);">Checking payouts...</div>
+    </div>
+  </section>
 </main>
 <script>
 function openSupportMail(){
@@ -275,9 +359,262 @@ document.getElementById('removeOfflineAccessBtn')?.addEventListener('click', asy
     msg('offlineAccessMessage', 'Could not remove offline access. Please try again.');
   }
 });
+
+function copyReferralCode(){
+  const val = document.getElementById('myReferralCode').value;
+  if(!val || val === 'Loading...') return;
+  navigator.clipboard.writeText(val).then(()=>{
+    msg('referralShareMsg','Referral code copied!',true);
+  }).catch(()=>{
+    msg('referralShareMsg','Could not copy code.');
+  });
+}
+
+function copyReferralLink(){
+  const val = document.getElementById('myReferralLink').value;
+  if(!val || val === 'Loading...') return;
+  navigator.clipboard.writeText(val).then(()=>{
+    msg('referralShareMsg','Referral link copied!',true);
+  }).catch(()=>{
+    msg('referralShareMsg','Could not copy link.');
+  });
+}
+
+function shareReferralWhatsApp(){
+  const code = document.getElementById('myReferralCode').value;
+  if(!code || code === 'Loading...') return;
+  if(window.ExamPilotReferral){
+    window.ExamPilotReferral.shareOnWhatsApp(code);
+  } else {
+    const url = 'https://exampilot.com.ng/student.html?ref=' + encodeURIComponent(code);
+    window.open('https://wa.me/?text=' + encodeURIComponent('Join me on ExamPilot to prepare for JAMB, WAEC, NECO & NABTEB! Sign up here: ' + url), '_blank', 'noopener,noreferrer');
+  }
+}
+
+let userAvailableBalanceKobo = 0;
+
+async function loadReferralData(){
+  if(!currentUser || !currentUser.id) return;
+  try {
+    // 1. Get or create referral code via server-authoritative RPC
+    let myCode = '';
+    const { data: rpcCode, error: rpcErr } = await supabaseClient
+      .rpc('get_or_create_student_referral_code');
+
+    if(!rpcErr && rpcCode){
+      myCode = rpcCode;
+    } else {
+      const { data: codeRow } = await supabaseClient
+        .from('student_referral_codes')
+        .select('referral_code')
+        .eq('user_id', currentUser.id)
+        .maybeSingle();
+      myCode = codeRow?.referral_code || '';
+    }
+
+    document.getElementById('myReferralCode').value = myCode;
+    const refUrl = (window.ExamPilotReferral && typeof window.ExamPilotReferral.buildReferralUrl === 'function')
+      ? window.ExamPilotReferral.buildReferralUrl(myCode)
+      : (window.location.origin + '/student.html?ref=' + encodeURIComponent(myCode));
+    document.getElementById('myReferralLink').value = refUrl;
+
+    // 2. Load referral count
+    const { count: referredCount } = await supabaseClient
+      .from('referral_attributions')
+      .select('*', { count: 'exact', head: true })
+      .eq('referrer_user_id', currentUser.id);
+    document.getElementById('statReferredCount').textContent = (referredCount || 0).toLocaleString();
+
+    // 3. Load commissions (Total Earned) and payouts (Debited & Completed)
+    const { data: commissions } = await supabaseClient
+      .from('referral_commissions')
+      .select('commission_amount')
+      .eq('referrer_user_id', currentUser.id);
+
+    const { data: allPayouts } = await supabaseClient
+      .from('referral_payouts')
+      .select('amount, fee_amount, net_amount, status, created_at, bank_name, account_number')
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: false });
+
+    const premiumCount = Array.isArray(commissions) ? commissions.length : 0;
+    const totalCommKobo = (commissions || []).reduce((sum, c) => sum + (Number(c.commission_amount) || 0), 0);
+
+    // Unified Ledger Balance:
+    // Available = Total Earned - SUM(payouts WHERE status IN ('pending', 'processing', 'completed'))
+    let totalDebitedKobo = 0;
+    let completedPaidKobo = 0;
+    let hasActivePayout = false;
+
+    (allPayouts || []).forEach(p => {
+      const amt = Number(p.amount) || 0;
+      if(['pending', 'processing', 'completed'].includes(p.status)){
+        totalDebitedKobo += amt;
+      }
+      if(['pending', 'processing'].includes(p.status)){
+        hasActivePayout = true;
+      }
+      if(p.status === 'completed'){
+        completedPaidKobo += amt;
+      }
+    });
+
+    const availCommKobo = Math.max(0, totalCommKobo - totalDebitedKobo);
+    userAvailableBalanceKobo = availCommKobo;
+
+    document.getElementById('statPremiumCount').textContent = premiumCount.toLocaleString();
+    document.getElementById('statTotalCommission').textContent = '₦' + Math.floor(totalCommKobo / 100).toLocaleString();
+    document.getElementById('statAvailableBalance').textContent = '₦' + Math.floor(availCommKobo / 100).toLocaleString();
+    document.getElementById('statPaidAmount').textContent = '₦' + Math.floor(completedPaidKobo / 100).toLocaleString();
+
+    // 4. Threshold gating (₦1,200 min = 120,000 kobo) & active payout state
+    const payoutBtn = document.getElementById('requestPayoutBtn');
+    const thresholdHint = document.getElementById('payoutThresholdHint');
+    const minThresholdKobo = 120000;
+
+    if(hasActivePayout){
+      if(payoutBtn) payoutBtn.disabled = true;
+      if(thresholdHint){
+        thresholdHint.textContent = 'A payout request is currently in progress.';
+        thresholdHint.style.color = 'var(--muted)';
+      }
+    } else if(availCommKobo >= minThresholdKobo){
+      if(payoutBtn) payoutBtn.disabled = false;
+      if(thresholdHint){
+        const grossNaira = Math.floor(availCommKobo / 100);
+        const netNaira = grossNaira - 120;
+        thresholdHint.textContent = '✓ Available: ₦' + grossNaira.toLocaleString() + ' | Fee: ₦120 | You\'ll receive: ₦' + netNaira.toLocaleString();
+        thresholdHint.style.color = 'var(--green)';
+      }
+    } else {
+      if(payoutBtn) payoutBtn.disabled = true;
+      if(thresholdHint){
+        const needed = Math.floor((minThresholdKobo - availCommKobo) / 100);
+        thresholdHint.textContent = 'Minimum withdrawal is ₦1,200 (need ₦' + needed.toLocaleString() + ' more). A fixed ₦120 fee applies upon withdrawal.';
+        thresholdHint.style.color = 'var(--muted)';
+      }
+    }
+
+    // 5. Load bank account
+    const { data: bankAccount } = await supabaseClient
+      .from('referral_payout_accounts')
+      .select('bank_name, account_number, account_name')
+      .eq('user_id', currentUser.id)
+      .maybeSingle();
+
+    if(bankAccount){
+      document.getElementById('bankName').value = bankAccount.bank_name || '';
+      document.getElementById('accountNumber').value = bankAccount.account_number || '';
+      document.getElementById('accountName').value = bankAccount.account_name || '';
+    }
+
+    // 6. Load payout history
+    const historyEl = document.getElementById('payoutHistoryList');
+    if(!allPayouts || allPayouts.length === 0){
+      historyEl.textContent = 'No payout requests yet.';
+    } else {
+      historyEl.innerHTML = allPayouts.slice(0, 10).map(p => {
+        const gross = Math.floor(p.amount / 100).toLocaleString();
+        const net = Math.floor(((p.net_amount != null ? p.net_amount : (p.amount - 12000))) / 100).toLocaleString();
+        return `
+        <div style="padding:9px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <strong>₦${gross}</strong>
+            <span style="color:var(--muted);font-size:12px;margin-left:6px;">(Net: ₦${net} to ${p.bank_name || 'Bank'})</span>
+          </div>
+          <span class="status" style="padding:4px 8px;font-size:12px;text-transform:capitalize;">${p.status}</span>
+        </div>
+      `;
+      }).join('');
+    }
+  } catch(err) {
+    console.warn('Referral data load error:', err);
+  }
+}
+
+document.getElementById('payoutAccountForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if(!currentUser) return;
+  const bankName = document.getElementById('bankName').value.trim();
+  const accountNumber = document.getElementById('accountNumber').value.trim();
+  const accountName = document.getElementById('accountName').value.trim();
+
+  if(!bankName || !accountNumber || !accountName){
+    msg('payoutAccountMsg', 'Please complete all bank fields.');
+    return;
+  }
+  if(accountNumber.length < 10){
+    msg('payoutAccountMsg', 'Account number must be at least 10 digits.');
+    return;
+  }
+
+  msg('payoutAccountMsg', 'Saving bank details...', true);
+  const { error } = await supabaseClient
+    .from('referral_payout_accounts')
+    .upsert({
+      user_id: currentUser.id,
+      bank_name: bankName,
+      account_number: accountNumber,
+      account_name: accountName,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id' });
+
+  if(error){
+    msg('payoutAccountMsg', error.message);
+  } else {
+    msg('payoutAccountMsg', 'Bank details saved successfully.', true);
+  }
+});
+
+async function requestReferralPayout(){
+  if(!currentUser) return;
+  const minThresholdKobo = 120000;
+  if(userAvailableBalanceKobo < minThresholdKobo){
+    alert('Minimum payout threshold is ₦1,200. Current available balance is ₦' + Math.floor(userAvailableBalanceKobo / 100).toLocaleString() + '.');
+    return;
+  }
+
+  const bankName = document.getElementById('bankName').value.trim();
+  const accountNumber = document.getElementById('accountNumber').value.trim();
+  const accountName = document.getElementById('accountName').value.trim();
+
+  if(!bankName || !accountNumber || !accountName){
+    alert('Please enter and save your bank details before requesting a payout.');
+    return;
+  }
+
+  const grossNaira = Math.floor(userAvailableBalanceKobo / 100);
+  const feeNaira = 120;
+  const netNaira = grossNaira - feeNaira;
+
+  const confirmed = confirm(
+    'Confirm Payout Request:\n\n' +
+    '• Available Balance: ₦' + grossNaira.toLocaleString() + '\n' +
+    '• Withdrawal Amount: ₦' + grossNaira.toLocaleString() + '\n' +
+    '• Withdrawal Fee: ₦' + feeNaira.toLocaleString() + '\n' +
+    '• Amount you will receive: ₦' + netNaira.toLocaleString() + '\n' +
+    '• Destination: ' + bankName + ' (' + accountNumber + ')\n\n' +
+    'Proceed with payout request?'
+  );
+  if(!confirmed) return;
+
+  msg('payoutAccountMsg', 'Submitting payout request...', true);
+  const { data, error } = await supabaseClient.rpc('request_referral_payout');
+
+  if(error){
+    msg('payoutAccountMsg', error.message || 'Failed to submit payout request.');
+  } else if(data && !data.success){
+    msg('payoutAccountMsg', data.message || 'Payout request was not successful.');
+  } else {
+    msg('payoutAccountMsg', data?.message || 'Payout request submitted successfully!', true);
+    await loadReferralData();
+  }
+}
+
 function applySettingsView(){
   const params = new URLSearchParams(window.location.search);
-  const target = params.get('view') === 'support' ? 'support' : 'settings';
+  const rawView = params.get('view');
+  const target = rawView === 'support' ? 'support' : (rawView === 'referrals' ? 'referrals' : 'settings');
   const pageSections = document.querySelectorAll('[data-page-section]');
   pageSections.forEach((section) => {
     const isVisible = section.dataset.pageSection === target;
@@ -287,18 +624,22 @@ function applySettingsView(){
   const title = document.getElementById('settingsPageTitle');
   const subtitle = document.getElementById('settingsPageSubtitle');
   if (title) {
-    title.textContent = target === 'support' ? 'Help & Support' : 'Settings';
+    title.textContent = target === 'support' ? 'Help & Support' : (target === 'referrals' ? 'Refer & Earn' : 'Settings');
   }
   if (subtitle) {
     subtitle.textContent = target === 'support'
       ? 'Get help with your account, subscription, practice, and platform issues.'
-      : 'Manage your student account.';
+      : (target === 'referrals'
+        ? 'Invite fellow students and earn 20% commission on their first Premium subscription.'
+        : 'Manage your student account.');
   }
-  document.title = target === 'support' ? 'Help & Support - ExamPilot' : 'Settings | ExamPilot';
+  document.title = target === 'support' ? 'Help & Support - ExamPilot' : (target === 'referrals' ? 'Refer & Earn | ExamPilot' : 'Settings | ExamPilot');
 }
 
 applySettingsView();
-loadSettings();
+loadSettings().then(() => {
+  loadReferralData();
+});
 </script>
     <script src="pwa-register.js"></script>
 </body></html>

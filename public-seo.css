@@ -339,14 +339,36 @@
   cursor: pointer;
 }
 
-.seo-cta--primary {
+.seo-cta--primary,
+.seo-page a.seo-cta--primary,
+a.seo-cta--primary {
   background: var(--seo-green);
-  color: var(--seo-white, #fff);
+  color: #ffffff;
 }
 
-.seo-cta--primary:hover {
+.seo-cta--primary:hover,
+.seo-cta--primary:focus-visible,
+.seo-page a.seo-cta--primary:hover,
+.seo-page a.seo-cta--primary:focus-visible,
+a.seo-cta--primary:hover,
+a.seo-cta--primary:focus-visible {
   background: var(--seo-dark-green);
-  color: #fff;
+  color: #ffffff;
+}
+
+.seo-page a.seo-cta--primary:visited,
+a.seo-cta--primary:visited {
+  color: #ffffff;
+}
+
+.seo-mobile-nav a.seo-cta--primary {
+  color: #ffffff;
+}
+
+.seo-mobile-nav a.seo-cta--primary:hover,
+.seo-mobile-nav a.seo-cta--primary:focus-visible {
+  background: var(--seo-dark-green);
+  color: #ffffff;
 }
 
 .seo-cta--secondary {

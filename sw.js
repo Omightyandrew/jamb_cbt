@@ -1,4 +1,4 @@
-const CACHE_VERSION = "exampilot-shell-v11";
+const CACHE_VERSION = "exampilot-shell-v12";
 const SHELL_CACHE = CACHE_VERSION;
 const OFFLINE_URL = "./offline.html";
 const SUPABASE_LIBRARY_URL = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
@@ -11,6 +11,7 @@ const PRECACHE_URLS = [
   "./exam.css",
   "./public-seo.css",
   "./public-seo.js",
+  "./referral-tracker.js",
   "./pwa-register.js",
   "./offline-store.js",
   "./offline-auth.js",

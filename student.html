@@ -41,6 +41,10 @@ content="width=device-width, initial-scale=1.0"
 
 <script src="offline-auth.js"></script>
 
+<!-- REFERRAL TRACKER -->
+
+<script src="referral-tracker.js"></script>
+
 <!-- PAYSTACK -->
 
 <script src="https://js.paystack.co/v2/inline.js"></script>
@@ -2216,6 +2220,18 @@ document
                 );
 
 
+                const pendingReferralCode = window.ExamPilotReferral
+                    ? window.ExamPilotReferral.getPendingReferralCode()
+                    : (localStorage.getItem("exampilot_pending_ref") || "");
+
+                const signupMeta = {
+                    full_name: fullName,
+                    username: username
+                };
+                if (pendingReferralCode) {
+                    signupMeta.referral_code = pendingReferralCode;
+                }
+
                 const {
                     data,
                     error
@@ -2229,15 +2245,7 @@ document
 
                                 options: {
 
-                                    data: {
-
-                                        full_name:
-                                            fullName,
-
-                                        username:
-                                            username
-
-                                    }
+                                    data: signupMeta
 
                                 }
 
@@ -2339,6 +2347,16 @@ if (
                         studentUsername
                     );
 
+                    if (pendingReferralCode) {
+                        try {
+                            await supabaseClient.rpc("bind_referral_attribution", {
+                                p_referral_code: pendingReferralCode
+                            });
+                        } catch (_) {}
+                        if (window.ExamPilotReferral) {
+                            window.ExamPilotReferral.clearPendingReferralCode();
+                        }
+                    }
 
                     window.location.href =
                         "dashboard.html";
@@ -2481,6 +2499,20 @@ async function loadStudentProfile(
             "studentUsername",
             studentUsername
         );
+
+        // Ensure referral attribution is established if code was provided during signup (resilient to email confirmation)
+        try {
+            const boundCode = (user.user_metadata && user.user_metadata.referral_code) ||
+                (window.ExamPilotReferral ? window.ExamPilotReferral.getPendingReferralCode() : "");
+            if (boundCode) {
+                await supabaseClient.rpc("bind_referral_attribution", {
+                    p_referral_code: boundCode
+                });
+                if (window.ExamPilotReferral) {
+                    window.ExamPilotReferral.clearPendingReferralCode();
+                }
+            }
+        } catch (_) {}
 
     }
 
