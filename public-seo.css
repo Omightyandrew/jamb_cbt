@@ -565,3 +565,219 @@ a.seo-cta--primary:visited {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==========================================================================
+   ExamPilot Public Subject SEO — Questions & Mini-Quiz Components
+   ========================================================================== */
+.seo-question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.seo-question-item {
+  background: var(--seo-surface);
+  border: 1px solid var(--seo-border);
+  border-radius: var(--seo-radius);
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(15, 48, 38, 0.04);
+}
+
+.seo-question-badge {
+  display: inline-block;
+  background: var(--seo-soft-green);
+  color: var(--seo-green);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.seo-question-prompt {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--seo-dark-green);
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.seo-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.seo-option {
+  padding: 10px 14px;
+  border: 1px solid #e2ece6;
+  border-radius: 8px;
+  background: #fafcfb;
+  font-size: 0.95rem;
+  color: var(--seo-ink);
+}
+
+.seo-answer-box {
+  background: var(--seo-soft-green);
+  border-left: 4px solid var(--seo-green);
+  padding: 12px 18px;
+  border-radius: 0 8px 8px 0;
+  margin-top: 12px;
+  font-size: 0.95rem;
+  color: var(--seo-ink);
+}
+
+.seo-answer-box strong {
+  color: var(--seo-green);
+}
+
+/* Interactive Mini-Quiz */
+.seo-quiz-box {
+  background: var(--seo-surface);
+  border: 2px solid var(--seo-border);
+  border-radius: 18px;
+  padding: 28px;
+  margin-top: 20px;
+  box-shadow: var(--seo-shadow);
+}
+
+.seo-quiz-item {
+  margin-bottom: 24px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--seo-border);
+}
+
+.seo-quiz-item:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.seo-quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0 8px;
+}
+
+.seo-quiz-opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--seo-border);
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--seo-ink);
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.seo-quiz-opt:hover:not(:disabled) {
+  border-color: var(--seo-green);
+  background: var(--seo-soft-green);
+}
+
+.seo-quiz-opt.is-correct {
+  border-color: #087f45 !important;
+  background: #eaf7f0 !important;
+  color: #056532 !important;
+  font-weight: 700;
+}
+
+.seo-quiz-opt.is-incorrect {
+  border-color: #d32f2f !important;
+  background: #fde8e8 !important;
+  color: #b71c1c !important;
+  font-weight: 700;
+}
+
+.seo-quiz-opt:disabled {
+  cursor: default;
+}
+
+.seo-quiz-feedback {
+  display: none;
+  margin-top: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #f4f7f5;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.seo-quiz-score-banner {
+  display: none;
+  text-align: center;
+  padding: 24px 20px;
+  background: var(--seo-dark-green);
+  color: #ffffff;
+  border-radius: 14px;
+  margin-top: 24px;
+}
+
+.seo-quiz-score-banner h3 {
+  margin: 0 0 8px;
+  font-size: 1.35rem;
+  color: #ffffff;
+}
+
+.seo-quiz-score-banner p {
+  margin: 0 0 16px;
+  color: #cce4d4;
+  font-size: 1rem;
+}
+
+/* AI Tutor Compact CTA Band */
+.seo-ai-cta-band {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 26px 30px;
+  border-radius: var(--seo-radius);
+  background: var(--seo-soft-green);
+  border: 1px solid var(--seo-border);
+}
+
+.seo-ai-cta-copy h2 {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+  color: var(--seo-dark-green);
+}
+
+.seo-ai-cta-copy p {
+  margin: 0;
+  max-width: 660px;
+  color: var(--seo-muted);
+  font-size: 1rem;
+}
+
+.seo-ai-cta-band .seo-actions {
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .seo-ai-cta-band {
+    padding: 20px;
+  }
+  .seo-ai-cta-band .seo-actions {
+    width: 100%;
+  }
+  .seo-ai-cta-band .seo-actions .seo-cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+

@@ -54,10 +54,31 @@ document.getElementById('categoryCount').textContent=categories.length;
 
 function escapeHtml(value){return String(value).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function getFiltered(){const q=search.value.trim().toLowerCase(), c=categoryFilter.value, s=subjectFilter.value;return brochureData.filter(x=>{const hay=[x.course,x.category,x.olevel,x.note,...x.subjects].join(' ').toLowerCase();return (!q||hay.includes(q))&&(c==='all'||x.category===c)&&(s==='all'||x.subjects.includes(s));});}
-function render(){const data=getFiltered();activeFilters.innerHTML='';if(search.value.trim())addFilter(`Search: ${search.value.trim()}`);if(categoryFilter.value!=='all')addFilter(categoryFilter.value);if(subjectFilter.value!=='all')addFilter(subjectFilter.value);grid.innerHTML=data.length?data.map((x,i)=>`<article class="brochure-card"><div class="card-top"><span class="category-tag">${escapeHtml(x.category)}</span><span class="course-index">${String(i+1).padStart(2,'0')}</span></div><h3>${escapeHtml(x.course)}</h3><p>${escapeHtml(x.note)}</p><div class="subjects">${x.subjects.map(s=>`<span>${escapeHtml(s)}</span>`).join('')}</div><button class="details-button" data-course="${escapeHtml(x.course)}">View course details <span>→</span></button></article>`).join(''):`<div class="empty-state"><div>⌕</div><h3>No matching course</h3><p>Try another course, category or subject.</p><button id="clearFilters">Clear filters</button></div>`;grid.querySelectorAll('[data-course]').forEach(btn=>btn.addEventListener('click',()=>openCourse(btn.dataset.course)));const clear=document.getElementById('clearFilters');if(clear)clear.addEventListener('click',clearAll);}
+const subjectRoutes = {
+  'Use of English': '/jamb/english-language/',
+  'Mathematics': '/jamb/mathematics/',
+  'Physics': '/jamb/physics/',
+  'Chemistry': '/jamb/chemistry/',
+  'Biology': '/jamb/biology/',
+  'Government': '/jamb/government/',
+  'Economics': '/jamb/economics/',
+  'Literature in English': '/jamb/literature/',
+  'CRK/IRK': '/jamb/christian-religious-studies/'
+};
+
+function renderSubjectTag(subj) {
+  const route = subjectRoutes[subj];
+  const safeText = escapeHtml(subj);
+  if (route) {
+    return `<a class="subject-tag-link" href="${route}" title="View JAMB ${safeText} syllabus and questions">${safeText}</a>`;
+  }
+  return `<span>${safeText}</span>`;
+}
+
+function render(){const data=getFiltered();activeFilters.innerHTML='';if(search.value.trim())addFilter(`Search: ${search.value.trim()}`);if(categoryFilter.value!=='all')addFilter(categoryFilter.value);if(subjectFilter.value!=='all')addFilter(subjectFilter.value);grid.innerHTML=data.length?data.map((x,i)=>`<article class="brochure-card"><div class="card-top"><span class="category-tag">${escapeHtml(x.category)}</span><span class="course-index">${String(i+1).padStart(2,'0')}</span></div><h3>${escapeHtml(x.course)}</h3><p>${escapeHtml(x.note)}</p><div class="subjects">${x.subjects.map(renderSubjectTag).join('')}</div><button class="details-button" data-course="${escapeHtml(x.course)}">View course details <span>→</span></button></article>`).join(''):`<div class="empty-state"><div>⌕</div><h3>No matching course</h3><p>Try another course, category or subject.</p><button id="clearFilters">Clear filters</button></div>`;grid.querySelectorAll('[data-course]').forEach(btn=>btn.addEventListener('click',()=>openCourse(btn.dataset.course)));const clear=document.getElementById('clearFilters');if(clear)clear.addEventListener('click',clearAll);}
 function addFilter(text){const b=document.createElement('button');b.className='filter-chip';b.textContent=text+' ×';b.onclick=clearAll;activeFilters.appendChild(b);}
 function clearAll(){search.value='';categoryFilter.value='all';subjectFilter.value='all';render();}
-function openCourse(course){const x=brochureData.find(v=>v.course===course);if(!x)return;document.getElementById('modalCategory').textContent=x.category;document.getElementById('modalTitle').textContent=x.course;document.getElementById('modalDescription').textContent='Planning guide for '+x.course+'. Use the official IBASS checker for the final programme-specific result.';document.getElementById('modalSubjects').innerHTML=x.subjects.map(s=>`<span>${escapeHtml(s)}</span>`).join('');document.getElementById('modalOlevel').textContent=x.olevel;document.getElementById('modalNote').textContent=x.note;modal.classList.add('show');modal.setAttribute('aria-hidden','false');document.body.classList.add('modal-open');modalClose.focus();}
+function openCourse(course){const x=brochureData.find(v=>v.course===course);if(!x)return;document.getElementById('modalCategory').textContent=x.category;document.getElementById('modalTitle').textContent=x.course;document.getElementById('modalDescription').textContent='Planning guide for '+x.course+'. Use the official IBASS checker for the final programme-specific result.';document.getElementById('modalSubjects').innerHTML=x.subjects.map(renderSubjectTag).join('');document.getElementById('modalOlevel').textContent=x.olevel;document.getElementById('modalNote').textContent=x.note;modal.classList.add('show');modal.setAttribute('aria-hidden','false');document.body.classList.add('modal-open');modalClose.focus();}
 function closeModal(){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open');}
 search.addEventListener('input',render);categoryFilter.addEventListener('change',render);subjectFilter.addEventListener('change',render);modalClose.addEventListener('click',closeModal);modal.addEventListener('click',e=>{if(e.target.dataset.close==='true')closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 render();
