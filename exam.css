@@ -574,8 +574,7 @@ body.exam-body {
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
-    html,
-    body.exam-body {
+    html {
         max-width: 100%;
         overflow-x: hidden;
     }

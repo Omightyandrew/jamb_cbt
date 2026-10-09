@@ -142,6 +142,13 @@
 /* Subscription modal for Mock Exam (consistent with dashboard.html) */
 .subscription-modal-backdrop {
     position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
     inset: 0;
     z-index: 3000;
     display: none;
@@ -368,6 +375,10 @@
 }
 
 @media (max-width: 480px) {
+    .subscription-modal-backdrop {
+        padding: 12px;
+    }
+
     .subscription-modal {
         padding: 16px;
     }
