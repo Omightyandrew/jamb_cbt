@@ -18,9 +18,10 @@
   }
 
   function openProtectedFeatureUpgrade(featureName, featureKey) {
+    const key = featureKey || (featureName ? String(featureName).toLowerCase().replace(/[^a-z0-9]+/g, '-') : '');
     const dashboardUrl = new URL('dashboard.html', window.location.href);
     dashboardUrl.searchParams.set('upgrade', '1');
-    if (featureKey) dashboardUrl.searchParams.set('feature', featureKey);
+    if (key) dashboardUrl.searchParams.set('feature', key);
     const destination = dashboardUrl.toString();
 
     document.documentElement.innerHTML = `
@@ -81,7 +82,7 @@
             <div class="lock-icon">🔒</div>
             <p class="eyebrow">Premium required</p>
             <h1>${featureName || 'Premium access required'}</h1>
-            <p>This premium study feature is available to premium students only. Upgrade to continue.</p>
+            <p>${featureName ? `${featureName} requires an active Premium subscription. Upgrade to continue.` : 'This feature requires an active Premium subscription. Upgrade to continue.'}</p>
             <button class="premium-button" type="button" id="premiumAccessUpgrade">Upgrade to Premium</button>
             <a class="secondary-button" href="dashboard.html">Back to Dashboard</a>
           </main>

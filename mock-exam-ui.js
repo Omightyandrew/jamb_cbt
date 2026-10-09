@@ -47,6 +47,15 @@
         return envelope.data;
     }
 
+    function isPremiumDenial(error) {
+        if (!error || error.status !== 403 || error.code !== "forbidden") {
+            return false;
+        }
+        const isKnownDenial = (text) => typeof text === "string" && /^mock access is not permitted\.?$/i.test(text.trim());
+        const isNormalizedDenial = (text) => typeof text === "string" && text.trim() === "An active Premium subscription is required.";
+        return isKnownDenial(error.message) || isKnownDenial(error.rawMessage) || isNormalizedDenial(error.message);
+    }
+
     function newUuid() {
         if (window.crypto?.randomUUID) return window.crypto.randomUUID();
         if (!window.crypto?.getRandomValues) {
@@ -304,6 +313,11 @@
         } catch (error) {
             state.startBusy = false;
             renderSelection();
+            if (isPremiumDenial(error)) {
+                openSubscriptionModal();
+                showMessage("JAMB Mock requires an active Premium subscription. Upgrade to continue.", "error");
+                return;
+            }
             showMessage(error?.message || "Unable to start the Mock. Please try again.", "error");
         }
     }
@@ -488,7 +502,72 @@
 
     headerSubmit.addEventListener("click", submitAttempt);
 
+    function openSubscriptionModal() {
+        const modal = document.getElementById("subscriptionModal");
+        if (!modal) return;
+        modal.classList.add("show");
+        modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeSubscriptionModal() {
+        const modal = document.getElementById("subscriptionModal");
+        if (!modal) return;
+        modal.classList.remove("show");
+        modal.setAttribute("aria-hidden", "true");
+    }
+
+    function initSubscriptionModal() {
+        const modal = document.getElementById("subscriptionModal");
+        const closeBtn = document.getElementById("mockSubscriptionModalClose");
+        const cancelBtn = document.getElementById("mockSubscriptionModalSecondary");
+        const pay30Btn = document.getElementById("mockPay30DaysBtn");
+        const pay1YearBtn = document.getElementById("mockPay1YearBtn");
+
+        if (closeBtn) closeBtn.addEventListener("click", closeSubscriptionModal);
+        if (cancelBtn) cancelBtn.addEventListener("click", closeSubscriptionModal);
+        if (modal) {
+            modal.addEventListener("click", (event) => {
+                if (event.target === modal) closeSubscriptionModal();
+            });
+        }
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && modal?.classList.contains("show")) {
+                closeSubscriptionModal();
+            }
+        });
+
+        if (pay30Btn) {
+            pay30Btn.addEventListener("click", () => {
+                if (typeof window.payFor30Days === "function") {
+                    window.payFor30Days();
+                } else if (typeof window.startPaystackPayment === "function") {
+                    window.startPaystackPayment(1500, 30);
+                } else {
+                    window.location.href = "dashboard.html?upgrade=1&feature=mock";
+                }
+            });
+        }
+
+        if (pay1YearBtn) {
+            pay1YearBtn.addEventListener("click", () => {
+                if (typeof window.payFor1Year === "function") {
+                    window.payFor1Year();
+                } else if (typeof window.startPaystackPayment === "function") {
+                    window.startPaystackPayment(4000, 365);
+                } else {
+                    window.location.href = "dashboard.html?upgrade=1&feature=mock";
+                }
+            });
+        }
+
+        window.showDashboard = async function () {
+            closeSubscriptionModal();
+            showMessage("Payment successful! Your Premium subscription is active. Click Start Mock to begin.", "success");
+        };
+    }
+
     async function init() {
+        initSubscriptionModal();
         if (!window.supabaseClient || typeof window.supabaseClient.auth?.getSession !== "function") {
             app.innerHTML = `<section class="access-page"><div class="access-card mock-auth-card"><h1>Mock unavailable</h1><p>Authentication is not ready on this page.</p><a href="dashboard.html">Return to Dashboard</a></div></section>`;
             return;

@@ -10,8 +10,10 @@
     <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
     <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
     <meta name="theme-color" content="#14213D">
+    <script src="https://js.paystack.co/v2/inline.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
+    <script src="Paystack.js"></script>
     <script src="mock-api.js"></script>
     <script src="mock-exam-ui.js" defer></script>
 </head>
@@ -32,5 +34,61 @@
             <div class="access-card"><p class="eyebrow">JAMB MOCK</p><h1>Checking your session</h1><p>Please wait.</p></div>
         </section>
     </main>
+    <div aria-hidden="true" class="subscription-modal-backdrop" id="subscriptionModal">
+        <div aria-labelledby="subscriptionModalTitle" aria-modal="true" class="subscription-modal" role="dialog">
+            <div class="subscription-modal-head">
+                <h2 id="subscriptionModalTitle">Subscription</h2>
+                <button aria-label="Close" class="subscription-modal-close" id="mockSubscriptionModalClose" type="button">×</button>
+            </div>
+            <div class="subscription-modal-status">
+                <strong id="subscriptionStatusTitle">Premium required</strong>
+                <span id="subscriptionStatusText">Upgrade to unlock JAMB Mock exams and full CBT features.</span>
+            </div>
+            <div class="subscription-plans" id="subscriptionPlans">
+                <div class="subscription-features" id="subscriptionFeatures">
+                    <div class="subscription-feature-item"><span>✓</span> Full CBT practice</div>
+                    <div class="subscription-feature-item"><span>✓</span> Past Questions &amp; Answers</div>
+                    <div class="subscription-feature-item"><span>✓</span> Full Mock Exams</div>
+                    <div class="subscription-feature-item"><span>✓</span> Novels / Literature</div>
+                    <div class="subscription-feature-item"><span>✓</span> AI Tutor</div>
+                    <div class="subscription-feature-item"><span>✓</span> Ad-free experience</div>
+                </div>
+                <div class="subscription-plan-card">
+                    <div>
+                        <h3>30 Days</h3>
+                        <p>Full CBT practice and premium access for 30 days.</p>
+                    </div>
+                    <div class="subscription-plan-bottom">
+                        <div class="subscription-price-group">
+                            <strong class="subscription-price">₦1,500</strong>
+                            <span class="subscription-duration">/ 30 days</span>
+                        </div>
+                        <button class="subscription-modal-action subscription-pay-button" id="mockPay30DaysBtn" type="button">Subscribe</button>
+                    </div>
+                </div>
+                <div class="subscription-plan-card featured">
+                    <span class="subscription-plan-badge">BEST VALUE</span>
+                    <div>
+                        <h3>1 Year</h3>
+                        <p>Unlimited CBT practice and full premium access for one year.</p>
+                    </div>
+                    <div class="subscription-plan-bottom">
+                        <div class="subscription-price-group">
+                            <strong class="subscription-price">₦4,000</strong>
+                            <span class="subscription-duration">/ 1 year</span>
+                            <span class="subscription-savings">Save over 75%</span>
+                        </div>
+                        <button class="subscription-modal-action subscription-pay-button" id="mockPay1YearBtn" type="button">Subscribe</button>
+                    </div>
+                </div>
+                <div class="subscription-trust-badge">
+                    🔒 Secure payment via Paystack · Instant activation
+                </div>
+            </div>
+            <button class="subscription-modal-secondary" id="mockSubscriptionModalSecondary" type="button">
+                Close
+            </button>
+        </div>
+    </div>
 </body>
 </html>

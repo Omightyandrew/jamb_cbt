@@ -2492,21 +2492,14 @@ function maybeOpenUpgradeFromFeatureParameter() {
 
     setTimeout(async () => {
         const isPremiumNow = await refreshDashboardPremiumState();
-        const featureName = params.get('feature') || 'this feature';
-        const readableFeature = featureName.replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-        const title = document.getElementById('subscriptionStatusTitle');
-        const text = document.getElementById('subscriptionStatusText');
-
-        if (title) {
-            title.textContent = isPremiumNow ? 'Premium Active ✓' : 'Premium required';
-        }
-        if (text) {
-            text.textContent = isPremiumNow
-                ? 'Your premium access is currently active.'
-                : `Upgrade to unlock ${readableFeature}.`;
+        if (isPremiumNow) {
+            openSubscription();
+            return;
         }
 
-        openSubscription();
+        const featureKey = params.get('feature') || 'this feature';
+        const readableFeature = featureKey.replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        openSubscription(readableFeature);
     }, 120);
 }
 
@@ -2520,7 +2513,7 @@ function toggleProfileMenu() {
     profileMenu.classList.toggle("show");
 }
 
-function openSubscription() {
+function openSubscription(featureName) {
     const modal = document.getElementById("subscriptionModal");
     const title = document.getElementById("subscriptionStatusTitle");
     const text = document.getElementById("subscriptionStatusText");
@@ -2537,8 +2530,13 @@ function openSubscription() {
         if (plans) plans.hidden = true;
         if (benefits) benefits.hidden = false;
     } else {
-        if (title) title.textContent = "Free Plan";
-        if (text) text.textContent = "Upgrade to unlock full premium access.";
+        if (featureName) {
+            if (title) title.textContent = "Premium Required";
+            if (text) text.textContent = `${featureName} requires an active Premium subscription. Upgrade to continue.`;
+        } else {
+            if (title) title.textContent = "Free Plan";
+            if (text) text.textContent = "Upgrade to unlock full premium access.";
+        }
         if (plans) plans.hidden = false;
         if (benefits) benefits.hidden = true;
     }
@@ -2553,6 +2551,15 @@ function closeSubscription() {
     modal.classList.remove("show");
     modal.setAttribute("aria-hidden", "true");
 }
+
+window.openSubscription = openSubscription;
+window.closeSubscription = closeSubscription;
+window.payFor30Days = function () {
+    return startDashboardPayment(1500, 30);
+};
+window.payFor1Year = function () {
+    return startDashboardPayment(4000, 365);
+};
 
 function savePendingPaystackSubscription(payment) {
     try {
@@ -2881,8 +2888,7 @@ async function handleDashboardQuickCardAccess(event) {
 
     event.preventDefault();
     const featureName = card.getAttribute('data-feature') || 'This feature';
-    alert(featureName + ' is available with premium access. Upgrade to continue.');
-    openSubscription();
+    openSubscription(featureName);
 }
 
 function notificationText(row, names){

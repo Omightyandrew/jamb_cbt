@@ -21,13 +21,17 @@
       ? backendError.message
       : typeof payload?.message === "string"
         ? payload.message
-        : null;
+        : (typeof payload?.error === "string" ? payload.error : null);
+    const backendCode = typeof backendError?.code === "string"
+      ? backendError.code
+      : (typeof payload?.code === "string" ? payload.code : null);
 
     let message;
     if (status === 401) {
       message = rawMessage || "Authentication is required.";
     } else if (status === 403) {
-      message = rawMessage || "Mock access is not permitted.";
+      const isTechnical = !rawMessage || /Mock access (is )?not permitted/i.test(rawMessage);
+      message = isTechnical ? "An active Premium subscription is required." : rawMessage;
     } else if (status === 409) {
       message = rawMessage || "The Mock attempt state has changed.";
     } else if (status === 422) {
@@ -43,8 +47,9 @@
 
     return {
       status,
-      code: typeof backendError?.code === "string" ? backendError.code : (status === 422 ? "invalid_combination" : "request_failed"),
-      message
+      code: backendCode || (status === 422 ? "invalid_combination" : status === 403 ? "forbidden" : "request_failed"),
+      message,
+      rawMessage: rawMessage || undefined
     };
   }
 
