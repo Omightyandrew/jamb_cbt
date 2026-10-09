@@ -370,6 +370,7 @@ async function testMockUiSubscriptionPopup() {
       hidden: false,
       disabled: false,
       innerHTML: "",
+      style: { display: "" },
       classList: {
         add: (c) => classList.add(c),
         remove: (c) => classList.delete(c),
@@ -451,6 +452,13 @@ async function testMockUiSubscriptionPopup() {
   // Allow async init() to run
   await new Promise((r) => setTimeout(r, 20));
 
+  // Verify mock-exam.html initial markup contains inline style="display:none;" to prevent in-flow render before CSS loads
+  const mockExamHtmlContent = fs.readFileSync(path.join(__dirname, "mock-exam.html"), "utf8");
+  assert.ok(
+    /id=["']subscriptionModal["'][^>]*style=["'][^"']*display\s*:\s*none/i.test(mockExamHtmlContent),
+    "mock-exam.html subscriptionModal must have inline style='display:none' to prevent rendering as page content before CSS loads"
+  );
+
   // Verify modal starts hidden
   assert.equal(modalEl.classList.contains("show"), false, "Modal must start closed");
 
@@ -490,6 +498,7 @@ async function testMockUiSubscriptionPopup() {
   // Verify modal is opened on 403
   assert.equal(modalEl.classList.contains("show"), true, "Modal must open on 403 error");
   assert.equal(modalEl.getAttribute("aria-hidden"), "false", "Modal must set aria-hidden=false");
+  assert.equal(modalEl.style.display, "flex", "Modal must explicitly set display:flex when opened");
 
   const messageEl = mockDocument.getElementById("mockMessage");
   assert.ok(messageEl.textContent.includes("Upgrade to continue"), "Message must explain upgrade is needed");
@@ -499,6 +508,7 @@ async function testMockUiSubscriptionPopup() {
   await closeBtnEl.dispatchEvent({ type: "click", target: closeBtnEl });
   assert.equal(modalEl.classList.contains("show"), false, "Modal must close on close button click");
   assert.equal(modalEl.getAttribute("aria-hidden"), "true", "Modal must set aria-hidden=true");
+  assert.equal(modalEl.style.display, "none", "Modal must explicitly set display:none when closed");
 
   // Helper to verify selected subjects remain intact in the rendered selection HTML
   function assertSelectedSubjectsIntact() {

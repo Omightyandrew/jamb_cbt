@@ -507,6 +507,7 @@
         if (!modal) return;
         modal.classList.add("show");
         modal.setAttribute("aria-hidden", "false");
+        modal.style.display = "flex";
     }
 
     function closeSubscriptionModal() {
@@ -514,6 +515,7 @@
         if (!modal) return;
         modal.classList.remove("show");
         modal.setAttribute("aria-hidden", "true");
+        modal.style.display = "none";
     }
 
     function initSubscriptionModal() {
