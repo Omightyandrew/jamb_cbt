@@ -1,0 +1,42 @@
+name: Daily Challenge Reminder Scheduler
+
+on:
+  schedule:
+    # 5:00 PM Africa/Lagos (WAT, UTC+1) = 16:00 UTC
+    - cron: '0 16 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: daily-challenge-reminder
+  cancel-in-progress: false
+
+jobs:
+  dispatch-reminder:
+    name: Dispatch Daily Challenge Push Notification
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Daily Challenge Reminder Edge Function
+        env:
+          CRON_SECRET: ${{ secrets.DAILY_REMINDER_CRON_SECRET }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::DAILY_REMINDER_CRON_SECRET secret is not configured in repository secrets."
+            exit 1
+          fi
+
+          echo "Triggering ExamPilot daily challenge reminder..."
+          HTTP_RESPONSE=$(curl -sS -w "\n%{http_code}" -X POST \
+            "https://afdnfqmsjmpwlvhloopy.supabase.co/functions/v1/daily-challenge-reminder" \
+            -H "Content-Type: application/json" \
+            -H "x-cron-secret: $CRON_SECRET")
+
+          HTTP_BODY=$(echo "$HTTP_RESPONSE" | sed '$d')
+          HTTP_STATUS=$(echo "$HTTP_RESPONSE" | tail -n1)
+
+          echo "Response HTTP Status: $HTTP_STATUS"
+          echo "Response Body: $HTTP_BODY"
+
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "::error::Dispatcher failed with HTTP status $HTTP_STATUS"
+            exit 1
+          fi
