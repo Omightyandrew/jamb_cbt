@@ -146,6 +146,25 @@
   </section>
 
   <section class="card page-section" data-page-section="settings">
+    <h2>Daily Challenge &amp; Exam Alerts</h2>
+    <p class="sub">Enable lock-screen push notifications for Daily Challenge streak reminders and important platform updates.</p>
+    <div style="padding:14px;background:#f8faf9;border:1px solid var(--border);border-radius:10px;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+        <div>
+          <strong id="notificationSettingLabel" class="notification-setting-label" style="display:block;font-size:14px;color:var(--text);">Notifications — OFF</strong>
+          <small id="notificationSettingDescription" class="notification-setting-description" style="display:block;color:var(--muted);font-size:12px;margin-top:2px;">Tap to enable notifications on this device.</small>
+        </div>
+        <button id="enableNotificationsButton" class="btn primary enable-notifications-btn" type="button" aria-pressed="false" style="padding:9px 15px;font-size:13px;">
+          🔔 Toggle Notifications
+        </button>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);line-height:1.5;">
+      💡 Note: On Android, tap Allow when prompted. On iPhone / iPad (iOS 16.4+), please add ExamPilot to your Home Screen first to receive lock-screen push alerts.
+    </div>
+  </section>
+
+  <section class="card page-section" data-page-section="settings">
     <h2>Account</h2><p class="sub">Your current login session.</p>
     <div class="status" id="accountStatus">Checking account...</div>
     <div class="actions">
@@ -641,5 +660,7 @@ loadSettings().then(() => {
   loadReferralData();
 });
 </script>
+    <script src="push-config.js"></script>
+    <script src="push-notifications.js"></script>
     <script src="pwa-register.js"></script>
 </body></html>

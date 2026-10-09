@@ -2,7 +2,8 @@
   "use strict";
 
   var PREFERENCE_KEY = "exampilotNotificationsPreference";
-  var PROMPT_ATTEMPTED_KEY = "exampilotNotificationsPermissionPrompted";
+  var DEFAULT_ENABLED_TEXT = "Receive Daily Challenge reminders and important exam alerts.";
+  var DEFAULT_DISABLED_TEXT = "Notifications are turned off.";
 
   function base64ToUint8Array(value) {
     var padding = "=".repeat((4 - value.length % 4) % 4);
@@ -13,29 +14,29 @@
     });
   }
 
-  function getButton() {
-    return document.getElementById("enableNotificationsButton");
+  function getButtons() {
+    return Array.from(document.querySelectorAll("#enableNotificationsButton, .enable-notifications-btn"));
   }
 
   function setButtonState(state, detail) {
-    var button = getButton();
-    var label = document.getElementById("notificationSettingLabel");
-    var description = document.getElementById("notificationSettingDescription");
+    var buttons = getButtons();
+    var labels = Array.from(document.querySelectorAll("#notificationSettingLabel, .notification-setting-label"));
+    var descriptions = Array.from(document.querySelectorAll("#notificationSettingDescription, .notification-setting-description"));
     var isOn = state === "on";
     var isBusy = state === "loading";
 
-    if (button) {
+    buttons.forEach(function (button) {
       button.setAttribute("aria-pressed", isOn ? "true" : "false");
       button.disabled = isBusy;
-    }
-    if (label) {
+    });
+
+    labels.forEach(function (label) {
       label.textContent = "Notifications — " + (isOn ? "ON" : "OFF");
-    }
-    if (description) {
-      description.textContent = detail || (isOn
-        ? "Receive important ExamPilot updates and alerts."
-        : "Notifications are turned off.");
-    }
+    });
+
+    descriptions.forEach(function (description) {
+      description.textContent = detail || (isOn ? DEFAULT_ENABLED_TEXT : DEFAULT_DISABLED_TEXT);
+    });
   }
 
   function supportsWebPush() {
@@ -86,7 +87,10 @@
       return false;
     }
     if (Notification.permission === "denied") {
-      setButtonState("off", "Permission blocked. Enable notifications in Chrome site settings to turn them on.");
+      setButtonState("off", "Permission blocked. Enable notifications in your browser or site settings to turn them on.");
+      if (options.interactive) {
+        alert("Notifications are blocked by your browser. Please enable notifications in your browser site settings to turn them on.");
+      }
       return false;
     }
 
@@ -98,16 +102,15 @@
       }
 
       if (Notification.permission === "default") {
-        if (!options.interactive && localStorage.getItem(PROMPT_ATTEMPTED_KEY) === "true") {
-          setButtonState("off", "Tap to turn notifications on.");
+        if (!options.interactive) {
+          setButtonState("off", "Tap Toggle Notifications to enable alerts on this device.");
           return false;
         }
-        localStorage.setItem(PROMPT_ATTEMPTED_KEY, "true");
         var permission = await Notification.requestPermission();
         if (permission !== "granted") {
           setButtonState("off", permission === "denied"
-            ? "Permission blocked. Enable notifications in Chrome site settings to turn them on."
-            : "Tap to turn notifications on.");
+            ? "Permission blocked. Enable notifications in your browser or site settings to turn them on."
+            : "Tap Toggle Notifications to enable alerts on this device.");
           return false;
         }
       }
@@ -123,7 +126,7 @@
 
       await saveSubscription(subscription, sessionResult.data.session.user.id);
       localStorage.setItem(PREFERENCE_KEY, "on");
-      setButtonState("on", "Receive important ExamPilot updates and alerts.");
+      setButtonState("on", DEFAULT_ENABLED_TEXT);
       return true;
     } catch (error) {
       console.error("ExamPilot notification opt-in failed.", error);
@@ -136,28 +139,46 @@
   }
 
   async function disableNotifications() {
-    var button = getButton();
-    if (button) button.disabled = true;
-    localStorage.setItem(PREFERENCE_KEY, "off");
+    var buttons = getButtons();
+    buttons.forEach(function (button) { button.disabled = true; });
 
+    var unsubscribedLocally = false;
     try {
       if (supportsWebPush()) {
         var current = await getCurrentSubscription();
         if (current.subscription) {
           var endpoint = current.subscription.endpoint;
-          await current.subscription.unsubscribe();
+          var unsubscribed = await current.subscription.unsubscribe();
+          if (!unsubscribed) {
+            throw new Error("Browser PushManager could not unsubscribe.");
+          }
+          unsubscribedLocally = true;
+
           var result = await window.supabaseClient
             .from("push_subscriptions")
             .delete()
             .eq("endpoint", endpoint);
-          if (result.error) throw result.error;
+          if (result.error) {
+            localStorage.setItem(PREFERENCE_KEY, "off");
+            setButtonState("off", DEFAULT_DISABLED_TEXT);
+            alert("Notifications are disabled on this device, but removing the server record could not be confirmed: " + (result.error.message || "Network error") + ".");
+            return;
+          }
         }
       }
-      setButtonState("off", "Notifications are turned off.");
+      localStorage.setItem(PREFERENCE_KEY, "off");
+      setButtonState("off", DEFAULT_DISABLED_TEXT);
     } catch (error) {
       console.error("ExamPilot notification opt-out failed.", error);
-      setButtonState("on", "Could not turn notifications off. Try again.");
-      alert("Notifications could not be turned off: " + (error.message || "Please try again."));
+      if (unsubscribedLocally) {
+        localStorage.setItem(PREFERENCE_KEY, "off");
+        setButtonState("off", DEFAULT_DISABLED_TEXT);
+        alert("Notifications are disabled on this device, but removing the server record could not be confirmed: " + (error.message || "Network error") + ".");
+      } else {
+        localStorage.setItem(PREFERENCE_KEY, "on");
+        setButtonState("on", "Could not turn notifications off. Tap to try again.");
+        alert("Notifications could not be turned off in your browser: " + (error.message || "Please try again."));
+      }
     }
   }
 
@@ -171,7 +192,7 @@
 
   async function initializeNotifications() {
     if (localStorage.getItem(PREFERENCE_KEY) === "off") {
-      setButtonState("off", "Notifications are turned off.");
+      setButtonState("off", DEFAULT_DISABLED_TEXT);
       return;
     }
     if (!supportsWebPush()) {
@@ -179,21 +200,28 @@
       return;
     }
     if (Notification.permission === "denied") {
-      setButtonState("off", "Permission blocked. Enable notifications in Chrome site settings to turn them on.");
+      setButtonState("off", "Permission blocked. Enable notifications in your browser or site settings to turn them on.");
       return;
     }
+    if (Notification.permission === "default") {
+      setButtonState("off", "Tap Toggle Notifications to enable alerts on this device.");
+      return;
+    }
+    // Existing permission granted: automatically register or restore subscription
     await enableNotifications({ interactive: false });
   }
 
   window.enableExamPilotNotifications = toggleNotifications;
 
   function init() {
-    var button = getButton();
-    if (!button) return;
-    button.addEventListener("click", toggleNotifications);
+    var buttons = getButtons();
+    if (!buttons.length) return;
+    buttons.forEach(function (button) {
+      button.addEventListener("click", toggleNotifications);
+    });
     initializeNotifications().catch(function (error) {
       console.error("ExamPilot notification initialization failed.", error);
-      setButtonState("off", "Tap to turn notifications on.");
+      setButtonState("off", "Tap Toggle Notifications to enable alerts on this device.");
     });
   }
 
