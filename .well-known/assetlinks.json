@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "ng.com.exampilot.app",
+    "sha256_cert_fingerprints": ["05:F5:01:9C:9C:32:DB:85:96:BC:5D:CC:B3:04:A9:D4:B8:AE:14:12:34:23:CD:20:46:C1:5F:3E:5D:0A:01:15"]
+  }
+}]
