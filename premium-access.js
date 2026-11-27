@@ -164,6 +164,33 @@
         return false;
       }
 
+      const user = sessionData.session.user;
+
+      // Verified admin accounts automatically receive Premium access
+      // 1. Check Supabase Auth app_metadata role
+      const appRole = String(user?.app_metadata?.role || user?.app_metadata?.admin_role || '').trim().toLowerCase();
+      let isAdmin = (appRole === 'admin' || appRole === 'super_admin');
+
+      // 2. Check Student_profiles.is_admin
+      if (!isAdmin && user?.id) {
+        try {
+          const { data: profileRow } = await client
+            .from('Student_profiles')
+            .select('is_admin')
+            .eq('id', user.id)
+            .maybeSingle();
+          if (profileRow?.is_admin === true) {
+            isAdmin = true;
+          }
+        } catch (profileErr) {
+          console.warn('Admin profile check failed:', profileErr);
+        }
+      }
+
+      if (isAdmin) {
+        return true;
+      }
+
       const { data: subRows, error: subError } = await client
         .from('subscriptions')
         .select('*')

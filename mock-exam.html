@@ -4,23 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JAMB Mock | ExamPilot</title>
+    <meta name="robots" content="noindex, follow">
     <link rel="stylesheet" href="brand.css">
     <link rel="stylesheet" href="exam.css">
     <link rel="stylesheet" href="mock-exam.css">
     <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
     <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
     <meta name="theme-color" content="#14213D">
-    <script src="https://js.paystack.co/v2/inline.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
-    <script src="Paystack.js"></script>
     <script src="mock-api.js"></script>
+    <script src="Paystack.js" defer></script>
+    <script>
+      let paystackLoadPromise = null;
+      function ensurePaystackScript() {
+        if (typeof window.PaystackPop === "function") {
+          return Promise.resolve(window.PaystackPop);
+        }
+        if (paystackLoadPromise) {
+          return paystackLoadPromise;
+        }
+        paystackLoadPromise = new Promise(function(resolve, reject) {
+          var existing = document.querySelector('script[src*="paystack.co"]');
+          if (existing) {
+            if (existing.dataset.paystackStatus === "loading") {
+              existing.addEventListener("load", function() {
+                paystackLoadPromise = null;
+                if (typeof window.PaystackPop === "function") {
+                  resolve(window.PaystackPop);
+                } else {
+                  if (existing.parentNode) existing.parentNode.removeChild(existing);
+                  reject(new Error("Paystack SDK loaded but PaystackPop global is unavailable"));
+                }
+              }, { once: true });
+              existing.addEventListener("error", function() {
+                paystackLoadPromise = null;
+                if (existing.parentNode) existing.parentNode.removeChild(existing);
+                reject(new Error("Paystack SDK failed to load. Please check your network connection."));
+              }, { once: true });
+              return;
+            } else {
+              if (existing.parentNode) existing.parentNode.removeChild(existing);
+            }
+          }
+          var s = document.createElement("script");
+          s.src = "https://js.paystack.co/v2/inline.js";
+          s.async = true;
+          s.dataset.paystackStatus = "loading";
+
+          var timeoutId = setTimeout(function() {
+            paystackLoadPromise = null;
+            s.dataset.paystackStatus = "error";
+            s.onload = null;
+            s.onerror = null;
+            if (s.parentNode) s.parentNode.removeChild(s);
+            reject(new Error("Paystack SDK load timed out. Please check your network connection and retry."));
+          }, 10000);
+
+          s.onload = function() {
+            clearTimeout(timeoutId);
+            paystackLoadPromise = null;
+            if (typeof window.PaystackPop === "function") {
+              s.dataset.paystackStatus = "loaded";
+              resolve(window.PaystackPop);
+            } else {
+              s.dataset.paystackStatus = "error";
+              if (s.parentNode) s.parentNode.removeChild(s);
+              reject(new Error("Paystack SDK loaded but PaystackPop global is unavailable"));
+            }
+          };
+
+          s.onerror = function() {
+            clearTimeout(timeoutId);
+            paystackLoadPromise = null;
+            s.dataset.paystackStatus = "error";
+            if (s.parentNode) s.parentNode.removeChild(s);
+            reject(new Error("Paystack SDK failed to load. Please check your network connection."));
+          };
+
+          document.head.appendChild(s);
+        });
+        return paystackLoadPromise;
+      }
+      window.ensurePaystackScript = ensurePaystackScript;
+    </script>
     <script src="mock-exam-ui.js" defer></script>
 </head>
 <body class="exam-body mock-body">
     <header class="exam-header mock-header">
         <a class="exam-brand mock-brand" href="dashboard.html" aria-label="Back to dashboard">
-            <img class="mock-logo" src="assets/logo/logo-symbol.svg" alt="">
+            <img class="mock-logo" src="assets/logo/logo-symbol.svg" alt="" width="40" height="40">
             <span><strong>ExamPilot</strong><span>JAMB Mock</span></span>
         </a>
         <div class="mock-header-meta">

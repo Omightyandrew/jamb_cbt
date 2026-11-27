@@ -3,15 +3,16 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Library | ExamPilot</title>
+<meta name="robots" content="noindex, follow">
 <link rel="stylesheet" href="brand.css">
 <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
 <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
 <meta name="theme-color" content="#14213D">
-<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="novels.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script><script src="premium-access.js"></script>
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="novels.css">
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
-<header class="library-header"><a class="back-link" href="dashboard.html">← Dashboard</a><div><img class="ep-logo ep-logo--header" src="assets/logo/logo-compact.svg" alt="ExamPilot"><span class="eyebrow">ExamPilot</span><h1>Novel & Library</h1><p>Read, bookmark and continue your study materials.</p></div><div class="subscription-badge" id="accessBadge">Checking access?</div></header>
+<header class="library-header"><a class="back-link" href="dashboard.html">← Dashboard</a><div><img class="ep-logo ep-logo--header" src="assets/logo/logo-compact.svg" alt="ExamPilot" width="150" height="36"><span class="eyebrow">ExamPilot</span><h1>Novel & Library</h1><p>Read, bookmark and continue your study materials.</p></div><div class="subscription-badge" id="accessBadge">Checking access?</div></header>
 <main class="library-shell">
 <section class="library-hero"><div><span class="hero-kicker">STUDY LIBRARY</span><h2>Learn at your own pace.</h2><p>Keep your reading materials, study guides and progress in one place.</p></div><div class="hero-stat"><strong id="libraryCount">0</strong><span>materials</span></div></section>
 <section class="library-tools"><label class="search-box">⌕<input id="searchInput" type="search" placeholder="Search books, subjects or authors?"></label><div class="filter-row" id="categoryFilters"></div><button id="bookmarkFilter" class="filter-chip">★ Bookmarked</button></section>
@@ -36,6 +37,9 @@
   </div>
 </div>
 <div id="accessModal" class="access-modal" hidden><div class="access-card"><button id="closeAccess" class="icon-button">×</button><div class="lock-icon">🔒</div><h2>Premium Library</h2><p>Your library reading access is connected to the existing subscription status. Subscribe to unlock full reading materials.</p><button id="goSubscribe" class="primary-button">Go to Subscription</button><a href="dashboard.html">Back to Dashboard</a></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="premium-access.js"></script>
 <script src="novels.js"></script>
     <script src="pwa-register.js"></script>
 </body></html>

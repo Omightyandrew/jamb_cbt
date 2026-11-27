@@ -461,6 +461,8 @@ function showAccessDenied(message) {
         timer = null;
     }
 
+    resetCbtDomCaches();
+
     document.body.innerHTML = `
         <div class="access-page">
             <div class="access-card">
@@ -481,6 +483,8 @@ function showSubscriptionRequired(message) {
         clearInterval(timer);
         timer = null;
     }
+
+    resetCbtDomCaches();
 
     document.body.innerHTML = `
         <div class="access-page">
@@ -592,42 +596,46 @@ function shuffleArray(items) {
     return array;
 }
 
-function selectNoRepeatQuestions(
-    allSubjectQuestions,
+function selectNoRepeatCandidates(
+    candidatePool,
     subject,
     currentTestType,
     requestedCount
 ) {
-    if (!allSubjectQuestions.length) return [];
+    if (!candidatePool.length) {
+        return { selectedCandidates: [], stagedSeenIds: new Set() };
+    }
     const batchSize = Number(requestedCount);
     if (!Number.isInteger(batchSize) || batchSize <= 0) {
         throw new Error("Question allocation is unavailable for this CBT session.");
     }
 
     const seenIds = loadSeenQuestionIds(subject, currentTestType);
-    let pool = allSubjectQuestions.map((question) => ({
-        ...question,
-        _questionId: getQuestionFingerprint(question, subject, currentTestType)
+    const stagedSeenIds = new Set(seenIds);
+
+    let pool = candidatePool.map((candidate) => ({
+        ...candidate,
+        _questionId: candidate._questionId || getQuestionFingerprint(candidate, subject, currentTestType)
     }));
 
     // Remove duplicate copies from the active pool by stable question ID.
     const uniqueById = new Map();
-    pool.forEach((question) => {
-        if (!uniqueById.has(question._questionId)) {
-            uniqueById.set(question._questionId, question);
+    pool.forEach((candidate) => {
+        if (!uniqueById.has(candidate._questionId)) {
+            uniqueById.set(candidate._questionId, candidate);
         }
     });
     pool = Array.from(uniqueById.values());
 
     let available = shuffleArray(
-        pool.filter((question) => !seenIds.has(question._questionId))
+        pool.filter((candidate) => !stagedSeenIds.has(candidate._questionId))
     );
 
     // When the whole bank has been used, start a fresh cycle automatically.
     // This allows a 500-question subject to give 25 batches of 20 before any
     // question can appear again.
     if (available.length === 0) {
-        seenIds.clear();
+        stagedSeenIds.clear();
         available = shuffleArray(pool);
     }
 
@@ -638,20 +646,43 @@ function selectNoRepeatQuestions(
 
     if (selected.length < batchSize) {
         const selectedIds = new Set(
-            selected.map((question) => question._questionId)
+            selected.map((candidate) => candidate._questionId)
         );
         const freshCycle = shuffleArray(
-            pool.filter((question) => !selectedIds.has(question._questionId))
+            pool.filter((candidate) => !selectedIds.has(candidate._questionId))
         );
         selected = selected.concat(
             freshCycle.slice(0, batchSize - selected.length)
         );
     }
 
-    selected.forEach((question) => seenIds.add(question._questionId));
-    saveSeenQuestionIds(subject, currentTestType, seenIds);
+    // Stage newly selected question fingerprints without immediately persisting
+    selected.forEach((candidate) => stagedSeenIds.add(candidate._questionId));
 
-    return selected.map(({ _questionId, ...question }) => question);
+    return {
+        selectedCandidates: selected,
+        stagedSeenIds: stagedSeenIds
+    };
+}
+
+function selectNoRepeatQuestions(
+    allSubjectQuestions,
+    subject,
+    currentTestType,
+    requestedCount
+) {
+    const { selectedCandidates, stagedSeenIds } = selectNoRepeatCandidates(
+        allSubjectQuestions,
+        subject,
+        currentTestType,
+        requestedCount
+    );
+
+    if (selectedCandidates.length > 0) {
+        saveSeenQuestionIds(subject, currentTestType, stagedSeenIds);
+    }
+
+    return selectedCandidates.map(({ _questionId, ...question }) => question);
 }
 
 // ========================================
@@ -660,6 +691,24 @@ function selectNoRepeatQuestions(
 
 const SUPABASE_PAGE_SIZE = 1000;
 const SUPABASE_QUESTION_TABLE = "Questions";
+
+function mapSupabaseCandidate(row) {
+    return {
+        id: row.id,
+        examId: row.exam_id ?? null,
+        question: row.Question ?? row.question ?? "",
+        options: [
+            row.Option_a ?? row.option_a ?? "",
+            row.Option_b ?? row.option_b ?? "",
+            row.Option_c ?? row.option_c ?? "",
+            row.Option_d ?? row.option_d ?? ""
+        ],
+        subject: row.Subject ?? row.subject ?? "",
+        testType: row.test_type ?? "",
+        import_key: row.import_key ?? "",
+        updated_at: row.updated_at ?? null
+    };
+}
 
 function mapSupabaseQuestion(row) {
     return {
@@ -1036,6 +1085,8 @@ function showQuestionLoadError(error) {
 
     const message = error?.message || "Unable to load questions from Supabase.";
 
+    resetCbtDomCaches();
+
     document.body.innerHTML = `
         <div class="access-page">
             <div class="access-card">
@@ -1052,46 +1103,495 @@ function showQuestionLoadError(error) {
 }
 
 // ========================================
-// BUILD QUESTION LIST
+// TWO-PHASE RETRIEVAL & VALIDATION GATES
 // ========================================
 
-async function buildQuestions() {
-    questions = [];
+function validateAndAssembleFullQuestions(selectedCandidates, rawFullRows, subject, testType) {
+    if (!Array.isArray(rawFullRows)) {
+        throw new Error(`Invalid response format received for ${subject}.`);
+    }
 
-    // Supabase is now the source of truth for the CBT question bank.
-    // The old local questions.js file remains in the project for compatibility,
-    // but it is deliberately NOT used here, preventing the old ~1,000-question
-    // local bank from limiting the CBT.
-    const supabaseQuestions = await loadSupabaseQuestions();
+    const mappedFull = rawFullRows.map(mapSupabaseQuestion);
+    const fullMap = new Map();
 
-    selectedSubjects.forEach(function(subject) {
-        const allSubjectQuestions = supabaseQuestions.filter((question) =>
-            String(question.subject).toLowerCase() === String(subject).toLowerCase()
+    for (const record of mappedFull) {
+        if (fullMap.has(record.id)) {
+            throw new Error(`Duplicate question record detected in retrieval for ID ${record.id}.`);
+        }
+        fullMap.set(record.id, record);
+    }
+
+    if (fullMap.size !== selectedCandidates.length) {
+        throw new Error(
+            `Question count mismatch for ${subject}: expected ${selectedCandidates.length} active records, received ${fullMap.size}. Some questions may have been deactivated or removed.`
         );
+    }
 
+    const orderedQuestions = [];
+
+    for (const candidate of selectedCandidates) {
+        const fullRecord = fullMap.get(candidate.id);
+        if (!fullRecord) {
+            throw new Error(`Missing full record for candidate question ID ${candidate.id}.`);
+        }
+
+        if (
+            String(fullRecord.subject).toLowerCase() !== String(candidate.subject).toLowerCase() ||
+            fullRecord.testType !== candidate.testType
+        ) {
+            throw new Error(`Metadata mismatch between candidate and full record for question ID ${candidate.id}.`);
+        }
+
+        const fullFingerprint = getQuestionFingerprint(fullRecord, subject, testType);
+        if (fullFingerprint !== candidate._questionId) {
+            throw new Error(
+                `Content integrity mismatch: Question ID ${candidate.id} was modified concurrently during session initialization.`
+            );
+        }
+
+        orderedQuestions.push(fullRecord);
+    }
+
+    return orderedQuestions;
+}
+
+function assembleOfflineSessionQuestions(cachedQuestions) {
+    const stagedHistoryBySubject = new Map();
+    const assembledBySubject = new Map();
+
+    for (const subject of selectedSubjects) {
+        const allSubjectQuestions = (cachedQuestions || []).filter((q) =>
+            String(q.subject).toLowerCase() === String(subject).toLowerCase()
+        );
         const questionsPerSubject = sessionContext
             ? sessionContext.questionPlan.questionsPerSelectedSubject
             : QUESTION_BATCH_SIZE;
-        const selectedQuestions = selectNoRepeatQuestions(
+
+        const { selectedCandidates, stagedSeenIds } = selectNoRepeatCandidates(
             allSubjectQuestions,
             subject,
             testType,
             questionsPerSubject
         );
 
-        questions = questions.concat(selectedQuestions);
+        if (selectedCandidates.length !== questionsPerSubject) {
+            throw new Error(
+                `Insufficient offline questions for ${subject}: needed ${questionsPerSubject}, found ${selectedCandidates.length}.`
+            );
+        }
 
-        console.log(
-            `${subject}: ${allSubjectQuestions.length} available ${testType} questions; ${selectedQuestions.length} selected for this CBT.`
+        assembledBySubject.set(
+            subject,
+            selectedCandidates.map(({ _questionId, ...q }) => q)
         );
-    });
+        stagedHistoryBySubject.set(subject, stagedSeenIds);
+    }
 
-    if (sessionContext && questions.length !== sessionContext.questionPlan.totalQuestionCount) {
+    let assembledList = [];
+    for (const subject of selectedSubjects) {
+        assembledList = assembledList.concat(assembledBySubject.get(subject));
+    }
+
+    const expectedTotal = sessionContext
+        ? sessionContext.questionPlan.totalQuestionCount
+        : selectedSubjects.length * QUESTION_BATCH_SIZE;
+
+    if (assembledList.length !== expectedTotal) {
         throw new Error(
-            `Question bank returned ${questions.length} questions; ` +
-            `the active configuration requires ${sessionContext.questionPlan.totalQuestionCount}.`
+            `Offline cache returned ${assembledList.length} questions; ` +
+            `the active configuration requires ${expectedTotal}.`
         );
     }
+
+    // COMMIT GATE: All subjects successfully assembled and verified
+    stagedHistoryBySubject.forEach((stagedSeenIds, subject) => {
+        saveSeenQuestionIds(subject, testType, stagedSeenIds);
+    });
+
+    return assembledList;
+}
+
+async function preserveAndSaveOfflineQuestionPool(examCode, subject, testType, newFullQuestions) {
+    if (!window.OfflineQuestionStore?.saveSet) {
+        return;
+    }
+
+    try {
+        let existingQuestions = [];
+        if (window.OfflineQuestionStore.getSet) {
+            const cachedSet = await window.OfflineQuestionStore.getSet(examCode, subject, testType);
+            if (cachedSet && Array.isArray(cachedSet.questions)) {
+                existingQuestions = cachedSet.questions;
+            }
+        }
+
+        const mergedMap = new Map();
+        for (const q of (newFullQuestions || [])) {
+            if (!q || typeof q !== "object") continue;
+            const key = q.id != null ? `id:${q.id}` : `key:${q.import_key || getQuestionFingerprint(q, subject, testType)}`;
+            mergedMap.set(key, q);
+        }
+        for (const q of (existingQuestions || [])) {
+            if (!q || typeof q !== "object") continue;
+            const key = q.id != null ? `id:${q.id}` : `key:${q.import_key || getQuestionFingerprint(q, subject, testType)}`;
+            if (!mergedMap.has(key)) {
+                mergedMap.set(key, q);
+            }
+        }
+
+        const maxQuestions = window.OfflineQuestionStore.maxQuestionsPerSet || 120;
+        const mergedPool = Array.from(mergedMap.values()).slice(0, maxQuestions);
+        await window.OfflineQuestionStore.saveSet(
+            examCode,
+            subject,
+            testType,
+            mergedPool,
+            getQuestionDatasetVersion(mergedPool)
+        );
+    } catch (storageError) {
+        console.warn("Could not preserve and save offline question pool:", storageError);
+    }
+}
+
+function scheduleBackgroundOfflinePoolFill(examCode, examId, subject, testType, candidatePool, alreadyFetchedIds) {
+    if (!window.OfflineQuestionStore?.saveSet || navigator.onLine === false) {
+        return;
+    }
+
+    const runBackgroundFill = async () => {
+        try {
+            let currentCachedCount = 0;
+            if (window.OfflineQuestionStore.getSet) {
+                const cached = await window.OfflineQuestionStore.getSet(examCode, subject, testType);
+                if (cached && Array.isArray(cached.questions)) {
+                    currentCachedCount = cached.questions.length;
+                }
+            }
+
+            const targetMax = window.OfflineQuestionStore.maxQuestionsPerSet || 120;
+            if (currentCachedCount >= targetMax) {
+                return;
+            }
+
+            const neededCount = targetMax - currentCachedCount;
+            const alreadyFetchedSet = new Set(alreadyFetchedIds);
+            const candidatesToFetch = (candidatePool || [])
+                .filter((c) => !alreadyFetchedSet.has(c.id))
+                .slice(0, neededCount);
+
+            if (!candidatesToFetch.length) {
+                return;
+            }
+
+            const idsToFetch = candidatesToFetch.map((c) => c.id);
+            const { data, error } = await supabaseClient
+                .from(SUPABASE_QUESTION_TABLE)
+                .select(`
+                    id,
+                    exam_id,
+                    Subject,
+                    Question,
+                    Option_a,
+                    Option_b,
+                    Option_c,
+                    Option_d,
+                    Correct_Answer,
+                    test_type,
+                    Topic,
+                    topic,
+                    Explanation,
+                    explanation,
+                    year,
+                    source,
+                    is_active,
+                    updated_at,
+                    import_key
+                `)
+                .eq("Subject", subject)
+                .eq("exam_id", examId)
+                .eq("test_type", testType)
+                .eq("is_active", true)
+                .in("id", idsToFetch);
+
+            if (error || !Array.isArray(data)) {
+                return;
+            }
+
+            const mappedAdditional = data.map(mapSupabaseQuestion);
+            await preserveAndSaveOfflineQuestionPool(examCode, subject, testType, mappedAdditional);
+        } catch (err) {
+            console.warn("Background offline pool fill skipped:", err?.message || err);
+        }
+    };
+
+    if (typeof window.requestIdleCallback === "function") {
+        window.requestIdleCallback(() => { runBackgroundFill(); }, { timeout: 5000 });
+    } else {
+        setTimeout(runBackgroundFill, 1500);
+    }
+}
+
+// ========================================
+// BUILD QUESTION LIST
+// ========================================
+
+async function buildQuestions() {
+    questions = [];
+
+    // Offline Practice Mode: load from cached IndexedDB pool
+    if (
+        testType === "practice" &&
+        navigator.onLine === false &&
+        window.OfflineQuestionStore
+    ) {
+        const cachedQuestions = await loadAllOfflinePracticeQuestions();
+        if (cachedQuestions) {
+            questions = assembleOfflineSessionQuestions(cachedQuestions);
+            return;
+        }
+    }
+
+    // Online Two-Phase Flow
+    try {
+        selectedExamId = sessionContext
+            ? sessionContext.exam.id
+            : await window.resolveExamId(supabaseClient, selectedExamCode);
+
+        const stagedHistoryBySubject = new Map();
+        const assembledQuestionsBySubject = new Map();
+        const candidatesBySubject = new Map();
+        const selectedCandidatesBySubject = new Map();
+
+        // Phase 1: Fetch candidates per subject and select without committing history
+        for (const subject of selectedSubjects) {
+            const subjectCandidates = [];
+            let from = 0;
+
+            while (true) {
+                const to = from + SUPABASE_PAGE_SIZE - 1;
+                const candidateQuery = supabaseClient
+                    .from(SUPABASE_QUESTION_TABLE)
+                    .select(`
+                        id,
+                        exam_id,
+                        Subject,
+                        Question,
+                        Option_a,
+                        Option_b,
+                        Option_c,
+                        Option_d,
+                        test_type,
+                        import_key,
+                        updated_at
+                    `)
+                    .eq("Subject", subject)
+                    .eq("exam_id", selectedExamId)
+                    .eq("test_type", testType)
+                    .eq("is_active", true)
+                    .order("id", { ascending: true });
+
+                const { data, error } = await candidateQuery.range(from, to);
+                if (error) {
+                    throw new Error(
+                        `Could not load ${testType} question candidates for ${subject}: ${error.message}`
+                    );
+                }
+
+                const page = Array.isArray(data) ? data : [];
+                subjectCandidates.push(...page.map(mapSupabaseCandidate));
+
+                if (page.length < SUPABASE_PAGE_SIZE) {
+                    break;
+                }
+                from += SUPABASE_PAGE_SIZE;
+            }
+
+            // Remove duplicate candidate rows by id/import_key
+            const uniqueCandidates = new Map();
+            subjectCandidates.forEach((candidate) => {
+                const key = candidate.id != null
+                    ? `id:${candidate.id}`
+                    : `key:${candidate.import_key || getQuestionFingerprint(candidate, subject, testType)}`;
+                if (!uniqueCandidates.has(key)) {
+                    uniqueCandidates.set(key, candidate);
+                }
+            });
+            const candidatePool = Array.from(uniqueCandidates.values());
+            candidatesBySubject.set(subject, candidatePool);
+
+            const questionsPerSubject = sessionContext
+                ? sessionContext.questionPlan.questionsPerSelectedSubject
+                : QUESTION_BATCH_SIZE;
+
+            const { selectedCandidates, stagedSeenIds } = selectNoRepeatCandidates(
+                candidatePool,
+                subject,
+                testType,
+                questionsPerSubject
+            );
+
+            if (selectedCandidates.length !== questionsPerSubject) {
+                throw new Error(
+                    `Insufficient questions available for ${subject}: needed ${questionsPerSubject}, found ${selectedCandidates.length}.`
+                );
+            }
+
+            selectedCandidatesBySubject.set(subject, selectedCandidates);
+            stagedHistoryBySubject.set(subject, stagedSeenIds);
+        }
+
+        // Phase 2: Fetch full records for selected candidates, validate, and assemble in parallel across subjects
+        let isPhase2Aborted = false;
+        await Promise.all(
+            selectedSubjects.map(async (subject) => {
+                const selectedCandidates = selectedCandidatesBySubject.get(subject);
+                const selectedIds = selectedCandidates.map((c) => c.id);
+
+                try {
+                    const { data, error } = await supabaseClient
+                        .from(SUPABASE_QUESTION_TABLE)
+                        .select(`
+                            id,
+                            exam_id,
+                            Subject,
+                            Question,
+                            Option_a,
+                            Option_b,
+                            Option_c,
+                            Option_d,
+                            Correct_Answer,
+                            test_type,
+                            Topic,
+                            topic,
+                            Explanation,
+                            explanation,
+                            year,
+                            source,
+                            is_active,
+                            updated_at,
+                            import_key
+                        `)
+                        .eq("Subject", subject)
+                        .eq("exam_id", selectedExamId)
+                        .eq("test_type", testType)
+                        .eq("is_active", true)
+                        .in("id", selectedIds);
+
+                    if (isPhase2Aborted) return;
+
+                    if (error) {
+                        throw new Error(
+                            `Could not load full ${testType} questions for ${subject}: ${error.message}`
+                        );
+                    }
+
+                    // Point 4: Validate full records (filters, cardinality, fingerprint parity, ordering)
+                    const orderedFullQuestions = validateAndAssembleFullQuestions(
+                        selectedCandidates,
+                        data,
+                        subject,
+                        testType
+                    );
+
+                    if (isPhase2Aborted) return;
+
+                    assembledQuestionsBySubject.set(subject, orderedFullQuestions);
+                } catch (err) {
+                    isPhase2Aborted = true;
+                    throw err;
+                }
+            })
+        );
+
+        // Assemble all questions in subject order
+        for (const subject of selectedSubjects) {
+            const subjectQuestions = assembledQuestionsBySubject.get(subject);
+            questions = questions.concat(subjectQuestions);
+        }
+
+        // Verify total question count
+        const expectedTotal = sessionContext
+            ? sessionContext.questionPlan.totalQuestionCount
+            : selectedSubjects.length * QUESTION_BATCH_SIZE;
+
+        if (questions.length !== expectedTotal) {
+            throw new Error(
+                `Question bank returned ${questions.length} questions; ` +
+                `the active configuration requires ${expectedTotal}.`
+            );
+        }
+
+        // COMMIT GATE: All retrieval, validation, and assembly succeeded!
+        // Now commit no-repeat history to localStorage
+        stagedHistoryBySubject.forEach((stagedSeenIds, subject) => {
+            saveSeenQuestionIds(subject, testType, stagedSeenIds);
+        });
+
+        // Offline Cache Preservation: Merge session questions into IndexedDB (preserve 120-pool)
+        for (const subject of selectedSubjects) {
+            const subjectQuestions = assembledQuestionsBySubject.get(subject);
+            await preserveAndSaveOfflineQuestionPool(
+                selectedExamCode,
+                subject,
+                testType,
+                subjectQuestions
+            );
+
+            // Schedule non-blocking background hydration if IndexedDB pool has room
+            const candidatePool = candidatesBySubject.get(subject) || [];
+            scheduleBackgroundOfflinePoolFill(
+                selectedExamCode,
+                selectedExamId,
+                subject,
+                testType,
+                candidatePool,
+                subjectQuestions.map((q) => q.id)
+            );
+        }
+
+        console.log(
+            `Supabase two-phase retrieval complete: ${questions.length} validated ${testType} questions ready for CBT.`
+        );
+
+    } catch (onlineError) {
+        console.error("Online question retrieval error:", onlineError);
+
+        // Fallback to offline questions if network failure and offline cache available
+        if (isQuestionNetworkFailure(onlineError) && window.OfflineQuestionStore) {
+            if (testType === "practice") {
+                const cachedQuestions = await loadAllOfflinePracticeQuestions();
+                if (cachedQuestions) {
+                    questions = assembleOfflineSessionQuestions(cachedQuestions);
+                    console.warn(
+                        `Using saved practice questions for ${selectedSubjects.join(", ")}; online Supabase retrieval failed.`
+                    );
+                    return;
+                }
+            }
+        }
+        throw onlineError;
+    }
+}
+
+if (typeof window !== "undefined") {
+    window.mapSupabaseCandidate = mapSupabaseCandidate;
+    window.selectNoRepeatCandidates = selectNoRepeatCandidates;
+    window.validateAndAssembleFullQuestions = validateAndAssembleFullQuestions;
+    window.preserveAndSaveOfflineQuestionPool = preserveAndSaveOfflineQuestionPool;
+    window.scheduleBackgroundOfflinePoolFill = scheduleBackgroundOfflinePoolFill;
+    window.assembleOfflineSessionQuestions = assembleOfflineSessionQuestions;
+    window.getExamQuestions = () => questions;
+    window.renderQuestionPalette = renderQuestionPalette;
+    window.updateExamStats = updateExamStats;
+    window.startTimer = startTimer;
+    window.getAnswers = () => answers;
+    window.getTimeLeft = () => timeLeft;
+    window.setTimeLeft = (t) => { timeLeft = t; };
+    window.getCurrentQuestion = () => currentQuestion;
+    window.setCurrentQuestion = (n) => { currentQuestion = n; };
+    window.setExamQuestions = (qs) => { questions = qs; };
+    window.resetCbtDomCaches = resetCbtDomCaches;
+    window.setIsExamFinished = (v) => { isExamFinished = v; };
 }
 
 // ========================================
@@ -1107,6 +1607,74 @@ function escapeHTML(value) {
         .replace(/'/g, "&#039;");
 }
 
+let paletteButtonElements = [];
+let activePaletteButtonIndex = -1;
+let cachedTimerEl = null;
+let cachedTimerTextSpan = null;
+let examEndTime = null;
+
+let cachedStatsEls = null;
+let cachedMetaEls = null;
+let cachedNavEls = null;
+let cachedOptionContainers = null;
+
+function getCachedStatsElements() {
+    if (!cachedStatsEls) {
+        cachedStatsEls = {
+            answered: document.getElementById("answeredCount"),
+            unanswered: document.getElementById("unansweredCount"),
+            progress: document.getElementById("examProgress"),
+            progressText: document.getElementById("progressText"),
+            mapTotal: document.getElementById("mapTotal")
+        };
+    }
+    return cachedStatsEls;
+}
+
+function getCachedMetaElements() {
+    if (!cachedMetaEls) {
+        cachedMetaEls = {
+            subject: document.getElementById("currentSubject"),
+            number: document.getElementById("questionNumber"),
+            count: document.getElementById("questionCount")
+        };
+    }
+    return cachedMetaEls;
+}
+
+function getCachedNavElements() {
+    if (!cachedNavEls) {
+        cachedNavEls = {
+            previous: document.getElementById("previousButton"),
+            next: document.getElementById("nextButton")
+        };
+    }
+    return cachedNavEls;
+}
+
+function getCachedOptionContainers() {
+    if (!cachedOptionContainers) {
+        cachedOptionContainers = ["optionA", "optionB", "optionC", "optionD"].map(
+            (id) => document.getElementById(id)
+        );
+    }
+    return cachedOptionContainers;
+}
+
+let isExamFinished = false;
+
+function resetCbtDomCaches() {
+    paletteButtonElements = [];
+    activePaletteButtonIndex = -1;
+    cachedTimerEl = null;
+    cachedTimerTextSpan = null;
+    examEndTime = null;
+    cachedStatsEls = null;
+    cachedMetaEls = null;
+    cachedNavEls = null;
+    cachedOptionContainers = null;
+}
+
 function getAnsweredCount() {
     return Object.keys(answers).filter(
         key => answers[key]
@@ -1118,73 +1686,92 @@ function updateExamStats() {
     const total = questions.length;
     const unanswered = Math.max(0, total - answered);
 
-    const answeredEl = document.getElementById("answeredCount");
-    const unansweredEl = document.getElementById("unansweredCount");
-    const progressEl = document.getElementById("examProgress");
-    const progressText = document.getElementById("progressText");
+    const els = getCachedStatsElements();
 
-    if (answeredEl) answeredEl.textContent = answered;
-    if (unansweredEl) unansweredEl.textContent = unanswered;
+    if (els.answered) els.answered.textContent = answered;
+    if (els.unanswered) els.unanswered.textContent = unanswered;
 
     const percent = total ? Math.round((answered / total) * 100) : 0;
-    if (progressEl) progressEl.style.width = percent + "%";
-    if (progressText) progressText.textContent = percent + "% answered";
+    if (els.progress) els.progress.style.width = percent + "%";
+    if (els.progressText) els.progressText.textContent = percent + "% answered";
 
-    const mapTotal = document.getElementById("mapTotal");
-    if (mapTotal) mapTotal.textContent = total + " Q";
+    if (els.mapTotal) els.mapTotal.textContent = total + " Q";
 }
 
 function renderQuestionPalette() {
     const palette = document.getElementById("questionStatus");
     if (!palette) return;
 
-    palette.innerHTML = questions.map((_, i) => {
-        const answered = Boolean(answers[i]);
-        const current = i === currentQuestion;
-        const classes = [
-            "palette-btn",
-            current ? "current" : "",
-            answered ? "answered" : ""
-        ].filter(Boolean).join(" ");
+    // P3.1: Build palette DOM once if not yet initialized or if question count changed
+    if (paletteButtonElements.length !== questions.length || palette.children.length !== questions.length) {
+        palette.innerHTML = questions.map((_, i) => {
+            const answered = Boolean(answers[i]);
+            const current = i === currentQuestion;
+            const classes = [
+                "palette-btn",
+                current ? "current" : "",
+                answered ? "answered" : ""
+            ].filter(Boolean).join(" ");
 
-        return `
-            <button
-                type="button"
-                class="${classes}"
-                onclick="goToQuestion(${i})"
-                aria-label="Go to question ${i + 1}"
-            >${i + 1}</button>
-        `;
-    }).join("");
+            return `
+                <button
+                    type="button"
+                    class="${classes}"
+                    onclick="goToQuestion(${i})"
+                    aria-label="Go to question ${i + 1}"
+                >${i + 1}</button>
+            `;
+        }).join("");
+        paletteButtonElements = Array.from(palette.querySelectorAll(".palette-btn"));
+        activePaletteButtonIndex = currentQuestion;
+        return;
+    }
+
+    // P3.1: Fast-path targeted update: update only previous active and newly active buttons
+    if (activePaletteButtonIndex !== currentQuestion) {
+        if (paletteButtonElements[activePaletteButtonIndex]) {
+            paletteButtonElements[activePaletteButtonIndex].classList.remove("current");
+        }
+        if (paletteButtonElements[currentQuestion]) {
+            paletteButtonElements[currentQuestion].classList.add("current");
+        }
+        activePaletteButtonIndex = currentQuestion;
+    }
+
+    // Synchronize answered class on current button
+    if (paletteButtonElements[currentQuestion]) {
+        paletteButtonElements[currentQuestion].classList.toggle(
+            "answered",
+            Boolean(answers[currentQuestion])
+        );
+    }
 }
 
 function updateCurrentMeta() {
     const q = questions[currentQuestion];
     if (!q) return;
 
-    const subjectEl = document.getElementById("currentSubject");
-    if (subjectEl) {
-        subjectEl.textContent = q.subject || selectedSubjects[0] || "ExamPilot";
+    const els = getCachedMetaElements();
+
+    if (els.subject) {
+        els.subject.textContent = q.subject || selectedSubjects[0] || "ExamPilot";
     }
 
-    const numberEl = document.getElementById("questionNumber");
-    if (numberEl) {
-        numberEl.textContent = `Question ${currentQuestion + 1}`;
+    if (els.number) {
+        els.number.textContent = `Question ${currentQuestion + 1}`;
     }
 
-    const countEl = document.getElementById("questionCount");
-    if (countEl) {
-        countEl.textContent = `of ${questions.length}`;
+    if (els.count) {
+        els.count.textContent = `of ${questions.length}`;
     }
 }
 
 function updateNavigationButtons() {
-    const previous = document.getElementById("previousButton");
-    const next = document.getElementById("nextButton");
+    const els = getCachedNavElements();
 
-    if (previous) previous.disabled = currentQuestion === 0;
-    if (next) {
-        next.innerHTML =
+    if (els.previous) els.previous.disabled = currentQuestion === 0;
+    if (els.next) {
+        els.next.innerHTML =
             currentQuestion === questions.length - 1
                 ? `Finish Test <span>✓</span>`
                 : `Next Question <span>→</span>`;
@@ -1195,7 +1782,7 @@ function updateNavigationButtons() {
 // SHOW QUESTION
 // ========================================
 
-window.showQuestion = function() {
+function showQuestion() {
     const q = questions[currentQuestion];
     if (!q) return;
 
@@ -1220,39 +1807,55 @@ window.showQuestion = function() {
     }
 
     const letters = ["A", "B", "C", "D"];
-    const optionIds = ["optionA", "optionB", "optionC", "optionD"];
+    const containers = getCachedOptionContainers();
     const options = q.options || [];
 
-    optionIds.forEach((id, index) => {
-        const container = document.getElementById(id);
+    containers.forEach((container, index) => {
         if (!container) return;
 
         const letter = letters[index];
         const selected = answers[currentQuestion] === letter;
+        const optionCopyText = options[index] || "";
 
-        container.innerHTML = `
-            <label class="answer-option ${selected ? "selected" : ""}">
-                <span class="option-letter">${letter}</span>
-                <span class="option-copy">${escapeHTML(options[index] || "")}</span>
-                <input
-                    type="radio"
-                    name="answer"
-                    value="${letter}"
-                    ${selected ? "checked" : ""}
-                    onchange="saveAnswer()"
-                >
-                <span class="option-check" aria-hidden="true">✓</span>
-            </label>
-        `;
+        const existingLabel = container.querySelector(".answer-option");
+        const existingCopy = container.querySelector(".option-copy");
+        const existingInput = container.querySelector("input[name='answer']");
+
+        // P3.2: In-place update to prevent destructive DOM teardown
+        if (existingLabel && existingCopy && existingInput) {
+            existingCopy.textContent = optionCopyText;
+            existingInput.value = letter;
+            existingInput.checked = selected;
+            existingLabel.classList.toggle("selected", selected);
+        } else {
+            container.innerHTML = `
+                <label class="answer-option ${selected ? "selected" : ""}">
+                    <span class="option-letter">${letter}</span>
+                    <span class="option-copy">${escapeHTML(optionCopyText)}</span>
+                    <input
+                        type="radio"
+                        name="answer"
+                        value="${letter}"
+                        ${selected ? "checked" : ""}
+                        onchange="saveAnswer()"
+                    >
+                    <span class="option-check" aria-hidden="true">✓</span>
+                </label>
+            `;
+        }
     });
 
     renderQuestionPalette();
     updateExamStats();
     updateNavigationButtons();
 
+    // P3.5: Instant scrolling prevents animation frame queues on budget devices
     const card = document.getElementById("questionCard");
-    if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
-};
+    if (card && typeof card.scrollIntoView === "function") {
+        card.scrollIntoView({ behavior: "auto", block: "start" });
+    }
+}
+window.showQuestion = showQuestion;
 
 // ========================================
 // QUESTION TIME TRACKING
@@ -1277,12 +1880,17 @@ function formatDuration(seconds) {
 // SAVE ANSWER
 // ========================================
 
-window.saveAnswer = function() {
+function saveAnswer() {
     const selected = document.querySelector(
         "input[name='answer']:checked"
     );
 
     if (!selected) return;
+
+    // P3.3: Fast-path return if answer is already saved and UI is in sync
+    if (answers[currentQuestion] === selected.value) {
+        return;
+    }
 
     if (
         testType === "practice" &&
@@ -1295,22 +1903,30 @@ window.saveAnswer = function() {
 
     answers[currentQuestion] = selected.value;
 
-    document.querySelectorAll(".answer-option").forEach(option => {
-        option.classList.remove("selected");
+    const containers = getCachedOptionContainers();
+    containers.forEach((container) => {
+        if (!container) return;
+        const label = container.querySelector(".answer-option");
+        const input = container.querySelector("input[name='answer']");
+        if (label && input) {
+            label.classList.toggle("selected", input.value === selected.value);
+        }
     });
 
-    const selectedOption = selected.closest(".answer-option");
-    if (selectedOption) selectedOption.classList.add("selected");
-
-    renderQuestionPalette();
+    if (paletteButtonElements[currentQuestion]) {
+        paletteButtonElements[currentQuestion].classList.add("answered");
+    } else {
+        renderQuestionPalette();
+    }
     updateExamStats();
-};
+}
+window.saveAnswer = saveAnswer;
 
 // ========================================
 // NEXT QUESTION
 // ========================================
 
-window.nextQuestion = async function() {
+async function nextQuestion() {
     saveAnswer();
     recordQuestionTime();
 
@@ -1321,13 +1937,14 @@ window.nextQuestion = async function() {
     }
 
     submitExam();
-};
+}
+window.nextQuestion = nextQuestion;
 
 // ========================================
 // PREVIOUS QUESTION
 // ========================================
 
-window.previousQuestion = function() {
+function previousQuestion() {
     saveAnswer();
     recordQuestionTime();
 
@@ -1335,13 +1952,14 @@ window.previousQuestion = function() {
         currentQuestion--;
         showQuestion();
     }
-};
+}
+window.previousQuestion = previousQuestion;
 
 // ========================================
 // GO TO QUESTION
 // ========================================
 
-window.goToQuestion = async function(number) {
+async function goToQuestion(number) {
     saveAnswer();
     recordQuestionTime();
 
@@ -1349,13 +1967,14 @@ window.goToQuestion = async function(number) {
 
     currentQuestion = number;
     showQuestion();
-};
+}
+window.goToQuestion = goToQuestion;
 
 // ========================================
 // SUBMIT EXAM
 // ========================================
 
-window.submitExam = function() {
+function submitExam() {
     saveAnswer();
 
     const unanswered = questions.length - getAnsweredCount();
@@ -1365,18 +1984,23 @@ window.submitExam = function() {
         : "Are you sure you want to submit your test?";
 
     if (confirm(message)) {
-        finishTest();
+        if (typeof window !== "undefined" && typeof window.finishTest === "function") {
+            window.finishTest();
+        } else {
+            finishTest();
+        }
     }
-};
+}
+window.submitExam = submitExam;
 
 // ========================================
 // FINISH TEST
 // ========================================
 
-// REVIEW DATA IS CREATED ONLY AFTER SUBMISSION.
-// During the CBT, showQuestion() renders the selected answer only; it never renders
-// correctAnswer or explanation. Those values are packaged here after submit/timeout.
-window.finishTest = function() {
+function finishTest() {
+    if (isExamFinished) return;
+    isExamFinished = true;
+
     if (timer) {
         clearInterval(timer);
         timer = null;
@@ -1483,6 +2107,8 @@ window.finishTest = function() {
     savedResults.unshift(resultRecord);
     localStorage.setItem("jambResults", JSON.stringify(savedResults.slice(0, 50)));
 
+    resetCbtDomCaches();
+
     document.body.innerHTML = `
         <main class="result-page">
             <section class="result-hero">
@@ -1520,7 +2146,8 @@ window.finishTest = function() {
             </div>
         </main>
     `;
-};
+}
+window.finishTest = finishTest;
 
 // ========================================
 // TIMER
@@ -1529,32 +2156,75 @@ window.finishTest = function() {
 function startTimer() {
     if (timer) clearInterval(timer);
 
+    cachedTimerEl = document.getElementById("timer");
+    cachedTimerTextSpan = null;
+    examEndTime = Date.now() + Math.max(0, timeLeft) * 1000;
+
     timer = setInterval(function() {
+        // P3.4: Derive timeLeft from wall clock delta to prevent background-tab drift
+        const now = Date.now();
+        const remaining = Math.max(0, Math.round((examEndTime - now) / 1000));
+        timeLeft = remaining;
+
         const minutes = Math.floor(timeLeft / 60);
         const seconds = String(timeLeft % 60).padStart(2, "0");
-        const timerElement = document.getElementById("timer");
+        const timerText = `${minutes}:${seconds}`;
 
-        if (timerElement) {
-            timerElement.innerHTML =
-                `<span class="timer-dot"></span>${minutes}:${seconds}`;
+        if (cachedTimerEl) {
+            if (!cachedTimerTextSpan) {
+                cachedTimerTextSpan = cachedTimerEl.querySelector(".timer-text");
+                if (!cachedTimerTextSpan) {
+                    cachedTimerEl.innerHTML = `<span class="timer-dot"></span><span class="timer-text">${timerText}</span>`;
+                    cachedTimerTextSpan = cachedTimerEl.querySelector(".timer-text");
+                } else {
+                    cachedTimerTextSpan.textContent = timerText;
+                }
+            } else {
+                cachedTimerTextSpan.textContent = timerText;
+            }
+
+            cachedTimerEl.classList.toggle("timer-warning", timeLeft <= 300);
+            cachedTimerEl.classList.toggle("timer-critical", timeLeft <= 60);
         }
 
-        if (timeLeft <= 300 && timerElement) {
-            timerElement.classList.add("timer-warning");
-        }
-
-        if (timeLeft <= 60 && timerElement) {
-            timerElement.classList.add("timer-critical");
-        }
-
-        timeLeft--;
-
-        if (timeLeft < 0) {
+        if (timeLeft <= 0) {
             clearInterval(timer);
             timer = null;
-            finishTest();
+            if (typeof window !== "undefined" && typeof window.finishTest === "function") {
+                window.finishTest();
+            } else {
+                finishTest();
+            }
         }
     }, 1000);
+}
+
+if (typeof document !== "undefined" && typeof document.addEventListener === "function") {
+    document.addEventListener("visibilitychange", function() {
+        if (!document.hidden && examEndTime && timer && !isExamFinished) {
+            const now = Date.now();
+            timeLeft = Math.max(0, Math.round((examEndTime - now) / 1000));
+            if (cachedTimerEl) {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = String(timeLeft % 60).padStart(2, "0");
+                const timerText = `${minutes}:${seconds}`;
+                if (cachedTimerTextSpan) {
+                    cachedTimerTextSpan.textContent = timerText;
+                }
+                cachedTimerEl.classList.toggle("timer-warning", timeLeft <= 300);
+                cachedTimerEl.classList.toggle("timer-critical", timeLeft <= 60);
+            }
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                timer = null;
+                if (typeof window !== "undefined" && typeof window.finishTest === "function") {
+                    window.finishTest();
+                } else {
+                    finishTest();
+                }
+            }
+        }
+    });
 }
 
 // ========================================
@@ -1562,6 +2232,7 @@ function startTimer() {
 // ========================================
 
 async function startCBT() {
+    isExamFinished = false;
     const allowed = await checkStudentAccess();
     if (!allowed) return;
 
@@ -1589,7 +2260,9 @@ async function startCBT() {
         const message = min === max
             ? `Please select exactly ${required} subjects before starting your CBT.`
             : `Please select between ${min} and ${max} subjects before starting your CBT.`;
-        document.body.innerHTML = `
+        resetCbtDomCaches();
+
+    document.body.innerHTML = `
             <div class="access-page">
                 <div class="access-card">
                     <div class="access-icon">📝</div>
@@ -1625,7 +2298,9 @@ async function startCBT() {
     }
 
     if (questions.length === 0) {
-        document.body.innerHTML = `
+        resetCbtDomCaches();
+
+    document.body.innerHTML = `
             <div class="access-page">
                 <div class="access-card">
                     <div class="access-icon">📚</div>

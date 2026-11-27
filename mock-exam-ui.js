@@ -508,6 +508,9 @@
         modal.classList.add("show");
         modal.setAttribute("aria-hidden", "false");
         modal.style.display = "flex";
+        if (typeof window.ensurePaystackScript === "function") {
+            window.ensurePaystackScript().catch(() => {});
+        }
     }
 
     function closeSubscriptionModal() {
@@ -539,7 +542,15 @@
         });
 
         if (pay30Btn) {
-            pay30Btn.addEventListener("click", () => {
+            pay30Btn.addEventListener("click", async () => {
+                if (typeof window.ensurePaystackScript === "function") {
+                    try {
+                        await window.ensurePaystackScript();
+                    } catch (err) {
+                        alert(err?.message || "Could not load payment gateway. Please check your network connection and retry.");
+                        return;
+                    }
+                }
                 if (typeof window.payFor30Days === "function") {
                     window.payFor30Days();
                 } else if (typeof window.startPaystackPayment === "function") {
@@ -551,7 +562,15 @@
         }
 
         if (pay1YearBtn) {
-            pay1YearBtn.addEventListener("click", () => {
+            pay1YearBtn.addEventListener("click", async () => {
+                if (typeof window.ensurePaystackScript === "function") {
+                    try {
+                        await window.ensurePaystackScript();
+                    } catch (err) {
+                        alert(err?.message || "Could not load payment gateway. Please check your network connection and retry.");
+                        return;
+                    }
+                }
                 if (typeof window.payFor1Year === "function") {
                     window.payFor1Year();
                 } else if (typeof window.startPaystackPayment === "function") {
