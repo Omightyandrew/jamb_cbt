@@ -1,7 +1,7 @@
 {
   "name": "ExamPilot",
   "short_name": "ExamPilot",
-  "description": "Prepare smarter for JAMB with ExamPilot.",
+  "description": "Prepare for JAMB, WAEC and NECO with CBT practice, mock exams, answers and explanations on ExamPilot.",
   "start_url": "./student.html",
   "scope": "./",
   "display": "standalone",
