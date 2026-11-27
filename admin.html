@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ExamPilot Admin Dashboard</title>
+<meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="brand.css">
+<link rel="stylesheet" href="utme-challenge-admin.css">
 <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
 <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
 <meta name="theme-color" content="#0A302E">
@@ -439,6 +441,7 @@ main{margin-left:245px;width:calc(100% - 245px)}
     <button onclick="goAdminSection('notifications',this)">♢ &nbsp; Notifications</button>
     <button onclick="goAdminSection('reports',this)">⌁ &nbsp; Reports</button>
     <button onclick="goAdminSection('settings',this)">⚙ &nbsp; Settings</button>
+    <button onclick="goAdminSection('utme_challenge',this)">🏆 &nbsp; UTME Challenge</button>
   </nav>
 
   <div class="admin-user">
@@ -1387,6 +1390,592 @@ Reports are calculated from your existing Supabase tables.
 
 </div>
 
+</div>
+
+<!-- ============================================================================
+     UTME CHALLENGE 2027 MANAGEMENT SECTION
+============================================================================ -->
+<div id="utmeChallengeSection" class="section hidden">
+
+  <!-- Header -->
+  <div class="utme-header">
+    <div class="utme-title-group">
+      <h2>🏆 UTME Challenge 2027</h2>
+      <p>Manage competition seasons, weekly rounds, question paper allocation, and candidate monitoring.</p>
+    </div>
+    <div class="utme-actions">
+      <button class="utme-btn utme-btn-secondary" onclick="window.utmeAdmin.refreshAll()">↻ Refresh</button>
+      <button class="utme-btn utme-btn-primary" onclick="window.utmeAdmin.openCreateRoundModal()">+ Create Round</button>
+    </div>
+  </div>
+
+  <!-- Sub-Navigation Pills -->
+  <div class="utme-subnav">
+    <button class="active" data-tab="overview" onclick="window.utmeAdmin.switchTab('overview')">Seasons &amp; Overview</button>
+    <button data-tab="rounds" onclick="window.utmeAdmin.switchTab('rounds')">Weekly Rounds</button>
+    <button data-tab="bank" onclick="window.utmeAdmin.switchTab('bank')">Question Bank &amp; Pool</button>
+    <button data-tab="paper" onclick="window.utmeAdmin.switchTab('paper')">Paper Generator &amp; Preview</button>
+    <button data-tab="import" onclick="window.utmeAdmin.switchTab('import')">📥 Main Bank Import</button>
+  </div>
+
+  <!-- Panel 1: Seasons & Overview -->
+  <div id="utmePanel_overview" class="utme-panel active">
+    <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+        <div>
+          <span id="utmeActiveSeasonBadge" class="utme-badge badge-active">ACTIVE</span>
+          <h3 id="utmeActiveSeasonTitle" style="margin:8px 0 0;font-size:17px">Loading active season...</h3>
+        </div>
+        <button class="utme-btn utme-btn-primary" onclick="window.utmeAdmin.openCreateSeasonModal()">+ New Season</button>
+      </div>
+      <p style="margin:0 0 16px;color:var(--muted);font-size:12px">
+        Only one season may have active status at any time. When a new season is activated, all other seasons automatically deactivate.
+      </p>
+      <div id="utmeSeasonsList">
+        <div class="utme-empty"><p>Loading competition seasons...</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 2: Weekly Rounds -->
+  <div id="utmePanel_rounds" class="utme-panel">
+    <div class="utme-toolbar">
+      <div class="utme-search-filters">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700">
+          Season:
+          <select id="utmeRoundFilterSeason" onchange="window.utmeAdmin.refreshAll()">
+            <option value="">All Seasons</option>
+          </select>
+        </label>
+      </div>
+      <div class="utme-actions">
+        <button class="utme-btn utme-btn-primary" onclick="window.utmeAdmin.openCreateRoundModal()">+ Create Round</button>
+      </div>
+    </div>
+    <div id="utmeRoundsTableContainer">
+      <div class="utme-empty"><p>Loading rounds...</p></div>
+    </div>
+  </div>
+
+  <!-- Panel 3: Question Bank & Pool Health -->
+  <div id="utmePanel_bank" class="utme-panel">
+    <!-- Health Stats -->
+    <div class="utme-stats">
+      <div class="utme-stat-card">
+        <div class="utme-stat-label">Total Questions</div>
+        <div id="utmeStatTotalQuestions" class="utme-stat-val">—</div>
+        <div class="utme-stat-sub">Across all subjects</div>
+      </div>
+      <div class="utme-stat-card">
+        <div class="utme-stat-label">Approved Pool</div>
+        <div id="utmeStatApprovedQuestions" class="utme-stat-val" style="color:var(--green)">—</div>
+        <div class="utme-stat-sub">Ready for papers</div>
+      </div>
+      <div class="utme-stat-card">
+        <div class="utme-stat-label">Draft / Pending</div>
+        <div id="utmeStatDraftQuestions" class="utme-stat-val">—</div>
+        <div class="utme-stat-sub">Needs admin review</div>
+      </div>
+      <div class="utme-stat-card">
+        <div class="utme-stat-label">Rejected / Archived</div>
+        <div id="utmeStatRejectedQuestions" class="utme-stat-val" style="color:#d63f36">—</div>
+        <div class="utme-stat-sub">Excluded from papers</div>
+      </div>
+    </div>
+
+    <!-- Subject Pool Capacity Table -->
+    <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:20px">
+      <h3 style="margin:0 0 12px;font-size:15px">Subject Pool Capacity (10 Questions / Round Benchmark)</h3>
+      <div class="utme-table-wrap" style="margin-bottom:0">
+        <table class="utme-table">
+          <thead>
+            <tr>
+              <th>Subject</th>
+              <th>Total in Bank</th>
+              <th>Approved Pool</th>
+              <th>Fresh (0 Uses)</th>
+              <th>Draft</th>
+              <th>Rejected</th>
+              <th>Supportable Rounds</th>
+            </tr>
+          </thead>
+          <tbody id="utmePoolSummaryTableBody">
+            <tr><td colspan="7" class="utme-empty">Loading pool health...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Question Bank Filter & List -->
+    <div class="utme-toolbar">
+      <div class="utme-search-filters">
+        <select id="utmeFilterSubject" onchange="window.utmeAdmin.applyQuestionFilters()">
+          <option value="">All Accredited Subjects</option>
+          <option value="English">English</option>
+          <option value="Mathematics">Mathematics</option>
+          <option value="Physics">Physics</option>
+          <option value="Chemistry">Chemistry</option>
+          <option value="Biology">Biology</option>
+          <option value="Government">Government</option>
+          <option value="Literature in English">Literature in English</option>
+          <option value="Economics">Economics</option>
+          <option value="Commerce">Commerce</option>
+          <option value="Accounting">Accounting</option>
+          <option value="Geography">Geography</option>
+          <option value="CRS">CRS</option>
+          <option value="History">History</option>
+        </select>
+        <select id="utmeFilterStatus" onchange="window.utmeAdmin.applyQuestionFilters()">
+          <option value="">All Statuses</option>
+          <option value="draft">Draft (Review Queue)</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+          <option value="archived">Archived</option>
+        </select>
+      </div>
+      <div class="utme-actions">
+        <span id="utmeQuestionsCountLabel" style="font-size:12px;color:var(--muted);align-self:center"></span>
+        <button type="button" class="utme-btn utme-btn-secondary" onclick="window.utmeAdmin.switchTab('import')">📥 Import from Main Bank</button>
+        <button class="utme-btn utme-btn-primary" onclick="window.utmeAdmin.openAddQuestionModal()">+ Add Question</button>
+      </div>
+    </div>
+    <div id="utmeQuestionsListContainer">
+      <div class="utme-empty"><p>Loading questions...</p></div>
+    </div>
+  </div>
+
+  <!-- Panel 4: Paper Generator & Preview -->
+  <div id="utmePanel_paper" class="utme-panel">
+    <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:16px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700">
+          Target Round:
+          <select id="utmePaperRoundSelect" onchange="window.utmeAdmin.selectPaperRound(this.value)">
+            <option value="">Select a round...</option>
+          </select>
+        </label>
+        <div id="utmePaperRoundActions" class="utme-actions"></div>
+      </div>
+      <div id="utmePaperRoundStatus" style="background:#f8faf9;border-radius:10px;padding:14px;border:1px solid #e8eeeb">
+        <p style="margin:0;color:var(--muted);font-size:12px">Select a round above to view its question allocation status.</p>
+      </div>
+    </div>
+
+    <!-- Paper Questions Preview -->
+    <div class="utme-toolbar">
+      <div class="utme-search-filters">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700">
+          Filter Subject:
+          <select id="utmePaperSubjectFilter" onchange="window.utmeAdmin.loadPaperPreview(document.getElementById('utmePaperRoundSelect').value)">
+            <option value="">All Assigned Subjects</option>
+            <option value="English">English</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Biology">Biology</option>
+            <option value="Government">Government</option>
+            <option value="Literature in English">Literature in English</option>
+            <option value="Economics">Economics</option>
+            <option value="Commerce">Commerce</option>
+            <option value="Accounting">Accounting</option>
+            <option value="Geography">Geography</option>
+            <option value="CRS">CRS</option>
+            <option value="History">History</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div id="utmePaperPreviewContainer">
+      <div class="utme-empty"><p>Select a round to preview its paper questions.</p></div>
+    </div>
+  </div>
+
+  <!-- Panel 5: Main Bank Import Bridge -->
+  <div id="utmePanel_import" class="utme-panel">
+    <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:12px">
+        <div>
+          <h3 style="margin:0 0 6px;font-size:17px;display:flex;align-items:center;gap:8px">
+            📥 Main Question Bank Import Bridge
+            <span class="utme-badge badge-active">IDEMPOTENT</span>
+          </h3>
+          <p style="margin:0;color:var(--muted);font-size:12px;max-width:760px;line-height:1.5">
+            Safely import active JAMB questions from ExamPilot's main question bank into the UTME Challenge question bank.
+            All imported questions strictly default to <strong>Draft</strong> status for admin review. Existing Challenge questions, approved pool, snapshots, and student attempts are never overwritten or modified.
+          </p>
+        </div>
+        <div class="utme-actions">
+          <button type="button" class="utme-btn utme-btn-secondary" id="utmeImportRefreshBtn" onclick="window.utmeAdmin.loadImportPreview()">↻ Refresh Preview</button>
+          <button type="button" class="utme-btn utme-btn-primary" id="utmeImportExecuteBtn" onclick="window.utmeAdmin.confirmAndImportQuestions()">📥 Import All Eligible Questions</button>
+        </div>
+      </div>
+
+      <!-- Result / Status Alert Banner -->
+      <div id="utmeImportResultBanner" style="display:none;margin-top:16px"></div>
+    </div>
+
+    <!-- 4 Stats Cards -->
+    <div class="utme-stats-grid" style="margin-bottom:20px">
+      <div class="utme-stat-card">
+        <span class="stat-num" id="utmeImportTotalScanned">—</span>
+        <span class="stat-label">Total JAMB Candidates Scanned</span>
+      </div>
+      <div class="utme-stat-card">
+        <span class="stat-num" id="utmeImportEligibleNew" style="color:var(--primary, #00b074)">—</span>
+        <span class="stat-label">Eligible New (Ready to Import)</span>
+      </div>
+      <div class="utme-stat-card">
+        <span class="stat-num" id="utmeImportAlreadyImported" style="color:var(--text, #1e293b)">—</span>
+        <span class="stat-label">Already Imported</span>
+      </div>
+      <div class="utme-stat-card">
+        <span class="stat-num" id="utmeImportDisqualified" style="color:#e53e3e">—</span>
+        <span class="stat-label">Total Disqualified</span>
+      </div>
+    </div>
+
+    <!-- Two-column Layout: Subject Breakdown & Disqualification Reasons -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));gap:20px">
+      <!-- Subject Breakdown Card -->
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px">
+        <h4 style="margin:0 0 14px;font-size:15px;display:flex;align-items:center;justify-content:space-between">
+          <span>Subject Breakdown (13 Accredited)</span>
+          <span style="font-size:12px;font-weight:normal;color:var(--muted)">Preview Stats</span>
+        </h4>
+        <div class="utme-table-wrap" style="max-height:480px;overflow-y:auto">
+          <table class="utme-table" style="font-size:12px">
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Eligible New</th>
+                <th>Already Imported</th>
+                <th>Disqualified</th>
+                <th>Current Bank</th>
+              </tr>
+            </thead>
+            <tbody id="utmeImportSubjectTbody">
+              <tr><td colspan="5" class="utme-empty">Click &quot;Refresh Preview&quot; to load subject stats.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Disqualification Reasons Card -->
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px">
+        <h4 style="margin:0 0 14px;font-size:15px">Disqualification Breakdown</h4>
+        <p style="margin:0 0 14px;color:var(--muted);font-size:12px">
+          Questions failing any of the strict validation criteria are excluded from the import to preserve bank integrity.
+        </p>
+        <div id="utmeImportDisqList">
+          <div class="utme-empty"><p>Click &quot;Refresh Preview&quot; to load disqualification breakdown.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modals -->
+
+<!-- 1. Season Modal -->
+<div id="utmeSeasonModal" class="utme-modal-backdrop">
+  <div class="utme-modal">
+    <div class="utme-modal-header">
+      <h3 id="utmeSeasonModalTitle">Create New Season</h3>
+      <button type="button" class="utme-modal-close" onclick="window.utmeAdmin.closeModal('utmeSeasonModal')">×</button>
+    </div>
+    <form onsubmit="window.utmeAdmin.submitSeason(event)">
+      <div class="utme-modal-body">
+        <input type="hidden" id="utmeSeasonId">
+        <div class="utme-form-row">
+          <div class="utme-form-group">
+            <label for="utmeSeasonYear">Calendar Year (2026–2099)</label>
+            <input type="number" id="utmeSeasonYear" min="2026" max="2099" required>
+          </div>
+          <div class="utme-form-group">
+            <label for="utmeSeasonTitle">Season Title</label>
+            <input type="text" id="utmeSeasonTitle" minlength="2" maxlength="100" required>
+          </div>
+        </div>
+        <div class="utme-form-group" style="margin-top:10px">
+          <label class="utme-checkbox-label">
+            <input type="checkbox" id="utmeSeasonIsActive">
+            <span>Set as Active Season (automatically deactivates any existing active season)</span>
+          </label>
+        </div>
+      </div>
+      <div class="utme-modal-footer">
+        <button type="button" class="utme-btn utme-btn-secondary" onclick="window.utmeAdmin.closeModal('utmeSeasonModal')">Cancel</button>
+        <button type="submit" id="utmeSeasonSubmitBtn" class="utme-btn utme-btn-primary">Save Season</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 2. Round Create / Edit Modal -->
+<div id="utmeRoundModal" class="utme-modal-backdrop">
+  <div class="utme-modal">
+    <div class="utme-modal-header">
+      <h3 id="utmeRoundModalTitle">Create Weekly Round</h3>
+      <button type="button" class="utme-modal-close" onclick="window.utmeAdmin.closeModal('utmeRoundModal')">×</button>
+    </div>
+    <form onsubmit="window.utmeAdmin.submitRoundForm(event)">
+      <div class="utme-modal-body">
+        <input type="hidden" id="utmeRoundFormMode" value="create">
+        <input type="hidden" id="utmeRoundId">
+        <div class="utme-form-row">
+          <div class="utme-form-group">
+            <label for="utmeNewRoundSeason">Season</label>
+            <select id="utmeNewRoundSeason" required></select>
+          </div>
+          <div class="utme-form-group">
+            <label for="utmeRoundNumber">Round Number</label>
+            <input type="number" id="utmeRoundNumber" min="1" required>
+          </div>
+        </div>
+        <div class="utme-form-group">
+          <label for="utmeRoundTitle">Round Title</label>
+          <input type="text" id="utmeRoundTitle" minlength="2" maxlength="100" required>
+        </div>
+        <div class="utme-form-row">
+          <div class="utme-form-group">
+            <label for="utmeRegOpensAt">Registration Opens</label>
+            <input type="datetime-local" id="utmeRegOpensAt" required>
+          </div>
+          <div class="utme-form-group">
+            <label for="utmeRegClosesAt">Registration Closes</label>
+            <input type="datetime-local" id="utmeRegClosesAt" required>
+          </div>
+        </div>
+        <div class="utme-form-row">
+          <div class="utme-form-group">
+            <label for="utmeWinOpensAt">Start Window Opens</label>
+            <input type="datetime-local" id="utmeWinOpensAt" required>
+          </div>
+          <div class="utme-form-group">
+            <label for="utmeWinClosesAt">Start Window Closes</label>
+            <input type="datetime-local" id="utmeWinClosesAt" required>
+          </div>
+        </div>
+        <div class="utme-form-row">
+          <div class="utme-form-group">
+            <label for="utmeRoundDuration">Duration (10–180 mins, default 45)</label>
+            <input type="number" id="utmeRoundDuration" min="10" max="180" value="45" required>
+          </div>
+          <div class="utme-form-group">
+            <label for="utmeRoundGrace">Grace Period (0–300 secs, default 30)</label>
+            <input type="number" id="utmeRoundGrace" min="0" max="300" value="30" required>
+          </div>
+        </div>
+      </div>
+      <div class="utme-modal-footer">
+        <button type="button" class="utme-btn utme-btn-secondary" onclick="window.utmeAdmin.closeModal('utmeRoundModal')">Cancel</button>
+        <button type="submit" id="utmeRoundSubmitBtn" class="utme-btn utme-btn-primary">Save Round</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 3. Subject Configuration Modal -->
+<div id="utmeSubjectConfigModal" class="utme-modal-backdrop">
+  <div class="utme-modal utme-modal-lg">
+    <div class="utme-modal-header">
+      <h3 id="utmeSubjectModalTitle">Configure Round Subjects</h3>
+      <button type="button" class="utme-modal-close" onclick="window.utmeAdmin.closeModal('utmeSubjectConfigModal')">×</button>
+    </div>
+    <form onsubmit="window.utmeAdmin.submitSubjectConfig(event)">
+      <div class="utme-modal-body">
+        <input type="hidden" id="utmeSubjectRoundId">
+        <p style="margin:0 0 14px;color:var(--muted);font-size:12px">
+          Select at least 4 accredited subjects. Configure question count per subject (1–50, default 10).
+          Candidates select exactly 4 subjects matching these configured options.
+        </p>
+        <div id="utmeSubjectListContainer">
+          <div class="utme-empty"><p>Loading subject configurations...</p></div>
+        </div>
+      </div>
+      <div class="utme-modal-footer">
+        <button type="button" class="utme-btn utme-btn-secondary" onclick="window.utmeAdmin.closeModal('utmeSubjectConfigModal')">Cancel</button>
+        <button type="submit" id="utmeSubjectConfigSubmitBtn" class="utme-btn utme-btn-primary">Save Configuration</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 4. Question Add / Edit Modal -->
+<div id="utmeQuestionModal" class="utme-modal-backdrop">
+  <div class="utme-modal utme-modal-lg">
+    <div class="utme-modal-header">
+      <h3 id="utmeQuestionModalTitle">Add Question to Bank</h3>
+      <button type="button" class="utme-modal-close" onclick="window.utmeAdmin.closeModal('utmeQuestionModal')">×</button>
+    </div>
+    <form onsubmit="window.utmeAdmin.submitQuestionForm(event)">
+      <div class="utme-modal-body">
+        <input type="hidden" id="utmeQuestionFormMode" value="add">
+        <input type="hidden" id="utmeQuestionId">
+        <div class="utme-form-row">
+          <div class="utme-form-group">
+            <label for="utmeQSubject">Subject</label>
+            <select id="utmeQSubject" required>
+              <option value="English">English</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Physics">Physics</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Biology">Biology</option>
+              <option value="Government">Government</option>
+              <option value="Literature in English">Literature in English</option>
+              <option value="Economics">Economics</option>
+              <option value="Commerce">Commerce</option>
+              <option value="Accounting">Accounting</option>
+              <option value="Geography">Geography</option>
+              <option value="CRS">CRS</option>
+              <option value="History">History</option>
+            </select>
+          </div>
+          <div class="utme-form-group">
+            <label for="utmeQTopic">Topic</label>
+            <input type="text" id="utmeQTopic" minlength="2" maxlength="100" placeholder="e.g. Thermodynamics" required>
+          </div>
+        </div>
+        <div class="utme-form-group">
+          <label for="utmeQText">Question Text</label>
+          <textarea id="utmeQText" minlength="10" placeholder="Type the question prompt here..." required></textarea>
+        </div>
+        <div class="utme-form-group">
+          <label>Options (A–D)</label>
+          <div class="utme-options-grid">
+            <div class="utme-opt-item">
+              <div class="utme-opt-head"><span>OPTION A</span></div>
+              <input type="text" id="utmeOptA" placeholder="Option A text" required>
+            </div>
+            <div class="utme-opt-item">
+              <div class="utme-opt-head"><span>OPTION B</span></div>
+              <input type="text" id="utmeOptB" placeholder="Option B text" required>
+            </div>
+            <div class="utme-opt-item">
+              <div class="utme-opt-head"><span>OPTION C</span></div>
+              <input type="text" id="utmeOptC" placeholder="Option C text" required>
+            </div>
+            <div class="utme-opt-item">
+              <div class="utme-opt-head"><span>OPTION D</span></div>
+              <input type="text" id="utmeOptD" placeholder="Option D text" required>
+            </div>
+          </div>
+        </div>
+        <div class="utme-form-row">
+          <div class="utme-form-group">
+            <label for="utmeQCorrect">Correct Option</label>
+            <select id="utmeQCorrect" required>
+              <option value="A">Option A</option>
+              <option value="B">Option B</option>
+              <option value="C">Option C</option>
+              <option value="D">Option D</option>
+            </select>
+          </div>
+          <div class="utme-form-group">
+            <label for="utmeQExplanation">Explanation (Optional)</label>
+            <textarea id="utmeQExplanation" style="min-height:42px" placeholder="Optional step-by-step solution..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="utme-modal-footer">
+        <button type="button" class="utme-btn utme-btn-secondary" onclick="window.utmeAdmin.closeModal('utmeQuestionModal')">Cancel</button>
+        <button type="submit" id="utmeQuestionSubmitBtn" class="utme-btn utme-btn-primary">Save Question</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 5. Round Overview & Monitoring Details Modal -->
+<div id="utmeRoundDetailsModal" class="utme-modal-backdrop">
+  <div class="utme-modal utme-modal-lg">
+    <div class="utme-modal-header">
+      <h3 id="utmeDetailsRoundTitle">Round Overview</h3>
+      <button type="button" class="utme-modal-close" onclick="window.utmeAdmin.closeModal('utmeRoundDetailsModal')">×</button>
+    </div>
+    <div class="utme-modal-body">
+      <div class="utme-stats" style="margin-bottom:16px">
+        <div class="utme-stat-card">
+          <div class="utme-stat-label">Total Attempts</div>
+          <div id="utmeStatTotalAttempts" class="utme-stat-val">—</div>
+          <div class="utme-stat-sub">Candidates</div>
+        </div>
+        <div class="utme-stat-card">
+          <div class="utme-stat-label">Submitted</div>
+          <div id="utmeStatSubmittedAttempts" class="utme-stat-val" style="color:var(--green)">—</div>
+          <div class="utme-stat-sub">Completed</div>
+        </div>
+        <div class="utme-stat-card">
+          <div class="utme-stat-label">In Progress</div>
+          <div id="utmeStatInProgressAttempts" class="utme-stat-val">—</div>
+          <div class="utme-stat-sub">Active tests</div>
+        </div>
+        <div class="utme-stat-card">
+          <div class="utme-stat-label">Average Score</div>
+          <div id="utmeStatAvgScore" class="utme-stat-val">—</div>
+          <div id="utmeStatMaxScore" class="utme-stat-sub">High: —</div>
+        </div>
+      </div>
+      <div style="background:#f8faf9;border-radius:10px;padding:14px;border:1px solid #e8eeeb;margin-bottom:16px;font-size:12px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+        <div><strong>Season:</strong> <span id="utmeDetailsSeason">—</span></div>
+        <div><strong>Status:</strong> <span id="utmeDetailsStatus">—</span></div>
+        <div><strong>Frozen:</strong> <span id="utmeDetailsFrozen">—</span></div>
+        <div><strong>Duration:</strong> <span id="utmeDetailsDuration">—</span></div>
+      </div>
+      <h4 style="margin:0 0 10px;font-size:14px">Configured Subjects &amp; Allocation</h4>
+      <div class="utme-table-wrap">
+        <table class="utme-table">
+          <thead>
+            <tr>
+              <th>Subject</th>
+              <th>Configured Count</th>
+              <th>Assigned in Paper</th>
+              <th>Bank Approved Pool</th>
+            </tr>
+          </thead>
+          <tbody id="utmeDetailsSubjectsBody">
+            <tr><td colspan="4" class="utme-empty">Loading subjects...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="utme-modal-footer">
+      <button type="button" class="utme-btn utme-btn-secondary" onclick="window.utmeAdmin.closeModal('utmeRoundDetailsModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- 6. Import Confirmation Modal -->
+<div id="utmeImportConfirmModal" class="utme-modal-backdrop">
+  <div class="utme-modal" style="max-width:540px">
+    <div class="utme-modal-header">
+      <h3>Confirm Question Bank Import</h3>
+      <button type="button" class="utme-modal-close" onclick="window.utmeAdmin.closeModal('utmeImportConfirmModal')">×</button>
+    </div>
+    <div class="utme-modal-body">
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px">
+        <div style="font-size:28px;line-height:1">⚠️</div>
+        <div>
+          <h4 style="margin:0 0 6px;font-size:15px;color:#1e293b">Import All Eligible JAMB Questions</h4>
+          <p id="utmeImportConfirmDetails" style="margin:0;font-size:13px;color:#4a5568;line-height:1.5">
+            You are about to import all eligible active JAMB questions from the main question bank into the UTME Challenge question bank.
+          </p>
+        </div>
+      </div>
+      <div style="background:#f8faf9;border:1px solid #e2e8f0;border-radius:8px;padding:12px 16px;font-size:12px;color:#4a5568">
+        <ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px">
+          <li>Imported questions will strictly default to <strong>Draft</strong> status for manual review and approval.</li>
+          <li>Source question IDs are tracked; duplicate questions will be safely skipped.</li>
+          <li>Existing Challenge questions, approved pools, and student attempts are never modified.</li>
+          <li>This action is idempotent and safe to run at any time.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="utme-modal-footer">
+      <button type="button" class="utme-btn utme-btn-secondary" onclick="window.utmeAdmin.closeModal('utmeImportConfirmModal')">Cancel</button>
+      <button type="button" class="utme-btn utme-btn-primary" id="utmeConfirmImportActionBtn" onclick="window.utmeAdmin.executeQuestionImport()">Confirm &amp; Import All</button>
+    </div>
+  </div>
 </div>
 
 </section>
@@ -4697,6 +5286,11 @@ function goAdminSection(
         bank:
             document.getElementById(
                 "questionBankSection"
+            ),
+
+        utmeChallenge:
+            document.getElementById(
+                "utmeChallengeSection"
             )
 
     };
@@ -4826,6 +5420,22 @@ function goAdminSection(
             ?.classList.remove(
                 "hidden"
             );
+
+        return;
+
+    }
+
+
+    if(section === "utme_challenge" || section === "utmeChallenge"){
+
+        sections.utmeChallenge
+            ?.classList.remove(
+                "hidden"
+            );
+
+        if(typeof loadUtmeChallengeAdmin === "function"){
+            loadUtmeChallengeAdmin();
+        }
 
         return;
 
@@ -9323,6 +9933,8 @@ async function adminLogout(){
 }
 
 </script>
+
+<script src="utme-challenge-admin.js"></script>
 
 </body>
 </html>
