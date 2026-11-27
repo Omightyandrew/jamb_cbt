@@ -245,9 +245,14 @@
     return {
       "@context": "https://schema.org",
       "@type": "Organization",
+      "@id": ROOT + "/#organization",
       name: "ExamPilot",
       url: ROOT + "/",
-      logo: resolveUrl("/assets/logo/logo-compact.svg")
+      logo: resolveUrl("/assets/logo/logo-compact.svg"),
+      email: "support@exampilot.com.ng",
+      sameAs: [
+        "https://youtube.com/@exampilotng1"
+      ]
     };
   }
 
@@ -327,6 +332,20 @@
                 '<img class="ep-logo" src="' + LIGHT_LOGO + '" alt="ExamPilot">' +
               "</a>" +
               '<p class="seo-footer__description">Nigeria\'s premier exam preparation platform for JAMB, WAEC, NECO, and NABTEB with focused CBT practice, AI tutoring, and syllabus guidance.</p>' +
+              '<div class="seo-footer__contact">' +
+                '<a class="seo-footer__email" href="mailto:support@exampilot.com.ng" aria-label="Email ExamPilot Support">' +
+                  '<svg class="seo-footer__icon seo-footer__icon--email" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>' +
+                  '<span>support@exampilot.com.ng</span>' +
+                '</a>' +
+              '</div>' +
+              '<div class="seo-footer__social" aria-label="Official Social Channels">' +
+                '<a class="seo-footer__social-link" href="https://youtube.com/@exampilotng1" target="_blank" rel="noopener noreferrer" aria-label="ExamPilot on YouTube" title="ExamPilot on YouTube">' +
+                  '<svg class="seo-footer__icon seo-footer__icon--youtube" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">' +
+                    '<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>' +
+                  '</svg>' +
+                  '<span class="seo-sr-only">ExamPilot on YouTube</span>' +
+                '</a>' +
+              '</div>' +
             "</div>" +
             '<div><h2>Exams</h2><ul>' +
               '<li><a href="/jamb/">JAMB (UTME)</a></li>' +
@@ -347,9 +366,10 @@
               '<li><a href="/jamb/brochure/">Brochure &amp; Courses</a></li>' +
               '<li><a href="/student.html">Sign In / Register</a></li>' +
               '<li><a href="/terms.html">Terms &amp; Policies</a></li>' +
+              '<li><a href="mailto:support@exampilot.com.ng">Support &amp; Contact</a></li>' +
             "</ul></div>" +
           "</div>" +
-          '<div class="seo-footer__bottom"><span>© ' + new Date().getFullYear() + ' ExamPilot · <a href="/terms.html" style="color:inherit;text-decoration:underline;">Terms &amp; Policies</a></span><span>Study smarter. Prepare with purpose.</span></div>' +
+          '<div class="seo-footer__bottom"><span>© ' + new Date().getFullYear() + ' ExamPilot · <a href="/terms.html" style="color:inherit;text-decoration:underline;">Terms &amp; Policies</a> · <a href="mailto:support@exampilot.com.ng" style="color:inherit;text-decoration:underline;">support@exampilot.com.ng</a></span><span>Study smarter. Prepare with purpose.</span></div>' +
         "</div>" +
       "</footer>";
   }

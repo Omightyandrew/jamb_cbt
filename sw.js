@@ -1,4 +1,4 @@
-const CACHE_VERSION = "exampilot-shell-v12";
+const CACHE_VERSION = "exampilot-shell-v14";
 const SHELL_CACHE = CACHE_VERSION;
 const OFFLINE_URL = "./offline.html";
 const SUPABASE_LIBRARY_URL = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
@@ -18,8 +18,8 @@ const PRECACHE_URLS = [
   "./push-config.js",
   "./push-notifications.js",
   "./supabase.js",
-  "./questions.js",
   "./exam.js",
+  "./assets/logo/app-icon-192.png",
   "./assets/logo/app-icon-512.png",
   "./assets/logo/logo-primary.svg",
   "./assets/logo/logo-compact.svg",

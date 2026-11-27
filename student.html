@@ -13,6 +13,7 @@ content="width=device-width, initial-scale=1.0"
 >
 
 <title>ExamPilot - Student</title>
+<link rel="canonical" href="https://exampilot.com.ng/student.html">
 <link rel="stylesheet" href="brand.css">
 <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
 <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
@@ -20,7 +21,7 @@ content="width=device-width, initial-scale=1.0"
 <meta property="og:title" content="ExamPilot">
 <meta property="og:description" content="Prepare smarter for JAMB with ExamPilot.">
 <meta property="og:image" content="assets/logo/og-image.png">
-<meta property="og:url" content="https://exampilot.com.ng/">
+<meta property="og:url" content="https://exampilot.com.ng/student.html">
 
 <!-- GOOGLE ANALYTICS (GA4) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SJ14FWR89F"></script>
@@ -44,10 +45,6 @@ content="width=device-width, initial-scale=1.0"
 <!-- REFERRAL TRACKER -->
 
 <script src="referral-tracker.js"></script>
-
-<!-- PAYSTACK -->
-
-<script src="https://js.paystack.co/v2/inline.js"></script>
 
 <style>
 
@@ -3055,6 +3052,26 @@ async function logout() {
    PAYSTACK PAYMENT
 ======================================== */
 
+function ensurePaystackScript() {
+    if (typeof PaystackPop !== "undefined") {
+        return Promise.resolve();
+    }
+    return new Promise(function(resolve, reject) {
+        var existing = document.querySelector('script[src*="paystack.co"]');
+        if (existing) {
+            existing.addEventListener('load', function() { resolve(); }, { once: true });
+            existing.addEventListener('error', function() { reject(new Error("Paystack failed to load")); }, { once: true });
+            return;
+        }
+        var s = document.createElement("script");
+        s.src = "https://js.paystack.co/v2/inline.js";
+        s.async = true;
+        s.onload = function() { resolve(); };
+        s.onerror = function() { reject(new Error("Paystack failed to load")); };
+        document.head.appendChild(s);
+    });
+}
+
 async function payWithPaystack(
     amount,
     durationDays
@@ -3104,6 +3121,12 @@ async function payWithPaystack(
 
         }
 
+
+        if (typeof PaystackPop === "undefined") {
+            try {
+                await ensurePaystackScript();
+            } catch (_) {}
+        }
 
         if (
             typeof PaystackPop ===

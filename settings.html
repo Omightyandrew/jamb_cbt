@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Settings | ExamPilot</title>
+<meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="brand.css">
 <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
 <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
@@ -66,17 +67,18 @@
 
       <div class="support-block">
         <h3>Email Support</h3>
-        <p>Send a message and we will help with account, subscription, or exam access issues.</p>
+        <p>Send a message to <a href="mailto:support@exampilot.com.ng" style="color:var(--green);font-weight:700;">support@exampilot.com.ng</a> and we will help with account, subscription, or exam access issues.</p>
         <div class="support-buttons">
-          <a class="support-button" href="mailto:igbawuaandrew3@gmail.com?subject=JAMB%20CBT%20Support%20Request&body=Hello%2C%20I%20need%20help%20with%20the%20JAMB%20CBT%20platform.%20My%20issue%20is%3A%20">📧 Email Support</a>
+          <a class="support-button" href="mailto:support@exampilot.com.ng?subject=JAMB%20CBT%20Support%20Request&body=Hello%2C%20I%20need%20help%20with%20the%20JAMB%20CBT%20platform.%20My%20issue%20is%3A%20">📧 Email Support</a>
         </div>
       </div>
 
       <div class="support-block">
-        <h3>WhatsApp Support</h3>
-        <p>Reach support directly on WhatsApp: +234 915 537 1499</p>
+        <h3>WhatsApp &amp; YouTube</h3>
+        <p>Reach support directly on WhatsApp (+234 915 537 1499) or watch tutorials on our official YouTube channel.</p>
         <div class="support-buttons">
           <a class="support-button secondary" href="https://wa.me/2349155371499?text=Hello%2C%20I%20need%20help%20with%20the%20JAMB%20CBT%20platform.%20My%20issue%20is%3A%20" target="_blank" rel="noopener noreferrer">💬 WhatsApp Support</a>
+          <a class="support-button secondary" href="https://youtube.com/@exampilotng1" target="_blank" rel="noopener noreferrer" aria-label="ExamPilot on YouTube">▶ ExamPilot on YouTube</a>
         </div>
       </div>
 
@@ -262,7 +264,7 @@
 function openSupportMail(){
   const subject = encodeURIComponent('ExamPilot Support Request');
   const body = encodeURIComponent('Hello, I need help with the ExamPilot platform. My issue is:');
-  window.location.href = 'mailto:igbawuaandrew3@gmail.com?subject=' + subject + '&body=' + body;
+  window.location.href = 'mailto:support@exampilot.com.ng?subject=' + subject + '&body=' + body;
 }
 
 function openWhatsAppSupport(){
@@ -276,7 +278,7 @@ function reportProblemByEmail(){
   const detail = issue ? issue : 'I would like to report a problem with the platform.';
   const subject = encodeURIComponent('ExamPilot Support Request');
   const body = encodeURIComponent('Hello, I need help with the ExamPilot platform. My issue is:\n\n' + detail);
-  window.location.href = 'mailto:igbawuaandrew3@gmail.com?subject=' + subject + '&body=' + body;
+  window.location.href = 'mailto:support@exampilot.com.ng?subject=' + subject + '&body=' + body;
 }
 
 

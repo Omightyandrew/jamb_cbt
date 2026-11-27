@@ -1,0 +1,40 @@
+warning: in the working copy of 'answers.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'challenge.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'index.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'mock-exam.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'novels.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'past-questions.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'result-details.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'results.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'settings.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'sitemap.xml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'student.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'syllabus.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'terms.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'topics.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'topics.js', LF will be replaced by CRLF the next time Git touches it
+M	admin.html
+M	answers.html
+M	cbt.html
+M	challenge.html
+M	dashboard.html
+M	exam.js
+M	index.html
+M	manifest.json
+M	mock-exam-ui.js
+M	mock-exam.html
+M	novels.html
+M	past-questions.html
+M	premium-access.js
+M	public-seo.css
+M	public-seo.js
+M	result-details.html
+M	results.html
+M	settings.html
+M	sitemap.xml
+M	student.html
+M	sw.js
+M	syllabus.html
+M	terms.html
+M	topics.html
+M	topics.js

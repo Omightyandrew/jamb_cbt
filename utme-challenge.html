@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>UTME Challenge 2027 | ExamPilot</title>
+    <meta name="robots" content="noindex, follow">
+    <link rel="stylesheet" href="brand.css">
+    <link rel="stylesheet" href="exam.css">
+    <link rel="stylesheet" href="utme-challenge.css">
+    <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+    <meta name="theme-color" content="#008751">
+</head>
+<body class="utme-body">
+    <header class="utme-header">
+        <a class="utme-header-brand" href="dashboard.html" aria-label="Back to dashboard">
+            <img class="utme-header-logo" src="assets/logo/logo-symbol.svg" alt="ExamPilot" width="32" height="32">
+            <div class="utme-brand-text">
+                <span class="utme-brand-name">ExamPilot</span>
+                <span class="utme-brand-sub">UTME Challenge 2027</span>
+            </div>
+        </a>
+        <nav class="utme-header-nav">
+            <a href="dashboard.html" class="utme-nav-link">← Back to Dashboard</a>
+        </nav>
+    </header>
+
+    <main class="utme-container" id="utmeApp" aria-live="polite">
+        <!-- Rendered reactively by utme-challenge-ui.js -->
+        <noscript>
+            <div class="utme-card utme-empty-state">
+                <h3>JavaScript Required</h3>
+                <p>Please enable JavaScript to participate in ExamPilot UTME Challenge 2027.</p>
+            </div>
+        </noscript>
+    </main>
+
+    <!-- Supabase Client & SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="utme-challenge-ui.js"></script>
+    <script src="utme-challenge-exam.js"></script>
+    <script src="utme-challenge-leaderboard.js"></script>
+</body>
+</html>
