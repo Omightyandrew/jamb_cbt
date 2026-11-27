@@ -4,6 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="robots" content="noindex, follow">
 <title>ExamPilot — Student Dashboard</title>
 <link rel="stylesheet" href="brand.css">
 <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
@@ -21,7 +22,6 @@
 <script src="supabase.js"></script>
 <script src="offline-store.js"></script>
 <script src="offline-auth.js"></script>
-<script src="https://js.paystack.co/v2/inline.js"></script>
 <script>document.addEventListener("keydown", function(event) {
     if (event.key === "Escape") {
         closeSubscription();
@@ -479,6 +479,12 @@ button {
     box-shadow: 0 1px 2px rgba(18,48,37,.035), 0 6px 18px rgba(18,48,37,.055);
     overflow: hidden;
     transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.quick-link[href="utme-challenge.html"] {
+    --quick-accent: #008751;
+    --quick-icon-background: #edf8f2;
+    --quick-accent-border: #c8e6d5;
 }
 
 .quick-link[href="exams.html"] {
@@ -1722,7 +1728,7 @@ button {
 <header class="top-header">
 <div class="header-inner">
 <div class="welcome">
-<img class="ep-logo ep-logo--compact" src="assets/logo/logo-compact.svg" alt="ExamPilot">
+<img class="ep-logo ep-logo--compact" src="assets/logo/logo-compact.svg" alt="ExamPilot" width="160" height="38">
 <h1 id="studentGreeting">Hello, Student 👋</h1>
 <p id="studentWelcomeSubtitle">Welcome back. Keep preparing for your exams.</p>
 </div>
@@ -1883,6 +1889,19 @@ button {
 <p>Everything you need for your JAMB preparation.</p>
 </div>
 <div class="quick-grid">
+<a class="quick-link" href="utme-challenge.html" id="utmeChallengeQuickLink">
+<div class="quick-icon">🏆</div>
+<div class="quick-link-content">
+<div class="quick-link-title" style="display:inline-flex;align-items:center;gap:6px;">
+<span>UTME Challenge</span>
+<span style="background:#008751;color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;font-weight:700;letter-spacing:0.4px;">2027</span>
+</div>
+<div class="quick-link-description">
+Weekly nationwide competition, server-graded scores &amp; leaderboard rankings.
+</div>
+<span class="quick-arrow">→</span>
+</div>
+</a>
 <a class="quick-link" href="exams.html">
 <div class="quick-icon">🌐</div>
 <div class="quick-link-content">
@@ -1986,6 +2005,7 @@ const supabaseClient = window.supabase.createClient(
     SUPABASE_ANON_KEY
 );
 window.supabaseClient = supabaseClient;
+let dashboardStudentProfile = null;
 
 async function refreshDashboardPremiumState() {
     try {
@@ -1997,6 +2017,34 @@ async function refreshDashboardPremiumState() {
         }
 
         const user = sessionData.session.user;
+        // Verified admin accounts automatically receive Premium access
+        // 1. Check Supabase Auth app_metadata role
+        const appRole = String(user?.app_metadata?.role || user?.app_metadata?.admin_role || '').trim().toLowerCase();
+        let isAdmin = (appRole === 'admin' || appRole === 'super_admin');
+
+        // 2. Check Student_profiles.is_admin
+        if (!isAdmin && user?.id) {
+            try {
+                const { data: profileRow } = await supabaseClient
+                    .from('Student_profiles')
+                    .select('is_admin, Full_name, Username')
+                    .eq('id', user.id)
+                    .maybeSingle();
+                dashboardStudentProfile = profileRow || null;
+                if (profileRow?.is_admin === true) {
+                    isAdmin = true;
+                }
+            } catch (profileErr) {
+                console.warn('Dashboard admin profile check failed:', profileErr);
+            }
+        }
+
+        if (isAdmin) {
+            dashboardIsPremium = true;
+            localStorage.setItem('studentSubscribed', 'true');
+            return true;
+        }
+
         const { data: subRows, error: subError } = await supabaseClient
             .from('subscriptions')
             .select('*')
@@ -2155,15 +2203,23 @@ async function loadDashboardStudent() {
             user.email ||
             "Student";
 
-        const { data: profile, error: profileError } =
-            await supabaseClient
-                .from("Student_profiles")
-                .select("Full_name, Username")
-                .eq("id", user.id)
-                .maybeSingle();
-
-        if (profileError) {
-            console.log("Dashboard profile error:", profileError);
+        let profile = dashboardStudentProfile;
+        if (!profile && user?.id) {
+            try {
+                const { data: profileRow, error: profileError } =
+                    await supabaseClient
+                        .from("Student_profiles")
+                        .select("is_admin, Full_name, Username")
+                        .eq("id", user.id)
+                        .maybeSingle();
+                if (profileError) {
+                    console.log("Dashboard profile error:", profileError);
+                }
+                profile = profileRow || null;
+                dashboardStudentProfile = profile;
+            } catch (profileFetchErr) {
+                console.log("Dashboard profile fetch error:", profileFetchErr);
+            }
         }
 
         if (profile && profile.Full_name) {
@@ -2408,13 +2464,22 @@ async function loadDashboardChallengeWidget(user) {
     try {
         const todayLagos = getLagosDate();
 
-        // 3. Single read-only query against public.challenge_attempts
-        const { data: attempts, error } = await supabaseClient
-            .from('challenge_attempts')
-            .select('challenge_date, score, total')
-            .eq('user_id', user.id)
-            .order('challenge_date', { ascending: false })
-            .limit(120);
+        const xpBadge = document.getElementById('challengeXpBadge');
+
+        // 3. Parallel read: challenge_attempts and secure student XP total
+        const [attemptsResult, xpResult] = await Promise.all([
+            supabaseClient
+                .from('challenge_attempts')
+                .select('challenge_date, score, total')
+                .eq('user_id', user.id)
+                .order('challenge_date', { ascending: false })
+                .limit(120),
+            xpBadge
+                ? supabaseClient.rpc('get_my_xp').catch(function(e) { return { data: null, error: e }; })
+                : Promise.resolve({ data: null, error: null })
+        ]);
+
+        const { data: attempts, error } = attemptsResult;
 
         if (error) {
             throw error;
@@ -2459,19 +2524,12 @@ async function loadDashboardChallengeWidget(user) {
             actionBtn.classList.remove('secondary');
         }
 
-        // 6. Secure student XP total read
-        const xpBadge = document.getElementById('challengeXpBadge');
-        if (xpBadge) {
-            try {
-                const { data: xpTotal, error: xpError } = await supabaseClient.rpc('get_my_xp');
-                if (!xpError && typeof xpTotal === 'number' && xpTotal >= 0) {
-                    xpBadge.textContent = `✨ ${xpTotal} XP`;
-                    xpBadge.style.display = 'inline-flex';
-                    renderChallengeProgression(xpTotal);
-                }
-            } catch (xpEx) {
-                // Ignore if migration not yet applied
-            }
+        // 6. Update student XP total badge
+        const xpTotal = xpResult?.data;
+        if (xpBadge && xpResult && !xpResult.error && typeof xpTotal === 'number' && xpTotal >= 0) {
+            xpBadge.textContent = `✨ ${xpTotal} XP`;
+            xpBadge.style.display = 'inline-flex';
+            renderChallengeProgression(xpTotal);
         }
 
     } catch (err) {
@@ -2513,6 +2571,26 @@ function toggleProfileMenu() {
     profileMenu.classList.toggle("show");
 }
 
+function ensurePaystackScript() {
+    if (typeof PaystackPop !== "undefined") {
+        return Promise.resolve();
+    }
+    return new Promise(function(resolve, reject) {
+        var existing = document.querySelector('script[src*="paystack.co"]');
+        if (existing) {
+            existing.addEventListener('load', function() { resolve(); }, { once: true });
+            existing.addEventListener('error', function() { reject(new Error("Paystack failed to load")); }, { once: true });
+            return;
+        }
+        var s = document.createElement("script");
+        s.src = "https://js.paystack.co/v2/inline.js";
+        s.async = true;
+        s.onload = function() { resolve(); };
+        s.onerror = function() { reject(new Error("Paystack failed to load")); };
+        document.head.appendChild(s);
+    });
+}
+
 function openSubscription(featureName) {
     const modal = document.getElementById("subscriptionModal");
     const title = document.getElementById("subscriptionStatusTitle");
@@ -2523,6 +2601,9 @@ function openSubscription(featureName) {
     if (!modal) return;
 
     const subscribed = Boolean(dashboardIsPremium);
+    if (!subscribed && typeof ensurePaystackScript === "function") {
+        ensurePaystackScript().catch(function() {});
+    }
 
     if (subscribed) {
         if (title) title.textContent = "Premium Active ✓";
@@ -2704,6 +2785,12 @@ async function startDashboardPayment(amount, durationDays) {
         if (!user.email) {
             alert("Your account does not have an email address.");
             return;
+        }
+
+        if (typeof PaystackPop === "undefined") {
+            try {
+                await ensurePaystackScript();
+            } catch (_) {}
         }
 
         if (typeof PaystackPop === "undefined") {
@@ -2981,40 +3068,45 @@ async function loadStudentNotifications(){
     const list=document.getElementById('studentNotificationList');
     if(list) list.innerHTML='<div class="notification-loading">Loading notifications...</div>';
     try{
-        // The existing notifications table uses target_type/target_user_id and does not
-        // have is_active/status columns. RLS already limits students to sent rows.
-        const {data,error}=await supabaseClient
-            .from('notifications')
-            .select('*')
-            .order('created_at',{ascending:false})
-            .limit(50);
-        if(error) throw error;
-        dashboardNotifications=(data||[]).filter(notificationVisibleToStudent);
+        const hasUser = Boolean(dashboardCurrentUser?.id && typeof supabaseClient !== 'undefined' && supabaseClient);
 
-        // Fetch authoritative server-side read receipts if student is authenticated
-        if(dashboardCurrentUser?.id && typeof supabaseClient !== 'undefined' && supabaseClient){
-            try{
-                const {data:readRows, error:readError}=await supabaseClient
+        // Fetch notifications and server-side read receipts in parallel
+        const [notifResult, readResult] = await Promise.all([
+            supabaseClient
+                .from('notifications')
+                .select('*')
+                .order('created_at',{ascending:false})
+                .limit(50),
+            hasUser
+                ? supabaseClient
                     .from('notification_reads')
                     .select('notification_id')
-                    .eq('user_id', dashboardCurrentUser.id);
+                    .eq('user_id', dashboardCurrentUser.id)
+                : Promise.resolve({ data: null, error: null })
+        ]);
 
-                if(!readError && Array.isArray(readRows)){
+        if (notifResult.error) throw notifResult.error;
+        dashboardNotifications = (notifResult.data || []).filter(notificationVisibleToStudent);
+
+        if (hasUser) {
+            try {
+                const readRows = readResult.data;
+                const readError = readResult.error;
+                if (!readError && Array.isArray(readRows)) {
                     const serverReadIds = new Set(readRows.map(r => String(r.notification_id)));
                     const localIds = getLocalStorageReadNotificationIds();
-                    // Merge server receipts with local cache (server is authoritative)
                     dashboardReadNotificationIds = new Set([...serverReadIds, ...localIds]);
                     dashboardReadStateLoaded = true;
                     saveLocalStorageReadNotificationIds(dashboardReadNotificationIds);
-                } else if(readError){
+                } else if (readError) {
                     console.warn('Could not load notification_reads from database, using localStorage fallback:', readError);
                     dashboardReadNotificationIds = getLocalStorageReadNotificationIds();
                 }
-            }catch(readErr){
+            } catch (readErr) {
                 console.warn('Error querying notification_reads, using localStorage fallback:', readErr);
                 dashboardReadNotificationIds = getLocalStorageReadNotificationIds();
             }
-        }else{
+        } else {
             dashboardReadNotificationIds = getLocalStorageReadNotificationIds();
         }
 
@@ -3205,9 +3297,10 @@ document.addEventListener("keydown", function(event) {
 loadDashboardStudent();
 maybeOpenUpgradeFromFeatureParameter();
 </script>
-    <script src="push-config.js"></script>
-    <script src="push-notifications.js"></script>
-    <script src="ai-tutor.js"></script>
+    <script src="push-config.js" defer></script>
+    <script src="push-notifications.js" defer></script>
+    <script src="ai-tutor.js" defer></script>
     <script src="pwa-register.js"></script>
+    <script src="trustpilot-prompt.js" defer></script>
 </body>
 </html>
