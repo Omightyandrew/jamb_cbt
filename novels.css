@@ -39,6 +39,9 @@
 
 /* ── PDF Reader ────────────────────────────────────────────────────────────── */
 .pdf-reader-section{display:flex;flex-direction:column;flex:1 1 auto;overflow:hidden;min-height:0}
+.pdf-reader-section[hidden] {
+    display: none !important;
+}
 .pdf-frame{flex:1 1 auto;border:0;width:100%;display:block;background:#f4f4f4;min-height:500px}
 .pdf-loading{padding:48px 24px;text-align:center;color:var(--muted);font-size:15px;font-weight:700}
 .pdf-loading::before{content:'';display:block;width:36px;height:36px;margin:0 auto 16px;border:3px solid var(--line);border-top-color:var(--green);border-radius:50%;animation:pdfSpin .8s linear infinite}
