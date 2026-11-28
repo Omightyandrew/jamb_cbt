@@ -110,16 +110,93 @@ self.addEventListener("notificationclick", (event) => {
     }
   }
 
-  event.waitUntil(
-    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
-      for (const client of clients) {
-        if ("focus" in client) {
-          return client.navigate(targetUrl.href).then(() => client.focus());
-        }
+  event.waitUntil((async () => {
+    let clients;
+    try {
+      clients = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    } catch (error) {
+      console.warn("ExamPilot notification windows could not be listed.", error);
+      throw error;
+    }
+
+    const windowClients = clients.filter((client) => {
+      if (typeof client.url !== "string" || typeof client.focus !== "function") {
+        return false;
       }
-      return self.clients.openWindow(targetUrl.href);
-    })
-  );
+      try {
+        return new URL(client.url).origin === self.location.origin;
+      } catch (error) {
+        console.warn("ExamPilot ignored a window with an invalid URL.", error);
+        return false;
+      }
+    });
+
+    const targetClient = windowClients.find((client) => {
+      try {
+        const clientUrl = new URL(client.url);
+        return clientUrl.origin === targetUrl.origin && clientUrl.href === targetUrl.href;
+      } catch (error) {
+        console.warn("ExamPilot could not compare a window URL.", error);
+        return false;
+      }
+    });
+
+    const focusClient = async (client) => {
+      try {
+        await client.focus();
+      } catch (error) {
+        console.warn("ExamPilot notification window could not be focused.", error);
+        throw error;
+      }
+    };
+
+    if (targetClient) {
+      await focusClient(targetClient);
+      return;
+    }
+
+    const client = windowClients[0];
+    if (client) {
+      if (typeof client.navigate !== "function") {
+        const error = new Error("Existing notification window cannot be navigated.");
+        console.warn("ExamPilot notification navigation is unavailable.", error);
+        await focusClient(client);
+        return;
+      }
+
+      let navigatedClient;
+      try {
+        navigatedClient = await client.navigate(targetUrl.href);
+      } catch (error) {
+        console.warn("ExamPilot notification destination navigation failed.", error);
+        await focusClient(client);
+        return;
+      }
+
+      if (!navigatedClient) {
+        console.warn("ExamPilot notification navigation returned no window client.");
+        await focusClient(client);
+        return;
+      }
+
+      await focusClient(navigatedClient);
+      return;
+    }
+
+    let openedClient;
+    try {
+      openedClient = await self.clients.openWindow(targetUrl.href);
+    } catch (error) {
+      console.warn("ExamPilot notification destination could not be opened.", error);
+      throw error;
+    }
+    if (!openedClient) {
+      const error = new Error("ExamPilot notification destination opened no window client.");
+      console.warn(error.message);
+      throw error;
+    }
+    await focusClient(openedClient);
+  })());
 });
 
 self.addEventListener("fetch", (event) => {
